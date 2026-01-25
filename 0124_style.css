@@ -1,0 +1,125 @@
+/* 基礎設定 */
+body {
+    background-color: #050505;
+    color: #E2E8F0;
+    overflow-x: hidden;
+}
+
+/* 導覽列磨砂玻璃效果 */
+.glass {
+    background: rgba(15, 15, 15, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+
+.bento-item, .project-card-vertical {
+    position: relative;
+    /* 1. 關鍵：背景設為透明，直接看見網頁底部的點點矩陣 */
+    background: transparent !important; 
+    /* 2. 徹底移除任何邊框 */
+    border: none !important;
+    /* 3. 移除陰影（只在懸停時出現） */
+    box-shadow: none !important;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Bento 卡片通用樣式 */
+/* .bento-item {
+    position: relative;
+    background: #0A0A0A;
+    border: none !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: visible; 
+    border-radius: 1.5rem;
+} */
+/* 卡片懸停：朝外發光效果 */
+/* .bento-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0 25px 2px rgba(191, 148, 255, 0.3); 
+    background: #0F0F0F;
+} */
+
+/* 聯繫卡片專用懸停 */
+.contact-card-bento {
+    background: #0A0A0A;
+    border: 1.5px solid rgba(191, 148, 255, 0); 
+    transition: all 0.5s ease;
+}
+
+.contact-card-bento:hover {
+    border-color: rgba(191, 148, 255, 0.6) !important;
+    box-shadow: 0 0 30px 4px rgba(191, 148, 255, 0.25);
+}
+
+/* 垂直專案卡片樣式 */
+.project-card-vertical {
+    background: #0A0A0A;
+    border: none;
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    display: flex;
+    flex-direction: column;
+    border-radius: 1.5rem;
+    overflow: visible;
+}
+
+.project-card-vertical:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 0 40px 6px rgba(191, 148, 255, 0.2);
+    background: #0A0A0A;
+}
+
+/* 漸層文字效果 */
+.text-gradient {
+    background: linear-gradient(135deg, #FFFFFF 0%, #BF94FF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* 背景裝飾點點 */
+.dot-pattern {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 24px 24px;
+}
+
+/* 滾動條美化 */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #050505; }
+::-webkit-scrollbar-thumb { background: #222; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #333; }
+
+/* 技術標籤跑馬燈動畫 */
+/* 1. 打字動畫：寬度由 0 增加到 100% */
+@keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+/* 2. 游標閃爍動畫 */
+@keyframes blink {
+    50% { border-color: transparent; }
+}
+
+/* 3. 游標消失動畫：動畫結束時變透明 */
+@keyframes hide-cursor {
+    to { border-color: transparent; }
+}
+
+.animate-typewriter {
+    display: inline-block;   /* 關鍵：讓容器根據文字內容伸縮 */
+    overflow: hidden;        /* 隱藏尚未打出的文字 */
+    white-space: nowrap;     /* 強制不換行 */
+    border-right: 3px solid #BF94FF; /* 模擬游標 */
+    width: 0;                /* 初始寬度為 0 */
+    
+    /* 動畫組合：
+       typing: 3s 內打完，停在最後一格 (forwards)
+       blink: 0.7s 閃爍一次，無限循環
+       hide-cursor: 0.1s 內變透明，在 3s (打字完) 時才開始執行，並停在透明狀態
+    */
+    animation: 
+        typing 5s steps(50) forwards, 
+        blink 0.7s step-end infinite,
+        hide-cursor 0.1s linear 3s forwards; 
+}
