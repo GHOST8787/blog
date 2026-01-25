@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+
+    <title>ACC | AI Automation Practitioner</title>
+    
+    <!-- 引入外部資源：Tailwind CSS、FontAwesome、Google Fonts -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="0124_style.css">
+    <script src="0124_main.js" defer></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="tailwind.config.js"></script>
+    
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white">
+
+    <!-- --- 背景與裝飾層 --- -->
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-600/10 rounded-full blur-[120px] animate-pulse-slow" style="animation-delay: 2s;"></div>
+    </div>
+
+    <!-- --- 導覽列 --- -->
+    <nav class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-2xl">
+        <div class="glass rounded-full px-6 py-3 flex items-center justify-between shadow-2xl">
+            <div class="flex items-center gap-2">
+                <span class="text-white font-bold tracking-tighter text-lg">GHOST<span class="text-accent-purple">.ouo</span></span>
+            </div>
+            <div class="hidden md:flex items-center gap-6 text-[10px] font-bold uppercase tracking-widest text-gray-400">
+                <a href="0124_index.html#about" class="hover:text-white">About</a>
+                <a href="0124_Projects.html#projects" class="hover:text-white transition-colors">Projects</a>
+                <a href="0124_index.html#contact" class="hover:text-white transition-colors text-accent-purple">Contact</a>
+            </div>
+            <button id="mobile-menu-btn" class="md:hidden text-gray-400 p-1"><i class="fas fa-bars"></i></button>
+        </div>
+    </nav>
+
+    <!-- --- 主要內容區 (Bento Grid) --- -->
+    <main class="relative z-10 max-w-6xl mx-auto px-6 pt-32 pb-24">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+            
+            <!-- Hero 主標題區 (錨點: About) -->
+            <div id="about" class="bento-item col-span-1 md:col-span-8 p-8 md:p-12 flex flex-col justify-center items-start min-h-[420px] scroll-mt-32">
+                
+                <div class="inline-block px-3 py-1 rounded-full bg-accent-purple/10 border border-accent-purple/20 text-accent-purple text-[10px] font-bold uppercase tracking-wider mb-6">
+                    Enjoy accelerated life
+                </div>
+
+                <h1 class="text-3xl md:text-5xl font-extrabold mb-6 leading-tight tracking-tight text-gradient text-left">
+                    I just wanna make some cool shit. <br>
+                    <span class="text-accent-purple text-2xl md:text-4xl">AI & Automation.</span>
+                </h1>
+
+                <div class="mb-8 w-full flex justify-start">
+                    <p class="animate-typewriter text-accent-purple font-mono text-lg md:text-xl tracking-tight">
+                        Python / Google Apps Script / OpenAI API / n8n 
+                    </p>
+                </div>
+
+                <div class="space-y-4 max-w-xl text-gray-400 leading-relaxed text-sm md:text-base text-left">
+                    <p><span class="text-white font-semibold">GHOST_1010</span> , trust it and make it. 💜</p>
+                    <p>專注於 AI 工具應用與流程自動化實作，嘗試將行政、資料整理與內容流程中重複且耗時的工作，轉化為可執行、可維護的自動化流程。</p>
+                </div>
+            </div>
+
+            <!-- 個人照片卡片 -->
+            <!-- <div class="bento-item col-span-1 md:col-span-4 rounded-3xl overflow-hidden group min-h-[420px]">
+                <img src="20260125.png" alt="Profile" class="w-full h-full object-cover ">
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
+                <div class="absolute bottom-6 left-6 text-left">
+                    <span class="text-white font-bold text-lg block">ACC</span>
+                    <span class="text-accent-purple text-[10px] font-mono uppercase tracking-widest text-shadow">Learning & Practicing</span>
+                </div>
+            </div> -->
+
+            <div class="bento-item col-span-1 md:col-span-4 rounded-3xl p-6 flex items-center justify-center relative overflow-hidden group">
+
+                <!-- <img src="20260125.png" alt="Profile" 
+                    class="absolute inset-0 w-full h-full object-cover z-0 
+                            opacity-30 scale-[1.8] grayscale-[0.5] origin-center
+                            group-hover:opacity-70 group-hover:scale-[1.75] group-hover:grayscale-0 
+                            transition-all duration-700 ease-in-out"> -->
+
+                <img src="20260125P.png" alt="Profile" 
+                class="absolute top-20 right-0 bottom-0 left-0 w-full h-full object-cover z-1 
+                        object-top  opacity-50 scale-[1.6] grayscale-[0.3] origin-center
+                        group-hover:opacity-100 group-hover:scale-[1.7] group-hover:grayscale-0 
+                        transition-all duration-1000 ease-in-out">
+
+                <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent z-1 opacity-80"></div>
+
+                <div class="absolute bottom-4 right-4 z-10">
+                    <span class="text-gray-400 text-[10px] font-mono uppercase tracking-[0.2em] backdrop-blur-md bg-black/30 px-3 py-1 rounded-full border border-white/10 group-hover:text-accent-purple group-hover:border-accent-purple/50 transition-all">
+                        GHOST_1010
+                    </span>
+                </div>
+
+            </div>
+            
+            <!-- 專長領域標題 -->
+            <!-- <div class="col-span-1 md:col-span-12 mt-12 mb-4">
+                <h3 class="text-gray-500 font-mono text-[10px] uppercase tracking-[0.4em]">／ Skills & Focus Areas</h3>
+            </div> -->
+
+            <!-- 專長領域卡片 -->
+            <div class="bento-item col-span-1 md:col-span-4 rounded-3xl p-8 group text-center">
+                <div class="w-12 h-12 rounded-xl bg-accent-purple/10 text-accent-purple flex items-center justify-center mb-6 mx-auto group-hover:bg-accent-purple group-hover:text-black transition-all">
+                    <i class="fas fa-robot text-xl"></i>
+                </div>
+                <h4 class="text-lg font-bold mb-3 text-white">AI / 工具輔助行政</h4>
+                <p class="text-gray-500 text-xs leading-relaxed">減少人工處理錯誤與重工。</p>
+            </div>
+
+            <div class="bento-item col-span-1 md:col-span-4 rounded-3xl p-8 group text-center">
+                <div class="w-12 h-12 rounded-xl bg-accent-purple/10 text-accent-purple flex items-center justify-center mb-6 mx-auto group-hover:bg-accent-purple group-hover:text-black transition-all">
+                    <i class="fas fa-project-diagram text-xl"></i>
+                </div>
+                <h4 class="text-lg font-bold mb-3 text-white">試作型自動化流程</h4>
+                <p class="text-gray-500 text-xs leading-relaxed">建立可重複使用的工作流。</p>
+            </div>
+
+            <div class="bento-item col-span-1 md:col-span-4 rounded-3xl p-8 group text-center">
+                <div class="w-12 h-12 rounded-xl bg-accent-purple/10 text-accent-purple flex items-center justify-center mb-6 mx-auto group-hover:bg-accent-purple group-hover:text-black transition-all">
+                    <i class="fas fa-table text-xl"></i>
+                </div>
+                <h4 class="text-lg font-bold mb-3 text-white">資料結構與流程整理</h4>
+                <p class="text-gray-500 text-xs leading-relaxed">重新設計資料欄位與邏輯。</p>
+            </div>
+
+
+            <!-- 聯繫方式卡片 (錨點: Contact) -->
+            <div id="contact" class="bento-item contact-card-bento col-span-1 md:col-span-12 rounded-3xl p-8 flex flex-col justify-between min-h-[200px] scroll-mt-32">
+                <div>
+                    <h2 class="text-2xl font-bold mb-2 text-white">Contact Me</h2>
+                    <p class="text-gray-500 text-xs">如果你正在嘗試導入 AI、改善流程，歡迎交流想法。</p>
+                    <p class="text-gray-500 text-xs mb-6">人因懶惰而偉大。</p>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex gap-5">
+                        <a href="https://www.linkedin.com/in/netghost1010" target="_blank" class="text-gray-400 hover:text-accent-purple transition-colors">
+                            <i class="fab fa-linkedin-in text-xl"></i>
+                        </a>
+                        <a href="https://github.com/GHOST8787" target="_blank" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-github text-xl"></i>
+                        </a>
+                        <a href="https://www.instagram.com/rbt_ghost_1010/" target="_blank" class="text-gray-400 hover:text-pink-400 transition-colors">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                    </div>
+                    <a href="mailto:your-email@example.com" class="px-6 py-3 bg-accent-purple text-black font-bold rounded-xl text-xs hover:scale-105 transition-all">
+                        Email Me
+                    </a>
+                </div>
+            </div>
+
+            <!-- 數據展示區 -->
+            <!-- <div class="bento-item col-span-1 md:col-span-3 rounded-3xl p-8 flex flex-col justify-center items-center text-center">
+                <span class="text-4xl font-bold text-white mb-2">10+</span>
+                <span class="text-[10px] text-gray-500 uppercase tracking-widest leading-tight">Side Projects /<br>Practice Tasks</span>
+            </div>
+
+            <div class="bento-item col-span-1 md:col-span-3 rounded-3xl p-8 flex flex-col justify-center items-center text-center">
+                <span class="text-4xl font-bold text-white mb-2">1–2 yr</span>
+                <span class="text-[10px] text-gray-500 uppercase tracking-widest leading-tight">Hands-on<br>Learning Experience</span>
+            </div> -->
+
+
+        </div>
+    </main>
+
+    <!-- --- 頁尾 --- -->
+    <footer class="py-16 border-t border-white/5 text-center">
+        <p class="text-gray-500 text-[10px] font-mono uppercase tracking-[0.2em] mb-2">&copy; 2026 Built & Iterated by GHOST.ouo</p>
+        <p class="text-gray-700 text-[10px] font-medium tracking-widest">（Keep learning, still fighting.）</p>
+    </footer>
+
+    <!-- --- 手機裝置全螢幕選單 --- -->
+    <div id="mobile-overlay" class="fixed inset-0 bg-black/95 z-[60] hidden flex flex-col items-center justify-center gap-10 text-2xl font-bold tracking-tighter text-white">
+        <button id="close-menu" class="absolute top-8 right-8 text-gray-400 p-2"><i class="fas fa-times text-2xl"></i></button>
+        <a href="#about" class="hover:text-accent-purple transition-colors">ABOUT</a>
+        <a href="#skills" class="hover:text-accent-purple transition-colors">SKILLS</a>
+        <a href="#projects" class="hover:text-accent-purple transition-colors">PROJECTS</a>
+        <a href="#contact" class="hover:text-accent-purple transition-colors">CONTACT</a>
+    </div>
+</body>
+</html>
