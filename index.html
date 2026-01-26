@@ -26,20 +26,7 @@
         <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-600/10 rounded-full blur-[120px] animate-pulse-slow" style="animation-delay: 2s;"></div>
     </div>
 
-    <!-- --- 導覽列 --- -->
-    <nav class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-2xl">
-        <div class="glass rounded-full px-6 py-3 flex items-center justify-between shadow-2xl">
-            <div class="flex items-center gap-2">
-                <span class="text-white font-bold tracking-tighter text-lg">GHOST<span class="text-accent-purple">.ouo</span></span>
-            </div>
-            <div class="hidden md:flex items-center gap-6 ...">
-                <a href="#about" class="hover:text-white">About</a>
-                <a href="0124_Projects.html" class="hover:text-white transition-colors">Projects</a>
-                <a href="#contact" class="hover:text-white transition-colors text-accent-purple">Contact</a>
-            </div>
-            <button id="mobile-menu-btn" class="md:hidden text-gray-400 p-1"><i class="fas fa-bars"></i></button>
-        </div>
-    </nav>
+    <div id="navbar-placeholder"></div>
 
     <!-- --- 主要內容區 (Bento Grid) --- -->
     <main class="relative z-10 max-w-6xl mx-auto px-6 pt-32 pb-24">
@@ -49,7 +36,7 @@
             <div id="about" class="bento-item col-span-1 md:col-span-8 p-8 md:p-12 flex flex-col justify-center items-start min-h-[420px] scroll-mt-32">
                 
                 <div class="inline-block px-3 py-1 rounded-full bg-accent-purple/10 border border-accent-purple/20 text-accent-purple text-[10px] font-bold uppercase tracking-wider mb-6">
-                    Enjoy accelerated life
+                    WORK SMARTER, NOT HARDER
                 </div>
 
                 <h1 class="text-3xl md:text-5xl font-extrabold mb-6 leading-tight tracking-tight text-gradient text-left">
@@ -66,6 +53,7 @@
                 <div class="space-y-4 max-w-xl text-gray-400 leading-relaxed text-sm md:text-base text-left">
                     <p><span class="text-white font-semibold">GHOST_1010</span> , trust it and make it. 💜</p>
                     <p>專注於 AI 工具應用與流程自動化實作，嘗試將行政、資料整理與內容流程中重複且耗時的工作，轉化為可執行、可維護的自動化流程。</p>
+                    <p>Take the leap. Regardless of the outcome, come back with insights and lessons learned.</p>
                 </div>
             </div>
 
@@ -89,8 +77,8 @@
 
                 <img src="20260125P.png" alt="Profile" 
                 class="absolute top-20 right-0 bottom-0 left-0 w-full h-full object-cover z-1 
-                        object-top  opacity-50 scale-[1.6] grayscale-[0.3] origin-center
-                        group-hover:opacity-100 group-hover:scale-[1.7] group-hover:grayscale-0 
+                        object-top  opacity-50 scale-[1.4] grayscale-[0.3] origin-center
+                        group-hover:opacity-100 group-hover:scale-[1.6] group-hover:grayscale-0 
                         transition-all duration-1000 ease-in-out">
 
                 <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent z-1 opacity-80"></div>
@@ -113,7 +101,7 @@
                 <div class="w-12 h-12 rounded-xl bg-accent-purple/10 text-accent-purple flex items-center justify-center mb-6 mx-auto group-hover:bg-accent-purple group-hover:text-black transition-all">
                     <i class="fas fa-robot text-xl"></i>
                 </div>
-                <h4 class="text-lg font-bold mb-3 text-white">AI / 工具輔助行政</h4>
+                <h4 class="text-lg font-bold mb-3 text-white">AI-Powered Productivity</h4>
                 <p class="text-gray-500 text-xs leading-relaxed">減少人工處理錯誤與重工。</p>
             </div>
 
@@ -121,7 +109,7 @@
                 <div class="w-12 h-12 rounded-xl bg-accent-purple/10 text-accent-purple flex items-center justify-center mb-6 mx-auto group-hover:bg-accent-purple group-hover:text-black transition-all">
                     <i class="fas fa-project-diagram text-xl"></i>
                 </div>
-                <h4 class="text-lg font-bold mb-3 text-white">試作型自動化流程</h4>
+                <h4 class="text-lg font-bold mb-3 text-white">Rapid Prototyping & Automation</h4>
                 <p class="text-gray-500 text-xs leading-relaxed">建立可重複使用的工作流。</p>
             </div>
 
@@ -129,7 +117,7 @@
                 <div class="w-12 h-12 rounded-xl bg-accent-purple/10 text-accent-purple flex items-center justify-center mb-6 mx-auto group-hover:bg-accent-purple group-hover:text-black transition-all">
                     <i class="fas fa-table text-xl"></i>
                 </div>
-                <h4 class="text-lg font-bold mb-3 text-white">資料結構與流程整理</h4>
+                <h4 class="text-lg font-bold mb-3 text-white">Data Structuring & Logic Refinement</h4>
                 <p class="text-gray-500 text-xs leading-relaxed">重新設計資料欄位與邏輯。</p>
             </div>
 
@@ -138,12 +126,13 @@
             <div id="contact" class="bento-item contact-card-bento col-span-1 md:col-span-12 rounded-3xl p-8 flex flex-col justify-between min-h-[200px] scroll-mt-32">
                 <div>
                     <h2 class="text-2xl font-bold mb-2 text-white">Contact Me</h2>
-                    <p class="text-gray-500 text-xs">如果你正在嘗試導入 AI、改善流程，歡迎交流想法。</p>
-                    <p class="text-gray-500 text-xs mb-6">人因懶惰而偉大。</p>
+                    <p class="text-gray-500 text-xs mb-6">科技始終來自於人性。</p>
+                    <p class="text-gray-500 text-xs">Let’s build something cool.</p>
+                    <p class="text-gray-500 text-xs">Feel free to reach out for insights or collaboration.</p>
                 </div>
                 <div class="flex items-center justify-between">
                     <div class="flex gap-5">
-                        <a href="https://www.linkedin.com/in/netghost1010" target="_blank" class="text-gray-400 hover:text-accent-purple transition-colors">
+                        <a href="https://www.linkedin.com/in/netghost1010" target="_blank" class="text-gray-400 hover:text-accent-blue transition-colors">
                             <i class="fab fa-linkedin-in text-xl"></i>
                         </a>
                         <a href="https://github.com/GHOST8787" target="_blank" class="text-gray-400 hover:text-white transition-colors">
@@ -174,19 +163,6 @@
         </div>
     </main>
 
-    <!-- --- 頁尾 --- -->
-    <footer class="py-16 border-t border-white/5 text-center">
-        <p class="text-gray-500 text-[10px] font-mono uppercase tracking-[0.2em] mb-2">&copy; 2026 Built & Iterated by GHOST.ouo</p>
-        <p class="text-gray-700 text-[10px] font-medium tracking-widest">（Keep learning, still fighting.）</p>
-    </footer>
-
-    <!-- --- 手機裝置全螢幕選單 --- -->
-    <div id="mobile-overlay" class="fixed inset-0 bg-black/95 z-[60] hidden flex flex-col items-center justify-center gap-10 text-2xl font-bold tracking-tighter text-white">
-        <button id="close-menu" class="absolute top-8 right-8 text-gray-400 p-2"><i class="fas fa-times text-2xl"></i></button>
-        <a href="#about" class="hover:text-accent-purple transition-colors">ABOUT</a>
-        <a href="#skills" class="hover:text-accent-purple transition-colors">SKILLS</a>
-        <a href="#projects" class="hover:text-accent-purple transition-colors">PROJECTS</a>
-        <a href="#contact" class="hover:text-accent-purple transition-colors">CONTACT</a>
-    </div>
+    <div id="footer-placeholder"></div>
 </body>
 </html>
