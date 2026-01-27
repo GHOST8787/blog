@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
 
-    <title>ACC | AI Automation Practitioner</title>
-    
+    <title>Chill Blog | GHOST.ouo</title>
+    <link rel="icon" type="image/png" href="pixelS2.png">
+    <link rel="apple-touch-icon" href="pixelS2.png">
     <!-- 引入外部資源：Tailwind CSS、FontAwesome、Google Fonts -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -29,7 +30,7 @@
     <div id="navbar-placeholder"></div>
 
     <!-- --- 主要內容區 (Bento Grid) --- -->
-    <main class="relative z-10 max-w-6xl mx-auto px-6 pt-32 pb-24">
+    <main class="relative z-10 max-w-6xl mx-auto px-5 pt-24 md:pt-32 pb-16 md:pb-24 overflow-x-hidden">
         <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
             
             <!-- Hero 主標題區 (錨點: About) -->
@@ -45,7 +46,7 @@
                 </h1>
 
                 <div class="mb-8 w-full flex justify-start">
-                    <p class="animate-typewriter text-accent-purple font-mono text-lg md:text-xl tracking-tight">
+                    <p id="typewriter-text" class="animate-typewriter text-accent-purple font-mono text-lg md:text-xl tracking-tight min-h-[1.5em]">
                         Python / Google Apps Script / OpenAI API / n8n 
                     </p>
                 </div>
@@ -142,8 +143,10 @@
                             <i class="fab fa-instagram text-xl"></i>
                         </a>
                     </div>
-                    <a href="mailto:your-email@example.com" class="px-6 py-3 bg-accent-purple text-black font-bold rounded-xl text-xs hover:scale-105 transition-all">
-                        Email Me
+                    <!-- email me 按鍵，待開啟 -->
+                    <!-- <a href="mailto:your-email@example.com"  -->
+                    <a class="px-6 py-3 border border-accent-purple text-accent-purple font-mono font-bold rounded-xl text-xs hover:bg-accent-purple hover:text-black hover:shadow-[0_0_20px_rgba(191,148,255,0.5)] transition-all duration-300">
+                    <!-- Hello, G. -->猜猜我要做啥
                     </a>
                 </div>
             </div>
