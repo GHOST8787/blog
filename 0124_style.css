@@ -1,8 +1,17 @@
 /* 基礎設定 */
+/* 讓中文呼吸感更好，不那麼擁擠 */
 body {
     background-color: #050505;
     color: #E2E8F0;
     overflow-x: hidden;
+    
+    /* 新增這兩行 */
+    letter-spacing: 0.025em; /* 字距微寬 */
+    line-height: 1.7;        /* 行高拉開 */
+    
+    /* 讓字體渲染更清晰 (抗鋸齒) */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 /* 導覽列磨砂玻璃效果 */
@@ -98,7 +107,8 @@ body {
 
 /* 2. 游標閃爍動畫 */
 @keyframes blink {
-    50% { border-color: transparent; }
+    0%, 100% { border-color: transparent; }
+    50% { border-color: #BF94FF; }
 }
 
 /* 3. 游標消失動畫：動畫結束時變透明 */
@@ -106,20 +116,34 @@ body {
     to { border-color: transparent; }
 }
 
+/* --- 標題閃爍特效 --- */
+@keyframes title-flash {
+    0% {
+        color: inherit;
+        text-shadow: none;
+    }
+    20% {
+        color: #BF94FF; /* 變成亮紫色 */
+        text-shadow: 0 0 15px rgba(191, 148, 255, 0.6); /* 發光 */
+    }
+    100% {
+        color: inherit;
+        text-shadow: none;
+    }
+}
+
+.flash-active {
+    /* 1秒內執行完畢，easeInOut讓效果柔和 */
+    animation: title-flash 1s cubic-bezier(0.4, 0, 0.2, 1); 
+}
+
 .animate-typewriter {
-    display: inline-block;   /* 關鍵：讓容器根據文字內容伸縮 */
-    overflow: hidden;        /* 隱藏尚未打出的文字 */
+    display: inline-block;
     white-space: nowrap;     /* 強制不換行 */
-    border-right: 3px solid #BF94FF; /* 模擬游標 */
-    width: 0;                /* 初始寬度為 0 */
+    overflow: hidden;
+    border-right: 3px solid #BF94FF; /* 游標 */
+    padding-right: 5px;      /* 游標跟字的距離 */
     
-    /* 動畫組合：
-       typing: 3s 內打完，停在最後一格 (forwards)
-       blink: 0.7s 閃爍一次，無限循環
-       hide-cursor: 0.1s 內變透明，在 3s (打字完) 時才開始執行，並停在透明狀態
-    */
-    animation: 
-        typing 5s steps(50) forwards, 
-        blink 0.7s step-end infinite,
-        hide-cursor 0.1s linear 3s forwards; 
+    /* 只保留游標閃爍動畫，移除 typing 動畫 */
+    animation: blink 0.7s step-end infinite;
 }
