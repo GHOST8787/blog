@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Automation Case #01 | GHOST.ouo</title>
+    
+    <link rel="icon" type="image/png" href="../pixelS2.png">
+    <link rel="apple-touch-icon" href="../pixelS2.png">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../0124_style.css">
+    
+    <script src="../tailwind.config.js"></script>
+    <script>
+        window.siteRoot = '../';
+    </script>
+    <script src="../0124_main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+        
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../0124_Projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / 001</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+            <div class="flex gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    Automation
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Python
+                </span>
+            </div>
+
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                好色喔不要偷看：<br>
+                <span class="text-gradient">自動化工作流實作紀錄</span>
+            </h1>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.01.30</span>
+                <span><i class="far fa-clock mr-2"></i>5 MIN READ</span>
+                <span>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+            
+            <p class="text-xl text-gray-400 font-light mb-8">
+                這裡是用來寫摘要的區塊。這篇文章將紀錄如何使用 Python 與 n8n 串接，解決重複性的資料整理工作。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 問題發想
+            </h3>
+            <p class="mb-6">
+                雖然現在還沒寫好，但是這裡預計會放這專案的緣起。為什麼要做這個？痛點在哪裡？
+                <strong class="text-white">Remember: Work smarter, not harder.</strong>
+            </p>
+
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10">
+                <h4 class="text-accent-purple font-mono text-sm mb-4 uppercase tracking-widest">
+                    <i class="fas fa-code mr-2"></i>Code Snippet Concept
+                </h4>
+                <code class="font-mono text-sm text-gray-400 block whitespace-pre-wrap">
+def automation_start():
+    print("Hello, ACC.")
+    # 這裡可以放你的程式碼片段
+    return "Time Saved"
+                </code>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 實作過程
+            </h3>
+            <p>
+                這裡可以放圖片，你可以使用跟首頁一樣的圓角風格。
+            </p>
+            
+            <figure class="my-8">
+                <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1600&auto=format&fit=crop" 
+                     alt="Automation process" 
+                     class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-80 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    圖 1：自動化流程架構圖 (示意)
+                </figcaption>
+            </figure>
+
+            <p>
+                結論寫在這裡。
+            </p>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Project
+            </a>
+            <a href="../0124_Projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Projects
+            </a>
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                Next Project &rarr;
+            </a>
+        </div>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+</body>
+</html>

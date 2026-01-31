@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>Secret Projects | GHOST.ouo</title>
-    <link rel="icon" type="image/png" href="pixelS2.png">
-    <link rel="apple-touch-icon" href="pixelS2.png">
+    <link rel="icon" type="image/png" href="PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="PNG/pixelS2.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -31,38 +31,20 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="project-card-vertical group">
+            <a href="EXP/article_01.html" class="project-card-vertical group block">
                 <div class="relative aspect-video overflow-hidden rounded-t-3xl">
                     <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1600&auto=format&fit=crop" alt="Case 01" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-                    <div class="absolute top-4 left-4">
-                        <span class="text-accent-purple bg-black/70 backdrop-blur-md px-2 py-1 rounded text-[10px] font-bold uppercase tracking-widest shadow-lg">Automation Case #01</span>
-                    </div>
                 </div>
                 <div class="p-8 flex flex-col flex-grow text-left">
                     <div class="flex gap-2 mb-4">
                         <span class="text-[9px] px-2 py-0.5 bg-white/5 rounded border border-white/10 text-gray-400 font-bold uppercase">YOU</span>
                         <span class="text-[9px] px-2 py-0.5 bg-white/5 rounded border border-white/10 text-gray-400 font-bold uppercase">BADBAD</span>
                     </div>
-                    <h4 class="text-xl font-bold text-white mb-3">好色喔不要偷看</h4>
-                    <p class="text-gray-400 text-sm leading-relaxed">這裡我還沒寫好</p>
+                    <h4 class="text-xl font-bold text-white mb-3 group-hover:text-accent-purple transition-colors">好色喔不要偷看</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed">這裡我還沒寫好... (點擊閱讀更多)</p>
                 </div>
-            </div>
-            <div class="project-card-vertical group">
-                <div class="relative aspect-video overflow-hidden rounded-t-3xl">
-                    <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1600&auto=format&fit=crop" alt="Case 01" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-                    <div class="absolute top-4 left-4">
-                        <span class="text-accent-purple bg-black/70 backdrop-blur-md px-2 py-1 rounded text-[10px] font-bold uppercase tracking-widest shadow-lg">Automation Case #01</span>
-                    </div>
-                </div>
-                <div class="p-8 flex flex-col flex-grow text-left">
-                    <div class="flex gap-2 mb-4">
-                        <span class="text-[9px] px-2 py-0.5 bg-white/5 rounded border border-white/10 text-gray-400 font-bold uppercase">YOU</span>
-                        <span class="text-[9px] px-2 py-0.5 bg-white/5 rounded border border-white/10 text-gray-400 font-bold uppercase">BADBAD</span>
-                    </div>
-                    <h4 class="text-xl font-bold text-white mb-3">好色喔不要偷看</h4>
-                    <p class="text-gray-400 text-sm leading-relaxed">這裡我還沒寫好</p>
-                </div>
-            </div>
+            </a>
+            
             </div>
     </main>
 
@@ -75,6 +57,102 @@
         <a href="#projects" class="hover:text-accent-purple transition-colors">PROJECTS</a>
         <a href="0124_index.html#contact" class="hover:text-accent-purple transition-colors">CONTACT</a>
     </div>
+
+    <div id="footer-placeholder"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const projectCards = document.querySelectorAll('a.project-card-vertical');
+
+            projectCards.forEach(async (card) => {
+                const articleUrl = card.getAttribute('href');
+                if (!articleUrl || articleUrl === '#' || articleUrl.startsWith('http')) return;
+
+                try {
+                    const response = await fetch(articleUrl);
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    const htmlText = await response.text();
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(htmlText, 'text/html');
+
+                    // 1. 抓取標題
+                    const titleEl = doc.querySelector('header h1');
+                    if (titleEl) {
+                        const cleanTitle = titleEl.innerText.replace(/\n/g, ' ').trim();
+                        const cardTitle = card.querySelector('h4');
+                        if (cardTitle) cardTitle.textContent = cleanTitle;
+                    }
+
+                    // 2. 抓取文章第一張圖片 (作為封面圖)
+                    // 優先找 article 內的圖片，沒有的話找 figure 內的
+                    const firstImg = doc.querySelector('article img') || doc.querySelector('figure img');
+                    if (firstImg) {
+                        let imgSrc = firstImg.getAttribute('src');
+                        
+                        // --- 關鍵路徑修正 ---
+                        // 文章裡的圖片路徑通常是 "../PNG/img.png"，但在首頁要變成 "PNG/img.png"
+                        if (imgSrc && imgSrc.startsWith('../')) {
+                            imgSrc = imgSrc.substring(3); // 去掉前面的 "../"
+                        }
+
+                        const cardImg = card.querySelector('.aspect-video img');
+                        if (cardImg && imgSrc) {
+                            cardImg.setAttribute('src', imgSrc);
+                        }
+                    }
+
+                    // 3. 抓取標籤 (含顏色)
+                    const tagsContainer = doc.querySelector('header .flex.gap-3');
+                    if (tagsContainer) {
+                        const sourceTags = tagsContainer.querySelectorAll('span');
+                        const cardTagBox = card.querySelector('.flex.gap-2.mb-4');
+                        
+                        if (cardTagBox && sourceTags.length > 0) {
+                            cardTagBox.innerHTML = ''; 
+                            sourceTags.forEach(sourceTag => {
+                                const newTag = document.createElement('span');
+                                newTag.className = sourceTag.className; 
+                                newTag.textContent = sourceTag.textContent.trim();
+                                cardTagBox.appendChild(newTag);
+                            });
+                        }
+                    }
+
+                    // 4. 抓取內文摘要 (限制 3 行)
+                    let summaryEl = doc.querySelector('article .text-xl') || doc.querySelector('article p');
+                    if (summaryEl) {
+                        let summaryText = summaryEl.innerText.trim();
+                        const cardDesc = card.querySelector('p.text-gray-400');
+                        if (cardDesc) {
+                            cardDesc.textContent = summaryText;
+                            cardDesc.classList.add('line-clamp-3', 'overflow-hidden', 'text-ellipsis');
+                            cardDesc.classList.remove('leading-relaxed'); 
+                            cardDesc.classList.add('leading-normal'); 
+                        }
+                    }
+
+                    // 5. 抓取日期 (左下角)
+                    const calendarIcon = doc.querySelector('header .fa-calendar');
+                    if (calendarIcon && calendarIcon.parentElement) {
+                        const dateText = calendarIcon.parentElement.textContent.trim();
+                        let dateEl = card.querySelector('.card-date');
+                        if (!dateEl) {
+                            dateEl = document.createElement('div');
+                            dateEl.className = 'card-date text-[10px] text-gray-500 font-mono mt-auto pt-4 border-t border-white/5 w-full';
+                            const cardBody = card.querySelector('.p-8');
+                            if (cardBody) {
+                                cardBody.appendChild(dateEl);
+                            }
+                        }
+                        dateEl.innerHTML = `<i class="far fa-clock mr-2"></i>${dateText}`;
+                    }
+
+                } catch (error) {
+                    console.warn(`無法讀取文章資訊 (${articleUrl}):`, error);
+                }
+            });
+        });
+    </script>
 
 </body>
 </html>

@@ -71,19 +71,35 @@ const initAnimations = () => {
  * 4. 主執行流程
  */
 document.addEventListener('DOMContentLoaded', () => {
-    // 載入頁首，並在完成後啟動選單邏輯 & 閃爍邏輯
-    loadComponent('navbar-placeholder', 'components/navbar.html', () => {
-        initMobileMenu();  // 原本的手機選單邏輯
-        initScrollFlash(); // 新增：啟動點擊閃爍邏輯
-    });
-    
-    // 載入頁尾
-    loadComponent('footer-placeholder', 'components/footer.html');
+    // 檢查是否有設定全域路徑變數，如果沒有就預設為空字串 (代表在根目錄)
+    const rootPath = window.siteRoot || '';
 
-    // 啟動本頁面原有的動畫
+    // 1. 載入頁首 Navbar
+    loadComponent('navbar-placeholder', `${rootPath}components/navbar.html`, () => {
+        
+        // --- 自動修正導覽列連結 (保持你的邏輯) ---
+        if (rootPath) {
+            const navLinks = document.querySelectorAll('#navbar-placeholder a');
+            navLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href && !href.startsWith('#') && !href.startsWith('http') && !href.startsWith('mailto')) {
+                    link.setAttribute('href', rootPath + href);
+                }
+            });
+        }
+        // -------------------------------------
+
+        initMobileMenu();
+        initScrollFlash();
+    });
+
+    // 2. 🔥 補回這段：載入頁尾 Footer
+    loadComponent('footer-placeholder', `${rootPath}components/footer.html`);
+
+    // 3. 🔥 補回這段：啟動頁面動畫 (不然網頁元素會隱形)
     initAnimations();
 
-    // 啟動打字機 (這是剛剛幫你加的)
+    // 4. 啟動打字機 (如果有的話)
     if (typeof initTypewriter === 'function') {
         initTypewriter();
     }
