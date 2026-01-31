@@ -98,23 +98,42 @@ body {
 ::-webkit-scrollbar-thumb { background: #222; border-radius: 10px; }
 ::-webkit-scrollbar-thumb:hover { background: #333; }
 
-/* 技術標籤跑馬燈動畫 */
-/* 1. 打字動畫：寬度由 0 增加到 100% */
-@keyframes typing {
-    from { width: 0; }
-    to { width: 100%; }
+
+/* --- 打字機游標動畫 (控制透明度) --- */
+@keyframes blink-cursor {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
 }
 
-/* 2. 游標閃爍動畫 */
-@keyframes blink {
-    0%, 100% { border-color: transparent; }
-    50% { border-color: #BF94FF; }
+/* --- 打字機容器設定 (預設：手機版) --- */
+.animate-typewriter {
+    display: inline;       /* 手機版：讓文字自然流動 */
+    white-space: pre-wrap; /* 手機版：允許自動換行 */
+    overflow: visible;     /* 允許內容顯示 */
+    border-right: none;    /* 移除舊版邊框游標 */
+    position: relative;
+    word-break: break-word; /* 確保長單字換行 */
 }
 
-/* 3. 游標消失動畫：動畫結束時變透明 */
-@keyframes hide-cursor {
-    to { border-color: transparent; }
+/* --- 游標設定 (使用偽元素，手機電腦通用) --- */
+.animate-typewriter::after {
+    content: '';
+    display: inline-block;
+    width: 3px;            /* 游標寬度 */
+    height: 1.2em;         /* 游標高度 */
+    background-color: #BF94FF; /* 紫色 */
+    margin-left: 4px;      /* 距離文字 */
+    vertical-align: sub;   /* 對齊微調 */
+    animation: blink-cursor 0.9s step-end infinite;
 }
+
+/* --- 電腦版覆寫 (螢幕大於 768px 時) --- */
+@media (min-width: 768px) {
+    .animate-typewriter {
+        white-space: nowrap; /* 電腦版：強制不換行 */
+    }
+}
+
 
 /* --- 標題閃爍特效 --- */
 @keyframes title-flash {
@@ -137,13 +156,4 @@ body {
     animation: title-flash 1s cubic-bezier(0.4, 0, 0.2, 1); 
 }
 
-.animate-typewriter {
-    display: inline-block;
-    white-space: nowrap;     /* 強制不換行 */
-    overflow: hidden;
-    border-right: 3px solid #BF94FF; /* 游標 */
-    padding-right: 5px;      /* 游標跟字的距離 */
-    
-    /* 只保留游標閃爍動畫，移除 typing 動畫 */
-    animation: blink 0.7s step-end infinite;
-}
+
