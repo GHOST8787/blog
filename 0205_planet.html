@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Little Planet | GHOST.ouo</title>
+    <link rel="icon" type="image/png" href="PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="PNG/pixelS2.png">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="0124_style.css">
+    <link rel="stylesheet" href="0205_planet.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="tailwind.config.js"></script>
+    <script src="0124_main.js" defer></script>
+
+    <style>
+        /* 避免頁尾遮擋到滑鼠操作 */
+        #footer-placeholder {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        z-index: 50; /* 建議層級調高，確保蓋過星球 */
+        pointer-events: none;
+        
+        /* ✨ 新增背景設定，解決擋住問題 ✨ */
+        background: rgba(5, 5, 5, 0.85); 
+        backdrop-filter: blur(12px);
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    #footer-placeholder * {
+        pointer-events: auto;
+    }
+        
+        main {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* 修正導覽列樣式 */
+        #navbar-placeholder > * {
+            border-bottom: none !important;
+            box-shadow: none !important;
+            /* 🔴 刪除了 background: transparent; */
+            /* 現在導覽列會有原本的磨砂玻璃背景，星球轉上去時會被模糊掉，不會擋到字 */
+        }
+    </style>
+</head>
+
+<body class="bg-[#050505]">
+
+    <div id="navbar-placeholder" class="fixed top-0 w-full z-50"></div>
+
+    <main class="relative z-10 max-w-5xl mx-auto px-6 pt-24 md:pt-32 pb-24 md:pb-32">
+
+        <div class="planet-header mb-6 relative z-20 pointer-events-none">
+            <h1 class="text-3xl md:text-4xl font-extrabold mb-2 leading-tight tracking-tight text-gradient text-left w-fit">我的小星球</h1>
+            <p class="text-purple-400 font-mono text-xs uppercase mt-0">My Little Planet</p>
+        </div>
+
+        <div id="scene-wrapper" class="relative w-full h-[55vh] md:h-[70vh] rounded-3xl overflow-hidden shadow-2xl">
+            
+            <div id="filter-ui"></div>
+            <div id="canvas-container"></div>
+            <div id="label-container"></div>
+        </div>
+
+    </main>
+
+    <div id="footer-placeholder" class="fixed bottom-0 w-full z-10"></div>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+    <script type="module">
+        import { initPlanet } from './0205_planet.js';
+        initPlanet();
+    </script>
+    
+</body>
+</html>

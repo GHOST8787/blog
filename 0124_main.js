@@ -103,6 +103,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (typeof initTypewriter === 'function') {
         initTypewriter();
     }
+
+    initHeartButton();
 });
 
 /**
@@ -191,38 +193,58 @@ function initScrollFlash() {
 
 
 
-/**
- * 6. 導覽列點擊標題閃爍特效
- */
-// function initScrollFlash() {
-//     // 選取所有 href 開頭是 # 的連結 (包含手機版跟電腦版選單)
-//     const links = document.querySelectorAll('a[href^="#"]');
+function initHeartButton() {
+    const btn = document.getElementById('heart-trigger');
+    
+    if (!btn) return;
 
-//     links.forEach(link => {
-//         link.addEventListener('click', function(e) {
-//             // 1. 取得目標 ID (去掉 #)
-//             const targetId = this.getAttribute('href').substring(1);
-//             const targetSection = document.getElementById(targetId);
+    btn.addEventListener('click', (e) => {
+        // 1. 取得點擊位置 (讓愛心從滑鼠位置噴出來)
+        const x = e.clientX;
+        const y = e.clientY;
 
-//             if (targetSection) {
-//                 // 2. 找到該區塊內的標題 (h1, h2, h3 擇一)
-//                 const targetTitle = targetSection.querySelector('h1, h2, h3');
+        // 2. 定義愛心種類
+        const hearts = ['🖤', '❤️', '🤍'];
 
-//                 if (targetTitle) {
-//                     // 3. 重置動畫：如果已經有 class 要先移除，強制瀏覽器重繪 (Reflow) 後再加回去
-//                     targetTitle.classList.remove('flash-active');
-                    
-//                     // 這行神奇的程式碼會強制瀏覽器計算樣式，讓動畫可以重新觸發
-//                     void targetTitle.offsetWidth; 
+        // 3. 產生 15 顆愛心
+        for (let i = 0; i < 15; i++) {
+            createHeart(x, y, hearts);
+        }
+    });
+}
 
-//                     // 4. 加入閃爍 class
-//                     // 設定一點延遲 (300ms)，讓畫面滾動到定位時剛好開始閃
-//                     setTimeout(() => {
-//                         targetTitle.classList.add('flash-active');
-//                     }, 300);
-//                 }
-//             }
-//         });
-//     });
-// }
+function createHeart(x, y, hearts) {
+    const el = document.createElement('div');
+    
+    // 隨機挑選一個愛心
+    el.innerText = hearts[Math.floor(Math.random() * hearts.length)];
+    el.className = 'heart-particle';
+    
+    // 設定初始位置
+    el.style.left = `${x}px`;
+    el.style.top = `${y}px`;
+
+    // 計算隨機噴發方向與距離
+    // 角度: 0 ~ 360度 (全方位噴發)
+    // 距離: 50px ~ 150px
+    const angle = Math.random() * Math.PI * 2;
+    const velocity = 60 + Math.random() * 100; 
+    
+    const tx = Math.cos(angle) * velocity;
+    const ty = Math.sin(angle) * velocity;
+    const rot = (Math.random() - 0.5) * 60; // 隨機旋轉 -30 ~ +30 度
+
+    // 將隨機值傳給 CSS 變數
+    el.style.setProperty('--tx', `${tx}px`);
+    el.style.setProperty('--ty', `${ty}px`);
+    el.style.setProperty('--rot', `${rot}deg`);
+
+    // 加入頁面
+    document.body.appendChild(el);
+
+    // 動畫結束後 (1秒) 移除元素，避免記憶體洩漏
+    setTimeout(() => {
+        el.remove();
+    }, 1000);
+}
 
