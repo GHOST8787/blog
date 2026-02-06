@@ -166,4 +166,34 @@ body {
     animation: title-flash 1s cubic-bezier(0.4, 0, 0.2, 1); 
 }
 
+.number-particle {
+    position: fixed;
+    pointer-events: none;
+    z-index: 10000; /* 比愛心層級更高，確保在最上面 */
+    font-family: 'Fredoka', sans-serif; 
+    font-weight: 600;
+    font-size: 10px; /* 字體變小 (原本 24px -> 改成 16px) */
+    color: #BF94FF; /* 使用你的主題紫色 */
+    text-shadow: 0 0 10px rgba(191, 148, 255, 0.8); /* 發光 + 黑描邊確保清晰 */
+    
+    /* 初始置中 */
+    transform: translate(-50%, -50%);
+    
+    /* 執行動畫 */
+    animation: number-float-up 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
 
+@keyframes number-float-up {
+    0% {
+        transform: translate(-50%, -50%) scale(0.5); /* 一開始很小 */
+        opacity: 0;
+    }
+    50% {
+        transform: translate(-50%, -25px) scale(1.5); /* 瞬間變大並往上衝 */
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -100px) scale(1); /* 慢慢繼續往上並消失 */
+        opacity: 0;
+    }
+}

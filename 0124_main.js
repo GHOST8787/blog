@@ -198,51 +198,66 @@ function initHeartButton() {
     
     if (!btn) return;
 
+    // 1. 從 localStorage 讀取目前的點擊次數 (如果沒有就預設 0)
+    let clickCount = parseInt(localStorage.getItem('ghost_love_count')) || 0;
+
     btn.addEventListener('click', (e) => {
-        // 1. 取得點擊位置 (讓愛心從滑鼠位置噴出來)
+        // 2. 次數 +1 並存回去
+        clickCount++;
+        localStorage.setItem('ghost_love_count', clickCount);
+
+        // 取得滑鼠位置
         const x = e.clientX;
         const y = e.clientY;
 
-        // 2. 定義愛心種類
-        const hearts = ['🖤', '❤️', '🤍'];
+        // 3. 噴出「數值」粒子 (顯示目前的累計次數)
+        createNumberParticle(x, y, clickCount);
 
-        // 3. 產生 15 顆愛心
+        // 4. 噴出原本的「愛心」粒子 (裝飾用，維持 15 顆)
+        const hearts = ['🖤', '❤️', '🤍'];
         for (let i = 0; i < 15; i++) {
             createHeart(x, y, hearts);
         }
     });
 }
 
+function createNumberParticle(x, y, number) {
+    const el = document.createElement('div');
+    el.innerText = number; // 顯示目前的次數
+    el.className = 'number-particle'; // 套用新的 CSS
+    
+    // 設定位置 (稍微往上提一點，避免遮住按鈕)
+    el.style.left = `${x}px`;
+    el.style.top = `${y - 20}px`;
+
+    document.body.appendChild(el);
+
+    // 動畫結束後移除
+    setTimeout(() => {
+        el.remove();
+    }, 1500);
+}
+
 function createHeart(x, y, hearts) {
     const el = document.createElement('div');
-    
-    // 隨機挑選一個愛心
     el.innerText = hearts[Math.floor(Math.random() * hearts.length)];
     el.className = 'heart-particle';
-    
-    // 設定初始位置
     el.style.left = `${x}px`;
     el.style.top = `${y}px`;
 
-    // 計算隨機噴發方向與距離
-    // 角度: 0 ~ 360度 (全方位噴發)
-    // 距離: 50px ~ 150px
     const angle = Math.random() * Math.PI * 2;
     const velocity = 60 + Math.random() * 100; 
     
     const tx = Math.cos(angle) * velocity;
     const ty = Math.sin(angle) * velocity;
-    const rot = (Math.random() - 0.5) * 60; // 隨機旋轉 -30 ~ +30 度
+    const rot = (Math.random() - 0.5) * 60;
 
-    // 將隨機值傳給 CSS 變數
     el.style.setProperty('--tx', `${tx}px`);
     el.style.setProperty('--ty', `${ty}px`);
     el.style.setProperty('--rot', `${rot}deg`);
 
-    // 加入頁面
     document.body.appendChild(el);
 
-    // 動畫結束後 (1秒) 移除元素，避免記憶體洩漏
     setTimeout(() => {
         el.remove();
     }, 1000);
