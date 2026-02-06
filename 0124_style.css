@@ -34,21 +34,31 @@ body {
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Bento 卡片通用樣式 */
-/* .bento-item {
-    position: relative;
-    background: #0A0A0A;
-    border: none !important;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    overflow: visible; 
-    border-radius: 1.5rem;
-} */
-/* 卡片懸停：朝外發光效果 */
-/* .bento-item:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 0 25px 2px rgba(191, 148, 255, 0.3); 
-    background: #0F0F0F;
-} */
+/* --- 愛心噴發特效 --- */
+.heart-particle {
+    position: fixed; /* 固定在視窗上，不受父容器 overflow 限制 */
+    pointer-events: none; /* 讓滑鼠可以穿透，不會擋到點擊 */
+    z-index: 9999;
+    font-size: 20px;
+    line-height: 1;
+    user-select: none;
+    /* 初始狀態：在中心 */
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 1;
+    animation: heart-explode 1s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+}
+
+@keyframes heart-explode {
+    0% {
+        transform: translate(-50%, -50%) scale(0.5);
+        opacity: 1;
+    }
+    100% {
+        /* var(--tx) 和 var(--ty) 由 JS 隨機產生 */
+        transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1.5) rotate(var(--rot));
+        opacity: 0;
+    }
+}
 
 /* 聯繫卡片專用懸停 */
 .contact-card-bento {

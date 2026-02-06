@@ -1,0 +1,231 @@
+/* ---------------------------------------------------- */
+/* 星球容器定位設定 */
+/* ---------------------------------------------------- */
+
+/* 確保畫布充滿 scene-wrapper */
+#canvas-container, #label-container {
+    position: absolute; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+#label-container {
+    z-index: 2;
+    /* 👇 修正 3：這裡不能設 pointer-events: none，否則 OrbitControls 會抓不到滑鼠 */
+    /* 我們改在 HTML 結構中控制 */
+}
+
+canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+    outline: none;
+}
+
+/* ---------------------------------------------------- */
+/* 節點與星星樣式 (這部分保留你的設定) */
+/* ---------------------------------------------------- */
+
+.work-node {
+    --node-color: #BF94FF; 
+    pointer-events: auto; /* 星星本身可以點 */
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.4s ease;
+}
+
+.work-node.is-occluded {
+    opacity: 0.15;
+    pointer-events: none;
+}
+
+.star-icon {
+    position: relative;
+    width: 14px; height: 14px;
+    background: var(--node-color);
+    box-shadow: 0 0 15px var(--node-color);
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.star-icon::before, .star-icon::after {
+    content: ''; 
+    position: absolute; 
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%); 
+    background: var(--node-color);
+    opacity: 0.6; 
+}
+.star-icon::before { width: 2px; height: 24px; }
+.star-icon::after { width: 24px; height: 2px; }
+
+.work-node:hover .star-icon {
+    transform: scale(1.6) rotate(45deg);
+    background: #ffffff;
+    box-shadow: 0 0 25px var(--node-color), 0 0 50px var(--node-color);
+}
+
+.node-label-name {
+    margin-top: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+    color: var(--node-color);
+    text-shadow: 0 0 8px var(--node-color);
+    border: 1px solid var(--node-color);
+    white-space: nowrap;
+    background: rgba(0,0,0,0.7);
+    padding: 4px 8px;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+.node-card {
+    position: absolute;
+    bottom: 45px;
+    width: 260px;
+    padding: 1.2rem;
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--node-color);
+    border-radius: 12px;
+    color: white;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.4s ease;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.work-node:hover .node-card {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.filter-container {
+    position: absolute;       /* 為了讓下拉選單定位 */
+    margin-top: 24px;         /* 與上方標題的距離 */
+    z-index: 50;
+    font-family: 'JetBrains Mono', monospace;
+    pointer-events: auto;     /* 關鍵！因為父層 header 是 none，這裡要開回來才能點 */
+    width: fit-content;       /* 寬度隨內容調整 */
+    top: 20px;
+    left: 20px;
+    z-index: 50;
+    margin-top: 0;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+/* 篩選按鈕 (Trigger) */
+.filter-btn {
+    background: rgba(10, 10, 10, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #BF94FF;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+    background: rgba(191, 148, 255, 0.15);
+    border-color: #BF94FF;
+    color: white;
+}
+
+/* 下拉選單 */
+.filter-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 8px;
+    background: rgba(5, 5, 5, 0.95);
+    border: 1px solid rgba(191, 148, 255, 0.3);
+    border-radius: 12px;
+    padding: 8px;
+    width: 180px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 10px 30px -10px rgba(0,0,0,0.8);
+}
+
+/* 選單展開狀態 */
+.filter-container:hover .filter-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* 選項按鈕 */
+.filter-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 11px;
+    color: #888;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+}
+
+.filter-option:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+}
+
+/* 選中狀態 (Active) */
+.filter-option.active {
+    background: rgba(191, 148, 255, 0.1);
+    border-color: rgba(191, 148, 255, 0.3);
+    color: white;
+    font-weight: bold;
+}
+
+.filter-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+    box-shadow: 0 0 5px currentColor;
+}
+
+/* ---------------------------------------------------- */
+/* 🆕 新增：篩選互動效果 */
+/* ---------------------------------------------------- */
+
+/* 被過濾掉的星星：變得很暗且不能點 */
+.work-node.filtered-out {
+    opacity: 0.05 !important; /* 強制變暗 */
+    pointer-events: none !important;
+    filter: grayscale(100%);
+}
+
+/* 被選中時的閃爍動畫 */
+@keyframes star-flash-anim {
+    0% { transform: scale(1); filter: brightness(1); }
+    30% { transform: scale(2.5); filter: brightness(3); } /* 瞬間變大變亮 */
+    100% { transform: scale(1); filter: brightness(1); }
+}
+
+.work-node.flash-active .star-icon {
+    animation: star-flash-anim 0.6s ease-out forwards;
+}
