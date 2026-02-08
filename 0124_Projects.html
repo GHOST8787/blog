@@ -25,38 +25,18 @@
 
     <div id="navbar-placeholder"></div>
 
-    <main class="relative z-10 max-w-6xl mx-auto px-6 pt-32 pb-24">
-        <div id="projects" class="mt-12 mb-4 scroll-mt-32">
-            <h2 class="text-gray-500 font-mono text-[10px] uppercase tracking-[0.4em]">／ Projects & Experiments</h3>
+<main class="relative z-10 max-w-7xl mx-auto px-8 md:px-12 pt-32 pb-24">
+        
+        <div class="mb-12 relative z-20 pointer-events-none">
+            <h1 class="text-3xl md:text-4xl font-extrabold mb-2 leading-tight tracking-tight text-gradient text-left w-fit">
+                Articles
+            </h1>
+            <p class="text-purple-400 font-mono text-xs uppercase tracking-wider">
+                Code, Design & Everything in between.
+            </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <a href="EXP/article_01.html" class="project-card-vertical group block">
-                <div class="relative aspect-video overflow-hidden rounded-t-3xl">
-                    <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1600&auto=format&fit=crop" alt="Case 01" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-                </div>
-                <div class="p-8 flex flex-col flex-grow text-left">
-                    <div class="flex gap-2 mb-4">
-                        <span class="text-[9px] px-2 py-0.5 bg-white/5 rounded border border-white/10 text-gray-400 font-bold uppercase">YOU</span>
-                        <span class="text-[9px] px-2 py-0.5 bg-white/5 rounded border border-white/10 text-gray-400 font-bold uppercase">BADBAD</span>
-                    </div>
-                    <h4 class="text-xl font-bold text-white mb-3 group-hover:text-accent-purple transition-colors">好色喔不要偷看</h4>
-                    <p class="text-gray-400 text-sm leading-relaxed">這裡我還沒寫好... (點擊閱讀更多)</p>
-                </div>
-            </a>
-            <a href="EXP/article_02.html" class="project-card-vertical group block">
-                <div class="relative aspect-video overflow-hidden rounded-t-3xl">
-                    <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1600&auto=format&fit=crop" alt="Case 01" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-                </div>
-                <div class="p-8 flex flex-col flex-grow text-left">
-                    <div class="flex gap-2 mb-4">
-                        <span class="text-[9px] px-2 py-0.5 bg-white/5 rounded border border-white/10 text-gray-400 font-bold uppercase">YOU</span>
-                        <span class="text-[9px] px-2 py-0.5 bg-white/5 rounded border border-white/10 text-gray-400 font-bold uppercase">BADBAD</span>
-                    </div>
-                    <h4 class="text-xl font-bold text-white mb-3 group-hover:text-accent-purple transition-colors">好色喔不要偷看</h4>
-                    <p class="text-gray-400 text-sm leading-relaxed">這裡我還沒寫好... (點擊閱讀更多)</p>
-                </div>
-            </a>
+        <div id="project-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
         </div>
         
     </main>
@@ -68,98 +48,90 @@
     <div id="footer-placeholder"></div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const projectCards = document.querySelectorAll('a.project-card-vertical');
+    // 關鍵修復：必須加上 async 才能在裡面用 await
+    document.addEventListener('DOMContentLoaded', async () => {
+        const container = document.getElementById('project-container');
+        if (!container) return;
 
-            projectCards.forEach(async (card) => {
-                const articleUrl = card.getAttribute('href');
-                if (!articleUrl || articleUrl === '#' || articleUrl.startsWith('http')) return;
+        try {
+            // 1. 讀取 JSON 清單 (確保檔名與路徑正確)
+            const listResponse = await fetch('0124_projects.json');
+            if (!listResponse.ok) throw new Error('無法取得專案清單');
+            const articles = await listResponse.json();
 
-                try {
-                    const response = await fetch(articleUrl);
-                    if (!response.ok) throw new Error('Network response was not ok');
-                    const htmlText = await response.text();
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(htmlText, 'text/html');
+            // 2. 使用 Promise.all 同步抓取所有文章內文，效率最高
+            await Promise.all(articles.map(async (article) => {
+                const card = document.createElement('a');
+                card.href = article.url;
+                // 初始化為隱身狀態，等動畫啟動
+                card.className = 'project-card-vertical group block opacity-0 translate-y-[30px]';
+                card.innerHTML = `
+                    <div class="relative aspect-video overflow-hidden rounded-t-3xl bg-white/5">
+                        <img src="" alt="Loading..." class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                    </div>
+                    <div class="p-8 flex flex-col flex-grow text-left">
+                        <div class="tag-box flex gap-2 mb-4"></div>
+                        <h4 class="text-xl font-bold text-white mb-3 group-hover:text-accent-purple transition-colors">載入中...</h4>
+                        <p class="text-gray-400 text-sm leading-normal line-clamp-3"></p>
+                    </div>
+                `;
+                container.appendChild(card);
 
-                    // 1. 抓取標題
-                    const titleEl = doc.querySelector('header h1');
-                    if (titleEl) {
-                        const cleanTitle = titleEl.innerText.replace(/\n/g, ' ').trim();
-                        const cardTitle = card.querySelector('h4');
-                        if (cardTitle) cardTitle.textContent = cleanTitle;
-                    }
+                // 呼叫爬蟲函數填入資料
+                await fetchAndFillCard(card, article.url);
+            }));
 
-                    // 2. 抓取文章第一張圖片 (作為封面圖)
-                    // 優先找 article 內的圖片，沒有的話找 figure 內的
-                    const firstImg = doc.querySelector('article img') || doc.querySelector('figure img');
-                    if (firstImg) {
-                        let imgSrc = firstImg.getAttribute('src');
-                        
-                        // --- 關鍵路徑修正 ---
-                        // 文章裡的圖片路徑通常是 "../PNG/img.png"，但在首頁要變成 "PNG/img.png"
-                        if (imgSrc && imgSrc.startsWith('../')) {
-                            imgSrc = imgSrc.substring(3); // 去掉前面的 "../"
-                        }
+            // 3. 核心修正：資料抓完後，才執行動畫偵測
+            if (typeof window.initAnimations === 'function') {
+                window.initAnimations();
+            }
 
-                        const cardImg = card.querySelector('.aspect-video img');
-                        if (cardImg && imgSrc) {
-                            cardImg.setAttribute('src', imgSrc);
-                        }
-                    }
+        } catch (error) {
+            console.error("Projects 初始化失敗:", error);
+        }
+    });
 
-                    // 3. 抓取標籤 (含顏色)
-                    const tagsContainer = doc.querySelector('header .flex.gap-3');
-                    if (tagsContainer) {
-                        const sourceTags = tagsContainer.querySelectorAll('span');
-                        const cardTagBox = card.querySelector('.flex.gap-2.mb-4');
-                        
-                        if (cardTagBox && sourceTags.length > 0) {
-                            cardTagBox.innerHTML = ''; 
-                            sourceTags.forEach(sourceTag => {
-                                const newTag = document.createElement('span');
-                                newTag.className = sourceTag.className; 
-                                newTag.textContent = sourceTag.textContent.trim();
-                                cardTagBox.appendChild(newTag);
-                            });
-                        }
-                    }
+    async function fetchAndFillCard(card, url) {
+        try {
+            const response = await fetch(url);
+            const htmlText = await response.text();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(htmlText, 'text/html');
 
-                    // 4. 抓取內文摘要 (限制 3 行)
-                    let summaryEl = doc.querySelector('article .text-xl') || doc.querySelector('article p');
-                    if (summaryEl) {
-                        let summaryText = summaryEl.innerText.trim();
-                        const cardDesc = card.querySelector('p.text-gray-400');
-                        if (cardDesc) {
-                            cardDesc.textContent = summaryText;
-                            cardDesc.classList.add('line-clamp-3', 'overflow-hidden', 'text-ellipsis');
-                            cardDesc.classList.remove('leading-relaxed'); 
-                            cardDesc.classList.add('leading-normal'); 
-                        }
-                    }
+            // 抓取標題
+            const titleEl = doc.querySelector('header h1');
+            if (titleEl) card.querySelector('h4').textContent = titleEl.innerText.trim();
 
-                    // 5. 抓取日期 (左下角)
-                    const calendarIcon = doc.querySelector('header .fa-calendar');
-                    if (calendarIcon && calendarIcon.parentElement) {
-                        const dateText = calendarIcon.parentElement.textContent.trim();
-                        let dateEl = card.querySelector('.card-date');
-                        if (!dateEl) {
-                            dateEl = document.createElement('div');
-                            dateEl.className = 'card-date text-[10px] text-gray-500 font-mono mt-auto pt-4 border-t border-white/5 w-full';
-                            const cardBody = card.querySelector('.p-8');
-                            if (cardBody) {
-                                cardBody.appendChild(dateEl);
-                            }
-                        }
-                        dateEl.innerHTML = `<i class="far fa-clock mr-2"></i>${dateText}`;
-                    }
+            // 抓取圖片並修正路徑 (移除 ../)
+            const firstImg = doc.querySelector('article img') || doc.querySelector('figure img');
+            if (firstImg) {
+                let imgSrc = firstImg.getAttribute('src');
+                if (imgSrc && imgSrc.startsWith('../')) imgSrc = imgSrc.substring(3);
+                card.querySelector('img').src = imgSrc;
+            }
 
-                } catch (error) {
-                    console.warn(`無法讀取文章資訊 (${articleUrl}):`, error);
-                }
-            });
-        });
-    </script>
+            // 抓取標籤
+            const sourceTags = doc.querySelectorAll('header .flex.gap-3 span');
+            const cardTagBox = card.querySelector('.tag-box');
+            if (sourceTags.length > 0 && cardTagBox) {
+                cardTagBox.innerHTML = '';
+                sourceTags.forEach(tag => {
+                    const newTag = document.createElement('span');
+                    newTag.className = tag.className;
+                    newTag.textContent = tag.textContent.trim();
+                    cardTagBox.appendChild(newTag);
+                });
+            }
+
+            // 抓取摘要
+            const summaryEl = doc.querySelector('article .text-xl') || doc.querySelector('article p');
+            if (summaryEl) card.querySelector('p').textContent = summaryEl.innerText.trim();
+
+        } catch (err) {
+            console.warn(`文章抓取失敗: ${url}`, err);
+        }
+    }
+</script>
 
 </body>
 </html>
