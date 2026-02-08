@@ -44,31 +44,6 @@ window.initAnimations = () => {
 };
 
 /**
- * 3. 主執行流程
- */
-document.addEventListener('DOMContentLoaded', () => {
-    const rootPath = window.siteRoot || '';
-
-    // 載入 Navbar
-    loadComponent('navbar-placeholder', `${rootPath}components/navbar.html`, () => {
-        initMobileMenu();
-        initScrollFlash();
-    });
-
-    // 載入 Footer
-    loadComponent('footer-placeholder', `${rootPath}components/footer.html`);
-
-    // 啟動心跳按鈕與其他基礎特效
-    initHeartButton();
-    if (typeof initTypewriter === 'function') initTypewriter();
-    
-    // 注意：如果是 Projects 頁面，initAnimations 會由該頁面的 script 在抓完資料後手動觸發
-    if (!document.getElementById('project-container')) {
-        window.initAnimations();
-    }
-});
-
-/**
  * 4. 主執行流程
  */
 document.addEventListener('DOMContentLoaded', () => {
