@@ -1,15 +1,15 @@
 /**
  * 1. 核心功能：組件載入器
- * 用於將 navbar.html 或 footer.html 注入頁面
  */
 async function loadComponent(elementId, filePath, callback) {
     try {
         const response = await fetch(filePath);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const html = await response.text();
         const target = document.getElementById(elementId);
         if (target) {
             target.innerHTML = html;
-            if (callback) callback(); // 確保載入後才執行選單初始化
+            if (callback) callback();
         }
     } catch (error) {
         console.error(`無法載入組件: ${filePath}`, error);
@@ -17,30 +17,10 @@ async function loadComponent(elementId, filePath, callback) {
 }
 
 /**
- * 2. 初始化手機版選單
- * 這裡放所有關於選單的點擊邏輯
+ * 2. 初始化視覺動畫
+ * 改成 export 或全域函數，讓動態生成的卡片也能觸發
  */
-function initMobileMenu() {
-    const menuBtn = document.getElementById('mobile-menu-btn');
-    const closeBtn = document.getElementById('close-menu');
-    const overlay = document.getElementById('mobile-overlay');
-
-    if (menuBtn && overlay) {
-        menuBtn.onclick = () => overlay.classList.remove('hidden');
-        closeBtn.onclick = () => overlay.classList.add('hidden');
-        
-        // 點擊選單內的連結後自動關閉選單 (適用於單頁跳錨點)
-        overlay.querySelectorAll('a').forEach(link => {
-            link.onclick = () => overlay.classList.add('hidden');
-        });
-    }
-}
-
-/**
- * 3. 視覺與動畫效果
- */
-const initAnimations = () => {
-    // 滾動漸顯偵測
+window.initAnimations = () => {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -50,22 +30,43 @@ const initAnimations = () => {
         });
     }, { threshold: 0.05 });
 
-    // 套用動畫初始狀態
-    document.querySelectorAll('.bento-item, .project-card-vertical').forEach(el => {
+    // 重新選取所有需要動畫的元素
+    const animItems = document.querySelectorAll('.bento-item, .project-card-vertical');
+    animItems.forEach(el => {
+        // 如果已經在顯示狀態，就不重複初始化
+        if (el.style.opacity === '1') return;
+        
         el.style.opacity = '0';
         el.style.transform = 'translateY(30px)';
         el.style.transition = 'all 0.8s cubic-bezier(0.22, 1, 0.36, 1)';
         observer.observe(el);
     });
-
-    // 初始化跑馬燈 (若你的組件裡有這個元件)
-    const marquee = document.querySelector('.animate-marquee');
-    if (marquee && !marquee.dataset.cloned) {
-        const clone = marquee.cloneNode(true);
-        marquee.parentNode.appendChild(clone);
-        marquee.dataset.cloned = "true"; // 防止重複執行
-    }
 };
+
+/**
+ * 3. 主執行流程
+ */
+document.addEventListener('DOMContentLoaded', () => {
+    const rootPath = window.siteRoot || '';
+
+    // 載入 Navbar
+    loadComponent('navbar-placeholder', `${rootPath}components/navbar.html`, () => {
+        initMobileMenu();
+        initScrollFlash();
+    });
+
+    // 載入 Footer
+    loadComponent('footer-placeholder', `${rootPath}components/footer.html`);
+
+    // 啟動心跳按鈕與其他基礎特效
+    initHeartButton();
+    if (typeof initTypewriter === 'function') initTypewriter();
+    
+    // 注意：如果是 Projects 頁面，initAnimations 會由該頁面的 script 在抓完資料後手動觸發
+    if (!document.getElementById('project-container')) {
+        window.initAnimations();
+    }
+});
 
 /**
  * 4. 主執行流程
@@ -263,3 +264,18 @@ function createHeart(x, y, hearts) {
     }, 1000);
 }
 
+// 在動態生成卡片後呼叫此函式
+function refreshAnimations() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, { threshold: 0.05 });
+
+    document.querySelectorAll('.project-card-vertical').forEach(el => {
+        observer.observe(el);
+    });
+}
