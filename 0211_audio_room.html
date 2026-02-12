@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Audio Logs | GHOST.ouo</title>
+    <link rel="icon" type="image/png" href="PNG/pixelS2.png">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="0124_style.css">
+    <script src="tailwind.config.js"></script>
+    <script type="module" src="0124_main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[10%] left-[-10%] w-[50%] h-[50%] bg-yellow-500/5 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-3xl mx-auto px-6 pt-32 pb-24 min-h-screen">
+        
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="0205_planet.html" class="hover:text-[#FFD700] transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                LEAVE ARCHIVE
+            </a>
+            <span class="opacity-50 text-[#FFD700]">SECRET / AUDIO LOGS</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-8">
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-4 leading-tight">
+                未知頻率解析 <br>
+                <span class="text-[#FFD700] text-2xl md:text-3xl font-mono">Neural Audio Logs.</span>
+            </h1>
+            <p class="text-gray-400 text-sm">你捕捉到了一段即將銷毀的錄音訊號，請戴上耳機。</p>
+        </header>
+
+        <div class="space-y-6">
+            
+            <div class="bg-[#0A0A0A] border border-white/10 hover:border-[#FFD700]/50 p-6 rounded-2xl transition-all shadow-lg group">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h3 class="text-white font-bold text-lg">Log #001: 關於那些夜晚的想法</h3>
+                        <p class="text-gray-500 text-xs font-mono mt-1">REC_DATE: 2026.02.14</p>
+                    </div>
+                    <i class="fas fa-headphones text-[#FFD700] opacity-50 group-hover:opacity-100 transition-opacity"></i>
+                </div>
+                
+                <audio controls class="w-full h-10 rounded-full outline-none mt-4 grayscale opacity-80 hover:opacity-100 hover:grayscale-0 transition-all">
+                    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+                    你的瀏覽器不支援音訊播放。
+                </audio>
+            </div>
+
+            </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+</body>
+</html>

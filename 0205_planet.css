@@ -31,6 +31,8 @@ canvas {
 
 .work-node {
     --node-color: #BF94FF; 
+    position: relative;
+    z-index: 10; /* 基礎層級 */
     pointer-events: auto; /* 星星本身可以點 */
     cursor: pointer;
     display: flex;
@@ -65,10 +67,15 @@ canvas {
 .star-icon::before { width: 2px; height: 24px; }
 .star-icon::after { width: 24px; height: 2px; }
 
+.work-node:hover {
+    z-index: 9999 !important;
+}
+
 .work-node:hover .star-icon {
     transform: scale(1.6) rotate(45deg);
     background: #ffffff;
     box-shadow: 0 0 25px var(--node-color), 0 0 50px var(--node-color);
+    z-index: 9999 !important;
 }
 
 .node-label-name {
@@ -88,26 +95,31 @@ canvas {
 
 .node-card {
     position: absolute;
-    bottom: 45px;
-    width: 260px;
+    bottom: 45px; /* 稍微拉高，避免擋到星星 */
+    width: 280px;
     padding: 1.2rem;
-    background: rgba(10, 10, 10, 0.95);
-    backdrop-filter: blur(10px);
+    background: rgba(5, 5, 5, 0.95) !important; /* 深度黑背景避免透視 */
+    backdrop-filter: blur(20px);
     border: 1px solid var(--node-color);
     border-radius: 12px;
     color: white;
+    
+    /* 預設隱藏 */
     opacity: 0;
     visibility: hidden;
     transform: translateY(10px);
-    transition: all 0.4s ease;
+    
+    /* 確保絕對在最上層 */
+    z-index: 10000 !important;
     pointer-events: none;
-    z-index: 10;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.8), 0 0 20px rgba(var(--node-color), 0.3);
 }
 
 .work-node:hover .node-card {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
 }
 
 .filter-container {
