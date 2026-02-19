@@ -1,0 +1,74 @@
+/* 隱藏捲軸 */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* 塔羅牌基礎佈局 (改用 Flexbox 依賴的 relative 定位) */
+.tarot-card-item {
+    position: relative;
+    flex-shrink: 0;
+    width: 65px;
+    height: 110px;
+    background: transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: transform 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+    will-change: transform;
+    pointer-events: auto;
+}
+
+@media (min-width: 768px) {
+    .tarot-card-item {
+        width: 80px;
+        height: 135px;
+        border-radius: 8px;
+    }
+}
+
+/* ★ 懸停動畫：單純向上彈出與放大，無任何左右推擠的抖動 */
+.tarot-card-item:hover {
+    transform: translateY(-30px) scale(1.15);
+    z-index: 9999 !important;
+}
+.tarot-card-item:hover .tarot-card-back {
+    border-color: #BF94FF;
+    box-shadow: 0 0 30px rgba(191, 148, 255, 0.8), inset 0 0 20px rgba(0,0,0,0.9);
+}
+
+/* 洗牌載入動畫預備狀態 */
+.tarot-card-item.is-shuffling {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+/* 質感卡背：星空宇宙背景 + 幾何內框 */
+.tarot-card-back {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background-color: #050505;
+    background-image: 
+        linear-gradient(135deg, rgba(26,26,46,0.85) 0%, rgba(5,5,5,0.95) 100%),
+        url('https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=400&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+    border: 1px solid rgba(191, 148, 255, 0.3);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.8), inset 0 0 20px rgba(0,0,0,0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.tarot-card-back::before {
+    content: '';
+    position: absolute;
+    inset: 5px;
+    border: 1px dashed rgba(191, 148, 255, 0.2);
+    border-radius: 4px;
+}
+
+.tarot-card-back i {
+    font-size: 1.5rem;
+    color: rgba(191, 148, 255, 0.5);
+    filter: drop-shadow(0 0 10px rgba(191, 148, 255, 0.8));
+}

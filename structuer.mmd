@@ -1,0 +1,55 @@
+graph TD
+    %% 定義樣式
+    classDef page fill:#2d2d2d,stroke:#BF94FF,stroke-width:2px,color:#fff;
+    classDef component fill:#1a1a1a,stroke:#60A5FA,stroke-width:1px,color:#ddd,stroke-dasharray: 5 5;
+    classDef data fill:#0f3d0f,stroke:#34D399,stroke-width:2px,color:#fff;
+    classDef hidden fill:#333,stroke:#FFD700,stroke-width:2px,color:#FFD700;
+
+    subgraph User_Flow [使用者瀏覽路徑]
+        Home(首頁 index.html):::page
+        Article(文章列表 0124_Projects.html):::page
+        Planet(小星球 0205_planet.html):::page
+        Audio(未知頻率 0211_audio_room.html):::hidden
+    end
+
+    subgraph Core_System [核心系統 & 共用組件]
+        MainJS(0124_main.js<br>核心邏輯):::component
+        Style(0124_style.css<br>全域樣式):::component
+        Navbar(Navbar 導覽列):::component
+        Footer(Footer 頁尾):::component
+    end
+
+    subgraph Data_Source [資料來源 & 後端]
+        JSON[(0124_projects.json<br>文章清單)]:::data
+        Articles_HTML[EXP/article_xx.html<br>文章內文]:::data
+        Firebase[(Firebase Realtime DB<br>愛心計數器)]:::data
+    end
+
+    %% 頁面與組件關係 (所有頁面都載入這些)
+    MainJS -->|Load| Home
+    MainJS -->|Load| Article
+    MainJS -->|Load| Planet
+    MainJS -->|Load| Audio
+    Style -.->|Style| Home & Article & Planet & Audio
+    Navbar -.->|Inject| Home & Article & Planet & Audio
+    Footer -.->|Inject| Home & Article & Planet & Audio
+
+    %% 導覽與跳轉邏輯
+    Home -->|Click Nav| Article
+    Home -->|Scroll| Contact_Section[#Contact 區塊]
+    
+    %% Article 頁面邏輯
+    Article -->|Click Nav| Home
+    JSON -->|Fetch List| Article
+    Articles_HTML -->|Fetch Content| Article
+    
+    %% Firebase 連線
+    Firebase <-->|Read/Write| Home
+    Firebase <-->|Read/Write| Article
+
+    %% 隱藏/彩蛋路徑
+    Planet -->|點擊金色星星| Audio
+    Audio -->|Leave Archive| Planet
+    
+    %% 註解連線
+    Planet -.->|JS Module| PlanetScript(0205_planet.js):::component
