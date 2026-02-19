@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>EXP / P1 | GHOST.ouo</title>
+    
+    <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../0124_style.css">
+    
+    <script src="../tailwind.config.js"></script>
+    <script>
+        window.siteRoot = '../';
+    </script>
+    <script src="../0124_main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+        
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../0124_Projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / P1</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+            
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                你是說...<br>
+                <span class="text-gradient text-2xl md:text-4xl">架個人網站嘛?</span>
+            </h1>
+
+            <div class="flex gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    cool shit
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    half Vibecoding
+                </span>
+            </div>
+            
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.01.31</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+            
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                YAAAAAA～ 網站上線了。🎉🎉🎉<br>
+                從大學時期因社團需求接觸 WordPress，到如今成功將半手刻的 HTML/CSS 靜態網頁託管於 GitHub。這或許算不上什麼宏大的里程碑，但絕對是次很酷的技術實踐。
+            </p>
+
+            <figure class="my-10">
+                <img src="../PNG/project_01.1.png" 
+                     alt="2026 Personal Website" 
+                     class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    個人網站現況
+                </figcaption>
+            </figure>
+
+            <p>
+                2026.01.31，個人網站初版正式上架。全站從設計排版到部署，由 <strong>Vibecoding</strong> 模式與 AI 協作完成。<br>
+                目前版本仍有優化空間，技術探索不會停滯，網站的迭代更新也將持續進行。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 架構思維：模組化與檔案管理
+            </h3>
+
+            <p>
+                下圖為了開發初期的 Excalidraw 架構草稿。為了確保程式碼的可維護性 (Maintainability)，在實作過程中，我選擇將 Navbar 與 Footer 拆分為獨立的組件，並透過 JavaScript 動態載入。<br>
+                這種模組化的檔案結構設計，不僅實現了關注點分離 (Separation of Concerns)，也讓專案目錄更加清晰，大幅提升了後續迭代與管理的效率。
+            </p>
+            
+            <figure class="my-10">
+                <img src="../PNG/project_01.2.png" 
+                     alt="excalidraw" 
+                     class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    網頁最初始的設計，上下對比可見我有參考但不多
+                </figcaption>
+            </figure>
+
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 曾經的 Code 恐懼症
+            </h3>
+
+            <p>
+                雖然現在頻繁接觸自動化工具，對程式碼也不抗拒，但過去曾因「迴圈（Loop）」邏輯卡關，一度對 Coding 以及自己的邏輯產生懷疑。ㄟ不是上一秒還在 hello world 下一秒突然計算機是怎樣?我是誰我在哪?
+            </p>
+            <p>
+                很感激 AI 擊碎了這道門檻。<br>
+                本次開發由我個人提供核心邏輯，AI 協助代碼實作。過程中的關鍵在於「精準提問」+「解決問題」，並將生成的答案內化為自身能力。
+            </p>
+            
+            <p>協作過程並非一帆風順。以下是幾點實戰經驗：</p>
+
+            <div class="my-8 p-8 bg-white/5 rounded-2xl border border-white/10 font-light">
+                <ul class="list-none space-y-4">
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-bug text-accent-purple mt-1.5"></i>
+                        <span>
+                            <strong class="text-white">記憶過載幻覺：</strong><br>
+                            當對話太長，AI 會因為 Context Window 爆掉而開始「已讀亂答」。若是連續三天在同一個對話串裡修 Bug，程式碼往往越修越爛。解法很簡單：直接開新視窗，餵入乾淨的 HTML 檔，瞬間解決。
+                        </span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-brain text-accent-purple mt-1.5"></i>
+                        <span>
+                            <strong class="text-white">核心能力：</strong><br>
+                            AI 能寫 Code，但「想法」、「判斷」及「選擇」仍需由人主導。配合 Live Server 即時微調並觀察網頁變化，解決問題的過程其實充滿成就感。
+                        </span>
+                    </li>
+                </ul>
+            </div>
+
+            <hr class="border-white/10 my-12">
+
+            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5">
+                <h4 class="text-white font-bold mb-4 flex items-center gap-2">
+                    <i class="fas fa-box-archive text-gray-500"></i> Archived Projects Info
+                </h4>
+                
+                <div class="my-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <figure class="m-0 group">
+                        <img src="../PNG/project_01.3_HSVI Website 1.png" alt="NTOU Website 1" class="w-full h-96 md:h-128 object-cover object-top rounded-xl border border-white/10 opacity-80 group-hover:opacity-100 transition-opacity">
+                    </figure>
+                    <figure class="m-0 group">
+                        <img src="../PNG/project_01.4_HSVI Website 2.png" alt="NTOU Website 2" class="w-full h-96 md:h-128 object-cover object-top rounded-xl border border-white/10 opacity-80 group-hover:opacity-100 transition-opacity">
+                    </figure>
+                    
+                    <figure class="m-0 group">
+                        <img src="../PNG/project_01.5_NTOU Website 1.png" alt="HSVI Website 1" class="w-full h-96 md:h-128 object-cover object-top rounded-xl border border-white/10 opacity-80 group-hover:opacity-100 transition-opacity">
+                    </figure>
+                    <figure class="m-0 group">
+                        <img src="../PNG/project_01.6_NTOU Website 2.png" alt="HSVI Website 2" class="w-full h-96 md:h-128 object-cover object-top rounded-xl border border-white/10 opacity-80 group-hover:opacity-100 transition-opacity">
+                    </figure>
+                </div>
+
+                <ul class="space-y-2 text-sm text-gray-400">
+                    <li>
+                        <span class="text-accent-purple mr-2">●</span> 
+                        <a href="https://ntoutbr.wordpress.com/" target="_blank" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                            2024.03 海大熱帶生物研究社官網 (WordPress)
+                        </a>
+                    </li>
+
+                    <li>
+                        <span class="text-accent-purple mr-2">●</span> 
+                        <a href="https://hsvi111.wordpress.com/" target="_blank" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                            2024 HSVI 幽夜工作室官網 (WordPress)
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Project
+            </a>
+            <a href="../0124_Projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Projects
+            </a>
+            <a href="project_02.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                Next Project &rarr;
+            </a>
+        </div>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+</body>
+</html>
