@@ -309,7 +309,7 @@ function createHeart(x, y, hearts) {
 }
 
 // 動態卡片刷新動畫
-function refreshAnimations() {
+window.refreshAnimations = function() {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -319,7 +319,8 @@ function refreshAnimations() {
         });
     }, { threshold: 0.05 });
 
+    // 將所有卡片加入觀察名單
     document.querySelectorAll('.project-card-vertical').forEach(el => {
         observer.observe(el);
     });
-}
+};

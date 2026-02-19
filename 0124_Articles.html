@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title>Secret projects | GHOST.ouo</title>
+    <title>Secret Articles | GHOST.ouo</title>
     <link rel="icon" type="image/png" href="PNG/pixelS2.png">
     <link rel="apple-touch-icon" href="PNG/pixelS2.png">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -29,7 +29,7 @@
         
         <div class="mb-12 relative z-20 pointer-events-none">
             <h1 class="text-3xl md:text-4xl font-extrabold mb-2 leading-tight tracking-tight text-gradient text-left w-fit">
-                projects
+                Articles
             </h1>
             <p class="text-purple-400 font-mono text-xs uppercase tracking-wider">
                 Code, Design & Everything in between.
@@ -51,12 +51,12 @@
 
         try {
             // 1. 讀取 JSON 清單 (確保檔名與路徑正確)
-            const listResponse = await fetch('0124_projects.json');
+            const listResponse = await fetch('0124_articles.json');
             if (!listResponse.ok) throw new Error('無法取得專案清單');
-            const projects = (await listResponse.json()).reverse();
+            const articles = (await listResponse.json()).reverse();
 
             // 2. 使用 Promise.all 同步抓取所有文章內文，效率最高
-            await Promise.all(projects.map(async (article) => {
+            await Promise.all(articles.map(async (article) => {
                 const card = document.createElement('a');
                 card.href = article.url;
                 // 初始化為隱身狀態，等動畫啟動
@@ -83,7 +83,7 @@
             }
 
         } catch (error) {
-            console.error("Projects 初始化失敗:", error);
+            console.error("articles 初始化失敗:", error);
         }
     });
 
