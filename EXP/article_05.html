@@ -1,6 +1,197 @@
-SIGMA人
-閱讀/運動/成長
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>EXP / 005 | GHOST.ouo</title>
+    
+    <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../0124_style.css">
+    
+    <script src="../tailwind.config.js"></script>
+    <script>
+        window.siteRoot = '../';
+    </script>
+    <script src="../0124_main.js" defer></script>
+</head>
 
-推地獄樂
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
 
-拉回注意力神器 主動降躁耳機 SM4
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+        
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../0124_Projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / 005</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+            
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                AI 助理框架部署 (上)：<br>
+                <span class="text-gradient text-2xl md:text-4xl">VM 連線與 Clawdbot 核心安裝</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    Tech & Auto
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Azure VM
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Clawdbot
+                </span>
+            </div>
+            
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.02.19</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+            
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                這是一份「新手友好」的說明書。上篇將帶你從環境準備開始，一步步在雲端 VM 上建立並啟動 Clawdbot 核心服務。🦞
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 第一步：環境準備
+            </h3>
+
+            <p>Clawdbot 是一個強大的 AI 助理框架，可以安裝在雲端 VM 上 24/7 運行。開始前，你需要準備以下項目：</p>
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
+                <li>一個 <strong>雲端 VM</strong>（例如 Azure VM，需有對外 IP）</li>
+                <li>一個 SSH 金鑰檔案（<code class="text-accent-purple bg-white/10 px-1 rounded">&lt;YOUR_KEY.pem&gt;</code>）</li>
+                <li>本機電腦（Windows，已安裝 PowerShell）</li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 第二步：連線到 VM
+            </h3>
+
+            <p>在本機電腦的 PowerShell 中，切換到金鑰所在目錄並進行連線。成功後會看到 Ubuntu 的歡迎訊息。</p>
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre><code class="language-powershell">cd &lt;YOUR_LOCAL_KEY_PATH&gt;
+ssh -i &lt;YOUR_KEY.pem&gt; &lt;YOUR_VM_USER&gt;@&lt;YOUR_VM_IP&gt;</code></pre>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 第三步：安裝 Clawdbot
+            </h3>
+
+            <p>使用 npm 全域安裝最新版 Clawdbot，並設定 gateway 服務讓它在背景常駐：</p>
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre><code class="language-bash"># 1. 安裝最新版 Clawdbot
+sudo npm install -g clawdbot@latest
+
+# 2. 確認安裝成功 (應會看到版本號)
+clawdbot --version
+
+# 3. 建立並啟動服務
+clawdbot gateway setup --user
+systemctl --user start clawdbot-gateway.service
+
+# 4. 檢查服務狀態 (應顯示 active (running))
+systemctl --user status clawdbot-gateway.service</code></pre>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 第四步：解決 Gateway 埠口衝突（選用）
+            </h3>
+
+            <p>如果您發現服務狀態一直重啟，查看日誌若發現 <code class="text-accent-purple">Port 18789 is already in use</code>，表示有舊程序佔用。請執行以下清理動作：</p>
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre><code class="language-bash"># 1. 停止所有相關服務與舊版檔案
+systemctl --user stop clawdbot-gateway.service
+systemctl --user stop openclaw-gateway.service 2>/dev/null
+systemctl --user disable openclaw-gateway.service 2>/dev/null
+rm -f ~/.config/systemd/user/openclaw-gateway.service
+
+# 2. 殺光所有佔用 18789 埠的程序
+sudo kill -9 $(sudo lsof -t -i:18789) 2>/dev/null
+
+# 3. 重新載入並啟動乾淨的服務
+systemctl --user daemon-reload
+systemctl --user reset-failed clawdbot-gateway.service
+systemctl --user start clawdbot-gateway.service</code></pre>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 第五步：從本機電腦連線 Control UI
+            </h3>
+
+            <p>在本機開「新的」PowerShell 視窗，建立 SSH 隧道。注意：此視窗會卡住是正常的，請保持開啟。</p>
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre><code class="language-powershell">ssh -i &lt;YOUR_KEY.pem&gt; -N -L 18789:127.0.0.1:18789 &lt;YOUR_VM_USER&gt;@&lt;YOUR_VM_IP&gt;</code></pre>
+            </div>
+
+            <p>接著回到 VM 的終端機，取得 Dashboard 網址與 Token：</p>
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre><code class="language-bash">clawdbot dashboard</code></pre>
+            </div>
+            
+            <p>複製輸出的網址，將 <code class="text-gray-400">127.0.0.1</code> 改為 <code class="text-gray-400">localhost</code>，貼到瀏覽器即可開啟控制介面。若遇到 Token 錯誤，可透過 <code class="text-gray-400">clawdbot config set gateway.auth.token &lt;TOKEN&gt;</code> 重新設定。</p>
+
+            <figure class="my-12">
+                <img src="../PNG/article_05.1.png" 
+                     alt="Clawdbot Gateway Dashboard" 
+                     class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    成功連線至 Clawdbot Gateway Dashboard
+                </figcaption>
+            </figure>
+
+            <hr class="border-white/10 my-12">
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 成果展示
+            </h3>
+            
+            <p>設定完畢後，透過 Telegram 成功喚醒並與 Clawdbot 進行互動對話：</p>
+
+            <figure class="my-10">
+                <img src="../PNG/article_05.2.png" 
+                     alt="Telegram Conversation with Clawdbot" 
+                     class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    與 Clawdbot 機器人的 Telegram 實戰對話
+                </figcaption>
+            </figure>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="article_04.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Project
+            </a>
+            <a href="../0124_Projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Projects
+            </a>
+            <a href="article_06.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                Next Project &rarr;
+            </a>
+        </div>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+</body>
+</html>

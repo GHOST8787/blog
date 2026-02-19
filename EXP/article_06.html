@@ -1,7 +1,240 @@
-人與人之間的富熵
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>EXP / 006 | GHOST.ouo</title>
+    
+    <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../0124_style.css">
+    <link rel="stylesheet" href="tarot_style.css">
+    
+    <script src="../tailwind.config.js"></script>
+    <script> window.siteRoot = '../'; </script>
+    <script src="../0124_main.js" defer></script>
+    <script src="tarot_app.js" defer></script>
+</head>
 
-病患很吵
-身體數值檢測機
-有問題直接通報人類
-用最少的人力完成醫院內部需要人類的事情
-減少熵
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+        
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../0124_Projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / 006</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+            
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                塔羅 Prompt 煉金術師<br>
+                <span class="text-gradient text-2xl md:text-4xl">給 AI 的專屬占卜指令產生器</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    Interactive
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Vanilla JS
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Prompt Engineering
+                </span>
+            </div>
+            
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.02.19</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+            
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                vibe 出的一個互動小專案。<br>
+                透過抽取虛擬塔羅牌，系統會自動幫你生成一段高質量的 System Prompt。<br>
+                直接複製貼給任意生成式 AI ，讓 AI 化身為你的專屬塔羅師。🔮
+            </p>
+            
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 關於技術：技術實作亮點 (Technical Details)
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
+                <div class="bg-white/5 p-6 rounded-xl border border-white/10">
+                    <h4 class="text-white font-bold mb-2 flex items-center gap-2 text-base">
+                        <i class="fas fa-layer-group text-accent-purple"></i> 動態 Flexbox 排版演算法
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed m-0">
+                        為了解決 78 張卡牌在不同螢幕尺寸下造成的邊界溢出問題，捨棄了容易破圖的絕對座標數學，改以 JS 動態偵測容器寬度，並精準計算卡牌間的「負邊距 (Negative Margin)」，讓整副牌組能完美自適應並收束在畫面框內。
+                    </p>
+                </div>
+                <div class="bg-white/5 p-6 rounded-xl border border-white/10">
+                    <h4 class="text-white font-bold mb-2 flex items-center gap-2 text-base">
+                        <i class="fas fa-bolt text-accent-purple"></i> GPU 硬體加速動畫
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed m-0">
+                        卡牌的懸停抽出、放大與洗牌特效，全程使用 CSS <code>transform: translate3d</code> 搭配 <code>will-change</code> 屬性實作，將渲染負擔交給顯示卡，確保即便是數十張牌同時載入，畫面依然保持絲滑流暢不卡頓。
+                    </p>
+                </div>
+                <div class="bg-white/5 p-6 rounded-xl border border-white/10 md:col-span-2">
+                    <h4 class="text-white font-bold mb-2 flex items-center gap-2 text-base">
+                        <i class="fas fa-terminal text-accent-purple"></i> 結構化詠唱 (Prompt Engineering)
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed m-0">
+                        專案不僅僅是隨機抽圖。當你選擇特定領域（如工作、感情）並抽卡後，系統會結合卡牌的「正逆位」與「核心關鍵字」，自動合成一份專業的 System Prompt。這份 Prompt 會約束 AI 不說廢話，直接進行能量解析並給出具體建議。
+                    </p>
+                </div>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 關於塔羅：給塔羅新手的入門指南
+            </h3>
+
+            <figure class="my-10">
+                <img src="../PNG/article_06.1.png" 
+                     alt="Tarot Cards Example" 
+                     class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    經典偉特塔羅牌(這只是一張圖不要想按:D)
+                </figcaption>
+            </figure>
+
+            <p>
+                第一次接觸塔羅牌嗎？別擔心，塔羅並不是什麼可怕的通靈魔法。它更像是一面<strong>「潛意識的鏡子」</strong>。當你在腦海中想著一個問題並抽出一張牌時，牌面上的圖像、顏色與符號，其實是在幫你把你內心深處已經知道、卻不敢面對的答案給「具象化」出來。
+            </p>
+
+            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 my-8 shadow-lg">
+                <h4 class="text-white font-bold mb-4 flex items-center gap-2 border-b border-white/10 pb-3">
+                    <i class="fas fa-layer-group text-accent-purple"></i> 塔羅牌的兩大系統 (共 78 張)
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                    <div>
+                        <strong class="text-accent-purple text-lg block mb-2">大阿爾克那 (22張)</strong>
+                        <p class="text-sm text-gray-400 leading-relaxed">
+                            代表生命中<strong>「重大的轉折、靈魂課題與大環境的影響」</strong>。例如：愚者、魔術師、世界。<br>
+                            如果你抽到大牌，代表這件事對你的人生軌跡有著深遠的影響。
+                        </p>
+                    </div>
+                    <div>
+                        <strong class="text-white text-lg block mb-2">小阿爾克那 (56張)</strong>
+                        <p class="text-sm text-gray-400 leading-relaxed">
+                            代表<strong>「日常生活的細節、具體的人事物與當下的情緒」</strong>。它又細分為四個元素：<br>
+                            🔥 <span class="text-gray-300">權杖 (行動與熱情)</span><br>
+                            💧 <span class="text-gray-300">聖杯 (情感與人際)</span><br>
+                            💨 <span class="text-gray-300">寶劍 (思想與衝突)</span><br>
+                            🌍 <span class="text-gray-300">錢幣 (物質與工作)</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="text-xl font-bold text-white mt-10 mb-4">
+                新手該怎麼選擇「牌組篩選」？
+            </h4>
+            <ul class="space-y-4 text-gray-400 font-light">
+                <li class="flex gap-3 bg-white/5 p-4 rounded-xl border border-white/5">
+                    <i class="fas fa-star text-accent-purple mt-1"></i>
+                    <div>
+                        <strong class="text-white">如果你正處於人生的十字路口 (推薦選：大阿爾克那)</strong><br>
+                        想問「我接下來的職涯大方向」、「這段感情對我人生的意義」。大牌能給你最核心、最宏觀的靈魂指引。
+                    </div>
+                </li>
+                <li class="flex gap-3 bg-white/5 p-4 rounded-xl border border-white/5">
+                    <i class="fas fa-layer-group text-accent-purple mt-1"></i>
+                    <div>
+                        <strong class="text-white">如果你想問具體、瑣碎的日常煩惱 (推薦選：全套牌 78 張)</strong><br>
+                        例如「明天會議會不會順利」、「他剛才那句話是什麼意思」。讓大小牌一起混合，能給出最精準的日常事件描繪。
+                    </div>
+                </li>
+                <li class="flex gap-3 bg-white/5 p-4 rounded-xl border border-white/5">
+                    <i class="fas fa-filter text-accent-purple mt-1"></i>
+                    <div>
+                        <strong class="text-white">如果你有極度明確的單一目標 (推薦選：單一元素)</strong><br>
+                        想專注問「賺錢與專案」，直接選<strong>錢幣組</strong>；想專注問「吵架與冷戰」，直接選<strong>寶劍組</strong>，讓能量更聚焦。
+                    </div>
+                </li>
+            </ul>
+
+            <hr class="border-white/10 my-12">
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> enjoy tarot, enjoy life.
+            </h3>
+
+            <div class="bg-[#0A0A0A] border border-white/10 rounded-3xl shadow-2xl p-6 md:p-10 flex flex-col gap-8 my-12 relative z-20">
+                
+                <div id="controls-area" class="flex flex-col sm:flex-row gap-4 justify-between items-center bg-white/5 p-4 rounded-2xl border border-white/10 relative z-30">
+                    <div class="flex items-center gap-2 w-full sm:w-auto">
+                        <i class="fas fa-filter text-accent-purple"></i>
+                        <select id="deck-filter" class="bg-[#0F0F0F] border border-white/10 text-sm text-gray-300 rounded-lg p-2 focus:border-accent-purple outline-none"></select>
+                    </div>
+                    <div id="topic-buttons" class="flex items-center gap-2 overflow-x-auto w-full sm:w-auto scrollbar-hide"></div>
+                    <button id="shuffle-btn" class="p-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-gray-400 hover:text-white transition-all shrink-0">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+
+                <div class="relative w-full h-[420px] rounded-2xl bg-[#050505] border border-white/10 shadow-inner overflow-hidden flex flex-col items-center justify-center">
+                    <div class="absolute inset-0 bg-[radial-gradient(circle_at_bottom,_var(--tw-gradient-stops))] from-accent-purple/15 via-transparent to-transparent opacity-80 pointer-events-none"></div>
+                    
+                    <p id="deck-status" class="absolute top-6 left-1/2 -translate-x-1/2 text-xs font-mono text-gray-500 animate-pulse pointer-events-none z-0">請從下方直覺抽取一張</p>
+                    
+                    <div id="spread-area" class="absolute inset-0 w-full h-full pt-12 pb-6"></div>
+                </div>
+
+                <div class="bg-[#050505] rounded-2xl border border-white/10 p-6 grid grid-cols-1 md:grid-cols-3 gap-8 relative z-30">
+                    
+                    <div id="card-display-slot" class="col-span-1 h-72 md:h-80 border-2 border-dashed border-white/10 rounded-xl flex flex-col items-center justify-center text-gray-600 bg-white/5 transition-all">
+                        <i class="fas fa-moon text-3xl mb-3 opacity-20"></i>
+                        <span class="text-sm font-mono tracking-widest">AWAITING_CARD</span>
+                    </div>
+
+                    <div class="col-span-1 md:col-span-2 flex flex-col h-72 md:h-80">
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="text-accent-purple font-mono text-sm"><i class="fas fa-terminal"></i> SYSTEM_PROMPT</span>
+                            <button id="copy-btn" disabled class="px-4 py-2 bg-white/5 text-gray-600 rounded-lg text-xs font-bold tracking-wide transition-all border border-white/5 cursor-not-allowed">
+                                <i class="fas fa-copy"></i> 複製指令
+                            </button>
+                        </div>
+                        <textarea id="prompt-output" readonly class="w-full flex-1 bg-[#0A0A0A] border border-white/10 rounded-xl p-5 text-gray-400 font-mono text-sm leading-relaxed resize-none focus:outline-none focus:border-accent-purple transition-colors" placeholder="【待抽卡】&#10;宇宙能量正在匯聚中...&#10;請先從上方牌陣中，憑直覺點擊抽取一張塔羅牌。"></textarea>
+                    </div>
+
+                </div>
+            </div>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="article_05.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Project
+            </a>
+            <a href="../0124_Projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Projects
+            </a>
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                Next Project &rarr;
+            </a>
+        </div>
+
+    </main>
+    <div id="footer-placeholder"></div>
+</body>
+</html>
