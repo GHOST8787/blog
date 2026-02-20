@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>EXP / P4 | GHOST.ouo</title>
+    
+    <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../0124_style.css">
+    
+    <script src="../tailwind.config.js"></script>
+    <script> window.siteRoot = '../'; </script>
+    <script src="../0124_main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+        
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../0124_projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / P4</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+            
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                打造智慧 LINE 客服機器人：<br>
+                <span class="text-gradient text-2xl md:text-4xl">Make x AI x Google 文件自動化</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    Make Automation
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    LINE Bot
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Gemini AI
+                </span>
+            </div>
+            
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.02.20</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+            
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                在經營爬蟲專賣店的過程中，我遇到了一個許多創業者共同的夢魘：客服爆炸。每天有數十、甚至上百則來自 LINE 的訊息，從基礎的「守宮怎麼養？」到專業的「球蟒基因組合問題」，甚至還夾雜著「老闆在嗎？」的緊急詢問。
+                <br><br>
+                我無法 24 小時待命回覆基礎問題，但也不想錯過任何一筆訂單或需要親自處理的狀況。傳統的客服機器人只能回答固定關鍵字，對於千奇百怪的問題完全無能為力。為了解決這個痛點，我決定借助 Make（原 Integromat） 這個強大的自動化平台，打造一個具備「意圖識別」能力的 LINE 客服機器人。
+            </p>
+
+            <figure class="my-12">
+                <img src="../PNG/project_04.1.png" 
+                     alt="Make 視覺化編輯器客服流程圖" 
+                     class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-500 mt-3 font-mono">
+                    Make 視覺化編輯器中的完整客服流程，從接收訊息到 AI 回覆，邏輯一目了然。
+                </figcaption>
+            </figure>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 專案目標與挑戰
+            </h3>
+
+            <p>這個專案的核心目標非常明確，這不僅是一個客服機器人，更是一個完整的客戶意圖識別與知識管理系統：</p>
+            
+            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 my-8 shadow-lg">
+                <ul class="space-y-4 text-gray-300 font-light m-0 pl-0 list-none">
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-code-branch text-accent-purple mt-1"></i>
+                        <div><strong class="text-white">自動分流：</strong>自動判斷使用者是想找人工客服，還是詢問一般飼養問題。</div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-brain text-accent-purple mt-1"></i>
+                        <div><strong class="text-white">智慧應答：</strong>根據問題類型，從對應的知識庫（Google 文件）中擷取資訊，並由 AI 生成專業、準確的回覆。</div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-users text-accent-purple mt-1"></i>
+                        <div><strong class="text-white">會員管理：</strong>記錄使用者身份與對話歷史，提供具備上下文記憶的服務。</div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-filter text-accent-purple mt-1"></i>
+                        <div><strong class="text-white">時間解放：</strong>只有在客戶觸發特定意圖時，才將問題轉發至後台，過濾掉多數無效或重複的詢問。</div>
+                    </li>
+                </ul>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 用 Make 可視化流程打造 AI 大腦
+            </h3>
+
+            <p>
+                我將整個流程在 Make 的編輯器中規劃成一張清晰的邏輯圖。每個模組都像一塊積木，透過簡單的連線，建構出複雜的商業邏輯。以下是幾個關鍵的設計環節：
+            </p>
+
+            <div class="space-y-6 my-8">
+                <div class="bg-white/5 p-6 rounded-xl border border-white/10 hover:border-accent-purple/30 transition-colors">
+                    <h4 class="text-white font-bold mb-2 flex items-center gap-2 text-lg m-0">
+                        <i class="fas fa-id-card text-accent-purple"></i> 1. 會員身分驗證與建檔
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed mt-2 mb-0">
+                        當用戶發送訊息時，機器人會先透過 <code>HTTP</code> 模組向 LINE 官方索取用戶的 <code>displayName</code>。接著，系統會以用戶的 <code>userId</code> 為鑰匙，到資料存放區尋找記錄。<br>
+                        • <strong>新用戶</strong>：系統會自動建立一個新的會員檔案，記錄其姓名和狀態。<br>
+                        • <strong>舊用戶</strong>：系統會讀取其過去的對話紀錄，為接下來的 AI 應答提供背景資訊。
+                    </p>
+                </div>
+
+                <div class="bg-white/5 p-6 rounded-xl border border-white/10 hover:border-accent-purple/30 transition-colors">
+                    <h4 class="text-white font-bold mb-2 flex items-center gap-2 text-lg m-0">
+                        <i class="fas fa-search text-accent-purple"></i> 2. 意圖識別：真人介入 vs. 一般詢問
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed mt-2 mb-0">
+                        這是分流的關鍵。我透過 Gemini AI 模組設計了一個精確的 Prompt，讓 AI 化身為「意圖識別系統」。<br>
+                        它會分析用戶的文字，判斷是否包含尋求真人協助的意圖。AI 的輸出被嚴格限制為兩個純文字的指令，作為後續流程分流的「路由信號」。
+                    </p>
+                </div>
+
+                <div class="bg-white/5 p-6 rounded-xl border border-white/10 hover:border-accent-purple/30 transition-colors">
+                    <h4 class="text-white font-bold mb-2 flex items-center gap-2 text-lg m-0">
+                        <i class="fas fa-folder-tree text-accent-purple"></i> 3. 問題分類與知識庫檢索
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed mt-2 mb-0">
+                        若是被歸類為一般詢問，系統會啟動第二個 AI 模型進行「問題分類」。它會將問題細分為：一般飼養與銷售 (B2C)、專業繁殖與技術 (Technical) 等。<br>
+                        這個分類結果將決定系統去檢索哪一份預先建置好的 Google 文件（例如「飼養指南」或「技術手冊」）作為參考資料。
+                    </p>
+                </div>
+
+                <div class="bg-white/5 p-6 rounded-xl border border-white/10 hover:border-accent-purple/30 transition-colors">
+                    <h4 class="text-white font-bold mb-2 flex items-center gap-2 text-lg m-0">
+                        <i class="fas fa-dragon text-accent-purple"></i> 4. 領域專家生成最終回覆
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed mt-2 mb-0">
+                        系統會將「用戶問題」和「Google 文件知識庫內容」一起餵給最後的生成模型。<br>
+                        • <strong>專業應答</strong>：結合知識庫與生物學知識，生成結構化且符合台灣氣候環境的回覆。<br>
+                        • <strong>免責聲明</strong>：文末自動附上醫療警語，確保資訊安全。<br>
+                        • <strong>紀錄對話</strong>：最後將這組問答存回資料庫，供未來的對話上下文使用。
+                    </p>
+                </div>
+
+                <div class="bg-red-900/20 p-6 rounded-xl border border-red-900/50 hover:border-red-500/50 transition-colors">
+                    <h4 class="text-red-400 font-bold mb-2 flex items-center gap-2 text-lg m-0">
+                        <i class="fas fa-bell text-red-500"></i> 5. 真人緊急通道
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed mt-2 mb-0">
+                        如果初始的意圖識別判斷用戶需要真人協助，流程會立刻切換。系統會先回覆用戶安撫情緒的訊息。<br>
+                        同時，AI 會快速摘要問題，並透過 LINE Push Message 連同原始問題、用戶姓名一併「推播」到我的個人後台，讓我能第一時間介入處理。
+                    </p>
+                </div>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 專案成果與自動化效益
+            </h3>
+
+            <p>這個自動化流程上線後，帶來了顯著的營運改變：</p>
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-8">
+                <li><strong class="text-white">效率提升：</strong>超過 90% 的基礎問題由 AI 自動精準回覆，平均回覆時間從數小時縮短至數秒內。</li>
+                <li><strong class="text-white">體驗升級：</strong>客戶在非營業時間也能得到立即、專業的解答，大幅降低等待造成的流失率。</li>
+                <li><strong class="text-white">資源釋放：</strong>將繁瑣的基礎客服交由系統處理，保留人力資源專注於高價值客戶與核心事業發展。</li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 從工具到解決方案
+            </h3>
+
+            <p>
+                這次的專案經驗讓我深刻體會到，Make 不僅僅是一個 API 串接工具，更是一個能將複雜商業邏輯可視化的「系統膠水」。它讓我能夠：
+            </p>
+            <ol class="list-decimal pl-5 space-y-2 text-gray-300 font-light mb-8">
+                <li><strong>無痛整合：</strong>輕鬆串接 LINE、Google 文件、LLM 模型和內建的資料存放區。</li>
+                <li><strong>低成本迭代：</strong>透過可視化流程，可以快速調整 AI 的 Prompt 和節點邏輯，找到最佳的回覆效果，而無需動到底層程式碼。</li>
+                <li><strong>高度客製化：</strong>不需要從零開始訓練模型（Fine-tuning），只需設計好提示詞工程，結合 RAG（檢索增強生成）的概念，就能讓通用 AI 扮演高度專業的角色。</li>
+            </ol>
+
+            <hr class="border-white/10 my-10">
+
+            <p class="text-center text-gray-400 italic text-sm">
+                這個架構不僅適用於特定零售業，任何需要處理大量客戶諮詢的領域——無論是電商、旅遊或是專業服務——都能複製並套用這套邏輯。只需更換知識庫內容並微調人設，就能打造出專屬的 AI 智慧客服。
+            </p>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="project_03.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Project
+            </a>
+            <a href="../0124_projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Projects
+            </a>
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                Next Project &rarr;
+            </a>
+        </div>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+</body>
+</html>
