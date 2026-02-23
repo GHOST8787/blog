@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>EXP / A5 | GHOST.ouo</title>
+    
+    <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../0124_style.css">
+    
+    <script src="../tailwind.config.js"></script>
+    <script>
+        window.siteRoot = '../';
+    </script>
+    <script src="../0124_main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+        
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../0124_articles.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO ARTICLES
+            </a>
+            <span class="opacity-50">EXP / A5</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+            
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                AI 輔助開發的現實碰撞：<br>
+                <span class="text-gradient text-2xl md:text-4xl">修復六年開源懸案的血淚與重構紀律</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    Open Source
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    AI Agent
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Data Pipeline
+                </span>
+            </div>
+            
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.02.21</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+            
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                這是一場為期 48 小時的極限抗爭。最初介入 <code>line-message-analyzer</code> 開源專案，並非單純為了修復兩個擱置六年的歷史 Issue，而是基於我個人的四個戰略目標：
+            </p>
+
+            <div class="bg-white/5 p-6 rounded-2xl border border-white/10 mb-10 shadow-lg">
+                <ul class="space-y-4 text-gray-300 font-light m-0 pl-0 list-none">
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-microscope text-accent-purple mt-1"></i>
+                        <div><strong class="text-white">驗證 VibeCoding 生態：</strong>親身體驗這半年來，純自然語言輔助開發的環境與工具鏈，是否已經具備真正的落地生產力。</div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-robot text-accent-purple mt-1"></i>
+                        <div><strong class="text-white">Antigravity 協作實戰：</strong>實機演練如何與自主型 AI Agent 進行專案協作，並測試其邊界控制能力。</div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-code-branch text-accent-purple mt-1"></i>
+                        <div><strong class="text-white">開源社群探勘：</strong>本身對 <code>line-message-analyzer</code> 專案的應用場景抱有高度興趣，期望能解決社群長期的痛點。</div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-chart-pie text-accent-purple mt-1"></i>
+                        <div><strong class="text-white">數據工程前置練兵：</strong>作為未來職涯走向數據領域的跳板，藉此專案完整走過一次「非結構化數據擷取、清洗、分析到圖表視覺化」的 Pipeline。</div>
+                    </li>
+                </ul>
+            </div>
+
+            <p class="mb-6">
+                然而，這場原本計畫周密的練兵，最終卻演變成一場對抗真實數據混沌、與 AI Agent 失控行為博弈的深度重構之旅。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 資料層的混沌：真實世界的邊界條件
+            </h3>
+
+            <p class="mb-6">
+                專案的起手式很單純：解決 Issue #2（使用者名稱包含空格導致解析錯誤）與 Issue #4（英文 12 小時制 AM/PM 格式導致系統崩潰）。我原以為這只是幾行 Regex（正規表示式）的修正，但當我深入底層邏輯並撰寫測試案例時，才發現真實的 LINE 聊天匯出檔格式堪稱災難。
+            </p>
+
+            <ul class="list-disc pl-5 space-y-3 text-sm text-gray-400 font-light mb-8">
+                <li><strong class="text-white">日期格式的碎裂：</strong> 除了標準的 <code>2026/02/21</code>，還存在 <code>2025.08.04 星期一</code> 這種帶有特殊符號與後綴的格式。</li>
+                <li><strong class="text-white">系統訊息的干擾：</strong> 傳送圖片、貼圖時沒有標準的括號包覆，甚至語音通話紀錄也只是一串純數字（如 <code>00:17</code>），缺乏明確的前綴識別。</li>
+            </ul>
+
+            <p>
+                這告訴我一個鐵律：<strong>永遠不要低估真實世界資料的複雜度。</strong> 依賴單一且脆弱的分隔符號（如空格）去解析非結構化文本，註定會在極端案例中全線崩潰。最終我選擇引入更嚴謹的 Tab 分隔符機制，並針對混合格式設計了壓力測試環境。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> AI Agent 的失控邊緣 (Antigravity 實戰)
+            </h3>
+
+            <p>
+                為加速重構，我引入了 Antigravity 作為輔助開發工具，並透過自定義 Skills（<code>line-parser-fix</code> 與 <code>generate-line-tests</code>）來約束 AI 的行為。然而，這正是惡夢的開始。
+            </p>
+
+            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/10 shadow-lg my-8 relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-1 h-full bg-red-500/50"></div>
+                <h4 class="text-red-400 font-bold mb-4 flex items-center gap-2 text-lg">
+                    <i class="fas fa-bug"></i> AI 幻覺與過度干預的代價
+                </h4>
+                <p class="text-sm text-gray-400 leading-relaxed mb-4">
+                    當我讓 AI 根據 Skill 自動修改程式碼時，發生了典型的「黑箱災難」：
+                </p>
+                <ol class="list-decimal pl-5 space-y-2 text-sm text-gray-400 font-light">
+                    <li><strong>無中生有的功能：</strong> AI 自作聰明地加入沒人要求的「每日照片數量」圖表，甚至將搜尋結果的 X 軸強行改為「天數」而非「日期」。</li>
+                    <li><strong>毀滅性的 UI 覆寫：</strong> 圓角元件變成直角、Navbar 字體比例失衡、統計數字失去了千分位格式，甚至出現不明的「未知對象」標籤。</li>
+                    <li><strong>邏輯陷阱：</strong> 在處理「收回訊息」時，AI 錯誤使用了 <code>continue</code> 語句，導致後續的大量有效數據被直接跳過，資料統計全錯。</li>
+                </ol>
+            </div>
+
+            <p>
+                這讓我深刻體悟到：<strong>AI 是助手，不是神。</strong> 當你給出「幫我修復這個 Bug」這種模糊指令時，AI 為了展現其能力，往往會進行未經授權的全局改寫。陷入「修好 A 壞掉 B，修好 B 壞掉 C」的無窮迴圈，是因為我們將「架構控制權」讓渡給了不可控的 LLM 黑箱。
+            </p>
+
+            <figure class="my-10">
+                <img src="https://via.placeholder.com/800x450/1a1a1a/4a4a4a?text=Debug+Screenshot+Placeholder" 
+                     alt="Debugging the chaos" 
+                     class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    凌晨三點的 Debug 現場：錯亂的圖表、被切割的 UI 與第 8 杯咖啡。
+                </figcaption>
+            </figure>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 重塑工程紀律：血淚換來的 Best Practices
+            </h3>
+
+            <p class="mb-6">
+                在經歷了數十次失敗、截了超過 15 張錯誤分析圖後，我強制終止了 AI 的全局操作，退回最根本的軟體工程紀律。這是我整理出的實戰法則：
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
+                <div class="bg-white/5 p-6 rounded-xl border border-white/10 hover:border-accent-purple/30 transition-colors">
+                    <h4 class="text-white font-bold mb-2 flex items-center gap-2 text-base m-0">
+                        <i class="fas fa-database text-accent-purple"></i> 1. 資料驗證先行 (TDD)
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed mt-2 mb-0">
+                        永遠不要在資料出錯時去改前端。我獨立抽出了 <code>debug.js</code>，在將資料丟給圖表或 DOM 之前，先在 Node.js 環境中確保陣列輸出 100% 正確。
+                    </p>
+                </div>
+                <div class="bg-white/5 p-6 rounded-xl border border-white/10 hover:border-accent-purple/30 transition-colors">
+                    <h4 class="text-white font-bold mb-2 flex items-center gap-2 text-base m-0">
+                        <i class="fas fa-code-commit text-accent-purple"></i> 2. 原子化 Commit
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed mt-2 mb-0">
+                        拒絕 AI 的大禮包式修改。一次只修復一個功能，確認無誤後立即 Git Commit。這是為了在 AI 突然「發瘋」改爛全域設定時，能以最低成本回溯。
+                    </p>
+                </div>
+                <div class="bg-white/5 p-6 rounded-xl border border-white/10 hover:border-accent-purple/30 transition-colors">
+                    <h4 class="text-white font-bold mb-2 flex items-center gap-2 text-base m-0">
+                        <i class="fas fa-broom text-accent-purple"></i> 3. 警惕工具盲區
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed mt-2 mb-0">
+                        Live Server 的快取機制會導致程式碼與畫面不對等；廢棄的 CSS 幽靈 Class 是萬惡之源。每次修改樣式後，強迫自己清理冗餘代碼並 <code>Ctrl + F5</code> 強制刷新。
+                    </p>
+                </div>
+                <div class="bg-white/5 p-6 rounded-xl border border-white/10 hover:border-accent-purple/30 transition-colors">
+                    <h4 class="text-white font-bold mb-2 flex items-center gap-2 text-base m-0">
+                        <i class="fas fa-crop-simple text-accent-purple"></i> 4. 響應式與 Canvas
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed mt-2 mb-0">
+                        不能僅靠 <code>vw</code> 走天下，必須搭配 <code>max-width</code> 與嚴謹的 Media Query。同時，Canvas 的實體 <code>width</code> 屬性必須與 CSS 嚴格對齊，否則圖表標籤必定破版。
+                    </p>
+                </div>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 戰略覆盤：四項目標的殘酷解答
+            </h3>
+
+            <p class="mb-6">
+                經歷這 48 小時的拉扯，回頭檢視最初設定的四項戰略目標，這是我得出的現實解答：
+            </p>
+
+            <div class="space-y-6 mb-12">
+                <div class="bg-[#0A0A0A] p-6 rounded-xl border-l-4 border-white/20">
+                    <h4 class="text-white font-bold mb-2 text-lg">1. VibeCoding 生態驗證</h4>
+                    <p class="text-sm text-gray-400 leading-relaxed m-0">
+                        <strong>結論：架構整齊度有餘，但微調決策仍高度依賴人腦。</strong><br>
+                        無可否認，VibeCoding 確實在初期建構與維持程式碼的整齊度（Clean Code）上有著極佳的助益。然而，這個專案的 HTML 與 CSS 總行數不到 300 行，在如此輕量的架構下，面對細微排版與特定邏輯修復時，純自然語言開發的溝通與試錯成本甚至遠大於傳統的手刻編碼。這讓我確信：<strong>關於邏輯的「選擇、修改與微調」，目前依然只有人類的心智模型能夠精準辦到。</strong>
+                    </p>
+                </div>
+                
+                <div class="bg-[#0A0A0A] p-6 rounded-xl border-l-4 border-white/20">
+                    <h4 class="text-white font-bold mb-2 text-lg">2. Antigravity 協作實戰</h4>
+                    <p class="text-sm text-gray-400 leading-relaxed m-0">
+                        <strong>結論：架構掌控權不可讓渡。</strong><br>
+                        隨著專案上下文的累積，AI Agent 在後期必然會出現「失憶與幻覺疊加」，開始無中生有或隨意竄改現有內容。在目前的 VibeCoding 模式下這幾乎是無解的。我認為未來的協作模式仍必須依賴<strong>「半人為介入」</strong>，由人類牢牢把控架構邊界。
+                    </p>
+                </div>
+
+                <div class="bg-[#0A0A0A] p-6 rounded-xl border-l-4 border-white/20">
+                    <h4 class="text-white font-bold mb-2 text-lg">3. 開源社群探勘</h4>
+                    <p class="text-sm text-gray-400 leading-relaxed m-0">
+                        <strong>結論：順利達成基礎協作閉環。</strong><br>
+                        成功練習了在 GitHub 上的開源貢獻流程，利用 Fork 功能將開源專案引入本地端進行分支修改，為日後更深度的社群協作打下基礎。
+                    </p>
+                </div>
+
+                <div class="bg-[#0A0A0A] p-6 rounded-xl border-l-4 border-white/20">
+                    <h4 class="text-white font-bold mb-2 text-lg">4. 數據工程前置練兵</h4>
+                    <p class="text-sm text-gray-400 leading-relaxed m-0">
+                        <strong>結論：前端泥沼拖慢了進度，但確立了核心方向。</strong><br>
+                        受限於前端修復的耗時，本次並未深入走到高階的分析與圖表視覺化階段。但這次的教訓讓我確信，未來若要執行「半 VibeCoding」模式，核心的「非結構化數據擷取與清洗 (Data Cleaning)」絕對會是我優先切入的重中之重。
+                    </p>
+                </div>
+            </div>
+
+            <hr class="border-white/10 my-10">
+
+            <div class="bg-gradient-to-r from-accent-purple/10 to-transparent p-6 rounded-xl border-l-2 border-accent-purple">
+                <h4 class="text-white font-bold mb-2 flex items-center gap-2">
+                    <i class="fas fa-flag-checkered text-accent-purple"></i> 階段性總結
+                </h4>
+                <p class="text-gray-300 text-sm leading-relaxed mb-4">
+                    截至凌晨 3 點，我成功重構了 <code>AppState</code> 狀態管理，確立了 <code>debug.js</code> 驗證機制，並初步掌握了 Antigravity Skills 的馴服技巧。雖然前端版面仍在重構階段（用通俗的話說：還是一坨屎），但底層的骨架與數據流已經徹底穩固。
+                </p>
+                <p class="text-gray-400 text-xs italic m-0">
+                    為什麼不放棄？也許是因為不想讓一個掛了 6 年的 Issue 繼續躺在那裡，也許是因為這是我親手打造的數據 Pipeline，或者單純只是出於技術人的固執。不管怎樣，天亮後，重構繼續。
+                </p>
+            </div>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="article_04.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Article
+            </a>
+            <a href="../0124_articles.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Articles
+            </a>
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                Next Article &rarr;
+            </a>
+        </div>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+</body>
+</html>
