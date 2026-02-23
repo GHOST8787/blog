@@ -44,18 +44,18 @@
             
             <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
                 AI 助理框架部署 (上)：<br>
-                <span class="text-gradient text-2xl md:text-4xl">VM 連線與 Clawdbot 核心安裝</span>
+                <span class="text-gradient text-2xl md:text-4xl">基礎設施建置與服務常駐化配置</span>
             </h1>
 
             <div class="flex flex-wrap gap-3 mb-6">
                 <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
-                    Tech & Auto
+                    Cloud Infrastructure
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Azure VM
+                    System Deployment
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Clawdbot
+                    AI Agent
                 </span>
             </div>
             
@@ -68,110 +68,110 @@
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
             
             <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
-                這是一份「新手友好」的說明書。上篇將帶你從環境準備開始，一步步在雲端 VM 上建立並啟動 Clawdbot 核心服務。🦞
+                本專案紀錄 AI 代理框架 (Clawdbot) 於雲端虛擬機器的建置流程。上篇聚焦於基礎設施的部署，涵蓋環境配置、服務常駐化 (Daemonize) 至控制面板的安全穿透存取。此部署策略旨在建立一個具備 24/7 穩定運行能力，且遠端可控的獨立 AI 服務節點。
             </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 第一步：環境準備
+                <span class="text-accent-purple">#</span> 階段一：部署環境先決條件 (Prerequisites)
             </h3>
 
-            <p>Clawdbot 是一個強大的 AI 助理框架，可以安裝在雲端 VM 上 24/7 運行。開始前，你需要準備以下項目：</p>
+            <p class="mb-4">為確保 Clawdbot 框架具備獨立且穩定的運算資源，系統建置需滿足以下物理與網路條件：</p>
             <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
-                <li>一個 <strong>雲端 VM</strong>（例如 Azure VM，需有對外 IP）</li>
-                <li>一個 SSH 金鑰檔案（<code class="text-accent-purple bg-white/10 px-1 rounded">&lt;YOUR_KEY.pem&gt;</code>）</li>
-                <li>本機電腦（Windows，已安裝 PowerShell）</li>
+                <li><strong class="text-white">運算節點 (Cloud VM)：</strong> 具備獨立對外 IP 的雲端虛擬機器（本專案採用 Azure VM，作業系統環境為 Ubuntu）。</li>
+                <li><strong class="text-white">安全憑證：</strong> 用於非對稱加密登入之 SSH 私鑰檔案（<code class="text-accent-purple bg-white/10 px-1 rounded">&lt;YOUR_KEY.pem&gt;</code>）。</li>
+                <li><strong class="text-white">本地控制端：</strong> 已配置 PowerShell 或相應 CLI 終端機環境之本機電腦。</li>
             </ul>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 第二步：連線到 VM
+                <span class="text-accent-purple">#</span> 階段二：建立安全連線 (SSH Protocol)
             </h3>
 
-            <p>在本機電腦的 PowerShell 中，切換到金鑰所在目錄並進行連線。成功後會看到 Ubuntu 的歡迎訊息。</p>
+            <p>基於安全性考量，系統拒絕常規密碼登入。於本機終端機切換至金鑰所在目錄，執行 SSH 通訊協定以進入遠端 Ubuntu 伺服器環境：</p>
             <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
 <pre><code class="language-powershell">cd &lt;YOUR_LOCAL_KEY_PATH&gt;
 ssh -i &lt;YOUR_KEY.pem&gt; &lt;YOUR_VM_USER&gt;@&lt;YOUR_VM_IP&gt;</code></pre>
             </div>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 第三步：安裝 Clawdbot
+                <span class="text-accent-purple">#</span> 階段三：核心服務建置與常駐 (Service Provisioning)
             </h3>
 
-            <p>使用 npm 全域安裝最新版 Clawdbot，並設定 gateway 服務讓它在背景常駐：</p>
+            <p>透過 Node Package Manager (npm) 進行框架本體的安裝。為確保 AI 代理程序於終端機會話 (Session) 中斷後仍能持續於後台運作，必須將其註冊為 systemd 的背景服務：</p>
             <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
-<pre><code class="language-bash"># 1. 安裝最新版 Clawdbot
+<pre><code class="language-bash"># 1. 執行全域安裝
 sudo npm install -g clawdbot@latest
 
-# 2. 確認安裝成功 (應會看到版本號)
+# 2. 驗證依賴套件與版本號
 clawdbot --version
 
-# 3. 建立並啟動服務
+# 3. 建立並啟動 Systemd User Service
 clawdbot gateway setup --user
 systemctl --user start clawdbot-gateway.service
 
-# 4. 檢查服務狀態 (應顯示 active (running))
+# 4. 檢閱服務狀態 (確認為 active (running))
 systemctl --user status clawdbot-gateway.service</code></pre>
             </div>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 第四步：解決 Gateway 埠口衝突（選用）
+                <span class="text-accent-purple">#</span> 階段四：例外處理 - Port 衝突排障 (Conflict Resolution)
             </h3>
 
-            <p>如果您發現服務狀態一直重啟，查看日誌若發現 <code class="text-accent-purple">Port 18789 is already in use</code>，表示有舊程序佔用。請執行以下清理動作：</p>
+            <p>在系統反覆部署與重啟的過程中，常遇服務啟動失敗的例外狀況。經查閱系統日誌，若確認錯誤碼為 <code class="text-accent-purple">Port 18789 is already in use</code>，即代表有殭屍程序 (Zombie Process) 或舊版實例佔用通訊埠。此時需介入進行強制清理程序：</p>
             <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
-<pre><code class="language-bash"># 1. 停止所有相關服務與舊版檔案
+<pre><code class="language-bash"># 1. 終止並卸載所有相關服務與殘留設定檔
 systemctl --user stop clawdbot-gateway.service
 systemctl --user stop openclaw-gateway.service 2>/dev/null
 systemctl --user disable openclaw-gateway.service 2>/dev/null
 rm -f ~/.config/systemd/user/openclaw-gateway.service
 
-# 2. 殺光所有佔用 18789 埠的程序
+# 2. 釋放通訊埠：強制終止 (kill -9) 佔用 18789 的程序
 sudo kill -9 $(sudo lsof -t -i:18789) 2>/dev/null
 
-# 3. 重新載入並啟動乾淨的服務
+# 3. 重載守護行程並重啟淨化後的服務
 systemctl --user daemon-reload
 systemctl --user reset-failed clawdbot-gateway.service
 systemctl --user start clawdbot-gateway.service</code></pre>
             </div>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 第五步：從本機電腦連線 Control UI
+                <span class="text-accent-purple">#</span> 階段五：安全穿透與控制面板存取 (SSH Tunneling)
             </h3>
 
-            <p>在本機開「新的」PowerShell 視窗，建立 SSH 隧道。注意：此視窗會卡住是正常的，請保持開啟。</p>
+            <p>基於網安原則，Clawdbot Gateway 預設僅綁定於伺服器的 Localhost 網卡，直接開放防火牆外部埠口將構成嚴重的資安漏洞。因此，採取 <strong>SSH 隧道 (Port Forwarding)</strong> 技術，於本機另開終端機建立加密通道，將遠端 18789 埠口安全映射至本機端：</p>
             <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
 <pre><code class="language-powershell">ssh -i &lt;YOUR_KEY.pem&gt; -N -L 18789:127.0.0.1:18789 &lt;YOUR_VM_USER&gt;@&lt;YOUR_VM_IP&gt;</code></pre>
             </div>
 
-            <p>接著回到 VM 的終端機，取得 Dashboard 網址與 Token：</p>
+            <p>隨後返回 VM 終端機，提取 Dashboard 路由位址與權限驗證 Token：</p>
             <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
 <pre><code class="language-bash">clawdbot dashboard</code></pre>
             </div>
             
-            <p>複製輸出的網址，將 <code class="text-gray-400">127.0.0.1</code> 改為 <code class="text-gray-400">localhost</code>，貼到瀏覽器即可開啟控制介面。若遇到 Token 錯誤，可透過 <code class="text-gray-400">clawdbot config set gateway.auth.token &lt;TOKEN&gt;</code> 重新設定。</p>
+            <p>複製系統輸出之 URL，將 <code class="text-gray-400">127.0.0.1</code> 轉換為 <code class="text-gray-400">localhost</code>，即可於本機瀏覽器存取控制介面。若遭遇 Token 授權失效，可透過 CLI 指令 <code class="text-gray-400">clawdbot config set gateway.auth.token &lt;TOKEN&gt;</code> 強制覆寫驗證金鑰。</p>
 
             <figure class="my-12">
                 <img src="../PNG/project_02.1.png" 
                      alt="Clawdbot Gateway Dashboard" 
                      class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
                 <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
-                    成功連線至 Clawdbot Gateway Dashboard
+                    透過 SSH Tunnel 成功映射至本機的 Clawdbot Gateway Dashboard
                 </figcaption>
             </figure>
 
             <hr class="border-white/10 my-12">
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 成果展示
+                <span class="text-accent-purple">#</span> 階段性驗證 (System Validation)
             </h3>
             
-            <p>設定完畢後，透過 Telegram 成功喚醒並與 Clawdbot 進行互動對話：</p>
+            <p>底層通訊與服務常駐配置完成後，透過串接 Telegram API 進行端點測試，確認訊息收發與 AI 代理模型的運算反饋功能皆正常運作。此階段標誌著基礎設施層的部署完成，為後續複雜意圖邏輯的掛載提供穩固載體。</p>
 
             <figure class="my-10">
                 <img src="../PNG/project_02.2.png" 
                      alt="Telegram Conversation with Clawdbot" 
                      class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
                 <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
-                    與 Clawdbot 機器人的 Telegram 實戰對話
+                    Telegram 端點串接驗證與 AI 代理回應測試
                 </figcaption>
             </figure>
 

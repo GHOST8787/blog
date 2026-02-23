@@ -35,7 +35,7 @@
         <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
             <a href="../0124_articles.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
                 <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
-                BACK TO articles
+                BACK TO ARTICLES
             </a>
             <span class="opacity-50">EXP / A2</span>
         </div>
@@ -43,19 +43,19 @@
         <header class="mb-12 border-b border-white/10 pb-12">
             
             <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
-                社群生存攻略：<br>
-                <span class="text-gradient text-2xl md:text-4xl">信任、誤解與一報還一報</span>
+                社群動態的賽局分析：<br>
+                <span class="text-gradient text-2xl md:text-4xl">信任演化、系統雜訊與一報還一報</span>
             </h1>
 
             <div class="flex gap-3 mb-6">
                 <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
-                    critical thinking
-                </span>
-                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
                     Game Theory
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Trust
+                    System Thinking
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Social Dynamics
                 </span>
             </div>
             
@@ -68,22 +68,19 @@
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
             
             <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
-                在這個資訊爆炸、人際關係複雜的時代，到底怎樣活著 CP 值最高？
+                在資訊過載與人際網絡高度複雜的環境中，如何建立具備高期望值的生存策略？
             </p>
 
             <p>
-                讓我開始思考這件事的契機，來自對<strong>交友軟體</strong>與<strong>網路社群</strong>的觀察。
-                很多社群經營著經營著，突然就消失了，變成一攤死水。為什麼？因為大家都在潛水、都在蹲著吃瓜。
-                雖然能理解大家想保護自己，但如果環境裡只有「消耗」沒有「產出」，長期來看，這個社群遲早會死（熱寂）。
+                此思考源於對數位社群生命週期的觀察。多數社群最終走向沉寂，主因在於個體為規避風險而選擇隱藏真實意圖（潛水）。當系統內僅存單向的資訊消耗而缺乏實質產出，依據熱力學邏輯，系統必然走向無序與熱寂 (Heat Death)。
             </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 信任的演化 (The Evolution of Trust)
+                <span class="text-accent-purple">#</span> 賽局理論與信任演化
             </h3>
 
             <p>
-                原本我以為信任是個 0 與 1 的遊戲，但博弈論告訴我事情沒那麼簡單。
-                這是一個很經典的網頁遊戲，以前我只會暴力解，現在重看才懂它的邏輯：
+                信任並非二元對立的絕對狀態，而是基於賽局理論 (Game Theory) 的動態博弈過程。透過經典的互動模型《信任的演化 (The Evolution of Trust)》，可將人際互動抽象化為「重複囚徒困境 (Iterated Prisoner's Dilemma)」，進而推演出信任建立的底層數學邏輯。
             </p>
 
             <figure class="my-10 mx-auto max-w-sm">
@@ -96,84 +93,79 @@
             </figure>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 最佳演算法：一報還一報 (Tit for Tat)
+                <span class="text-accent-purple">#</span> 最佳化策略模型：一報還一報 (Tit for Tat)
             </h3>
 
             <p>
-                在著名的「重複囚徒困境」實驗中，數學家們發現了一個勝率極高、且邏輯簡單到不行的策略：
+                在重複囚徒困境的電腦模擬演算中，被證實具備最高長期收益的策略，其演算法結構極度精簡：
             </p>
 
             <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
-<pre><code class="language-python"># 策略邏輯：
+<pre><code class="language-python"># 策略演算法邏輯：
 
-1. 首輪合作：
-   先釋出善意，假設對方是好人。
+1. 初始狀態 (Initial State)：
+   預設合作 (Cooperate)。在缺乏先驗數據時，假設對方為善意節點。
 
-2. 對等回報：
-   對方怎麼對我，我就怎麼對他。
-   (他背叛，我就反擊；他合作，我就繼續合作)
+2. 對等反饋 (Reciprocity)：
+   鏡像對方的上一輪行為。
+   (若對方背叛，則觸發防禦機制；若對方合作，則維持合作)
 
-3. 寬恕：
-   如果對方知錯能改(回到合作)，我也立刻恢復合作。
+3. 容錯機制 (Forgiveness)：
+   若對方改變策略恢復合作，系統立即解除防禦狀態並恢復合作，避免陷入無限報復的惡性循環。
 </code></pre>
             </div>
 
             <p>
-                為什麼這個策略 CP 值最高？因為它<strong>「不糾結」</strong>。
-                它避免了被當成<strong>韭菜</strong>割的風險（因為你會反擊），同時又最大化了長期合作的紅利（因為你會寬恕）。
+                此策略的優越性在於其「無記憶性」與「確定性」。它透過確定的反擊機制阻斷了被單向剝削的風險，同時藉由寬恕機制最大化了非零和賽局 (Non-zero-sum Game) 中的長期協作紅利。
             </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 為何現代人越來越難信任？
+                <span class="text-accent-purple">#</span> 系統環境與零和偏差
             </h3>
 
             <p>
-                數據顯示，1985 年人們最常回答自己有 3 個親密好友，到了 2014 年，這個數字變成了 0。<br>
-                人與人之間越來越少的「重複互動」，帶來的影響就是不信任的加劇擴散。
+                統計數據指出，現代人際網絡中的高質量連結正顯著下降。核心原因在於「重複互動 (Repeated Interactions)」頻率的降低，導致建立長期信任機制的成本急遽攀升。
             </p>
 
             <p>
-                更糟糕的是，我們的環境正在從「非零和遊戲」滑向「零和遊戲」。
+                此外，整體環境的認知框架逐漸向「零和賽局」傾斜：
             </p>
             <ul class="list-disc pl-5 space-y-3 text-gray-300 font-light">
-                <li><strong>零和遊戲：</strong>雙方悲觀地相信，我得到的必然來自你的失去。</li>
-                <li><strong>非零和遊戲：</strong>努力創造雙贏，這才是信任得以傳播的土壤。</li>
+                <li><strong class="text-white">零和賽局框架：</strong> 個體悲觀地將系統資源視為定值，認為自身收益必然建立於他人損失之上。</li>
+                <li><strong class="text-white">非零和賽局框架：</strong> 透過協作創造系統增量，這才是促使信任機制得以大規模傳播的必要環境參數。</li>
             </ul>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 誤解：信任的殺手與轉機
+                <span class="text-accent-purple">#</span> 系統雜訊 (Noise) 對策略穩定性的影響
             </h3>
 
             <p>
-                現代科技雖然增加了交流，卻也帶來更多「誤解」。博弈論模擬的結果非常有趣：
+                資訊傳遞過程中必然存在雜訊，即所謂的「誤解」。賽局模擬展示了雜訊對系統穩定性的非線性影響：
             </p>
-            <ul class="list-none space-y-2 text-gray-400 text-sm font-mono border-l-2 border-white/10 pl-4">
-                <li>0% 誤解：完全公平的模仿者獲勝。</li>
-                <li>1% - 9% 誤解：<strong>寬容的模仿者獲勝！</strong></li>
-                <li>10% - 49% 誤解：完全不寬容的騙子獲勝。</li>
+            <ul class="list-none space-y-3 text-gray-400 text-sm font-mono border-l-2 border-white/10 pl-4 my-6">
+                <li class="flex items-center gap-2"><span class="text-accent-purple w-16">0% 雜訊</span> 完全公平的模仿者 (Copycat) 取得全局最佳解。</li>
+                <li class="flex items-center gap-2"><span class="text-accent-purple w-16">1%-9% 雜訊</span> <strong class="text-white">具備寬容機制的模仿者 (Copykitten) 獲勝。</strong>微量的雜訊能促進系統演化出更高的容錯率。</li>
+                <li class="flex items-center gap-2"><span class="text-accent-purple w-16">10%+ 雜訊</span> 系統崩潰，絕對背叛者 (Always Cheat) 佔據主導地位。</li>
             </ul>
 
             <p>
-                這告訴我們：<strong>一點點的誤解能促進寬容的蔓延，但太多的誤解會導致全面崩盤。</strong>
+                結論明確：<strong>適度的系統雜訊能催生更具韌性的寬容機制，但過載的雜訊將直接導致信任網絡的全面崩解。</strong>
             </p>
 
             <hr class="border-white/10 my-12">
 
-            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5">
+            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 shadow-xl">
                 <h4 class="text-white font-bold mb-4 flex items-center gap-2">
                     <i class="fas fa-lightbulb text-accent-purple"></i> Conclusion
                 </h4>
                 <p class="text-gray-300 mb-4 leading-relaxed">
-                    博弈論最閃亮的一顆珍寶告訴我們：「遊戲是什麼，直接決定了玩家做什麼。」<br>
-                    這聽起來很犬儒——我們僅僅是環境的產物嗎？
+                    賽局理論的核心啟示在於：「遊戲規則決定了玩家的行為模式。」這並非決定論的悲觀主義。
                 </p>
                 <p class="text-white font-bold text-lg mb-2">
-                    不，別忘了，我們就是彼此的環境。
+                    在微觀尺度上，環境參數約束了個體策略；但在巨觀尺度上，個體的群體行為正是建構環境本身的核心變數。
                 </p>
                 <p class="text-sm text-gray-400">
-                    短期來看，遊戲決定玩家；但長期來說，決定遊戲規則的正是我們。
-                    所以，行動起來吧。建立人際關係、努力尋求雙贏、溝通儘量清晰。<br>
-                    <strong>互惠寬容，這就是與人相處之美。</strong>
+                    長期生存的最佳實踐，在於主動建構具備重複互動屬性的網絡、確保資訊傳遞的精確性以降低系統雜訊，並堅守互惠與適度寬容的演算法邏輯。
                 </p>
             </div>
 
@@ -184,7 +176,7 @@
                 &larr; Prev Article
             </a>
             <a href="../0124_articles.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
-                View All articles
+                View All Articles
             </a>
             <a href="article_03.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
                 Next Article &rarr;

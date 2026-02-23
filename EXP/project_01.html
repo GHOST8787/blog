@@ -43,16 +43,19 @@
         <header class="mb-12 border-b border-white/10 pb-12">
             
             <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
-                你是說...<br>
-                <span class="text-gradient text-2xl md:text-4xl">架個人網站嘛?</span>
+                個人網站建置紀實：<br>
+                <span class="text-gradient text-2xl md:text-4xl">靜態架構部署與 AI 協作開發</span>
             </h1>
 
             <div class="flex gap-3 mb-6">
                 <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
-                    cool shit
+                    Web Development
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    half Vibecoding
+                    VibeCoding
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Architecture Design
                 </span>
             </div>
             
@@ -65,8 +68,7 @@
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
             
             <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
-                YAAAAAA～ 網站上線了。🎉🎉🎉<br>
-                從大學時期因社團需求接觸 WordPress，到如今成功將半手刻的 HTML/CSS 靜態網頁託管於 GitHub。這或許算不上什麼宏大的里程碑，但絕對是次很酷的技術實踐。
+                本專案紀錄個人網站 (v1.0) 的建置與部署過程。從早期依賴 WordPress 等高度封裝的 CMS 系統，轉向以 HTML/CSS/JS 實作的半手刻靜態網頁，並最終託管於 GitHub Pages。此轉變旨在提升對底層架構的掌控度與系統擴展性。
             </p>
 
             <figure class="my-10">
@@ -79,17 +81,17 @@
             </figure>
 
             <p>
-                2026.01.31，個人網站初版正式上架。全站從設計排版到部署，由 <strong>Vibecoding</strong> 模式與 AI 協作完成。<br>
-                目前版本仍有優化空間，技術探索不會停滯，網站的迭代更新也將持續進行。
+                全站從排版設計至部署上線，全程採用 VibeCoding 模式與 AI 代理協作完成。<br>
+                目前版本為基礎靜態展示層，未來將依據需求持續迭代與優化底層效能。
             </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 架構思維：模組化與檔案管理
+                <span class="text-accent-purple">#</span> 系統架構設計：模組化與組件分離
             </h3>
 
             <p>
-                下圖為了開發初期的 Excalidraw 架構草稿。為了確保程式碼的可維護性 (Maintainability)，在實作過程中，我選擇將 Navbar 與 Footer 拆分為獨立的組件，並透過 JavaScript 動態載入。<br>
-                這種模組化的檔案結構設計，不僅實現了關注點分離 (Separation of Concerns)，也讓專案目錄更加清晰，大幅提升了後續迭代與管理的效率。
+                在初期的 Excalidraw 架構規劃中，為確保程式碼的可維護性 (Maintainability)，我選擇將 Navbar 與 Footer 等全域共用區塊拆分為獨立組件，並透過原生 JavaScript 進行動態掛載。<br>
+                此一目錄結構設計嚴格落實了關注點分離 (Separation of Concerns, SoC) 原則，有效降低各頁面間的耦合度，為後續的專案擴充與統一管理建立穩固基礎。
             </p>
             
             <figure class="my-10">
@@ -97,39 +99,36 @@
                      alt="excalidraw" 
                      class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
                 <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
-                    網頁最初始的設計，上下對比可見我有參考但不多
+                    網頁最初始的架構草稿與組件劃分邏輯
                 </figcaption>
             </figure>
 
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 曾經的 Code 恐懼症
+                <span class="text-accent-purple">#</span> 開發流程與 AI 協作除錯 (Debugging)
             </h3>
 
             <p>
-                雖然現在頻繁接觸自動化工具，對程式碼也不抗拒，但過去曾因「迴圈（Loop）」邏輯卡關，一度對 Coding 以及自己的邏輯產生懷疑。ㄟ不是上一秒還在 hello world 下一秒突然計算機是怎樣?我是誰我在哪?
-            </p>
-            <p>
-                很感激 AI 擊碎了這道門檻。<br>
-                本次開發由我個人提供核心邏輯，AI 協助代碼實作。過程中的關鍵在於「精準提問」+「解決問題」，並將生成的答案內化為自身能力。
+                導入自動化工具大幅降低了程式碼的語法門檻，使開發重心得以從「語法記憶」轉移至「系統邏輯建構」。<br>
+                本次開發由我方主導核心業務邏輯與介面結構，AI 代理負責代碼的具體實作。實踐過程證明，高效能的協作仰賴於開發者的「精準提問」與對系統的「全局判斷」。
             </p>
             
-            <p>協作過程並非一帆風順。以下是幾點實戰經驗：</p>
+            <p>在與 AI 協作的迭代過程中，總結出以下兩項關鍵的工程實務規範：</p>
 
             <div class="my-8 p-8 bg-white/5 rounded-2xl border border-white/10 font-light">
                 <ul class="list-none space-y-4">
                     <li class="flex items-start gap-3">
                         <i class="fas fa-bug text-accent-purple mt-1.5"></i>
                         <span>
-                            <strong class="text-white">記憶過載幻覺：</strong><br>
-                            當對話太長，AI 會因為 Context Window 爆掉而開始「已讀亂答」。若是連續三天在同一個對話串裡修 Bug，程式碼往往越修越爛。解法很簡單：直接開新視窗，餵入乾淨的 HTML 檔，瞬間解決。
+                            <strong class="text-white">上下文溢出與狀態重置 (Context Window Management)：</strong><br>
+                            當單一對話線程過長，AI 的 Context Window 將超載，導致程式碼幻覺與修復邏輯發散（即所謂的「越修越糟」）。最佳排障策略為：建立明確的斷點，開啟全新對話視窗並注入乾淨的目標程式碼片段，強制重置 AI 的上下文狀態。
                         </span>
                     </li>
                     <li class="flex items-start gap-3">
                         <i class="fas fa-brain text-accent-purple mt-1.5"></i>
                         <span>
-                            <strong class="text-white">核心能力：</strong><br>
-                            AI 能寫 Code，但「想法」、「判斷」及「選擇」仍需由人主導。配合 Live Server 即時微調並觀察網頁變化，解決問題的過程其實充滿成就感。
+                            <strong class="text-white">決策權隔離與動態驗證：</strong><br>
+                            AI 雖具備高效率的代碼生成能力，但系統架構的「判斷」與「選擇」不可讓渡。開發者必須掌握邏輯主導權，配合 Live Server 進行即時渲染反饋，建立「指令輸入 → 視覺驗證 → 邏輯微調」的快速迭代迴圈。
                         </span>
                     </li>
                 </ul>
@@ -159,6 +158,9 @@
                 </div>
 
                 <ul class="space-y-2 text-sm text-gray-400">
+                    <li class="mb-2">
+                        過往建置之 CMS (Content Management System) 網站紀錄，作為網頁開發歷程之基準參照：
+                    </li>
                     <li>
                         <span class="text-accent-purple mr-2">●</span> 
                         <a href="https://ntoutbr.wordpress.com/" target="_blank" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
@@ -178,7 +180,7 @@
         </article>
 
         <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
-            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
                 &larr; Prev Project
             </a>
             <a href="../0124_projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">

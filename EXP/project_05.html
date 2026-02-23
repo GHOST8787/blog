@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title>EXP / A6 | GHOST.ouo</title>
+    <title>EXP / P5 | GHOST.ouo</title>
     
     <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
     <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
@@ -37,7 +37,7 @@
                 <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
                 BACK TO ARTICLES
             </a>
-            <span class="opacity-50">EXP / A6</span>
+            <span class="opacity-50">EXP / P5</span>
         </div>
 
         <header class="mb-12 border-b border-white/10 pb-12">
@@ -49,13 +49,13 @@
 
             <div class="flex flex-wrap gap-3 mb-6">
                 <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
-                    Open Source
+                    Open Source Contribution
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Refactoring
+                    System Refactoring
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Tailwind CSS
+                    Frontend Architecture
                 </span>
             </div>
             
@@ -67,25 +67,21 @@
 
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
             
-            <div class="bg-gradient-to-r from-accent-purple/10 to-transparent p-6 rounded-xl border-l-2 border-accent-purple mb-10">
-                <p class="text-gray-300 italic m-0">
-                    「從『寫死的 2 人限制』到『動態無限人數』，從『雜亂的程式碼』到『現代化架構』——這是一場與 AI 協作的開發冒險。」
-                </p>
-            </div>
-
             <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
-                這是一個關於開源貢獻、技術重構，以及與 AI 助手並肩作戰的故事。<br><br>
-                原本的 <code>line-message-analyzer</code> 是一個很實用的工具，能將 LINE 聊天記錄視覺化為統計圖表。但隨著時間推移，一些問題逐漸浮現：只能分析兩個人、手機版容易跑版、程式碼難以維護⋯⋯於是我花了兩天時間，進行了一次徹底的重構與升級。這篇文章將記錄這次改版的核心差異、技術亮點，以及未來持續演進的藍圖。
+                本專案針對開源工具 <code>line-message-analyzer</code> 進行底層架構與前端介面的深度重構。該工具原具備基礎的訊息統計視覺化功能，但在長期缺乏維護下，暴露出硬體編碼 (Hardcoding) 限制與系統擴展性瓶頸。本次介入旨在透過現代化技術棧，解決核心邏輯缺陷並提升程式碼的可維護性。
             </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 改版前 vs 改版後：視覺與排版
+                <span class="text-accent-purple">#</span> 介面架構重構與渲染優化
             </h3>
 
             <p class="mb-6">
-                <strong>以前：</strong>依賴 Bootstrap，各個區塊的排版較為生硬，在不同螢幕尺寸下容易跑版，視覺層級較為平面。<br>
-                <strong>現在：</strong>全面導入 Tailwind CSS，引入「毛玻璃特效」導覽列、圓角卡片、柔和陰影，並採用 Flexbox 響應式網格。不論是用電腦大螢幕還是手機觀看，介面都俐落且充滿現代感。
+                原始專案依賴高度耦合的 Bootstrap 樣式，導致組件層級扁平且缺乏跨裝置的自適應能力。重構策略如下：
             </p>
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-8">
+                <li><strong class="text-white">樣式系統遷移：</strong> 全面導入 Tailwind CSS，透過 Utility-first 原則實現樣式與結構的邏輯分離。</li>
+                <li><strong class="text-white">響應式網格建構：</strong> 導入 Flexbox 佈局模型，依據視窗斷點 (Breakpoints) 動態分配容器寬度，解決行動裝置的渲染破版問題。</li>
+            </ul>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-10">
                 <figure class="m-0">
@@ -93,7 +89,7 @@
                          alt="視覺排版改版前" 
                          class="w-full rounded-2xl border-2 border-red-500/30 shadow-lg opacity-80">
                     <figcaption class="text-center text-sm text-red-400 mt-3 font-mono">
-                        <i class="fas fa-times-circle"></i> 改版前 (Before)：生硬的傳統卡片與跑版危機
+                        <i class="fas fa-times-circle"></i> 架構迭代前：生硬卡片與靜態斷點限制
                     </figcaption>
                 </figure>
                 <figure class="m-0">
@@ -101,19 +97,17 @@
                          alt="視覺排版改版後" 
                          class="w-full rounded-2xl border-2 border-green-500/30 shadow-lg">
                     <figcaption class="text-center text-sm text-green-400 mt-3 font-mono">
-                        <i class="fas fa-check-circle"></i> 改版後 (After)：Tailwind 現代化毛玻璃網格
+                        <i class="fas fa-check-circle"></i> 架構迭代後：動態網格與層次化視覺元件
                     </figcaption>
                 </figure>
             </div>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 核心功能：突破 2 人限制 🚀
+                <span class="text-accent-purple">#</span> 核心突破：資料結構與渲染邏輯解耦
             </h3>
 
             <p class="mb-6">
-                這是本次重構最重要的技術突破！<br><br>
-                <strong>以前：</strong>HTML 與 JS 邏輯全部「寫死」給 2 個人（例如 <code>memberCanvas1</code> 和 <code>memberCanvas2</code>）。如果上傳 3 人以上的群組對話，系統只會畫出前兩個人的圓餅圖，後面的資料完全無法顯示。<br>
-                <strong>現在：</strong>底層邏輯全面重寫為 N-Member 動態生成！系統會自動抓出對話紀錄中出現過的「所有」成員，自動為每個人建立專屬的統計卡片與比例圓餅圖，流暢地呈現在畫面上。
+                原系統最致命的架構缺陷在於「渲染節點綁死資料數量」。系統僅宣告了 <code>memberCanvas1</code> 與 <code>memberCanvas2</code> 兩個實體 DOM，導致高於兩人維度的群組資料在渲染層被強制截斷。
             </p>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-10">
@@ -122,7 +116,7 @@
                          alt="2人限制改版前" 
                          class="w-full rounded-2xl border-2 border-red-500/30 shadow-lg opacity-80">
                     <figcaption class="text-center text-sm text-red-400 mt-3 font-mono">
-                        <i class="fas fa-times-circle"></i> 改版前 (Before)：被寫死的雙人圖表結構
+                        <i class="fas fa-times-circle"></i> 邏輯耦合：被寫死的雙人圖表結構
                     </figcaption>
                 </figure>
                 <figure class="m-0">
@@ -130,41 +124,34 @@
                          alt="無限人數改版後" 
                          class="w-full rounded-2xl border-2 border-green-500/30 shadow-lg">
                     <figcaption class="text-center text-sm text-green-400 mt-3 font-mono">
-                        <i class="fas fa-check-circle"></i> 改版後 (After)：動態生成的 N-Member 專屬卡片
+                        <i class="fas fa-check-circle"></i> 動態擴展：基於資料陣列自動映射 DOM 節點
                     </figcaption>
                 </figure>
             </div>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 現在可以分析多少人？答案是：無限！
-            </h3>
-
             <p>
-                理論上沒有上限！現在的系統已經完全沒有人數的硬性限制：
+                解決方案為確立「資料驅動渲染 (Data-Driven Rendering)」機制：
             </p>
             <ul class="list-none space-y-4 my-6 text-sm text-gray-400">
                 <li class="bg-white/5 p-4 rounded-xl border border-white/5">
-                    <strong class="text-white text-base block mb-2"><i class="fas fa-database text-accent-purple"></i> 資料解析層</strong>
-                    只要文字檔裡出現不同的名字，<code>analyze.js</code> 就會自動為該名字建立獨立的統計陣列（統計文字、貼圖、照片數量）。
+                    <strong class="text-white text-base block mb-2"><i class="fas fa-database text-accent-purple"></i> 解析層動態註冊</strong>
+                    重寫 <code>analyze.js</code> 模組。掃描文本時，系統會自動提取未重複的實體名稱 (Entities)，並於狀態池中動態建立相應的統計陣列，徹底消除人數上限之約束。
                 </li>
                 <li class="bg-white/5 p-4 rounded-xl border border-white/5">
-                    <strong class="text-white text-base block mb-2"><i class="fas fa-desktop text-accent-purple"></i> 視覺排版層</strong>
-                    我們為成員卡片設計了 flex-wrap 彈性換行網格系統。電腦版固定佔 1/3 寬、平板佔 1/2 寬、手機全寬。
+                    <strong class="text-white text-base block mb-2"><i class="fas fa-desktop text-accent-purple"></i> 渲染層映射輸出</strong>
+                    前端接收資料物件後，透過迴圈邏輯動態生成卡片容器與 Canvas 實例，並結合前述之 flex-wrap 網格，實現 N-Member 資料集的無縫展現。
                 </li>
             </ul>
-            <p>
-                實際案例：3 人家庭群組會呈現 3 張成員卡片自動換行；10 人公司群組會依序由左排到右，整齊排列不破圖。無論是閨蜜小圈圈還是千人社團，分析器都能完全吃下來，並漂亮地畫出專屬分析圖卡！🎨
-            </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 程式碼品質與技術亮點
+                <span class="text-accent-purple">#</span> 系統架構現代化與狀態管理
             </h3>
 
-            <p>以前的 HTML 檔案裡塞滿用不到的 CSS class，全域變數雜亂無章。現在不僅清除了冗餘程式碼，更建立起現代化架構：</p>
+            <p>原專案充斥全域變數汙染與過時的 DOM 操作語法。為確保系統穩定性，執行了以下工程規範：</p>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
                 <div class="bg-[#0A0A0A] p-5 rounded-xl border border-white/10">
-                    <h4 class="text-white font-bold mb-3 text-sm">狀態集中管理 (AppState)</h4>
+                    <h4 class="text-white font-bold mb-3 text-sm">狀態集中管理 (State Centralization)</h4>
                     <pre class="bg-black/50 p-3 rounded text-xs text-green-400 overflow-x-auto m-0 font-mono"><code>const AppState = {
   chatname: "",
   members: [],
@@ -174,7 +161,7 @@
 };</code></pre>
                 </div>
                 <div class="bg-[#0A0A0A] p-5 rounded-xl border border-white/10">
-                    <h4 class="text-white font-bold mb-3 text-sm">動態生成前端架構</h4>
+                    <h4 class="text-white font-bold mb-3 text-sm">動態實例生成 (Dynamic Instantiation)</h4>
                     <pre class="bg-black/50 p-3 rounded text-xs text-blue-400 overflow-x-auto m-0 font-mono"><code>sortedKeys.forEach((member, i) => {
   let canvasId = `member_${i}`;
   generateDonut(canvasId, 
@@ -186,108 +173,90 @@
             </div>
 
             <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-8">
-                <li><strong class="text-white">資料精確修復：</strong> 解決收回訊息的邏輯漏洞、X軸日期顯示錯誤，並支援純數字通話紀錄。</li>
-                <li><strong class="text-white">效能優化：</strong> 移除不必要的 jQuery 依賴，提升渲染效能；圓餅圖與文字雲能根據容器動態計算尺寸。</li>
-                <li><strong class="text-white">獨立測試環境：</strong> 導入 <code>debug.js</code>，在修改前端前可一秒驗證 Node.js 層的解析結果。</li>
+                <li><strong class="text-white">資料精確度修復：</strong> 修正「收回訊息」判讀之邏輯漏洞，重構 X 軸時間序列的生成演算法。</li>
+                <li><strong class="text-white">依賴環境淨化：</strong> 移除高度冗餘的 jQuery 依賴，改採原生 Vanilla JS 實作，降低系統封裝層級與渲染負擔。</li>
+                <li><strong class="text-white">測試隔離 (TDD 原則)：</strong> 建立 <code>debug.js</code> 測試環境，確保 Node.js 層的核心運算邏輯在注入前端前已通過驗證。</li>
             </ul>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 與 AI 協作的開發心得
+                <span class="text-accent-purple">#</span> AI 代理協作的邊界與工程規範
             </h3>
 
-            <p>這兩天的開發過程，讓我深刻體會到與 AI Agent 協作的兩面刃：</p>
+            <p>本次重構高度依賴 AI 進行輔助開發，此過程實證了生成式 AI 於軟體工程中的協作特性與風險：</p>
 
             <div class="space-y-4 my-8">
-                <div class="bg-green-900/10 p-5 rounded-xl border-l-4 border-green-500">
-                    <strong class="text-green-400 flex items-center gap-2 mb-2"><i class="fas fa-check"></i> AI 的優勢</strong>
-                    <p class="text-sm text-gray-400 m-0">極速 prototyping（迅速生成骨架程式碼）、重構助手（協助清理冗餘程式碼）、自動撰寫文件註解。</p>
+                <div class="bg-white/5 p-5 rounded-xl border-l-4 border-accent-purple/50">
+                    <strong class="text-white flex items-center gap-2 mb-2"><i class="fas fa-check"></i> 生產力提升節點</strong>
+                    <p class="text-sm text-gray-400 m-0">在架構初始化 (Prototyping)、正規表達式推演與冗餘代碼重構上，AI 能顯著壓縮開發耗時。</p>
                 </div>
-                <div class="bg-red-900/10 p-5 rounded-xl border-l-4 border-red-500">
-                    <strong class="text-red-400 flex items-center gap-2 mb-2"><i class="fas fa-exclamation-triangle"></i> AI 的限制</strong>
-                    <p class="text-sm text-gray-400 m-0">會自作聰明亂加沒要求的功能（如照片折線圖）、面對複雜邏輯容易出錯，將控制權全數讓渡會導致災難性破壞。</p>
+                <div class="bg-white/5 p-5 rounded-xl border-l-4 border-accent-purple/50">
+                    <strong class="text-white flex items-center gap-2 mb-2"><i class="fas fa-exclamation-triangle"></i> 認知邊界與系統熵增風險</strong>
+                    <p class="text-sm text-gray-400 m-0">AI 缺乏全局狀態的深度理解，極易發生「修復單點臭蟲卻破壞全域結構」之問題，或擅自注入未授權之功能模組。</p>
                 </div>
-                <div class="bg-accent-purple/10 p-5 rounded-xl border-l-4 border-accent-purple">
-                    <strong class="text-accent-purple flex items-center gap-2 mb-2"><i class="fas fa-lightbulb"></i> 給開發者的建議</strong>
-                    <p class="text-sm text-gray-400 m-0">1. 先規劃再下指令，不要讓 AI 自由發揮。<br>2. 一次只改一個功能，並透過 <code>debug.js</code> 逐步驗證。<br>3. 每次修改前必須 commit 建立回溯點。</p>
+                <div class="bg-white/5 p-5 rounded-xl border-l-4 border-accent-purple/50">
+                    <strong class="text-white flex items-center gap-2 mb-2"><i class="fas fa-terminal"></i> 協作控制守則</strong>
+                    <p class="text-sm text-gray-400 m-0">開發者必須絕對掌握「架構決策權」。任務應嚴格拆分為原子化單元 (Atomic Commits)，並建立階段性回溯點，杜絕 AI 大規模覆寫核心邏輯。</p>
                 </div>
             </div>
 
             <hr class="border-white/10 my-12">
 
             <h3 class="text-2xl font-bold text-white mt-8 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 🔮 未來展望：還有很多值得再做
+                <span class="text-accent-purple">#</span> 待解決技術債與擴充藍圖
             </h3>
 
-            <div class="border-l-2 border-accent-purple pl-4 my-6">
-                <p class="text-gray-300 italic m-0 font-medium">
-                    「一個好的專案，永遠有下一版。」
-                </p>
-            </div>
-
-            <p class="text-gray-400 font-light mb-6">這次改版解決了幾個歷史遺留問題，但這只是開始。如果未來有機會，還有很多方向值得探索：</p>
+            <p class="text-gray-400 font-light mb-6">本次重構確立了高穩定度的底層骨架，未來系統優化將針對以下已知邊界條件進行修復與功能擴充：</p>
 
             <div class="space-y-6 mb-10">
                 <div class="bg-white/5 p-6 rounded-xl border border-white/10">
-                    <h4 class="text-white font-bold mb-3 flex items-center gap-2 text-lg">
-                        <i class="fas fa-thumbtack text-accent-purple"></i> Issue #2：使用者名稱包含空格
+                    <h4 class="text-white font-bold mb-3 flex items-center gap-2 text-base">
+                        <i class="fas fa-bug text-accent-purple"></i> Issue #2 & #4：非結構化文本特例處理
                     </h4>
                     <ul class="text-sm text-gray-400 space-y-2 m-0 pl-0 list-none">
-                        <li><strong class="text-red-400">問題：</strong>當使用者名稱包含空格（如 "Tony Chou"），解析器會錯誤地將名稱拆開。</li>
-                        <li><strong class="text-green-400">目前解決：</strong>改用 Tab 作為主要分隔符，並強化 fallback 機制。</li>
-                        <li><strong class="text-blue-400">未來可優化：</strong>支援更多特殊字元（如底線、點號），並加入名稱自動校正功能。</li>
-                    </ul>
-                </div>
-
-                <div class="bg-white/5 p-6 rounded-xl border border-white/10">
-                    <h4 class="text-white font-bold mb-3 flex items-center gap-2 text-lg">
-                        <i class="fas fa-thumbtack text-accent-purple"></i> Issue #4：英文時間格式（AM/PM）
-                    </h4>
-                    <ul class="text-sm text-gray-400 space-y-2 m-0 pl-0 list-none">
-                        <li><strong class="text-red-400">問題：</strong>英文格式的「7:18 AM」會導致解析錯誤。</li>
-                        <li><strong class="text-green-400">目前解決：</strong>加入對 AM/PM 的支援，並強化時間正則表達式。</li>
-                        <li><strong class="text-blue-400">未來可優化：</strong>支援更多語系（日文、韓文），自動偵測檔案語系，動態切換解析規則。</li>
+                        <li><strong class="text-white">名稱字串斷裂：</strong> 實體名稱包含空格 (如 "John Doe") 導致解析指針異常。已初步導入 Tab 分隔機制，未來需引入動態詞綴分析。</li>
+                        <li><strong class="text-white">時間戳記混淆：</strong> 英文匯出格式 (AM/PM) 無法相容既有正則表達式。需開發自適應語系偵測模組，動態切換匹配邏輯。</li>
                     </ul>
                 </div>
             </div>
 
-            <h4 class="text-xl font-bold text-white mb-4">🚀 其他潛在功能</h4>
+            <h4 class="text-lg font-bold text-white mb-4">系統擴展維度分析</h4>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-400 font-light mb-12">
                 <div class="bg-[#0A0A0A] p-4 rounded-lg border border-white/5">
-                    <strong class="text-white block mb-1">1. 匯出功能增強</strong>
-                    支援 PDF、CSV、JSON 等格式，可自訂匯出統計項目。
+                    <strong class="text-white block mb-1">1. 資料導出模組</strong>
+                    建立標準化 API，支援 JSON、CSV 格式匯出，便於二次數據挖掘。
                 </div>
                 <div class="bg-[#0A0A0A] p-4 rounded-lg border border-white/5">
-                    <strong class="text-white block mb-1">2. 更多統計維度</strong>
-                    活躍時段分析、平均回應速度、最常使用的詞彙雲優化。
+                    <strong class="text-white block mb-1">2. 高維度數據洞察</strong>
+                    導入時間序列分析，計算節點活躍時段、回應延遲等動態參數。
                 </div>
                 <div class="bg-[#0A0A0A] p-4 rounded-lg border border-white/5">
-                    <strong class="text-white block mb-1">3. 群組比較功能</strong>
-                    同時上傳多個群組並排比較，視覺化呈現不同群組的風格差異。
+                    <strong class="text-white block mb-1">3. 多資料集交叉比對</strong>
+                    支援多路徑數據注入，提供不同群組間之平行對比視覺化。
                 </div>
                 <div class="bg-[#0A0A0A] p-4 rounded-lg border border-white/5">
-                    <strong class="text-white block mb-1">4. 互動式圖表</strong>
-                    點擊圖表可查看詳細數據，支援縮放、拖曳探索時間軸。
+                    <strong class="text-white block mb-1">4. 互動層升級</strong>
+                    實作 Canvas/SVG 事件監聽，提供數據點鑽取 (Drill-down) 與動態時間軸探索。
                 </div>
             </div>
 
             <hr class="border-white/10 my-12">
 
             <h3 class="text-2xl font-bold text-white mt-8 mb-4 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 💡 結語與開放邀請
+                <span class="text-accent-purple">#</span> 開源協作與系統演進
             </h3>
 
             <p class="text-gray-300 leading-relaxed mb-6">
-                這次改版不僅讓 <code>line-message-analyzer</code> 煥然一新，也讓我深刻體會到開源貢獻的意義。從 2 人限制到無限人數，從雜亂程式碼到乾淨架構，每一步都是成長。如果你對這些功能有興趣，或是想一起參與開發，非常歡迎：
+                開源專案的價值在於邏輯的持續驗證與架構的無止境優化。若您對數據清洗邏輯或前端視覺架構具備更佳之實作方案，歡迎介入此專案之迭代：
             </p>
 
             <ul class="list-disc pl-5 space-y-2 text-gray-400 font-light mb-8">
-                <li><strong class="text-white">Fork 專案：</strong>歡迎來到 <a href="https://github.com/GHOST8787/line-message-analyzer2026" target="_blank" class="text-accent-purple hover:underline underline-offset-4 transition-colors">我的 GitHub Repo</a> 逛逛。</li>
-                <li><strong class="text-white">提交 PR：</strong>任何 bug 修復或功能增強都無比歡迎。</li>
-                <li><strong class="text-white">開 Issue：</strong>有任何想法或問題，都可以直接發起討論。</li>
+                <li><strong class="text-white">Repository：</strong> 專案原始碼已發布於 <a href="https://github.com/GHOST8787/line-message-analyzer2026" target="_blank" class="text-accent-purple hover:underline underline-offset-4 transition-colors">GitHub</a>。</li>
+                <li><strong class="text-white">Pull Requests：</strong> 歡迎提交任何優化底層效能或擴充功能之 PR。</li>
+                <li><strong class="text-white">Issue Tracking：</strong> 任何異常邊界條件或技術討論，皆可透過 Issue 系統發起。</li>
             </ul>
 
-            <p class="text-gray-400 italic">
-                也特別感謝原作者開發了這麼棒的專案。開源的精神就是一起讓工具變得更好。期待未來的某一天，這個專案能成長得更加強大，也期待在 GitHub 上與你相遇！
+            <p class="text-gray-400 italic text-sm">
+                致謝原始作者之基礎貢獻。軟體工程的本質即是不斷建立秩序以對抗系統熵增，期待此工具能在社群的參與下，收斂至更高的穩定狀態。
             </p>
 
         </article>
