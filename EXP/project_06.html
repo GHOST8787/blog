@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>EXP / P6 | GHOST.ouo</title>
+    
+    <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../0124_style.css">
+    
+    <script src="../tailwind.config.js"></script>
+    <script>
+        window.siteRoot = '../';
+    </script>
+    <script src="../0124_main.js" defer></script>
+    <style>
+        /* 完全響應式表格：無滾輪，自動換行 */
+        .responsive-table {
+            width: 100%;
+            overflow: visible;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 0.75rem;
+            background: #0A0A0A;
+            margin: 2rem 0;
+        }
+        
+        .responsive-table table {
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: collapse;
+        }
+        
+        .responsive-table th,
+        .responsive-table td {
+            padding: 1rem 0.75rem;
+            text-align: left;
+            vertical-align: top;
+            word-break: break-word;
+            white-space: normal;
+            line-height: 1.5;
+        }
+        
+        .responsive-table th {
+            background: rgba(255,255,255,0.05);
+            color: #ffffff;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 700;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .responsive-table td {
+            color: #d1d5db;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.875rem;
+        }
+        
+        .responsive-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        /* 英文機制名稱特別標示 */
+        .responsive-table .mechanism-name {
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            color: #c4b5fd;
+        }
+        
+        .responsive-table .mechanism-name span {
+            color: #ffffff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 400;
+            font-size: 0.75rem;
+            display: block;
+            margin-top: 0.25rem;
+            opacity: 0.8;
+        }
+        
+        /* Custom Commands 特殊標示（非紫色） */
+        .responsive-table tr:not(:first-child) .mechanism-name {
+            color: #ffffff;
+        }
+        
+        .responsive-table tr:not(:first-child) .mechanism-name span {
+            color: #9ca3af;
+        }
+        
+        /* 輔助說明文字 */
+        .helper-text {
+            color: #9ca3af;
+            font-size: 0.7rem;
+            display: block;
+            margin-top: 0.25rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        /* 欄位寬度分配（依據內容重要性） */
+        .responsive-table th:nth-child(1) { width: 14%; } /* 機制名稱 */
+        .responsive-table th:nth-child(2) { width: 18%; } /* 觸發方式 */
+        .responsive-table th:nth-child(3) { width: 12%; } /* 持久性 */
+        .responsive-table th:nth-child(4) { width: 22%; } /* 核心內容 */
+        .responsive-table th:nth-child(5) { width: 12%; } /* 載入時機 */
+        .responsive-table th:nth-child(6) { width: 22%; } /* 適用場景 */
+        
+        /* 手機版優化 */
+        @media screen and (max-width: 640px) {
+            .responsive-table th,
+            .responsive-table td {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.75rem;
+            }
+            
+            .responsive-table .mechanism-name span {
+                font-size: 0.65rem;
+            }
+            
+            .helper-text {
+                font-size: 0.6rem;
+            }
+        }
+    </style>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+        
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../0124_projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / P6</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+            
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                AI Agent 生態系的機制解構：<br>
+                <span class="text-gradient text-2xl md:text-4xl">從 Pixel Agents 改寫經驗談 Skills 的定位</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    AI Agent
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Claude
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    System Architecture
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Prompt Engineering
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Open Source
+                </span>
+            </div>
+            
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.03.02</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+            
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                從開源專案改寫經驗出發，釐清 Claude 生態系中 Skills 與 Custom Commands、MCP、Subagents 的本質差異。
+            </p>
+
+            <figure class="my-10 mx-auto">
+                <img src="../PNG/project_06.1.jpg" 
+                     alt="用不到五個小時就爆了的PRO帳號" 
+                     class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    用不到五個小時就爆了的PRO帳號
+                </figcaption>
+            </figure>
+
+            <p>
+                前幾日於 GitHub 上發現 Pixel Agents 開源專案——該專案將 AI 代理人的運作視覺化為像素風格虛擬辦公室角色，原始設計聚焦於 AI Agent 運行狀態的監控與管理。經由 Claude 協助改寫，將其調整為可監控本機端各 AI 任務執行情況的小型控制平台。
+            </p>
+            
+            <p>
+                此改寫過程揭示了一個結構性問題：Claude CLI 與 Claude Code 本質上是為工程師設計的工具鏈，其檔案存放邏輯與機制設定對非技術背景使用者並不直觀。「東西放在哪裡？」「為何如此設定？」成為常見的進入障礙。
+            </p>
+
+            <figure class="my-10 mx-auto">
+                <img src="../PNG/project_06.2.jpg" 
+                     alt="本地的網頁版機器人" 
+                     class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    本地的網頁版機器人
+                </figcaption>
+            </figure>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-10">
+                <figure class="m-0">
+                    <img src="../PNG/project_06.3.jpg" 
+                         alt="顯示在屏幕上方的可愛機器人" 
+                         class="w-full rounded-2xl border border-white/10 shadow-lg opacity-90 hover:opacity-100 transition-opacity">
+                    <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                        顯示在屏幕上方的可愛機器人
+                    </figcaption>
+                </figure>
+                <figure class="m-0">
+                    <img src="../PNG/project_06.4.jpg" 
+                         alt="如果他在工作的畫會張出輪胎喔" 
+                         class="w-full rounded-2xl border border-white/10 shadow-lg opacity-90 hover:opacity-100 transition-opacity">
+                    <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                        如果他在工作的話會長出輪胎喔
+                    </figcaption>
+                </figure>
+            </div>
+
+            <p>
+                Pro 方案下，單純透過問答方式進行開發，Token 消耗速度仍相當可觀。現階段採取的權衡方案為：透過 MCP (Model Context Protocol) 串接 Obsidian，定期自動更新 Markdown 檔案作為專案管理知識庫。此方式使開發過程中的上下文得以有效保存與追溯，避免每次重新建立語境。
+            </p>
+            
+            <figure class="my-10 mx-auto max-w-lg">
+                <img src="../PNG/project_06.5.jpg" 
+                     alt="每天都在燒TOKEN" 
+                     class="w-full rounded-2xl border border-red-500/20 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-red-400 mt-3 font-mono">
+                    每天都在燒TOKEN
+                </figcaption>
+            </figure>
+
+            <p>
+                反覆嘗試與調整過程中，我發現 Claude 生態系中存在多種「個人化/客製化」機制，但其定位與適用場景經常被混淆。尤其是 <strong>Skills</strong> 這個概念，與其他機制的本質差異值得深入釐清。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 生態系機制比較：Skills 與其他工具的架構定位
+            </h3>
+
+            <p>以下表格整理四種機制的本質差異，有助於開發者精準選擇適用工具：</p>
+
+            <!-- 完全響應式表格：英文機制名稱清楚標示，無滾輪 -->
+            <div class="responsive-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>機制名稱</th>
+                            <th>觸發方式</th>
+                            <th>持久性</th>
+                            <th>核心內容</th>
+                            <th>載入時機</th>
+                            <th>適用場景</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="mechanism-name">
+                                    Skills
+                                    <span>技能</span>
+                                </div>
+                            </td>
+                            <td>
+                                AI自動判斷
+                                <span class="helper-text">根據任務描述</span>
+                            </td>
+                            <td>跨對話<br>跨專案</td>
+                            <td>程序性知識、工作流程<br>可執行的腳本資源</td>
+                            <td>
+                                動態載入
+                                <span class="helper-text">依需求</span>
+                            </td>
+                            <td>需要 Claude 主動應用專業知識的場景</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="mechanism-name">
+                                    Custom Commands
+                                    <span>自訂指令</span>
+                                </div>
+                            </td>
+                            <td>
+                                用戶手動輸入
+                                <span class="helper-text">如 /review-pr</span>
+                            </td>
+                            <td>專案層級<br>或用戶層級</td>
+                            <td>
+                                Prompt 範本
+                                <span class="helper-text">單一檔案</span>
+                            </td>
+                            <td>用戶觸發時載入</td>
+                            <td>用戶明確知道要執行什麼固定操作時</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="mechanism-name">
+                                    MCP
+                                    <span>模型上下文協議</span>
+                                </div>
+                            </td>
+                            <td>工具呼叫</td>
+                            <td>啟動時載入</td>
+                            <td>
+                                連接外部服務的方法
+                                <span class="helper-text">如 API、資料庫</span>
+                            </td>
+                            <td>按需呼叫</td>
+                            <td>需要 Claude 獲取外部資料或操作外部工具時</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="mechanism-name">
+                                    Subagents
+                                    <span>子智能體</span>
+                                </div>
+                            </td>
+                            <td>
+                                Claude自動委派<br>或手動啟動
+                            </td>
+                            <td>任務期間</td>
+                            <td>獨立運作的 AI 實例</td>
+                            <td>需要時建立</td>
+                            <td>需獨立上下文、平行處理的複雜拆分任務</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 機制的本質定位分析
+            </h3>
+
+            <div class="space-y-8 my-8">
+                <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/10 shadow-lg">
+                    <h4 class="text-white font-bold mb-3 flex items-center gap-2 text-lg">
+                        <i class="fas fa-brain text-accent-purple"></i> 1. Skills：程序性知識的主動應用
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed m-0">
+                        Skills 的關鍵設計差異在於：由 AI「主動判斷」何時使用——採用漸進式揭露 (Progressive Disclosure) 架構，僅在需要時載入相關上下文。使用者無需下達特定指令，Claude 會根據對話任務描述自動呼叫適用的 Skill。<br><br>
+                        本質上，Skills 是程序性知識的封裝單元，並非單純提示詞模板，而是包含工作流程、判斷邏輯、可執行程式碼腳本的複合資源。其跨對話、跨專案的持久性，使其最適合建構 Claude 的「專業能力庫」。
+                    </p>
+                </div>
+
+                <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/10 shadow-lg">
+                    <h4 class="text-white font-bold mb-3 flex items-center gap-2 text-lg">
+                        <i class="fas fa-terminal text-blue-400"></i> 2. Custom Commands：用戶主動觸發的快捷指令
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed m-0">
+                        與 Skills 不同，Custom Commands 必須由用戶手動輸入特定指令（如 <code>/review-pr</code>）觸發。持久性限於專案或用戶層級，內容為單一 Prompt 範本。<br><br>
+                        此機制適用於「用戶明確知道執行什麼操作」的情境，例如程式碼審查、特定格式文件生成等重複性任務。主動權始終在用戶端。
+                    </p>
+                </div>
+
+                <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/10 shadow-lg">
+                    <h4 class="text-white font-bold mb-3 flex items-center gap-2 text-lg">
+                        <i class="fas fa-network-wired text-green-400"></i> 3. MCP：外部世界的連接橋樑
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed m-0">
+                        MCP 的定位明確：連接外部服務的標準化協議，使 Claude 得以透過結構化工具安全存取外部系統與資源。無論是 API 存取、資料庫查詢，或本案例中串接 Obsidian 進行檔案讀寫，MCP 皆是 Claude 與外部世界溝通的通道。<br><br>
+                        其本質為工具方法的集合，而非知識或流程的封裝——此為與 Skills 最根本的差異：Skills 封裝「怎麼做」的程序知識，MCP 提供「能用什麼外部資源」的連接能力。
+                    </p>
+                </div>
+
+                <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/10 shadow-lg">
+                    <h4 class="text-white font-bold mb-3 flex items-center gap-2 text-lg">
+                        <i class="fas fa-sitemap text-yellow-400"></i> 4. Subagents：任務並行與上下文隔離
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed m-0">
+                        Subagents 設計為解決複雜任務拆分需求。當 Claude 判斷子任務需要獨立上下文或可平行處理時，自動建立 Subagent 執行——子智能體擁有獨立狀態與工具權限，主智能體僅接收與整併最終結果，此架構可顯著降低 Token 負擔，任務完成後即回收。<br><br>
+                        此為動態建立的運算資源，持久性僅限任務期間。與 Skills 的最大差異：Skills 是「能力」，Subagents 是「執行個體」。
+                    </p>
+                </div>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 實務經驗的初步歸納
+            </h3>
+
+            <p>從 Pixel Agents 改寫經驗中，歸納出較為清晰的協作模式：</p>
+            
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">1. Skills 用於建構核心能力庫</strong> —— 定義 Claude「具備何種能力」</li>
+                <li><strong class="text-white">2. MCP 用於連接外部世界</strong> —— 定義 Claude「能存取何種資源」</li>
+                <li><strong class="text-white">3. Custom Commands 用於標準化重複流程</strong> —— 定義用戶「能快速叫用何種操作」</li>
+                <li><strong class="text-white">4. Subagents 用於處理複雜拆分</strong> —— 定義任務「能如何平行處理」</li>
+            </ul>
+
+            <figure class="my-10">
+                <img src="../PNG/project_06.6.jpg" 
+                     alt="可以監控機器人活動數據" 
+                     class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    可監控機器人活動數據的儀表板
+                </figcaption>
+            </figure>
+
+            <p>
+                現行 Obsidian + MCP 方案，本質上是將外部知識庫（Markdown 檔案）透過 MCP 接入，使 Claude 能在開發過程中持續參考專案文件，無需每次重新餵入上下文。此架構在一定程度上緩解 Token 消耗問題，同時使專案管理更結構化。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 持續優化中的實驗場
+            </h3>
+
+            <p class="mb-10">
+                此架構仍在持續調整中。Skills 與其他機制的邊界劃分、Custom Commands 與 Skills 的適用時機、MCP 服務設計的最佳化——皆有待進一步探索。若您也在嘗試類似 AI Agent 開發模式，歡迎交流討論。開源與協作的本質，在於工具與知識的持續演化。
+            </p>
+
+            <hr class="border-white/10 my-10">
+
+            <div class="bg-gradient-to-r from-accent-purple/10 to-transparent p-6 rounded-2xl border-l-4 border-accent-purple shadow-xl">
+                <h4 class="text-white font-bold mb-4 flex items-center gap-2 text-lg">
+                    <i class="fas fa-tools text-accent-purple"></i> Tool Development & Token Optimization
+                </h4>
+                <p class="text-gray-300 text-sm leading-relaxed mb-4 font-light">
+                    目前持續開發各類輔助小工具，如有需求可聯繫。<br>
+                    關於 Token 優化，已初步撰寫對應 Skill，後續將釋出。考量 Pro 版帳號限制，預期仍有其他架構層面的優化空間可探討。
+                </p>
+            </div>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="project_05.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Project
+            </a>
+            <a href="../0124_projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Projects
+            </a>
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                Next Project &rarr;
+            </a>
+        </div>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+</body>
+</html>
