@@ -16,8 +16,6 @@ B_My Little Planet：球形(基底能力)+心智圖(專案+經驗)
 B_錄音檔放置空間 星星連結
 B_錄音檔放置空間 頁面
 
-B_關於神仙教母 文章 https://www.instagram.com/reels/DKZYwVbSuij/
-B_關於戀愛 文章 https://www.instagram.com/p/DUQCO6_Emw4/
 B_你視AI為...? 文章
 B_關於拖延 GEMINI 個人系統 文章
 B_台大賽局理論 文章
@@ -30,6 +28,8 @@ C_解鎖畫面
 C_偷塞音樂在背景
 C_唱歌區域->V皮? https://www.youtube.com/watch?v=39Rrh6CKtrU&t=6s
 C_新增AI整理區 心得/源頭/AI內容
+C_關於神仙教母 文章 https://www.instagram.com/reels/DKZYwVbSuij/
+C_關於戀愛 文章 https://www.instagram.com/p/DUQCO6_Emw4/
 
 <!-- 技能循環撥放OR換樣式 -->
 <!-- 在同一頁重複點導覽列跳到就閃標題 -->
