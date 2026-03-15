@@ -19,114 +19,6 @@
         window.siteRoot = '../';
     </script>
     <script src="../0124_main.js" defer></script>
-    <style>
-        /* 完全響應式表格：無滾輪，自動換行 */
-        .responsive-table {
-            width: 100%;
-            overflow: visible;
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 0.75rem;
-            background: #0A0A0A;
-            margin: 2rem 0;
-        }
-        
-        .responsive-table table {
-            width: 100%;
-            table-layout: fixed;
-            border-collapse: collapse;
-        }
-        
-        .responsive-table th,
-        .responsive-table td {
-            padding: 1rem 0.75rem;
-            text-align: left;
-            vertical-align: top;
-            word-break: break-word;
-            white-space: normal;
-            line-height: 1.5;
-        }
-        
-        .responsive-table th {
-            background: rgba(255,255,255,0.05);
-            color: #ffffff;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            font-weight: 700;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        .responsive-table td {
-            color: #d1d5db;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            font-size: 0.875rem;
-        }
-        
-        .responsive-table tr:last-child td {
-            border-bottom: none;
-        }
-        
-        /* 英文機制名稱特別標示 */
-        .responsive-table .mechanism-name {
-            font-weight: 700;
-            font-family: 'JetBrains Mono', monospace;
-            color: #c4b5fd;
-        }
-        
-        .responsive-table .mechanism-name span {
-            color: #ffffff;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-weight: 400;
-            font-size: 0.75rem;
-            display: block;
-            margin-top: 0.25rem;
-            opacity: 0.8;
-        }
-        
-        /* Custom Commands 特殊標示（非紫色） */
-        .responsive-table tr:not(:first-child) .mechanism-name {
-            color: #ffffff;
-        }
-        
-        .responsive-table tr:not(:first-child) .mechanism-name span {
-            color: #9ca3af;
-        }
-        
-        /* 輔助說明文字 */
-        .helper-text {
-            color: #9ca3af;
-            font-size: 0.7rem;
-            display: block;
-            margin-top: 0.25rem;
-            font-family: 'JetBrains Mono', monospace;
-        }
-        
-        /* 欄位寬度分配（依據內容重要性） */
-        .responsive-table th:nth-child(1) { width: 14%; } /* 機制名稱 */
-        .responsive-table th:nth-child(2) { width: 18%; } /* 觸發方式 */
-        .responsive-table th:nth-child(3) { width: 12%; } /* 持久性 */
-        .responsive-table th:nth-child(4) { width: 22%; } /* 核心內容 */
-        .responsive-table th:nth-child(5) { width: 12%; } /* 載入時機 */
-        .responsive-table th:nth-child(6) { width: 22%; } /* 適用場景 */
-        
-        /* 手機版優化 */
-        @media screen and (max-width: 640px) {
-            .responsive-table th,
-            .responsive-table td {
-                padding: 0.75rem 0.5rem;
-                font-size: 0.75rem;
-            }
-            
-            .responsive-table .mechanism-name span {
-                font-size: 0.65rem;
-            }
-            
-            .helper-text {
-                font-size: 0.6rem;
-            }
-        }
-    </style>
 </head>
 
 <body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
@@ -247,88 +139,85 @@
 
             <p>以下表格整理四種機制的本質差異，有助於開發者精準選擇適用工具：</p>
 
-            <!-- 完全響應式表格：英文機制名稱清楚標示，無滾輪 -->
-            <div class="responsive-table">
-                <table>
+            <div class="w-full overflow-x-auto border border-white/10 rounded-xl bg-[#0A0A0A] my-8 shadow-lg">
+                <table class="w-full table-fixed border-collapse min-w-[700px] md:min-w-full">
                     <thead>
                         <tr>
-                            <th>機制名稱</th>
-                            <th>觸發方式</th>
-                            <th>持久性</th>
-                            <th>核心內容</th>
-                            <th>載入時機</th>
-                            <th>適用場景</th>
+                            <th class="bg-white/5 text-white font-mono text-[0.75rem] uppercase tracking-wider font-bold border-b border-white/10 p-3 sm:p-4 text-left align-top break-words w-[14%]">機制名稱</th>
+                            <th class="bg-white/5 text-white font-mono text-[0.75rem] uppercase tracking-wider font-bold border-b border-white/10 p-3 sm:p-4 text-left align-top break-words w-[18%]">觸發方式</th>
+                            <th class="bg-white/5 text-white font-mono text-[0.75rem] uppercase tracking-wider font-bold border-b border-white/10 p-3 sm:p-4 text-left align-top break-words w-[12%]">持久性</th>
+                            <th class="bg-white/5 text-white font-mono text-[0.75rem] uppercase tracking-wider font-bold border-b border-white/10 p-3 sm:p-4 text-left align-top break-words w-[22%]">核心內容</th>
+                            <th class="bg-white/5 text-white font-mono text-[0.75rem] uppercase tracking-wider font-bold border-b border-white/10 p-3 sm:p-4 text-left align-top break-words w-[12%]">載入時機</th>
+                            <th class="bg-white/5 text-white font-mono text-[0.75rem] uppercase tracking-wider font-bold border-b border-white/10 p-3 sm:p-4 text-left align-top break-words w-[22%]">適用場景</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>
-                                <div class="mechanism-name">
+                        <tr class="border-b border-white/5 last:border-b-0 transition-colors hover:bg-white/5">
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">
+                                <div class="font-bold font-mono text-accent-purple">
                                     Skills
-                                    <span>技能</span>
+                                    <span class="text-white font-sans font-normal text-[0.65rem] sm:text-[0.75rem] block mt-1 opacity-80">技能</span>
                                 </div>
                             </td>
-                            <td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">
                                 AI自動判斷
-                                <span class="helper-text">根據任務描述</span>
+                                <span class="text-gray-400 text-[0.6rem] sm:text-[0.7rem] block mt-1 font-mono">根據任務描述</span>
                             </td>
-                            <td>跨對話<br>跨專案</td>
-                            <td>程序性知識、工作流程<br>可執行的腳本資源</td>
-                            <td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">跨對話<br>跨專案</td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">程序性知識、工作流程<br>可執行的腳本資源</td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">
                                 動態載入
-                                <span class="helper-text">依需求</span>
+                                <span class="text-gray-400 text-[0.6rem] sm:text-[0.7rem] block mt-1 font-mono">依需求</span>
                             </td>
-                            <td>需要 Claude 主動應用專業知識的場景</td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">需要 Claude 主動應用專業知識的場景</td>
                         </tr>
-                        <tr>
-                            <td>
-                                <div class="mechanism-name">
+                        <tr class="border-b border-white/5 last:border-b-0 transition-colors hover:bg-white/5">
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">
+                                <div class="font-bold font-mono text-white">
                                     Custom Commands
-                                    <span>自訂指令</span>
+                                    <span class="text-gray-400 font-sans font-normal text-[0.65rem] sm:text-[0.75rem] block mt-1">自訂指令</span>
                                 </div>
                             </td>
-                            <td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">
                                 用戶手動輸入
-                                <span class="helper-text">如 /review-pr</span>
+                                <span class="text-gray-400 text-[0.6rem] sm:text-[0.7rem] block mt-1 font-mono">如 /review-pr</span>
                             </td>
-                            <td>專案層級<br>或用戶層級</td>
-                            <td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">專案層級<br>或用戶層級</td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">
                                 Prompt 範本
-                                <span class="helper-text">單一檔案</span>
+                                <span class="text-gray-400 text-[0.6rem] sm:text-[0.7rem] block mt-1 font-mono">單一檔案</span>
                             </td>
-                            <td>用戶觸發時載入</td>
-                            <td>用戶明確知道要執行什麼固定操作時</td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">用戶觸發時載入</td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">用戶明確知道要執行什麼固定操作時</td>
                         </tr>
-                        <tr>
-                            <td>
-                                <div class="mechanism-name">
+                        <tr class="border-b border-white/5 last:border-b-0 transition-colors hover:bg-white/5">
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">
+                                <div class="font-bold font-mono text-white">
                                     MCP
-                                    <span>模型上下文協議</span>
+                                    <span class="text-gray-400 font-sans font-normal text-[0.65rem] sm:text-[0.75rem] block mt-1">模型上下文協議</span>
                                 </div>
                             </td>
-                            <td>工具呼叫</td>
-                            <td>啟動時載入</td>
-                            <td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">工具呼叫</td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">啟動時載入</td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">
                                 連接外部服務的方法
-                                <span class="helper-text">如 API、資料庫</span>
+                                <span class="text-gray-400 text-[0.6rem] sm:text-[0.7rem] block mt-1 font-mono">如 API、資料庫</span>
                             </td>
-                            <td>按需呼叫</td>
-                            <td>需要 Claude 獲取外部資料或操作外部工具時</td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">按需呼叫</td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">需要 Claude 獲取外部資料或操作外部工具時</td>
                         </tr>
-                        <tr>
-                            <td>
-                                <div class="mechanism-name">
+                        <tr class="border-b border-white/5 last:border-b-0 transition-colors hover:bg-white/5">
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">
+                                <div class="font-bold font-mono text-white">
                                     Subagents
-                                    <span>子智能體</span>
+                                    <span class="text-gray-400 font-sans font-normal text-[0.65rem] sm:text-[0.75rem] block mt-1">子智能體</span>
                                 </div>
                             </td>
-                            <td>
-                                Claude自動委派<br>或手動啟動
-                            </td>
-                            <td>任務期間</td>
-                            <td>獨立運作的 AI 實例</td>
-                            <td>需要時建立</td>
-                            <td>需獨立上下文、平行處理的複雜拆分任務</td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">Claude自動委派<br>或手動啟動</td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">任務期間</td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">獨立運作的 AI 實例</td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">需要時建立</td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">需獨立上下文、平行處理的複雜拆分任務</td>
                         </tr>
                     </tbody>
                 </table>
@@ -354,7 +243,7 @@
                         <i class="fas fa-terminal text-blue-400"></i> 2. Custom Commands：用戶主動觸發的快捷指令
                     </h4>
                     <p class="text-sm text-gray-400 leading-relaxed m-0">
-                        與 Skills 不同，Custom Commands 必須由用戶手動輸入特定指令（如 <code>/review-pr</code>）觸發。持久性限於專案或用戶層級，內容為單一 Prompt 範本。<br><br>
+                        與 Skills 不同，Custom Commands 必須由用戶手動輸入特定指令（如 <code class="bg-white/10 px-1.5 py-0.5 rounded text-accent-purple">/review-pr</code>）觸發。持久性限於專案或用戶層級，內容為單一 Prompt 範本。<br><br>
                         此機制適用於「用戶明確知道執行什麼操作」的情境，例如程式碼審查、特定格式文件生成等重複性任務。主動權始終在用戶端。
                     </p>
                 </div>
@@ -435,7 +324,7 @@
             <a href="../0124_projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
                 View All Projects
             </a>
-            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+            <a href="project_07.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
                 Next Project &rarr;
             </a>
         </div>
