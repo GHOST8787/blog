@@ -108,26 +108,38 @@ function initMobileMenu() {
 
     if (!btn || !overlay) return;
 
-    btn.addEventListener('click', () => {
+    const openMenu = () => {
         overlay.classList.remove('hidden');
         overlay.style.opacity = '0';
+        overlay.setAttribute('aria-hidden', 'false');
+        btn.setAttribute('aria-expanded', 'true');
         requestAnimationFrame(() => {
             overlay.style.transition = 'opacity 0.3s ease';
             overlay.style.opacity = '1';
         });
-    });
+        // 焦點移到關閉按鈕
+        if (closeBtn) closeBtn.focus();
+    };
 
     const closeMenu = () => {
         overlay.style.opacity = '0';
+        overlay.setAttribute('aria-hidden', 'true');
+        btn.setAttribute('aria-expanded', 'false');
         setTimeout(() => {
             overlay.classList.add('hidden');
+            btn.focus(); // 焦點回到漢堡按鈕
         }, 300);
     };
 
+    btn.addEventListener('click', openMenu);
     if (closeBtn) closeBtn.addEventListener('click', closeMenu);
+    links.forEach(link => link.addEventListener('click', closeMenu));
 
-    links.forEach(link => {
-        link.addEventListener('click', closeMenu);
+    // Escape 鍵關閉選單
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !overlay.classList.contains('hidden')) {
+            closeMenu();
+        }
     });
 }
 
@@ -227,6 +239,11 @@ function initSmartNav() {
 
 /**
  * 8. Firebase 愛心按鈕
+ * ⚠️ 安全提醒：Firebase API Key 暴露於前端是預期行為（靜態站點限制），
+ *    但務必確保 Firebase Console 已設定：
+ *    1. Database Security Rules（限制只允許 ghost_love_count 的 increment）
+ *    2. API Key 限制（僅限 ghost8787.github.io 網域）
+ *    3. 設定 Referrer 限制防止濫用
  */
 function initHeartButton() {
     const btn = document.getElementById('heart-trigger');

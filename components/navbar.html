@@ -1,28 +1,27 @@
-<nav class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-2xl">
+<nav class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-2xl" aria-label="主要導覽">
     <div class="glass rounded-full px-6 py-3 flex items-center justify-between shadow-2xl">
         <div class="flex items-center gap-2">
             <span class="text-white font-bold tracking-tighter text-lg">GHOST<span class="text-accent-purple">.ouo</span></span>
         </div>
         <div class="hidden md:flex items-center gap-6 text-sm font-medium tracking-wide">
             <a href="index.html#about" class="hover:text-white transition-colors">About</a>
-            <a href="0124_projects.html" class="hover:text-accent-purple transition-colors">project</a>
-            <a href="0124_articles.html" class="hover:text-white transition-colors">Article</a>
-            <!-- <a href="0205_planet.html" class="hover:text-white transition-colors">Planet</a> -->
+            <a href="0124_projects.html" class="hover:text-accent-purple transition-colors">Projects</a>
+            <a href="0124_articles.html" class="hover:text-white transition-colors">Articles</a>
             <a href="index.html#contact" class="hover:text-white transition-colors text-accent-purple">Contact</a>
         </div>
-        <button id="mobile-menu-btn" class="md:hidden text-gray-400 p-1 hover:text-white transition-colors">
+        <button id="mobile-menu-btn" aria-label="開啟導覽選單" aria-expanded="false" class="md:hidden text-gray-400 p-1 hover:text-white transition-colors">
             <i class="fas fa-bars text-xl"></i>
         </button>
     </div>
 </nav>
 
-<div id="mobile-overlay" class="fixed inset-0 bg-black/95 z-[60] hidden flex flex-col items-center justify-center gap-10 text-2xl font-bold tracking-tighter text-white transition-opacity duration-300">
-    <button id="close-menu" class="absolute top-8 right-8 text-gray-400 p-2 hover:text-white transition-colors">
+<div id="mobile-overlay" role="dialog" aria-hidden="true" aria-label="導覽選單" class="fixed inset-0 bg-black/95 z-[60] hidden flex flex-col items-center justify-center gap-10 text-2xl font-bold tracking-tighter text-white transition-opacity duration-300">
+    <button id="close-menu" aria-label="關閉導覽選單" class="absolute top-8 right-8 text-gray-400 p-2 hover:text-white transition-colors">
         <i class="fas fa-times text-2xl"></i>
     </button>
-    
+
     <a href="index.html#about" class="hover:text-accent-purple transition-colors">About</a>
-    <a href="0124_projects.html" class="hover:text-accent-purple transition-colors">Project</a>
-    <a href="0124_articles.html" class="hover:text-accent-purple transition-colors">Article</a>
+    <a href="0124_projects.html" class="hover:text-accent-purple transition-colors">Projects</a>
+    <a href="0124_articles.html" class="hover:text-accent-purple transition-colors">Articles</a>
     <a href="index.html#contact" class="hover:text-accent-purple transition-colors">Contact</a>
 </div>
