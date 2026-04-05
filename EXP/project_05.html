@@ -2,19 +2,19 @@
 <html lang="zh-TW" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EXP / P5 | GHOST.ouo</title>
     
     <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
     <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
     
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../tailwind.config.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="../0124_style.css">
     
-    <script src="../tailwind.config.js"></script>
     <script>
         window.siteRoot = '../';
     </script>
@@ -86,16 +86,16 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-10">
                 <figure class="m-0">
                     <img src="../PNG/project_05.1.png" 
-                         alt="視覺排版改版前" 
-                         class="w-full rounded-2xl border-2 border-red-500/30 shadow-lg opacity-80">
+                         alt="視覺排版改版前"
+                         loading="lazy" class="w-full rounded-2xl border-2 border-red-500/30 shadow-lg opacity-80">
                     <figcaption class="text-center text-sm text-red-400 mt-3 font-mono">
                         <i class="fas fa-times-circle"></i> 架構迭代前：生硬卡片與靜態斷點限制
                     </figcaption>
                 </figure>
                 <figure class="m-0">
                     <img src="../PNG/project_05.2.png" 
-                         alt="視覺排版改版後" 
-                         class="w-full rounded-2xl border-2 border-green-500/30 shadow-lg">
+                         alt="視覺排版改版後"
+                         loading="lazy" class="w-full rounded-2xl border-2 border-green-500/30 shadow-lg">
                     <figcaption class="text-center text-sm text-green-400 mt-3 font-mono">
                         <i class="fas fa-check-circle"></i> 架構迭代後：動態網格與層次化視覺元件
                     </figcaption>
@@ -113,16 +113,16 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-10">
                 <figure class="m-0">
                     <img src="../PNG/project_05.3.png" 
-                         alt="2人限制改版前" 
-                         class="w-full rounded-2xl border-2 border-red-500/30 shadow-lg opacity-80">
+                         alt="2人限制改版前"
+                         loading="lazy" class="w-full rounded-2xl border-2 border-red-500/30 shadow-lg opacity-80">
                     <figcaption class="text-center text-sm text-red-400 mt-3 font-mono">
                         <i class="fas fa-times-circle"></i> 邏輯耦合：被寫死的雙人圖表結構
                     </figcaption>
                 </figure>
                 <figure class="m-0">
                     <img src="../PNG/project_05.4.png" 
-                         alt="無限人數改版後" 
-                         class="w-full rounded-2xl border-2 border-green-500/30 shadow-lg">
+                         alt="無限人數改版後"
+                         loading="lazy" class="w-full rounded-2xl border-2 border-green-500/30 shadow-lg">
                     <figcaption class="text-center text-sm text-green-400 mt-3 font-mono">
                         <i class="fas fa-check-circle"></i> 動態擴展：基於資料陣列自動映射 DOM 節點
                     </figcaption>
@@ -250,7 +250,7 @@
             </p>
 
             <ul class="list-disc pl-5 space-y-2 text-gray-400 font-light mb-8">
-                <li><strong class="text-white">Repository：</strong> 專案原始碼已發布於 <a href="https://github.com/GHOST8787/line-message-analyzer2026" target="_blank" class="text-accent-purple hover:underline underline-offset-4 transition-colors">GitHub</a>。</li>
+                <li><strong class="text-white">Repository：</strong> 專案原始碼已發布於 <a href="https://github.com/GHOST8787/line-message-analyzer2026" target="_blank" rel="noopener noreferrer" class="text-accent-purple hover:underline underline-offset-4 transition-colors">GitHub</a>。</li>
                 <li><strong class="text-white">Pull Requests：</strong> 歡迎提交任何優化底層效能或擴充功能之 PR。</li>
                 <li><strong class="text-white">Issue Tracking：</strong> 任何異常邊界條件或技術討論，皆可透過 Issue 系統發起。</li>
             </ul>
