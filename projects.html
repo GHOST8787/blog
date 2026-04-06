@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secret Articles | GHOST.ouo</title>
-    <meta name="description" content="GHOST.ouo 技術文章 — AI 自動化、生物觀察、開發工具分享">
-    <meta property="og:title" content="Secret Articles | GHOST.ouo">
-    <meta property="og:description" content="AI 自動化、生物觀察、開發工具分享">
+    <title>Secret projects | GHOST.ouo</title>
+    <meta name="description" content="GHOST.ouo 作品集 — AI 自動化、Web 開發、流程自動化專案展示">
+    <meta property="og:title" content="Secret Projects | GHOST.ouo">
+    <meta property="og:description" content="AI 自動化、Web 開發、流程自動化專案展示">
     <meta property="og:type" content="website">
-    <link rel="canonical" href="https://ghost8787.github.io/blog/0124_articles.html">
+    <link rel="canonical" href="https://ghost8787.github.io/blog/projects.html">
     <link rel="icon" type="image/png" href="PNG/pixelS2.png">
     <link rel="apple-touch-icon" href="PNG/pixelS2.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="tailwind.config.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="0124_style.css">
-    <script type="module" src="0124_main.js" defer></script>
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="main.js" defer></script>
 </head>
 
 <body class="font-sans selection:bg-accent-purple/30 selection:text-white">
@@ -33,7 +33,7 @@
         
         <div class="mb-12 relative z-20 pointer-events-none">
             <h1 class="text-3xl md:text-4xl font-extrabold mb-2 leading-tight tracking-tight text-gradient text-left w-fit">
-                Articles
+                Projects
             </h1>
             <p class="text-purple-400 font-mono text-xs uppercase tracking-wider">
                 Code, Design & Everything in between.
@@ -55,12 +55,12 @@
 
         try {
             // 1. 讀取 JSON 清單 (確保檔名與路徑正確)
-            const listResponse = await fetch('0124_articles.json');
+            const listResponse = await fetch('projects.json');
             if (!listResponse.ok) throw new Error('無法取得專案清單');
-            const articles = (await listResponse.json()).reverse();
+            const projects = (await listResponse.json()).reverse();
 
             // 2. 使用 Promise.all 同步抓取所有文章內文，效率最高
-            await Promise.all(articles.map(async (article) => {
+            await Promise.all(projects.map(async (article) => {
                 const card = document.createElement('a');
                 card.href = article.url;
                 // 初始化為隱身狀態，等動畫啟動
@@ -71,7 +71,9 @@
                     </div>
                     <div class="p-8 flex flex-col flex-grow text-left">
                         <div class="tag-box flex gap-2 mb-4"></div>
+
                         <div class="date-box text-xs font-mono text-gray-500 mb-4 flex items-center gap-2"></div>
+
                         <h4 class="text-xl font-bold text-white mb-3 group-hover:text-accent-purple transition-colors">載入中...</h4>
                         <p class="text-gray-400 text-sm leading-normal line-clamp-3"></p>
                     </div>
@@ -88,7 +90,7 @@
             }
 
         } catch (error) {
-            console.error("articles 初始化失敗:", error);
+            console.error("projects 初始化失敗:", error);
         }
     });
 
@@ -109,8 +111,7 @@
                 const dateText = dateIcon.parentElement.textContent.trim();
                 // 將日期與 icon 結構注入卡片
                 cardDateBox.innerHTML = `<i class="far fa-calendar text-gray-600"></i> ${dateText}`;
-            }
-                        
+            }            
             // 抓取標題
             const titleEl = doc.querySelector('header h1');
             if (titleEl) card.querySelector('h4').textContent = titleEl.innerText.trim();

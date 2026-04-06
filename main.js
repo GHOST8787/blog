@@ -206,13 +206,13 @@ function initScrollFlash() {
  * 7. 智慧導航 (防止 Article 重複載入 + 閃爍特效)
  */
 function initSmartNav() {
-    // 抓取所有指向 "0124_Projects.html" 的連結
-    const links = document.querySelectorAll('a[href*="0124_projects.html"]');
+    // 抓取所有指向 "projects.html" 的連結
+    const links = document.querySelectorAll('a[href*="projects.html"]');
 
     links.forEach(link => {
         link.addEventListener('click', (e) => {
-            // 檢查：如果網址已經包含 0124_Projects.html，代表使用者正在看這一頁
-            if (window.location.href.includes('0124_projects.html')) {
+            // 檢查：如果網址已經包含 projects.html，代表使用者正在看這一頁
+            if (window.location.href.includes('projects.html')) {
                 e.preventDefault(); // 🛑 阻止網頁重新整理
 
                 // 1. 滾動到最上方 (優化體驗)

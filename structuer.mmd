@@ -7,20 +7,20 @@ graph TD
 
     subgraph User_Flow [使用者瀏覽路徑]
         Home(首頁 index.html):::page
-        Article(文章列表 0124_projects.html):::page
-        Planet(小星球 0205_planet.html):::page
-        Audio(未知頻率 0211_audio_room.html):::hidden
+        Article(文章列表 projects.html):::page
+        Planet(小星球 planet.html):::page
+        Audio(未知頻率 audio_room.html):::hidden
     end
 
     subgraph Core_System [核心系統 & 共用組件]
-        MainJS(0124_main.js<br>核心邏輯):::component
-        Style(0124_style.css<br>全域樣式):::component
+        MainJS(main.js<br>核心邏輯):::component
+        Style(style.css<br>全域樣式):::component
         Navbar(Navbar 導覽列):::component
         Footer(Footer 頁尾):::component
     end
 
     subgraph Data_Source [資料來源 & 後端]
-        JSON[(0124_projects.json<br>文章清單)]:::data
+        JSON[(projects.json<br>文章清單)]:::data
         Articles_HTML[EXP/article_xx.html<br>文章內文]:::data
         Firebase[(Firebase Realtime DB<br>愛心計數器)]:::data
     end
@@ -52,4 +52,4 @@ graph TD
     Audio -->|Leave Archive| Planet
     
     %% 註解連線
-    Planet -.->|JS Module| PlanetScript(0205_planet.js):::component
+    Planet -.->|JS Module| PlanetScript(planet.js):::component
