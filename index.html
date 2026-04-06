@@ -41,17 +41,17 @@
     <div id="navbar-placeholder"></div>
 
     <!-- --- 主要內容區 (Bento Grid) --- -->
-    <main class="relative z-10 max-w-6xl mx-auto px-5 pt-24 md:pt-32 pb-16 md:pb-24 overflow-x-hidden">
+    <main class="relative z-10 max-w-6xl xl:max-w-7xl mx-auto px-5 pt-24 md:pt-32 pb-16 md:pb-24 overflow-x-hidden">
         <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
             
             <!-- Hero 主標題區 (錨點: About) -->
-            <div id="about" role="region" aria-labelledby="about-heading" class="bento-item col-span-1 md:col-span-8 p-8 md:p-12 flex flex-col justify-center items-start min-h-[420px] scroll-mt-32">
+            <div id="about" role="region" aria-labelledby="about-heading" class="bento-item col-span-1 md:col-span-8 p-8 md:p-12 xl:p-16 flex flex-col justify-center items-start min-h-[420px] scroll-mt-32">
                 
                 <div class="inline-block px-3 py-1 rounded-full bg-accent-purple/10 border border-accent-purple/20 text-accent-purple text-[10px] font-bold uppercase tracking-wider mb-6">
                     WORK SMARTER, NOT HARDER
                 </div>
 
-                <h1 id="about-heading" class="text-3xl md:text-5xl font-extrabold mb-6 leading-tight tracking-tight text-gradient text-left">
+                <h1 id="about-heading" class="text-3xl md:text-5xl xl:text-6xl font-extrabold mb-6 leading-tight tracking-tight text-gradient text-left">
                     Just wanna make some cool shit. <br>
                     <span class="text-accent-purple text-2xl md:text-4xl">AI & Automation.</span>
                 </h1>
@@ -67,14 +67,23 @@
                     <p>專注於 AI 工具應用與流程自動化實作，嘗試將行政、資料整理與內容流程中重複且耗時的工作，轉化為可執行、可維護的自動化流程。</p>
                     <p>Take the leap. Regardless of the outcome, come back with insights and lessons learned.</p>
                 </div>
+
+                <div class="flex flex-wrap gap-3 mt-8">
+                    <a href="projects.html" class="px-5 py-2.5 bg-accent-purple text-black font-bold rounded-full text-xs tracking-wide hover:shadow-[0_0_20px_rgba(191,148,255,0.5)] transition-all cursor-pointer">
+                        View Projects <i class="fas fa-arrow-right ml-1 text-[10px]"></i>
+                    </a>
+                    <a href="articles.html" class="px-5 py-2.5 border border-white/10 text-gray-300 font-bold rounded-full text-xs tracking-wide hover:border-accent-purple hover:text-accent-purple transition-all cursor-pointer">
+                        Read Articles <i class="fas fa-arrow-right ml-1 text-[10px]"></i>
+                    </a>
+                </div>
             </div>
 
             <div class="bento-item col-span-1 md:col-span-4 rounded-3xl p-6 flex items-center justify-center relative overflow-hidden group">
 
-                <img src="PNG/20260125P.webp" alt="Profile" 
-                class="absolute top-20 right-0 bottom-0 left-0 w-full h-full object-cover z-1 
-                        object-top  opacity-50 scale-[1.4] grayscale-[0.3] origin-center
-                        group-hover:opacity-100 group-hover:scale-[1.6] group-hover:grayscale-0 
+                <img src="PNG/20260125P.webp" alt="Profile"
+                class="absolute top-20 right-0 bottom-0 left-0 w-full h-full object-cover z-1
+                        object-top  opacity-50 scale-[1.1] grayscale-[0.3] origin-center
+                        group-hover:opacity-100 group-hover:scale-[1.2] group-hover:grayscale-0
                         transition-all duration-1000 ease-in-out">
 
                 <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent z-1 opacity-80"></div>

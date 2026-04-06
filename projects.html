@@ -70,11 +70,11 @@
                         <img src="" alt="Loading..." class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
                     </div>
                     <div class="p-8 flex flex-col flex-grow text-left">
-                        <div class="tag-box flex gap-2 mb-4"></div>
+                        <div class="tag-box flex items-start gap-2 mb-4"></div>
 
                         <div class="date-box text-xs font-mono text-gray-500 mb-4 flex items-center gap-2"></div>
 
-                        <h4 class="text-xl font-bold text-white mb-3 group-hover:text-accent-purple transition-colors">載入中...</h4>
+                        <h4 class="text-lg font-bold text-white mb-3 group-hover:text-accent-purple transition-colors line-clamp-2">載入中...</h4>
                         <p class="text-gray-400 text-sm leading-normal line-clamp-3"></p>
                     </div>
                 `;
@@ -118,10 +118,18 @@
 
             // 抓取圖片並修正路徑 (移除 ../)
             const firstImg = doc.querySelector('article img') || doc.querySelector('figure img');
+            const cardImg = card.querySelector('img');
             if (firstImg) {
                 let imgSrc = firstImg.getAttribute('src');
                 if (imgSrc && imgSrc.startsWith('../')) imgSrc = imgSrc.substring(3);
-                card.querySelector('img').src = imgSrc;
+                cardImg.src = imgSrc;
+            } else {
+                cardImg.remove();
+                const placeholder = card.querySelector('.aspect-video');
+                if (placeholder) {
+                    placeholder.classList.add('flex', 'items-center', 'justify-center');
+                    placeholder.innerHTML = '<span class="text-gray-600 text-xs font-mono uppercase tracking-wider">No Image</span>';
+                }
             }
 
             // 抓取標籤
@@ -131,7 +139,12 @@
                 cardTagBox.innerHTML = '';
                 sourceTags.forEach(tag => {
                     const newTag = document.createElement('span');
-                    newTag.className = tag.className;
+                    newTag.className = 'text-[9px] px-2 py-1 rounded font-bold uppercase tracking-wider text-center leading-tight';
+                    if (cardTagBox.children.length === 0) {
+                        newTag.classList.add('bg-accent-purple/10', 'border', 'border-accent-purple/20', 'text-accent-purple');
+                    } else {
+                        newTag.classList.add('bg-white/5', 'border', 'border-white/10', 'text-gray-400');
+                    }
                     newTag.textContent = tag.textContent.trim();
                     cardTagBox.appendChild(newTag);
                 });

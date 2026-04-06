@@ -23,7 +23,11 @@ async function loadComponent(elementId, filePath, callback) {
 /**
  * 2. 初始化視覺動畫
  */
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 window.initAnimations = () => {
+    if (prefersReducedMotion) return;
+
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -34,12 +38,12 @@ window.initAnimations = () => {
     }, { threshold: 0.05 });
 
     const animItems = document.querySelectorAll('.bento-item, .project-card-vertical');
-    animItems.forEach(el => {
+    animItems.forEach((el, i) => {
         if (el.style.opacity === '1') return;
-        
+
         el.style.opacity = '0';
         el.style.transform = 'translateY(30px)';
-        el.style.transition = 'all 0.8s cubic-bezier(0.22, 1, 0.36, 1)';
+        el.style.transition = `all 0.8s cubic-bezier(0.22, 1, 0.36, 1) ${i * 0.1}s`;
         observer.observe(el);
     });
 };
@@ -155,11 +159,17 @@ function initTypewriter() {
     if (typewriterTimer) clearTimeout(typewriterTimer);
 
     const textToType = "Python / Google Apps Script / OpenAI API / n8n";
+
+    if (prefersReducedMotion) {
+        element.textContent = textToType;
+        return;
+    }
+
     const typingSpeed = 100;
     const startDelay = 500;
-    
+
     let charIndex = 0;
-    element.textContent = ''; 
+    element.textContent = '';
 
     function type() {
         if (charIndex < textToType.length) {
@@ -167,7 +177,7 @@ function initTypewriter() {
             charIndex++;
             typewriterTimer = setTimeout(type, typingSpeed);
         } else {
-            element.style.borderRight = 'none'; 
+            element.style.borderRight = 'none';
             typewriterTimer = null;
         }
     }
@@ -327,6 +337,8 @@ function createHeart(x, y, hearts) {
 
 // 動態卡片刷新動畫
 window.refreshAnimations = function() {
+    if (prefersReducedMotion) return;
+
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -336,7 +348,6 @@ window.refreshAnimations = function() {
         });
     }, { threshold: 0.05 });
 
-    // 將所有卡片加入觀察名單
     document.querySelectorAll('.project-card-vertical').forEach(el => {
         observer.observe(el);
     });
