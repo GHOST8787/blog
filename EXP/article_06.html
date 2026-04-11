@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EXP / A6 | GHOST.ouo</title>
-    
+
     <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
     <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
-    
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="../tailwind.config.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    
+
     <link rel="stylesheet" href="../style.css">
-    
+
     <script>
         window.siteRoot = '../';
     </script>
@@ -31,7 +31,7 @@
     <div id="navbar-placeholder"></div>
 
     <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
-        
+
         <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
             <a href="../articles.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
                 <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
@@ -41,9 +41,9 @@
         </div>
 
         <header class="mb-12 border-b border-white/10 pb-12">
-            
+
             <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
-                浴室裡的聽覺計時器：<br>
+                浴室裡的聽覺計時器<br>
                 <span class="text-gradient text-2xl md:text-4xl">BlogBlog 同樂會：只有我這樣嗎？</span>
             </h1>
 
@@ -55,10 +55,10 @@
                     Time Management
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Behavioral Design
+                    BB
                 </span>
             </div>
-            
+
             <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
                 <span><i class="far fa-calendar mr-2"></i>2026.02.24</span>
                 <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
@@ -66,56 +66,56 @@
         </header>
 
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
-            
+
             <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
-                每天洗澡是一件再平常不過的事，但身為一個喜歡找樂子（又不想浪費時間）的人，我發現自己發展出了一個有點特別的習慣：我必須放音樂，才能好好洗澡。把看不見的時間，變成聽得到的音樂進度，這就是我的專屬「聽覺計時器」。
+                每日沐浴為高頻重複性的日常流程，但浴室為典型的時間感知盲區。本文記錄一套以音樂清單為外部計時訊號的沐浴流程最佳化系統，將不可見的時間轉換為可感知的進度軸。
             </p>
 
             <figure class="my-10 mx-auto max-w-s">
-                <img src="../PNG/article_06.1.webp" 
-                     alt="問就是戰鬥澡"
+                <img src="../PNG/article_06.1.webp"
+                     alt="戰鬥澡模式"
                      loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
                 <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
-                    問就是戰鬥澡 (本來想放 Q 版的圖，但因為這張圖很有趣就放這張)
+                    戰鬥澡模式的行為特徵
                 </figcaption>
             </figure>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 浴室裡消失的時間
+                <span class="text-accent-purple">#</span> 時間感知的環境性失效
             </h3>
 
             <p>
-                浴室是個很容易讓人「時間消失」的魔法空間。沒有時鐘可以看，加上舒服的熱水和蒸氣，我們對時間流逝的感覺會變得很遲鈍。
+                浴室在設計上移除了所有視覺時間訊號：無時鐘、無自然光、無外部進度參考。在熱水與蒸氣的體感干擾下，使用者的主觀時間會顯著壓縮，實際流逝的時間遠大於感知時長。
             </p>
             <p>
-                洗澡的動作太習慣了，腦袋很容易不小心進入待機狀態，一發呆就洗太久。當完全只靠自己的感覺來判斷「嗯，我洗乾淨了」的時候，很容易浪費水費跟瓦斯費，後面的看劇或睡覺時間也全都被往後擠。
+                疊加沐浴動作的高度自動化，認知系統易進入低注意力的待機狀態，導致沐浴時長失控。其外溢成本包含：水、瓦斯消耗上升、後續排程（影劇、睡眠）被擠壓，以及流程終止判斷缺乏客觀依據。
             </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 自己的洗澡節奏自己抓
+                <span class="text-accent-purple">#</span> 音樂計時的系統設計
             </h3>
-            
+
             <p>
-                為了解決這個不小心就會浪費水的問題，這套「音樂計時法」有一套我自己的小規則，讓生活更有效率：
+                解決方案為將音樂播放清單作為外部計時訊號，把「不可見的時間」轉換為「可感知的進度軸」。此設計以播放清單總長作為硬性時間邊界，曲目切換構成進度刻度，清單結束觸發終止信號。
             </p>
 
             <ul class="list-disc pl-5 space-y-3 text-gray-300 my-6 font-light">
                 <li class="marker:text-gray-500 pl-2">
-                    <strong class="text-white">戰鬥澡模式：</strong> 針對不需要洗頭的日子，挑選長度極短的播放清單，跟著節奏速戰速決。
+                    <strong class="text-white">戰鬥模式（短清單）：</strong> 用於不需洗頭、護髮的日常流程。挑選極短播放清單，以節奏強度推進執行效率。
                 </li>
                 <li class="marker:text-gray-500 pl-2">
-                    <strong class="text-white">全套洗淨模式：</strong> 遇到要洗頭、護髮的日子，就給自己多一點「扣打」，放寬歌單的額度。
+                    <strong class="text-white">完整模式（長清單）：</strong> 用於包含洗頭、護髮的完整流程。採用較長清單擴大時間預算，確保各子流程獲得足夠執行區段。
                 </li>
                 <li class="marker:text-gray-500 pl-2">
-                    <strong class="text-white">趕走放空蟲：</strong> 持續推進的音樂能讓腦袋知道進度到哪裡了，避免洗到一半陷入無意識的發呆。
+                    <strong class="text-white">節奏錨點：</strong> 連續推進的曲目作為進度錨點，抑制認知系統進入待機狀態，避免無意識的時間流失。
                 </li>
                 <li class="marker:text-gray-500 pl-2">
-                    <strong class="text-white">殘酷的下課鐘：</strong> 最後一首歌的尾奏，就是系統發出的超時警告。只要音樂一停，就是立刻關水離開浴室的時候。
+                    <strong class="text-white">終止信號：</strong> 最後一首曲目的尾奏即為超時警告。音樂結束為硬性終止條件，觸發關水與離開動作。
                 </li>
             </ul>
 
             <p>
-                把時間變成一首首喜歡的歌，不僅能控制洗澡時間不浪費水，還能順便聽聽音樂放鬆。
+                透過外部訊號取代主觀感知，一個時間感知不穩定的高頻流程被收斂為具備明確邊界、節奏錨點與終止條件的可控子系統。
             </p>
 
             <hr class="border-white/10 my-12">
@@ -125,13 +125,13 @@
                     <i class="fas fa-circle-exclamation text-accent-purple"></i> 只有我這樣嗎？
                 </h4>
                 <p class="text-sm text-gray-400">
-                    每次洗完澡神清氣爽地走出浴室時，我偶爾會想：那些洗澡不放音樂的人，到底都是怎麼決定「嗯，我洗乾淨了，可以出去了」的？完全靠感覺，真的不會洗到忘記時間嗎？把洗澡當成遊戲破關一樣設定條件，或許聽起來有點搞笑，但這真的讓我的日常變得超有效率。洗澡一定要配音樂計時的……真的只有我這樣嗎？
+                    將沐浴流程抽象化為具備時間邊界的遊戲化子系統，在實測下可有效穩定日常時程。然而此模式依賴外部音訊輸入——在未使用音樂計時的使用者中，沐浴流程的終止條件為何，目前仍為開放問題。
                 </p>
             </div>
 
             <div class="mt-8 text-sm font-mono text-gray-500 border-l-2 border-accent-purple pl-4">
                 本文為「BlogBlog 同樂會 - 2026 年 2 月」之投稿文章。<br>
-                本月主題為「只有我這樣嗎？」。分享如何將日常高重複性流程轉化為有趣的聽覺計時系統。
+                本月主題為「只有我這樣嗎？」。紀錄將日常高重複流程轉化為可量化聽覺計時系統的實作。
             </div>
 
         </article>

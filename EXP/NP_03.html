@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / P11 | GHOST.ouo</title>
+
+    <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../style.css">
+
+    <script>
+        window.siteRoot = '../';
+    </script>
+    <script src="../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / P11</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                海科館生物資料庫建置：<br>
+                <span class="text-gradient text-2xl md:text-4xl">從 Excel 樞紐分析到物種管理系統</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    Engineering
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Data Management
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Museum Operations
+                </span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2024.04 — 2024.08</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                在國立海洋科技博物館潮境智能海洋館擔任工讀生期間，我將散落在紙本和不同電腦裡的飼養紀錄，整合成一套以 Excel 樞紐分析為核心的生物資產管理系統。從資料清洗到視覺化報表，把盤點時間從半天壓縮到一小時內。
+            </p>
+
+            <!-- ===== 核心數據 ===== -->
+            <div class="grid grid-cols-3 gap-4 my-10">
+                <div class="bg-white/5 border border-accent-purple/20 rounded-2xl p-6 text-center">
+                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">-83%</div>
+                    <div class="text-xs text-gray-500 font-mono uppercase">盤點時間</div>
+                </div>
+                <div class="bg-white/5 border border-accent-purple/20 rounded-2xl p-6 text-center">
+                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">200+</div>
+                    <div class="text-xs text-gray-500 font-mono uppercase">管理物種數</div>
+                </div>
+                <div class="bg-white/5 border border-accent-purple/20 rounded-2xl p-6 text-center">
+                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">1 天</div>
+                    <div class="text-xs text-gray-500 font-mono uppercase">新人交接時間</div>
+                </div>
+            </div>
+
+            <!-- ===== Before / After ===== -->
+            <h2 class="text-2xl font-bold text-white mt-16 mb-8">Before / After</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
+                <div class="bg-white/5 rounded-2xl p-6 border border-white/10">
+                    <div class="text-xs font-mono text-gray-500 uppercase mb-4 flex items-center gap-2">
+                        <i class="fas fa-arrow-left text-red-400"></i> Before — 接手前
+                    </div>
+                    <ul class="text-sm text-gray-400 space-y-2">
+                        <li>紙本紀錄 + 格式不一的 Excel</li>
+                        <li>資料散落在不同人電腦中</li>
+                        <li>同一物種有多種命名寫法</li>
+                        <li>盤點需要半天翻閱紙本</li>
+                        <li>新人交接需一週熟悉前人格式</li>
+                    </ul>
+                </div>
+                <div class="bg-accent-purple/5 rounded-2xl p-6 border border-accent-purple/20">
+                    <div class="text-xs font-mono text-accent-purple uppercase mb-4 flex items-center gap-2">
+                        <i class="fas fa-arrow-right text-accent-purple"></i> After — 系統建立後
+                    </div>
+                    <ul class="text-sm text-gray-300 space-y-2">
+                        <li>統一主表 + 標準化欄位定義</li>
+                        <li>共用資料夾集中管理</li>
+                        <li>物種命名標準化，消除歧義</li>
+                        <li>樞紐分析表一鍵產出報表</li>
+                        <li>SOP 文件讓交接降到一天</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ===== What I Did ===== -->
+            <h2 class="text-2xl font-bold text-white mt-16 mb-8">What I Did</h2>
+
+            <div class="space-y-4 text-gray-300">
+                <p><span class="text-white font-semibold">資料清洗與標準化</span> — 將所有紙本紀錄和散落的 Excel 統一為一張主表，定義標準欄位（物種名稱、缸號、日期、事件類型、數值、備註）。處理命名不一致和缺失值，耗時約兩週。</p>
+                <p><span class="text-white font-semibold">樞紐分析系統建立</span> — 用 Pivot Table 建立多維度交叉查詢：物種×月份×死亡數量可追蹤季節性死亡率，缸號×水質異常次數可定位問題缸體。</p>
+                <p><span class="text-white font-semibold">視覺化報表</span> — 用 Pivot Chart 產出關鍵指標圖表，讓非技術人員不需操作 Excel 也能理解數據趨勢。</p>
+                <p><span class="text-white font-semibold">物種清冊與缸子盤點</span> — 建立完整的物種學名地點統計表和缸子清冊，搭配月度統計報表（4-6 月），實現系統性的資產管理。</p>
+                <p><span class="text-white font-semibold">操作 SOP 撰寫</span> — 讓新進工讀生能在一天內理解整套系統的操作方式，不再依賴口頭交接。</p>
+            </div>
+
+            <!-- ===== Key Highlights ===== -->
+            <h2 class="text-2xl font-bold text-white mt-16 mb-8">Key Highlights</h2>
+
+            <div class="space-y-4 my-8">
+                <div class="flex gap-4 bg-white/5 p-5 rounded-xl border border-white/5">
+                    <i class="fas fa-table text-accent-purple mt-1 text-lg"></i>
+                    <div>
+                        <strong class="text-white">務實的技術選擇</strong><br>
+                        <span class="text-sm text-gray-400">選 Excel 而非 Python/PostgreSQL，因為館方人員都會用、不需架設伺服器、拖拉介面讓非技術人員也能自己調整查詢。工具的價值不在先進度，在於能否被持續使用。</span>
+                    </div>
+                </div>
+                <div class="flex gap-4 bg-white/5 p-5 rounded-xl border border-white/5">
+                    <i class="fas fa-search text-accent-purple mt-1 text-lg"></i>
+                    <div>
+                        <strong class="text-white">異常追蹤能力</strong><br>
+                        <span class="text-sm text-gray-400">透過樞紐分析的交叉比對，館方第一次能系統性追蹤「某缸體換水後 48 小時內是否出現異常」這類時序關聯。</span>
+                    </div>
+                </div>
+                <div class="flex gap-4 bg-white/5 p-5 rounded-xl border border-white/5">
+                    <i class="fas fa-lightbulb text-accent-purple mt-1 text-lg"></i>
+                    <div>
+                        <strong class="text-white">工程思維的起點</strong><br>
+                        <span class="text-sm text-gray-400">所有的優化，都始於對現有流程的不滿意。這個思維模式後來成為接觸程式開發的底層動力。</span>
+                    </div>
+                </div>
+            </div>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="project_10.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Project
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Projects
+            </a>
+            <a href="project_12.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                Next Project &rarr;
+            </a>
+        </div>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+</body>
+</html>

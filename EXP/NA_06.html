@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / A14 | GHOST.ouo</title>
+
+    <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../style.css">
+
+    <script>
+        window.siteRoot = '../';
+    </script>
+    <script src="../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../articles.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO ARTICLES
+            </a>
+            <span class="opacity-50">EXP / A14</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                半年 AI 重度使用觀察：<br>
+                <span class="text-gradient text-2xl md:text-4xl">效率幻覺、理解盲區、與工具的正確定位</span>
+            </h1>
+
+            <div class="flex gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    AI & Automation
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Observation
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Calibration
+                </span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.04</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                過去六個月，我同時訂閱了六種以上的 AI 服務——Claude MAX、Cursor、GPT Plus、Gemini，加上各種小工具。月支出大約六千台幣。這不是炫耀，是實驗的成本。我想知道的是：這些工具到底在我的工作流裡佔什麼位置，邊界在哪裡。以下是觀察紀錄。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 效率幻覺：體感與實測的落差
+            </h3>
+
+            <p>
+                我在用 AI 輔助開發的時候，主觀感受是快了不少。但我後來找到一份讓我重新校正這個判斷的研究。
+            </p>
+
+            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 shadow-xl my-8">
+                <h4 class="text-white font-bold mb-4 flex items-center gap-2">
+                    <i class="fas fa-flask text-accent-purple"></i> METR 2025 隨機對照試驗
+                </h4>
+                <ul class="list-none space-y-3 text-sm text-gray-400 font-light m-0 pl-0">
+                    <li class="flex justify-between items-center border-b border-white/5 pb-2"><span>受試者</span><span class="text-white font-mono">16 位資深開發者，平均 5 年專案經驗</span></li>
+                    <li class="flex justify-between items-center border-b border-white/5 pb-2"><span>任務規模</span><span class="text-white font-mono">246 個真實任務，來自 22,000+ 顆星 GitHub 專案</span></li>
+                    <li class="flex justify-between items-center border-b border-white/5 pb-2"><span>使用工具</span><span class="text-white font-mono">Cursor Pro + Claude 3.5 / 3.7 Sonnet</span></li>
+                    <li class="flex justify-between items-center border-b border-white/5 pb-2"><span>開發者預期</span><span class="text-green-400 font-mono">快 24%</span></li>
+                    <li class="flex justify-between items-center border-b border-white/5 pb-2"><span>實驗後主觀感受</span><span class="text-green-400 font-mono">覺得快了 20%</span></li>
+                    <li class="flex justify-between items-center"><span>實際完成時間</span><span class="text-red-400 font-mono">慢了 19%</span></li>
+                </ul>
+                <p class="text-xs text-gray-600 mt-4 mb-0 font-mono">
+                    來源：<a href="https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/" target="_blank" class="text-accent-purple/70 hover:text-accent-purple transition-colors">METR.org — Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity (2025.07)</a>
+                </p>
+            </div>
+
+            <p>
+                研究者分析了螢幕錄影後發現原因：多出來的時間不是花在寫更好的程式碼上，而是花在<strong class="text-white">撰寫提示詞、審查 AI 輸出、以及等待 AI 生成</strong>。最值得注意的是：這些開發者在實驗結束後，<strong class="text-white">仍然相信自己快了 20%</strong>。主觀感受和客觀數據之間，存在將近 40 個百分點的落差。
+            </p>
+
+            <p>
+                這跟我自己的經驗吻合。我之前重構一個開源專案的時候，讓 AI 自由發揮的結果是：功能過度擴張、渲染層解耦失敗、控制流被破壞——修了 A 壞了 B 的無窮迴圈。最後我強制收回全局修改權限，改成只讓 AI 執行明確受限的子任務，速度反而穩定下來。<strong class="text-white">感覺快和實際快是兩件事。</strong>
+            </p>
+
+            <div class="bg-white/5 p-5 rounded-xl border border-white/10 my-8 text-sm text-gray-400">
+                <p class="m-0">
+                    <strong class="text-white">補充：</strong>MIT Sloan 聯合 Microsoft 與 Accenture 的研究指出，AI 對初級工程師的產出提升約 27–39%，但對資深工程師僅 8–13%。你越熟悉自己的領域，AI 能給的邊際效益越低。這符合直覺——<strong class="text-white">AI 擅長填補知識差距，但無法替代已經存在的深度經驗。</strong>
+                </p>
+                <p class="text-xs text-gray-600 mt-3 mb-0 font-mono">
+                    來源：<a href="https://mitsloan.mit.edu/ideas-made-to-matter/how-generative-ai-affects-highly-skilled-workers" target="_blank" class="text-accent-purple/70 hover:text-accent-purple transition-colors">MIT Sloan Management Review (2026.01)</a>
+                </p>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 理解幻覺：「覺得懂了」和「真的會了」的鴻溝
+            </h3>
+
+            <p>
+                AI 回答問題的速度極快，給出的解釋通常也結構清晰。但我在使用過程中注意到一個模式：用 AI 快速理解一個概念之後，遇到需要實際應用的場景時，那個理解經常是空的。
+            </p>
+
+            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 shadow-xl my-8">
+                <h4 class="text-white font-bold mb-4 flex items-center gap-2">
+                    <i class="fas fa-brain text-accent-purple"></i> AI 輔助學習的記憶衰退數據
+                </h4>
+                <ul class="list-none space-y-3 text-sm text-gray-400 font-light m-0 pl-0">
+                    <li class="flex justify-between items-center border-b border-white/5 pb-2"><span>使用 AI 當天測驗</span><span class="text-green-400 font-mono">90 分</span></li>
+                    <li class="flex justify-between items-center border-b border-white/5 pb-2"><span>一週後重測（無複習）</span><span class="text-red-400 font-mono">60 分</span></li>
+                    <li class="flex justify-between items-center"><span>原因</span><span class="text-white text-xs">AI 跳過了大腦建立長期記憶所需的認知努力過程</span></li>
+                </ul>
+                <p class="text-xs text-gray-600 mt-4 mb-0 font-mono">
+                    來源：<a href="https://blogs.worldbank.org/en/education/is-ai-making-us-smarter-or-just-making-us-look-smart-" target="_blank" class="text-accent-purple/70 hover:text-accent-purple transition-colors">World Bank Education Blog (2025)</a>；<a href="https://www.nature.com/articles/s41586-024-07146-0" target="_blank" class="text-accent-purple/70 hover:text-accent-purple transition-colors">Nature (2024)</a>
+                </p>
+            </div>
+
+            <p>
+                這在學術上叫「理解幻覺 (Illusion of Understanding)」。AI 的濃縮版答案跳過了建構心智模型的過程——你接收到的是結論，不是推導。短期內看起來像懂了，但那個知識沒有根，遇到變化就站不住。
+            </p>
+            <p>
+                <strong class="text-white">AI 真正危險的地方不是它答錯，而是它讓你覺得自己懂了。</strong>直到你真的需要用到那個知識，空洞才會浮現。我目前的做法是：用 AI 建立初步輪廓，然後自己去驗證和重建一次。多一步，但那一步是真實的。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 通用模型的邊界：你的 know-how 不在訓練資料裡
+            </h3>
+
+            <p>
+                每個 LLM 都有它被期待成為的樣子。大廠的模型是為了輔助自家產品生態而設計的，不是為了你的特定場景量身打造。
+            </p>
+            <p>
+                這對獨立開發者和小團隊來說是一個結構性限制：<strong class="text-white">你辛苦累積的核心競爭力——對使用者的理解、領域裡說不清楚但很重要的判斷力——在通用模型裡根本不存在。</strong>你的 know-how 是你和競爭者之間的差距，但那恰恰是 AI 給不了你的。它能幫你更快地寫出程式碼，但無法告訴你該寫什麼。
+            </p>
+            <p>
+                我自己在做 side project 的時候，AI 在「怎麼做」這一層確實有用。但「做什麼」和「為什麼做」，這兩個對產品最關鍵的問題，AI 的回答經常是漂亮但空洞的泛論。最終的決策判斷，還是得靠你自己對領域的理解。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 文生影片的結構性問題
+            </h3>
+
+            <p>
+                目前社群上有大量「用 AI 把 prompt 變成影片」的展示。我認真看了一輪之後，發現目前的文生影片工具有幾個無法迴避的技術瓶頸：
+            </p>
+
+            <ul class="list-disc pl-5 space-y-3 text-gray-300 my-6 font-light">
+                <li><strong class="text-white">時間連貫性：</strong>物體和角色在幀與幀之間會變形，道具會在鏡頭間憑空傳送或消失。</li>
+                <li><strong class="text-white">運動真實感：</strong>人類動作容易落入怪異谷——腳會滑動、關節角度不自然、重量感缺失。</li>
+                <li><strong class="text-white">身份漂移：</strong>同一個角色的臉，在不同鏡頭之間會悄悄變成另一個人。模型對「同一角色」沒有持久的身份表徵。</li>
+            </ul>
+
+            <p>
+                這些問題不是微調參數就能解決的，它們涉及模型架構層面的限制。<strong class="text-white">目前文生影片產出的是「氛圍」，不是「內容」。</strong>如果你的目的是快速製造視覺素材填充版面，它可以用。但如果你期待它取代影片製作的核心流程，目前還差得遠。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 校正後的定位：AI 在我工作流裡的實際位置
+            </h3>
+
+            <p>
+                說了這些限制，不代表 AI 沒用。它在我的工作流裡確實佔有一席之地，只是那個位置和多數人想像的不同。根據半年的實際使用，以下是我認為有效的場景：
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
+                <div class="bg-white/5 p-6 rounded-xl border border-white/10 hover:border-accent-purple/30 transition-colors">
+                    <h4 class="text-white font-bold mb-2 flex items-center gap-2 text-base m-0">
+                        <i class="fas fa-search text-accent-purple"></i> 快速建立輪廓
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed mt-2 mb-0">
+                        碰到不熟的概念或技術時，用 AI 快速取得結構化的初步理解。但這只是起點，不是終點——後面還是要自己驗證。
+                    </p>
+                </div>
+                <div class="bg-white/5 p-6 rounded-xl border border-white/10 hover:border-accent-purple/30 transition-colors">
+                    <h4 class="text-white font-bold mb-2 flex items-center gap-2 text-base m-0">
+                        <i class="fas fa-code text-accent-purple"></i> 受限子任務的執行
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed mt-2 mb-0">
+                        明確定義輸入、輸出和邊界條件的任務。讓 AI 執行，人類驗收。全局架構決策不能交給它。
+                    </p>
+                </div>
+                <div class="bg-white/5 p-6 rounded-xl border border-white/10 hover:border-accent-purple/30 transition-colors">
+                    <h4 class="text-white font-bold mb-2 flex items-center gap-2 text-base m-0">
+                        <i class="fas fa-pen text-accent-purple"></i> 草稿起點
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed mt-2 mb-0">
+                        用 AI 的輸出作為初稿，在上面修改比從零開始寫快。但最終版本的品質取決於你自己的判斷力。
+                    </p>
+                </div>
+                <div class="bg-white/5 p-6 rounded-xl border border-white/10 hover:border-accent-purple/30 transition-colors">
+                    <h4 class="text-white font-bold mb-2 flex items-center gap-2 text-base m-0">
+                        <i class="fas fa-magnifying-glass text-accent-purple"></i> 加速查找
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed mt-2 mb-0">
+                        替代 Google 搜尋的部分場景。問一個具體問題、拿到結構化的回答，比翻十頁搜尋結果快。但需要交叉驗證。
+                    </p>
+                </div>
+            </div>
+
+            <p>
+                共通點是：<strong class="text-white">AI 是加速器，不是替代品。</strong>它能壓縮「從零到六十分」的時間，但「從六十到九十分」的最後一段路，仍然需要你自己走。
+            </p>
+
+            <hr class="border-white/10 my-12">
+
+            <p>
+                半年過去，我沒有因為付了六千塊就產能翻倍。METR 的研究裡有一個細節讓我印象很深：即使數據顯示 AI 拖慢了速度，那些開發者還是不想停止使用。研究者問為什麼，回答是——<em class="text-gray-400">「用起來更愉快」</em>。
+            </p>
+
+            <div class="mt-8 text-sm font-mono text-gray-500 border-l-2 border-accent-purple pl-4">
+                「雖然不能更快，但一定更快樂。」——這句話某種程度上說出了我們使用 AI 的真實動機。認清這一點不是壞事。工具的價值不一定要用效率來衡量，但你至少應該知道自己在為什麼買單。真正難的不是學會使用 AI，而是持續校正你對它的期待。
+            </div>
+
+            <hr class="border-white/10 my-12">
+
+            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 shadow-xl">
+                <h4 class="text-white font-bold mb-4 flex items-center gap-2">
+                    <i class="fas fa-bookmark text-accent-purple"></i> 本文數據來源
+                </h4>
+                <ul class="list-none space-y-3 text-sm text-gray-400 font-light m-0 pl-0">
+                    <li class="flex justify-between items-start border-b border-white/5 pb-2 gap-4">
+                        <a href="https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/" target="_blank" class="text-accent-purple/70 hover:text-accent-purple transition-colors shrink-0">METR 2025 RCT</a>
+                        <span class="text-right">AI 讓資深開發者慢 19%，但主觀感覺快 20%</span>
+                    </li>
+                    <li class="flex justify-between items-start border-b border-white/5 pb-2 gap-4">
+                        <a href="https://mitsloan.mit.edu/ideas-made-to-matter/how-generative-ai-affects-highly-skilled-workers" target="_blank" class="text-accent-purple/70 hover:text-accent-purple transition-colors shrink-0">MIT Sloan / MS / Accenture</a>
+                        <span class="text-right">AI 對初級工程師效果顯著，資深者有限</span>
+                    </li>
+                    <li class="flex justify-between items-start border-b border-white/5 pb-2 gap-4">
+                        <a href="https://www.nature.com/articles/s41586-024-07146-0" target="_blank" class="text-accent-purple/70 hover:text-accent-purple transition-colors shrink-0">Nature (2024)</a>
+                        <span class="text-right">AI 使用者普遍存在「理解幻覺」</span>
+                    </li>
+                    <li class="flex justify-between items-start gap-4">
+                        <a href="https://blogs.worldbank.org/en/education/is-ai-making-us-smarter-or-just-making-us-look-smart-" target="_blank" class="text-accent-purple/70 hover:text-accent-purple transition-colors shrink-0">World Bank (2025)</a>
+                        <span class="text-right">AI 輔助學習一週後成績跌 30%</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="bg-[#0A0A0A] p-4 rounded-xl border-l-2 border-red-500/50 border border-white/5 mt-6 text-xs text-gray-500">
+                <strong class="text-gray-400">關於排除的數據：</strong>本文刻意排除了網路上廣泛流傳的「IBM 95% AI 試點失敗率」——該數據原始來源無法核實，屬於被反覆轉引的二手引用。放進去只會傷害整篇文章的可信度。
+            </div>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="article_13.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Article
+            </a>
+            <a href="../articles.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Articles
+            </a>
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                Next Article &rarr;
+            </a>
+        </div>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+</body>
+</html>
