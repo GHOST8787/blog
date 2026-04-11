@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / A9 | GHOST.ouo</title>
+
+    <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../style.css">
+
+    <script>
+        window.siteRoot = '../';
+    </script>
+    <script src="../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../articles.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO ARTICLES
+            </a>
+            <span class="opacity-50">EXP / A9</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                莊家要的從來不是大贏：<br>
+                <span class="text-gradient text-2xl md:text-4xl">《帶著 100 萬，我們揭開了賭場的秘密》觀後感</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    Thinking
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Systems Analysis
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Behavioral Economics
+                </span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.04.11</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                觀看影視颶風 <a href="https://www.youtube.com/watch?v=zvvd8lYohqc" target="_blank" rel="noopener" class="text-accent-purple hover:text-white underline underline-offset-4 decoration-accent-purple/40 hover:decoration-white transition-colors">〈帶著 100 萬，我們揭開了賭場的秘密〉</a> 後的系統觀察紀錄。本篇不討論賭博的道德問題，而聚焦一個結構性提問：當一個產業必須仰賴「大量玩家長期輸錢」才能穩定運作，這個系統是如何被設計出來的。
+            </p>
+
+            <p>
+                賭場是<strong class="text-white">一個把數學、心理學、建築學、社會結構全部綁在一起的系統工程</strong>，真正值得注意的是它的安靜。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 莊家不需要每一手都贏
+            </h3>
+
+            <p>
+                直覺上會認為賭場希望客人大輸、然後被掃地出門——這個畫面錯了。賭場的商業模式<strong class="text-white">希望你常常贏</strong>：小贏、頻繁贏、贏到你相信今天手氣不錯。只有「偶爾贏」才能讓人留在桌邊；只要人還坐著，時間和數學都站在莊家這邊。
+            </p>
+            <p>
+                莊家追求的是<strong class="text-white">長期的、統計上的、無聊到近乎機械的勝</strong>。單局結果只是噪音，唯一重要的變數是樣本數。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 那兩個綠色格子，就是整個系統
+            </h3>
+
+            <p>
+                美式輪盤上有 18 紅、18 黑，以及兩個綠色格子：0 和 00。
+            </p>
+
+            <figure class="my-10 mx-auto max-w-s">
+                <img src="../PNG/article_09.1.webp"
+                     alt="美式輪盤的莊家優勢概率圖"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    那兩格綠色，就是整個賭場商業模式賴以存在的地方
+                </figcaption>
+            </figure>
+
+            <p>
+                押單色勝率為 18/38 ≈ 47.37%，莊家勝率為 20/38 ≈ 52.63%。兩者之間 5.26% 的差距即為<strong class="text-white">莊家優勢 (House Edge)</strong>。大數法則保證：下注次數越多，這個微小偏差越會被放大為不可逆的結果。
+            </p>
+            <p>
+                老虎機是同一套邏輯的另一種封裝。返獎率 (RTP) 通常設定在 85~95% 之間，即<strong class="text-white">每投入 100 元，數學期望值為穩定損失 5~15 元</strong>。每次開獎由獨立的隨機亂數產生器決定，機器不存在「累積到快中大獎」的記憶機制。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 連莊家坐上桌，勝率也不會比較高
+            </h3>
+
+            <p>
+                <strong class="text-white">荷官下班後的勝率與觀光客完全相同</strong>。實務上不少荷官會將當日工資重新投回賭桌，他們的數學知識並不構成保護。
+            </p>
+            <p>
+                莊家優勢不是「知識差距」，是「結構差距」——它寫在規則本身，與是否會算牌無關。<strong class="text-white">了解系統與不被系統碾壓是兩件獨立的事</strong>：前者為認知層面，後者只取決於是否進場。荷官一旦進場，即退化為一個統計樣本。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 「賭場的錢」——比數學更狠的設計
+            </h3>
+
+            <p>
+                數學層本身相對樸素，真正的精密度在疊加於上方的心理設計層。行為經濟學將此現象定義為「House Money Effect」：當玩家偶然贏得一筆資金，認知系統會自動將此利潤歸類為「賭場的錢」，而非「個人辛苦所得」。
+            </p>
+            <p>
+                此心理帳本一旦建立，風險偏好即刻上移——下注規模放大、決策頻率加快、損失敏感度下降。這正是賭場的目標狀態。免費酒精、香氛、無時鐘無窗戶的空間、入口配置的低波動老虎機，全部都在將玩家往這個狀態推進。
+            </p>
+            <p>
+                這種設計模式並非賭場獨有。表面上使用者在做選擇，實際上環境早已將選項壓縮到一個極窄的區間。
+            </p>
+
+            <div class="my-8 p-8 bg-white/5 rounded-2xl border border-white/10 font-light">
+                <ul class="list-none space-y-4">
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-calculator text-accent-purple mt-1.5"></i>
+                        <span>
+                            <strong class="text-white">第一層：數學</strong><br>
+                            莊家優勢寫在規則裡，保證長期收割，不靠運氣。
+                        </span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-brain text-accent-purple mt-1.5"></i>
+                        <span>
+                            <strong class="text-white">第二層：心理</strong><br>
+                            House Money Effect、沉沒成本、時間感剝奪，讓人主動把籌碼推向桌面。
+                        </span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-building text-accent-purple mt-1.5"></i>
+                        <span>
+                            <strong class="text-white">第三層：建築與感官</strong><br>
+                            沒有窗戶、沒有時鐘、恆溫恆亮、香氛覆蓋，抹除所有離開的訊號。
+                        </span>
+                    </li>
+                </ul>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 利潤私有化，代價社會化
+            </h3>
+
+            <div class="my-10 grid grid-cols-1 md:grid-cols-2 gap-4">
+                <figure class="m-0 group">
+                    <img src="../PNG/article_09.2.webp"
+                         alt="在這之間拿走利潤的人"
+                         loading="lazy" class="w-full h-56 object-cover rounded-2xl border border-white/10 shadow-2xl opacity-85 group-hover:opacity-100 transition-opacity">
+                    <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                        拿走利潤的人
+                    </figcaption>
+                </figure>
+                <figure class="m-0 group">
+                    <img src="../PNG/article_09.3.webp"
+                         alt="並不需要給那些被輾碎的人生買單"
+                         loading="lazy" class="w-full h-56 object-cover rounded-2xl border border-white/10 shadow-2xl opacity-85 group-hover:opacity-100 transition-opacity">
+                    <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                        並不需要為被輾碎的人生買單
+                    </figcaption>
+                </figure>
+            </div>
+
+            <p>
+                賭場本身不借錢給即將破產的客戶，但賭場外圍的街道布滿年化利率 300% 以上的高利貸。分工極為乾淨：賭場收走現金流，高利貸收走房屋與車輛抵押。
+            </p>
+            <p>
+                整個產業是一個生態系——賭場、高利貸、老人巴士團、典當鋪、免費餐券，每一環對應系統的一個階段，每一環只負責自己那一小塊。這是一個<strong class="text-white">責任被切片的系統</strong>，沒有任何單一節點需要為最終結果負責。
+            </p>
+            <p>
+                更大尺度上，賭場與政府分走了千億規模的利潤與稅收；成癮、憂鬱、家破人亡、犯罪率上升等代價則全數外部化至社會。這是經濟學的「外部性」：<strong class="text-white">當一個行為的效益私有、成本社會化，它必然被過度生產</strong>。賭場產業即為此公式的標準教材。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 沒人會為被輾碎的人生買單
+            </h3>
+
+            <p>
+                拉斯維加斯地底的下水道隧道裡，居住著系統的殘留樣本：破產賭客、曾在這條街工作的基層員工。他們不會出現在賭場年報、城市宣傳片，或任何一份「產業貢獻 GDP」的統計裡。
+            </p>
+            <p>
+                這不是資訊盲區的問題，而是結構設計的結果——<strong class="text-white">沒有任何節點需要為他們負責</strong>。系統的核心特徵不在於它能贏多少錢，而在於它的贏錢方式：讓上游每一個獲利節點都能乾淨地把帳單轉嫁出去。
+            </p>
+            <p>
+                這個結構並非賭場獨有。利潤集中、風險擴散、代價轉化為「不幸個案」——類似模式存在於多個產業。賭場只是將這套邏輯執行得最透明、最不加掩飾。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 唯一必勝策略
+            </h3>
+
+            <p>
+                面對一個經過數學與心理學雙重武裝的系統，<strong class="text-white">唯一能保證獲勝的策略是永遠不坐上那張賭桌</strong>。
+            </p>
+            <p>
+                當系統結構本身即對玩家不利，所有「在系統內打贏它」的策略——算牌、控注、止損紀律、所謂的必勝法——都只是在<strong class="text-white">降低輸的速度，而非改變輸的方向</strong>。
+            </p>
+            <p>
+                真正有效的動作是拒絕進入。在一個規則不利的賽局裡，<strong class="text-white">「不玩」本身就是最強的一步棋</strong>。
+            </p>
+
+            <hr class="border-white/10 my-12">
+
+            <div class="mt-8 text-sm font-mono text-gray-500 border-l-2 border-accent-purple pl-4">
+                這篇不是在談賭博，而是在談那個系統——數學、心理、建築、社會結構編織在一起，讓個人意志幾乎無從著力。看懂之後再回頭看其他事情，會發現類似的結構比想像中常見。<br><br>
+                當你看懂一個系統對你不利，最有效的行動不是更努力地在裡面打，而是清楚地選擇不進去。
+            </div>
+
+            <div class="mt-12 p-6 rounded-2xl border border-white/10 bg-[#0A0A0A]">
+                <h4 class="text-white font-bold mb-3 flex items-center gap-2 text-sm">
+                    <i class="fab fa-youtube text-accent-purple"></i> Source
+                </h4>
+                <p class="text-sm text-gray-400 leading-relaxed m-0">
+                    本文觀後感來自 Mediastorm 影視颶風：<br>
+                    <a href="https://www.youtube.com/watch?v=zvvd8lYohqc" target="_blank" rel="noopener" class="text-accent-purple hover:text-white underline underline-offset-4 decoration-accent-purple/40 hover:decoration-white transition-colors font-mono break-all">
+                        《帶著 100 萬，我們揭開了賭場的秘密⋯》
+                    </a>
+                </p>
+            </div>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="article_08.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Article
+            </a>
+            <a href="../articles.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Articles
+            </a>
+            <a href="../articles.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                Next Article &rarr;
+            </a>
+        </div>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+</body>
+</html>
