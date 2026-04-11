@@ -261,14 +261,14 @@ function initHeartButton() {
 
     // Firebase 設定
     const firebaseConfig = {
-        apiKey: "AIzaSyB3dBOnXMECoJa99HxR3eL0tRK80cm-pHQ",
-        authDomain: "ghost8787-blog.firebaseapp.com",
-        databaseURL: "https://ghost8787-blog-default-rtdb.firebaseio.com",
-        projectId: "ghost8787-blog",
-        storageBucket: "ghost8787-blog.firebasestorage.app",
-        messagingSenderId: "318349478374",
-        appId: "1:318349478374:web:b024124a619fbec027ee27",
-        measurementId: "G-X1D8JTZ60E"
+        apiKey: "AIzaSyCwjNQeSSKNJHkUSS4SnXAHq4E-xn4uAKc",
+        authDomain: "blog8787-f2ace.firebaseapp.com",
+        databaseURL: "https://blog8787-f2ace-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "blog8787-f2ace",
+        storageBucket: "blog8787-f2ace.firebasestorage.app",
+        messagingSenderId: "619380552537",
+        appId: "1:619380552537:web:e235bc3f22f6e2da7ad248",
+        measurementId: "G-XT1H58ZNZZ"
     };
 
     // 初始化 Firebase
@@ -276,12 +276,23 @@ function initHeartButton() {
     const db = getDatabase(app);
     const countRef = ref(db, 'ghost_love_count');
 
+    const countEl = document.getElementById('heart-count');
     let currentGlobalCount = 0;
+    let firebaseReady = false;
 
-    // 監聽數據
+    const renderCount = (value) => {
+        if (!countEl) return;
+        countEl.textContent = value.toLocaleString();
+    };
+
+    // 監聽全域計數
     onValue(countRef, (snapshot) => {
         currentGlobalCount = snapshot.val() || 0;
-        console.log("🔥 Firebase 同步愛心數:", currentGlobalCount);
+        firebaseReady = true;
+        renderCount(currentGlobalCount);
+    }, (err) => {
+        console.warn("Firebase onValue 讀取失敗:", err);
+        if (countEl) countEl.textContent = '--';
     });
 
     // 點擊事件
@@ -289,17 +300,24 @@ function initHeartButton() {
         const x = e.clientX;
         const y = e.clientY;
 
-        // 噴出數字
-        createNumberParticle(x, y, currentGlobalCount + 1);
+        // 樂觀更新:先本地 +1 讓 UI 立即回饋
+        const optimistic = currentGlobalCount + 1;
+        currentGlobalCount = optimistic;
+        renderCount(optimistic);
+
+        // 噴出數字粒子
+        createNumberParticle(x, y, optimistic);
 
         const hearts = ['🖤', '❤️', '🤍'];
         for (let i = 0; i < 15; i++) {
             createHeart(x, y, hearts);
         }
 
-        // 寫入資料庫
+        // 寫入資料庫(Firebase 會再透過 onValue 回推最終值)
         runTransaction(countRef, (currentCount) => {
             return (currentCount || 0) + 1;
+        }).catch((err) => {
+            console.warn("Firebase 寫入失敗:", err);
         });
     });
 }
