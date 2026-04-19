@@ -1,5 +1,7 @@
 # Chill Blog — GHOST.ouo 個人部落格
 
+> 📅 專案開始：2026-01
+
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-live-4285F4?logo=github&logoColor=white)](https://ghost8787.github.io/blog/)
 [![Tailwind](https://img.shields.io/badge/Tailwind-CDN-38BDF8?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 
