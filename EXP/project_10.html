@@ -40,18 +40,18 @@
 
         <header class="mb-12 border-b border-white/10 pb-12">
             <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
-                補上 Chrome 同步分頁的操作缺口：<br>
-                <span class="text-gradient text-2xl md:text-4xl">Device Tabs Opener</span>
+                從非結構到可查詢：<br>
+                <span class="text-gradient text-2xl md:text-4xl">密室逃脫評級表的自動化整理</span>
             </h1>
 
             <div class="flex flex-wrap gap-3 mb-6">
-                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">Engineering</span>
-                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Chrome Extension</span>
-                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Open Source</span>
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">AI &amp; Automation</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Web Scraping</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Claude CoWork</span>
             </div>
 
             <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
-                <span><i class="far fa-calendar mr-2"></i>2026.03.29</span>
+                <span><i class="far fa-calendar mr-2"></i>2026.04.20</span>
                 <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
             </div>
         </header>
@@ -59,202 +59,200 @@
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
             <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
-                一支解決「從其他裝置批次開啟分頁」需求的 Chrome Extension。涵蓋 Manifest V3、Vanilla JS 實作、MIT 開源授權與 Web Store 上架流程紀錄。
+                將一篇長篇部落格心得，透過 AI 自動化爬梳為可排序、可篩選的結構化資料表。過程紀錄與方法說明。
             </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 問題：功能存在，但操作路徑破碎
+                <span class="text-accent-purple">#</span> 問題：完整但難以檢索的資訊
             </h3>
 
             <p>
-                Chrome 的跨裝置同步分頁功能，會自動將 iPhone / iPad 上的開啟分頁同步至桌面端。存取路徑為：
+                在挑選密室逃脫主題時，參考具公信力的長期心得紀錄是有效路徑。台灣密室圈中，Roger Song 的《密室逃脫無雷心得列表與推薦》是這類資料的代表：涵蓋面廣、有評級系統、持續更新且無雷。
             </p>
-
-            <div class="my-6 p-5 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400">
-                Chrome &rarr; 歷史記錄 &rarr; 從其他裝置開啟的分頁
-            </div>
 
             <p>
-                然而，此清單僅支援逐筆點擊開啟。若有 10 個待處理分頁，需重複操作 10 次，且每次點擊後焦點跳離清單，需再次返回。對於「將手機上累積的所有分頁一次開到桌面環境」的使用場景，操作成本偏高。
+                然而，部落格的線性呈現格式與實際選店需求之間存在結構性落差。實際查詢情境通常是多條件篩選：
             </p>
-
-            <p class="text-gray-400">
-                核心問題不在同步功能本身（Chrome 已實作），而是缺少「批次操作」的介面環節。
-            </p>
-
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 實作：三支 API 拼湊的最小閉環
-            </h3>
-
-            <h4 class="text-xl font-bold text-white mt-10 mb-4">
-                技術棧選擇
-            </h4>
 
             <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
-                <li><strong class="text-white">Manifest V3</strong>：Chrome 自 2024 年起要求新上架擴充功能採用 V3 規範，以 Service Worker 取代 Background Page，權限模型更嚴格。</li>
-                <li><strong class="text-white">Vanilla JavaScript</strong>：無框架、無打包工具。整體為單一 HTML + 單一 JS 檔案，約數百行。</li>
+                <li>評級 S、人數 4 人以下、特定地區</li>
+                <li>未玩過、評價 A 以上、難度中等</li>
+                <li>先列出所有 S 級作為短名單</li>
             </ul>
 
             <p>
-                目錄結構：
+                部落格原生介面僅支援 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">Ctrl+F</code> 關鍵字搜尋，無法同時以「評級＋地區＋人數」進行交叉篩選。每次查詢需在長文中反覆瀏覽，耗時約 1–2 分鐘。
             </p>
 
-            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
-<pre class="m-0"><code>device-tabs-opener/
-├── manifest.json     # 權限與入口宣告
-├── popup.html        # 點擊工具列圖示之 UI
-├── popup.js          # 互動邏輯與批次開啟實作
-├── background.js     # Service Worker（V3 必要）
-└── icons/            # 工具列圖示</code></pre>
-            </div>
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 方法：將爬梳流程交給 AI
+            </h3>
+
+            <p>
+                手動複製貼上再建立試算表是可行方案，但這次嘗試將整段工作交給 Claude CoWork 操作 Chrome 的自動化能力。整段流程沒有撰寫程式碼，主要工作集中在「明確定義目標結構（schema）」，再交由 AI 執行抽取與輸出。
+            </p>
 
             <h4 class="text-xl font-bold text-white mt-10 mb-4">
-                核心 API
+                步驟一：餵入原始資料
             </h4>
+
+            <p>
+                將目標部落格網址貼入 Claude CoWork，由 AI 直接抓取整頁內容並解析 HTML 結構。原文雖長，但對 LLM 而言是一次性解析的範圍。
+            </p>
+
+            <h4 class="text-xl font-bold text-white mt-10 mb-4">
+                步驟二：定義 Schema 並抽取欄位
+            </h4>
+
+            <p>
+                預先定義每間密室需抽取的 9 個欄位：
+            </p>
 
             <div class="w-full overflow-x-auto my-6">
                 <table class="w-full text-left border-collapse min-w-[500px]">
                     <thead>
                         <tr class="text-white font-mono text-xs uppercase tracking-wider">
-                            <th class="py-3 pr-4 border-b border-white/20 w-1/3">API</th>
-                            <th class="py-3 pl-4 border-b border-white/20 w-2/3">用途</th>
+                            <th class="py-3 pr-4 border-b border-white/20 w-1/3">欄位</th>
+                            <th class="py-3 pl-4 border-b border-white/20 w-2/3">說明</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm">
-                        <tr class="border-b border-white/5">
-                            <td class="py-4 pr-4 font-bold text-white font-mono"><code class="text-accent-purple">chrome.sessions.getDevices()</code></td>
-                            <td class="py-4 pl-4 text-gray-300">讀取所有同步裝置及其分頁清單，回傳結構化物件（裝置名、標題、URL、最後使用時間）</td>
-                        </tr>
-                        <tr class="border-b border-white/5">
-                            <td class="py-4 pr-4 font-bold text-white font-mono"><code class="text-accent-purple">chrome.windows.create({ url: [...] })</code></td>
-                            <td class="py-4 pl-4 text-gray-300">將 URL 陣列一次性開啟至新視窗。選擇新視窗而非現有視窗，是為了避免一次塞入大量分頁打亂既有工作流程</td>
-                        </tr>
-                        <tr>
-                            <td class="py-4 pr-4 font-bold text-white font-mono">popup UI</td>
-                            <td class="py-4 pl-4 text-gray-300">列出所有裝置與分頁，每筆附 checkbox，提供「全選」「取消全選」「開啟選取的分頁」三顆按鈕</td>
-                        </tr>
+                        <tr class="border-b border-white/5"><td class="py-3 pr-4 font-bold text-white font-mono">工作室</td><td class="py-3 pl-4 text-gray-300">發行團隊</td></tr>
+                        <tr class="border-b border-white/5"><td class="py-3 pr-4 font-bold text-white font-mono">地址</td><td class="py-3 pl-4 text-gray-300">地區位置</td></tr>
+                        <tr class="border-b border-white/5"><td class="py-3 pr-4 font-bold text-white font-mono">主題名稱</td><td class="py-3 pl-4 text-gray-300">密室標題</td></tr>
+                        <tr class="border-b border-white/5"><td class="py-3 pr-4 font-bold text-white font-mono">評級</td><td class="py-3 pl-4 text-gray-300">S / A / B / C / D / &ndash;</td></tr>
+                        <tr class="border-b border-white/5"><td class="py-3 pr-4 font-bold text-white font-mono">人數</td><td class="py-3 pl-4 text-gray-300">建議人數</td></tr>
+                        <tr class="border-b border-white/5"><td class="py-3 pr-4 font-bold text-white font-mono">時間</td><td class="py-3 pl-4 text-gray-300">遊戲時長</td></tr>
+                        <tr class="border-b border-white/5"><td class="py-3 pr-4 font-bold text-white font-mono">類型</td><td class="py-3 pl-4 text-gray-300">主題分類</td></tr>
+                        <tr class="border-b border-white/5"><td class="py-3 pr-4 font-bold text-white font-mono">狀態</td><td class="py-3 pl-4 text-gray-300">營運中 / 封存</td></tr>
+                        <tr><td class="py-3 pr-4 font-bold text-white font-mono">備註</td><td class="py-3 pl-4 text-gray-300">補充資訊</td></tr>
                     </tbody>
                 </table>
             </div>
 
-            <p class="text-gray-400">
-                從點擊圖示到新視窗開啟所有選取分頁，約 2&ndash;3 秒。
+            <p>
+                評級系統完全沿用原作者標準，AI 僅負責搬運資料，不涉及價值判斷。
             </p>
 
             <h4 class="text-xl font-bold text-white mt-10 mb-4">
-                權限與隱私宣告
+                步驟三：輸出至 Google Sheets
             </h4>
 
             <p>
-                <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">manifest.json</code> 僅宣告兩個權限：
+                AI 將整理結果直接寫入 Google Sheets：第一列為標頭，後續每列一間密室。Sheets 原生支援排序與篩選，無需額外建置前端介面。
             </p>
 
-            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
-                <li><code class="text-accent-purple bg-accent-purple/10 px-1 rounded">sessions</code>：讀取其他裝置同步之分頁清單</li>
-                <li><code class="text-accent-purple bg-accent-purple/10 px-1 rounded">tabs</code>：在新視窗中開啟選取的分頁</li>
-            </ul>
+            <p class="text-gray-400">
+                整段流程僅下達 3&ndash;4 次指令，其餘由 AI 自主完成。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 成果：兩層結構的查詢介面
+            </h3>
 
             <p>
-                未使用 <code>storage</code>、<code>activeTab</code>、<code>host_permissions</code>。所有資料於本機處理，執行完即丟，無後端、無第三方追蹤、不收集使用者資料。原始碼公開於 GitHub，MIT 授權。
+                最終產出一份單純的 Google Sheets，結構分為兩層：
             </p>
 
+            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 my-8">
+                <h4 class="text-white font-bold mb-4 flex items-center gap-2 border-b border-white/10 pb-3">
+                    <i class="fas fa-folder-tree text-accent-purple"></i> 工作表分頁（依地區）
+                </h4>
+                <div class="flex flex-wrap gap-2 text-sm">
+                    <span class="bg-white/5 px-3 py-1.5 rounded-md text-gray-300 font-mono">大台北</span>
+                    <span class="bg-white/5 px-3 py-1.5 rounded-md text-gray-300 font-mono">台中</span>
+                    <span class="bg-white/5 px-3 py-1.5 rounded-md text-gray-300 font-mono">桃園中壢</span>
+                    <span class="bg-white/5 px-3 py-1.5 rounded-md text-gray-300 font-mono">新竹・彰化・南投</span>
+                    <span class="bg-white/5 px-3 py-1.5 rounded-md text-gray-300 font-mono">台南</span>
+                    <span class="bg-white/5 px-3 py-1.5 rounded-md text-gray-300 font-mono">高雄</span>
+                    <span class="bg-white/5 px-3 py-1.5 rounded-md text-gray-300 font-mono">宜蘭・屏東・海外</span>
+                    <span class="bg-white/5 px-3 py-1.5 rounded-md text-gray-500 font-mono">+ 來源資訊</span>
+                </div>
+            </div>
+
+            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 my-8">
+                <h4 class="text-white font-bold mb-4 flex items-center gap-2 border-b border-white/10 pb-3">
+                    <i class="fas fa-table-columns text-accent-purple"></i> 欄位 Schema（各分頁共用）
+                </h4>
+                <div class="grid grid-cols-3 md:grid-cols-5 gap-2 text-sm">
+                    <div class="bg-white/5 p-2.5 rounded-lg text-center"><code class="text-accent-purple text-xs">工作室</code></div>
+                    <div class="bg-white/5 p-2.5 rounded-lg text-center"><code class="text-accent-purple text-xs">地址</code></div>
+                    <div class="bg-white/5 p-2.5 rounded-lg text-center"><code class="text-accent-purple text-xs">主題名稱</code></div>
+                    <div class="bg-white/5 p-2.5 rounded-lg text-center"><code class="text-accent-purple text-xs">評級</code></div>
+                    <div class="bg-white/5 p-2.5 rounded-lg text-center"><code class="text-accent-purple text-xs">人數</code></div>
+                    <div class="bg-white/5 p-2.5 rounded-lg text-center"><code class="text-accent-purple text-xs">時間</code></div>
+                    <div class="bg-white/5 p-2.5 rounded-lg text-center"><code class="text-accent-purple text-xs">類型</code></div>
+                    <div class="bg-white/5 p-2.5 rounded-lg text-center"><code class="text-accent-purple text-xs">狀態</code></div>
+                    <div class="bg-white/5 p-2.5 rounded-lg text-center"><code class="text-accent-purple text-xs">備註</code></div>
+                </div>
+            </div>
+
+            <h4 class="text-xl font-bold text-white mt-10 mb-4">
+                典型查詢路徑
+            </h4>
+
+            <ol class="list-decimal pl-6 space-y-2 text-gray-300 mb-6 marker:text-accent-purple">
+                <li>切換至目標地區工作表分頁</li>
+                <li>使用「資料 → 建立篩選器」</li>
+                <li>評級欄位篩選 S / A，狀態篩選「營運中」</li>
+                <li>以人數或類型欄位進一步收斂</li>
+                <li>掃描主題名稱，完成選擇</li>
+            </ol>
+
+            <p class="text-gray-400">
+                從開啟試算表到決定店家，時間壓縮至一分鐘以內。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 致謝與聲明
+            </h3>
+
+            <p>
+                本表所有店家、評級與心得內容皆出自 Roger Song 長期累積的原始整理，是其無償分享的心血結晶。此再整理僅為個人檢索便利，無任何營利或商業用途。
+            </p>
+
+            <p class="text-gray-400">
+                若原作者認為不妥，將立即撤下。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 成果連結
+            </h3>
+
             <figure class="my-8">
-                <img src="../PNG/project_10.1.png"
-                     alt="Chrome Web Store 商品頁的詳細資料與隱私權聲明"
+                <img src="../PNG/project_09.1.png"
+                     alt="密室逃脫整理 Sheet 介面示意"
                      loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
                 <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
-                    Chrome Web Store 商品頁：詳細資料 + 隱私權聲明
+                    Sheet 介面示意（黃色 = 個人玩過、底下分頁切換地區）
                 </figcaption>
             </figure>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 上架流程紀錄
-            </h3>
-
             <p>
-                這是第一次完整走完 Chrome Extension 從開發到上架的流程。以下為關鍵節點：
-            </p>
-
-            <h4 class="text-xl font-bold text-white mt-10 mb-4">
-                1. 授權選擇：MIT
-            </h4>
-
-            <p>
-                考量為個人工具且期望他人可自由 fork 修改，選擇條件寬鬆的 MIT 授權 &mdash; 保留著作權聲明後，可商用、修改、再散布。
-            </p>
-
-            <h4 class="text-xl font-bold text-white mt-10 mb-4">
-                2. Chrome Web Store 開發者帳號
-            </h4>
-
-            <p>
-                一次性 5 美元註冊費，完成後即可建立擴充功能。
-            </p>
-
-            <h4 class="text-xl font-bold text-white mt-10 mb-4">
-                3. 打包與素材準備
-            </h4>
-
-            <p>
-                將目錄壓縮為 <code>.zip</code> 上傳。需額外準備：
-            </p>
-
-            <ul class="list-disc pl-5 space-y-1 text-gray-300 font-light mb-6">
-                <li>擴充圖示（128&times;128）</li>
-                <li>宣傳圖（440&times;280）</li>
-                <li>商品截圖（1280&times;800）</li>
-                <li>商品描述與權限用途說明</li>
-            </ul>
-
-            <p>
-                素材準備耗時最長，程式碼反而早已完成。
-            </p>
-
-            <h4 class="text-xl font-bold text-white mt-10 mb-4">
-                4. 審核
-            </h4>
-
-            <p>
-                功能單一、權限合理、無額外蒐集行為 &mdash; 一次通過。僅需等待審核排隊。
-            </p>
-
-            <h4 class="text-xl font-bold text-white mt-10 mb-4">
-                5. 上架後安裝體驗
-            </h4>
-
-            <p>
-                使用者可從 Chrome Web Store 直接點擊「加到 Chrome」，無需開發者模式或下載 zip。
-            </p>
-
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 專案連結
-            </h3>
-
-            <p>
-                <a href="https://chromewebstore.google.com/detail/idmlpeiehifpmfbgpefcdjlbdchjmjpc" target="_blank" rel="noopener noreferrer" class="text-accent-purple hover:text-white transition-colors underline decoration-accent-purple/30 underline-offset-4 font-mono">
-                    Chrome Web Store&nbsp;<i class="fas fa-external-link-alt text-[10px]"></i>
-                </a>
-                　｜
-                <a href="https://github.com/GHOST8787/device-tabs-opener" target="_blank" rel="noopener noreferrer" class="text-accent-purple hover:text-white transition-colors underline decoration-accent-purple/30 underline-offset-4 font-mono">
-                    GitHub&nbsp;<i class="fas fa-external-link-alt text-[10px]"></i>
+                <a href="https://docs.google.com/spreadsheets/d/1z7T0mnmIVwzoYdF60mkmLer-hC0a4leD/edit?gid=1684939645#gid=1684939645" target="_blank" rel="noopener noreferrer"
+                    class="text-accent-purple hover:text-white transition-colors underline decoration-accent-purple/30 underline-offset-4 font-mono">
+                    View Sheet&nbsp;<i class="fas fa-external-link-alt text-[10px]"></i>
                 </a>
             </p>
 
-            <p class="text-sm text-gray-500 font-mono">
-                v2.1.0　｜　MIT License　｜　Manifest V3
+            <p class="text-sm text-gray-400 m-0">
+                黃色標記為個人玩過的店；不同「工作表」分頁代表不同地區，於 Sheets 下方切換。
             </p>
 
             <hr class="border-white/10 my-16">
 
             <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 flex flex-col md:flex-row items-start md:items-center gap-6">
                 <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center shrink-0 border border-white/10">
-                    <i class="fab fa-github text-gray-400 text-xl"></i>
+                    <i class="fas fa-book-open text-gray-400 text-xl"></i>
                 </div>
                 <div>
-                    <h4 class="text-white font-bold mb-1">Project Info</h4>
+                    <h4 class="text-white font-bold mb-1">Reference &amp; Credits</h4>
                     <p class="text-sm text-gray-400 m-0 leading-relaxed">
-                        Chrome Extension · 個人工具 · 跨裝置分頁批次開啟<br>
-                        <span class="text-xs text-gray-500 mt-2 inline-block">版本 v2.1.0　・　上架日 2026.03.29　・　Manifest V3</span>
+                        資料來源：<strong>Roger Song</strong>《密室逃脫無雷心得列表與推薦》<br>
+                        <a href="https://roger5050.pixnet.net/blog/posts/15065131044" target="_blank" rel="noopener noreferrer" class="text-accent-purple hover:text-white transition-colors underline decoration-accent-purple/30 underline-offset-4 font-mono mt-1 inline-block">
+                            roger5050.pixnet.net/blog/posts/15065131044
+                        </a><br>
+                        <span class="text-xs text-gray-500 mt-2 inline-block">原文最後更新：2026.03.15　・　整理日期：2026.03.21</span>
                     </p>
                 </div>
             </div>
