@@ -15,7 +15,9 @@
     
     <link rel="stylesheet" href="../style.css">
     
-    <script> window.siteRoot = '../'; </script>
+    <script>
+        window.siteRoot = '../';
+    </script>
     <script src="../main.js" defer></script>
 </head>
 
@@ -39,159 +41,279 @@
         </div>
 
         <header class="mb-12 border-b border-white/10 pb-12">
+            
             <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
-                Claude Code 架構解構 (上)：<br>
-                <span class="text-gradient text-2xl md:text-4xl">系統分層、上下文邊界與緩存機制</span>
+                AI Agent 生態系的機制解構：<br>
+                <span class="text-gradient text-2xl md:text-4xl">從 Pixel Agents 改寫經驗談 Skills 的定位</span>
             </h1>
 
             <div class="flex flex-wrap gap-3 mb-6">
-                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">AI & Automation</span>
-                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Context Engineering</span>
-                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Prompt Caching</span>
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    AI & Automation
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Claude
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    System Design
+                </span>
             </div>
             
             <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
-                <span><i class="far fa-calendar mr-2"></i>2026.03.12</span>
+                <span><i class="far fa-calendar mr-2"></i>2026.03.02</span>
                 <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
             </div>
         </header>
 
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
             
-            <p class="text-xl text-gray-400 font-light mb-16 leading-relaxed">
-                本篇整理自近半年深度使用 Claude Code 的踩坑經驗。剛開始容易將其視為 ChatBot，但很快會發現：上下文越來越亂、工具越來越多但效果變差、規則越長越不遵守。這並非 Prompt 的問題，而是系統架構設計的本質。要駕馭它，必須先理解其底層的「六層架構」與「上下文邊界」。
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                從開源專案改寫經驗出發，釐清 Claude 生態系中 Skills 與 Custom Commands、MCP、Subagents 的本質差異。
             </p>
 
-            <section class="mb-16">
-                <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-3 border-b border-white/10 pb-4">
-                    <i class="fas fa-layer-group text-accent-purple"></i> 核心：底層運作與六層架構
-                </h3>
-                
-                <p class="mb-6 text-gray-300">
-                    Claude Code 的核心不是「回答」，而是一個反覆循環的代理過程：<br>
-                    <code class="text-accent-purple bg-accent-purple/10 px-2 py-1 rounded">收集上下文 → 採取行動 → 驗證結果 → [完成 or 回到收集]</code>
-                </p>
+            <figure class="my-10 mx-auto">
+                <img src="../PNG/project_06.1.webp" 
+                     alt="用不到五個小時就爆了的PRO帳號"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    用不到五個小時就爆了的PRO帳號
+                </figcaption>
+            </figure>
 
-                <p class="mb-6 text-gray-400 text-sm">卡住的地方幾乎從來不是模型不夠聰明，而是給了錯誤的上下文，或是缺乏驗證與撤回機制。理解系統，最好的方式是將其拆分為六層：</p>
+            <p>
+                前幾日於 GitHub 上發現 Pixel Agents 開源專案——該專案將 AI 代理人的運作視覺化為像素風格虛擬辦公室角色，原始設計聚焦於 AI Agent 運行狀態的監控與管理。經由 Claude 協助改寫，將其調整為可監控本機端各 AI 任務執行情況的小型控制平台。
+            </p>
+            
+            <p>
+                此改寫過程揭示了一個結構性問題：Claude CLI 與 Claude Code 本質上是為工程師設計的工具鏈，其檔案存放邏輯與機制設定對非技術背景使用者並不直觀。「東西放在哪裡？」「為何如此設定？」成為常見的進入障礙。
+            </p>
 
-                <div class="w-full overflow-x-auto mb-6">
-                    <table class="w-full text-left border-collapse min-w-[600px]">
-                        <thead>
-                            <tr class="text-white font-mono text-xs uppercase tracking-wider">
-                                <th class="py-4 pr-4 border-b border-white/20 w-1/4">系統層次</th>
-                                <th class="py-4 pl-4 border-b border-white/20 w-3/4">職責與定義</th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-sm">
-                            <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
-                                <td class="py-4 pr-4 font-bold text-white font-mono">Context (上下文)</td>
-                                <td class="py-4 pl-4 text-gray-300"><code>CLAUDE.md</code> / <code>rules</code> / <code>memory</code>：告訴 Claude「是什麼」。</td>
-                            </tr>
-                            <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
-                                <td class="py-4 pr-4 font-bold text-white font-mono">Action (動作能力)</td>
-                                <td class="py-4 pl-4 text-gray-300"><code>Tools</code> / <code>MCP</code>：告訴 Claude「能做什麼」。</td>
-                            </tr>
-                            <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
-                                <td class="py-4 pr-4 font-bold text-white font-mono">Methodology (方法論)</td>
-                                <td class="py-4 pl-4 text-gray-300"><code>Skills</code>：按需載入的方法論，告訴 Claude「怎麼做」。</td>
-                            </tr>
-                            <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
-                                <td class="py-4 pr-4 font-bold text-white font-mono">Control (控制層)</td>
-                                <td class="py-4 pl-4 text-gray-300"><code>Hooks</code>：強制執行某些行為，不依賴 Claude 自己判斷。</td>
-                            </tr>
-                            <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
-                                <td class="py-4 pr-4 font-bold text-white font-mono">Isolation (隔離層)</td>
-                                <td class="py-4 pl-4 text-gray-300"><code>Subagents</code>：隔離情境的工作者，負責受控自治。</td>
-                            </tr>
-                            <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
-                                <td class="py-4 pr-4 font-bold text-white font-mono">Verification (驗證閉環)</td>
-                                <td class="py-4 pl-4 text-gray-300"><code>Verifiers</code>：讓輸出可驗、可回滾、可審計。</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <p class="text-sm text-gray-400">
-                    <i class="fas fa-info-circle text-accent-purple mr-1"></i> 只強化其中一層，系統就會失衡：CLAUDE.md 寫太長會污染上下文；工具堆太多會導致選擇混亂；Subagents 到處開會導致狀態漂移。
-                </p>
-            </section>
+            <figure class="my-10 mx-auto">
+                <img src="../PNG/project_06.2.webp" 
+                     alt="本地的網頁版機器人"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    本地的網頁版機器人
+                </figcaption>
+            </figure>
 
-            <section class="mb-16">
-                <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-3 border-b border-white/10 pb-4">
-                    <i class="fas fa-code-branch text-accent-purple"></i> 概念邊界：MCP / Tools / Skills / Hooks
-                </h3>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                    <div class="bg-white/5 p-5 rounded-xl border-l-2 border-accent-purple/50">
-                        <strong class="text-white block mb-2 font-mono text-sm"><i class="fas fa-file-contract text-accent-purple mr-2"></i>CLAUDE.md & rules</strong>
-                        <p class="text-sm text-gray-400 mb-2">專案級的持久契約與路徑局部規範。</p>
-                        <p class="text-xs text-red-400 mb-0"><i class="fas fa-times-circle mr-1"></i> 典型誤用：把所有團隊知識全塞進根目錄。</p>
-                    </div>
-                    <div class="bg-white/5 p-5 rounded-xl border-l-2 border-accent-purple/50">
-                        <strong class="text-white block mb-2 font-mono text-sm"><i class="fas fa-plug text-accent-purple mr-2"></i>Tools & MCP</strong>
-                        <p class="text-sm text-gray-400 mb-2">賦予 Claude 存取外部系統的能力。</p>
-                        <p class="text-xs text-red-400 mb-0"><i class="fas fa-times-circle mr-1"></i> 典型誤用：接太多 Server 擠爆上下文。</p>
-                    </div>
-                    <div class="bg-white/5 p-5 rounded-xl border-l-2 border-accent-purple/50">
-                        <strong class="text-white block mb-2 font-mono text-sm"><i class="fas fa-brain text-accent-purple mr-2"></i>Skills</strong>
-                        <p class="text-sm text-gray-400 mb-2">按需加載的工作流程與方法包。</p>
-                        <p class="text-xs text-red-400 mb-0"><i class="fas fa-times-circle mr-1"></i> 典型誤用：寫得像百科全書，缺乏執行邊界。</p>
-                    </div>
-                    <div class="bg-white/5 p-5 rounded-xl border-l-2 border-accent-purple/50">
-                        <strong class="text-white block mb-2 font-mono text-sm"><i class="fas fa-shield-alt text-accent-purple mr-2"></i>Hooks & Subagents</strong>
-                        <p class="text-sm text-gray-400 mb-2">強制執行的攔截層與隔離上下文的工作單元。</p>
-                        <p class="text-xs text-red-400 mb-0"><i class="fas fa-times-circle mr-1"></i> 典型誤用：用 Hook 取代模型判斷。</p>
-                    </div>
-                </div>
-            </section>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-10">
+                <figure class="m-0">
+                    <img src="../PNG/project_06.3.webp" 
+                         alt="顯示在屏幕上方的可愛機器人"
+                         loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-lg opacity-90 hover:opacity-100 transition-opacity">
+                    <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                        顯示在屏幕上方的可愛機器人
+                    </figcaption>
+                </figure>
+                <figure class="m-0">
+                    <img src="../PNG/project_06.4.webp" 
+                         alt="如果他在工作的畫會張出輪胎喔"
+                         loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-lg opacity-90 hover:opacity-100 transition-opacity">
+                    <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                        如果他在工作的話會長出輪胎喔
+                    </figcaption>
+                </figure>
+            </div>
 
-            <section class="mb-16">
-                <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-3 border-b border-white/10 pb-4">
-                    <i class="fas fa-database text-accent-purple"></i> 上下文工程：最核心的系統約束
-                </h3>
-                
-                <p class="mb-4 text-gray-300">多數人把上下文當作「容量問題」，但卡住通常是因為「太吵了」。200K 的上下文並非全部可用，MCP Server 的工具定義是最大的隱形殺手。</p>
+            <p>
+                Pro 方案下，單純透過問答方式進行開發，Token 消耗速度仍相當可觀。現階段採取的權衡方案為：透過 MCP (Model Context Protocol) 串接 Obsidian，定期自動更新 Markdown 檔案作為專案管理知識庫。此方式使開發過程中的上下文得以有效保存與追溯，避免每次重新建立語境。
+            </p>
+            
+            <figure class="my-10 mx-auto max-w-lg">
+                <img src="../PNG/project_06.5.webp" 
+                     alt="每天都在燒TOKEN"
+                     loading="lazy" class="w-full rounded-2xl border border-red-500/20 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-red-400 mt-3 font-mono">
+                    每天都在燒TOKEN
+                </figcaption>
+            </figure>
 
-                <div class="bg-white/5 p-5 rounded-xl border-l-4 border-white/10 font-mono text-sm text-gray-300 mb-8 overflow-x-auto">
-<pre class="m-0"><code>建議的上下文分層策略：
-始終常駐   → CLAUDE.md (專案契約 / 構建命令 / 禁止事項)
-按路徑加載 → rules (語言 / 目錄 / 檔案類型特定規則)
-按需加載   → Skills (工作流 / 領域知識)
-隔離加載   → Subagents (大量探索 / 並行研究)
-不進上下文 → Hooks (確定性腳本 / 審計 / 阻斷)</code></pre>
-                </div>
+            <p>
+                反覆嘗試與調整過程中，我發現 Claude 生態系中存在多種「個人化/客製化」機制，但其定位與適用場景經常被混淆。尤其是 <strong>Skills</strong> 這個概念，與其他機制的本質差異值得深入釐清。
+            </p>
 
-                <div class="bg-gradient-to-r from-accent-purple/10 to-transparent p-6 rounded-r-xl border-l-4 border-accent-purple mb-6">
-                    <strong class="text-white block mb-2 text-lg">壓縮機制的陷阱與 <code>HANDOFF.md</code></strong>
-                    <p class="text-sm text-gray-300 leading-relaxed mb-4">
-                        預設的壓縮演算法會優先刪除早期的 Tool Output 和檔案內容，順帶把<strong class="text-accent-purple">架構決策和約束理由</strong>也一起丟了。
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 生態系機制比較：Skills 與其他工具的架構定位
+            </h3>
+
+            <p>以下表格整理四種機制的本質差異，有助於開發者精準選擇適用工具：</p>
+
+            <div class="w-full overflow-x-auto border border-white/10 rounded-xl bg-[#0A0A0A] my-8 shadow-lg">
+                <table class="w-full table-fixed border-collapse min-w-[700px] md:min-w-full">
+                    <thead>
+                        <tr>
+                            <th class="bg-white/5 text-white font-mono text-[0.75rem] uppercase tracking-wider font-bold border-b border-white/10 p-3 sm:p-4 text-left align-top break-words w-[14%]">機制名稱</th>
+                            <th class="bg-white/5 text-white font-mono text-[0.75rem] uppercase tracking-wider font-bold border-b border-white/10 p-3 sm:p-4 text-left align-top break-words w-[18%]">觸發方式</th>
+                            <th class="bg-white/5 text-white font-mono text-[0.75rem] uppercase tracking-wider font-bold border-b border-white/10 p-3 sm:p-4 text-left align-top break-words w-[12%]">持久性</th>
+                            <th class="bg-white/5 text-white font-mono text-[0.75rem] uppercase tracking-wider font-bold border-b border-white/10 p-3 sm:p-4 text-left align-top break-words w-[22%]">核心內容</th>
+                            <th class="bg-white/5 text-white font-mono text-[0.75rem] uppercase tracking-wider font-bold border-b border-white/10 p-3 sm:p-4 text-left align-top break-words w-[12%]">載入時機</th>
+                            <th class="bg-white/5 text-white font-mono text-[0.75rem] uppercase tracking-wider font-bold border-b border-white/10 p-3 sm:p-4 text-left align-top break-words w-[22%]">適用場景</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-white/5 last:border-b-0 transition-colors hover:bg-white/5">
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">
+                                <div class="font-bold font-mono text-accent-purple">
+                                    Skills
+                                    <span class="text-white font-sans font-normal text-[0.65rem] sm:text-[0.75rem] block mt-1 opacity-80">技能</span>
+                                </div>
+                            </td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">
+                                AI自動判斷
+                                <span class="text-gray-400 text-[0.6rem] sm:text-[0.7rem] block mt-1 font-mono">根據任務描述</span>
+                            </td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">跨對話<br>跨專案</td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">程序性知識、工作流程<br>可執行的腳本資源</td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">
+                                動態載入
+                                <span class="text-gray-400 text-[0.6rem] sm:text-[0.7rem] block mt-1 font-mono">依需求</span>
+                            </td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">需要 Claude 主動應用專業知識的場景</td>
+                        </tr>
+                        <tr class="border-b border-white/5 last:border-b-0 transition-colors hover:bg-white/5">
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">
+                                <div class="font-bold font-mono text-white">
+                                    Custom Commands
+                                    <span class="text-gray-400 font-sans font-normal text-[0.65rem] sm:text-[0.75rem] block mt-1">自訂指令</span>
+                                </div>
+                            </td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">
+                                用戶手動輸入
+                                <span class="text-gray-400 text-[0.6rem] sm:text-[0.7rem] block mt-1 font-mono">如 /review-pr</span>
+                            </td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">專案層級<br>或用戶層級</td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">
+                                Prompt 範本
+                                <span class="text-gray-400 text-[0.6rem] sm:text-[0.7rem] block mt-1 font-mono">單一檔案</span>
+                            </td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">用戶觸發時載入</td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">用戶明確知道要執行什麼固定操作時</td>
+                        </tr>
+                        <tr class="border-b border-white/5 last:border-b-0 transition-colors hover:bg-white/5">
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">
+                                <div class="font-bold font-mono text-white">
+                                    MCP
+                                    <span class="text-gray-400 font-sans font-normal text-[0.65rem] sm:text-[0.75rem] block mt-1">模型上下文協議</span>
+                                </div>
+                            </td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">工具呼叫</td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">啟動時載入</td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">
+                                連接外部服務的方法
+                                <span class="text-gray-400 text-[0.6rem] sm:text-[0.7rem] block mt-1 font-mono">如 API、資料庫</span>
+                            </td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">按需呼叫</td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">需要 Claude 獲取外部資料或操作外部工具時</td>
+                        </tr>
+                        <tr class="border-b border-white/5 last:border-b-0 transition-colors hover:bg-white/5">
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">
+                                <div class="font-bold font-mono text-white">
+                                    Subagents
+                                    <span class="text-gray-400 font-sans font-normal text-[0.65rem] sm:text-[0.75rem] block mt-1">子智能體</span>
+                                </div>
+                            </td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">Claude自動委派<br>或手動啟動</td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">任務期間</td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">獨立運作的 AI 實例</td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">需要時建立</td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">需獨立上下文、平行處理的複雜拆分任務</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 機制的本質定位分析
+            </h3>
+
+            <div class="space-y-8 my-8">
+                <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/10 shadow-lg">
+                    <h4 class="text-white font-bold mb-3 flex items-center gap-2 text-lg">
+                        <i class="fas fa-brain text-accent-purple"></i> 1. Skills：程序性知識的主動應用
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed m-0">
+                        Skills 的關鍵設計差異在於：由 AI「主動判斷」何時使用——採用漸進式揭露 (Progressive Disclosure) 架構，僅在需要時載入相關上下文。使用者無需下達特定指令，Claude 會根據對話任務描述自動呼叫適用的 Skill。<br><br>
+                        本質上，Skills 是程序性知識的封裝單元，並非單純提示詞模板，而是包含工作流程、判斷邏輯、可執行程式碼腳本的複合資源。其跨對話、跨專案的持久性，使其最適合建構 Claude 的「專業能力庫」。
                     </p>
-                    <ul class="list-none pl-0 space-y-2 text-sm text-gray-400 m-0">
-                        <li class="flex items-start gap-2"><i class="fas fa-check text-green-400 mt-1"></i> 在 <code>CLAUDE.md</code> 明確寫入 <code>Compact Instructions</code>（規定壓縮時必須保留架構決策、修改檔案等）。</li>
-                        <li class="flex items-start gap-2"><i class="fas fa-check text-green-400 mt-1"></i> <strong class="text-white">更主動的方案：</strong>切換複雜會話前，讓 Claude 寫一份 <code>HANDOFF.md</code>（記錄進展、走通的路、死路與下一步）。新實例只需讀取此檔案即可無縫接軌。</li>
-                    </ul>
                 </div>
-            </section>
 
-            <section class="mb-10">
-                <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-3 border-b border-white/10 pb-4">
-                    <i class="fas fa-bolt text-accent-purple"></i> Prompt Caching：內部架構的核心
-                </h3>
+                <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/10 shadow-lg">
+                    <h4 class="text-white font-bold mb-3 flex items-center gap-2 text-lg">
+                        <i class="fas fa-terminal text-blue-400"></i> 2. Custom Commands：用戶主動觸發的快捷指令
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed m-0">
+                        與 Skills 不同，Custom Commands 必須由用戶手動輸入特定指令（如 <code class="bg-white/10 px-1.5 py-0.5 rounded text-accent-purple">/review-pr</code>）觸發。持久性限於專案或用戶層級，內容為單一 Prompt 範本。<br><br>
+                        此機制適用於「用戶明確知道執行什麼操作」的情境，例如程式碼審查、特定格式文件生成等重複性任務。主動權始終在用戶端。
+                    </p>
+                </div>
 
-                <p class="mb-4 text-gray-300">
-                    Claude Code 的整個架構都圍繞著 Prompt 緩存構建。高命中率不僅降低成本，也影響速率限制。緩存是按前綴匹配工作的，因此順序極為關鍵：
+                <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/10 shadow-lg">
+                    <h4 class="text-white font-bold mb-3 flex items-center gap-2 text-lg">
+                        <i class="fas fa-network-wired text-green-400"></i> 3. MCP：外部世界的連接橋樑
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed m-0">
+                        MCP 的定位明確：連接外部服務的標準化協議，使 Claude 得以透過結構化工具安全存取外部系統與資源。無論是 API 存取、資料庫查詢，或本案例中串接 Obsidian 進行檔案讀寫，MCP 皆是 Claude 與外部世界溝通的通道。<br><br>
+                        其本質為工具方法的集合，而非知識或流程的封裝——此為與 Skills 最根本的差異：Skills 封裝「怎麼做」的程序知識，MCP 提供「能用什麼外部資源」的連接能力。
+                    </p>
+                </div>
+
+                <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/10 shadow-lg">
+                    <h4 class="text-white font-bold mb-3 flex items-center gap-2 text-lg">
+                        <i class="fas fa-sitemap text-yellow-400"></i> 4. Subagents：任務並行與上下文隔離
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed m-0">
+                        Subagents 設計為解決複雜任務拆分需求。當 Claude 判斷子任務需要獨立上下文或可平行處理時，自動建立 Subagent 執行——子智能體擁有獨立狀態與工具權限，主智能體僅接收與整併最終結果，此架構可顯著降低 Token 負擔，任務完成後即回收。<br><br>
+                        此為動態建立的運算資源，持久性僅限任務期間。與 Skills 的最大差異：Skills 是「能力」，Subagents 是「執行個體」。
+                    </p>
+                </div>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 實務經驗的初步歸納
+            </h3>
+
+            <p>從 Pixel Agents 改寫經驗中，歸納出較為清晰的協作模式：</p>
+            
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">1. Skills 用於建構核心能力庫</strong> —— 定義 Claude「具備何種能力」</li>
+                <li><strong class="text-white">2. MCP 用於連接外部世界</strong> —— 定義 Claude「能存取何種資源」</li>
+                <li><strong class="text-white">3. Custom Commands 用於標準化重複流程</strong> —— 定義用戶「能快速叫用何種操作」</li>
+                <li><strong class="text-white">4. Subagents 用於處理複雜拆分</strong> —— 定義任務「能如何平行處理」</li>
+            </ul>
+
+            <figure class="my-10">
+                <img src="../PNG/project_06.6.webp" 
+                     alt="可以監控機器人活動數據"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    可監控機器人活動數據的儀表板
+                </figcaption>
+            </figure>
+
+            <p>
+                現行 Obsidian + MCP 方案，本質上是將外部知識庫（Markdown 檔案）透過 MCP 接入，使 Claude 能在開發過程中持續參考專案文件，無需每次重新餵入上下文。此架構在一定程度上緩解 Token 消耗問題，同時使專案管理更結構化。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 持續優化中的實驗場
+            </h3>
+
+            <p class="mb-10">
+                此架構仍在持續調整中。Skills 與其他機制的邊界劃分、Custom Commands 與 Skills 的適用時機、MCP 服務設計的最佳化——皆有待進一步探索。若您也在嘗試類似 AI Agent 開發模式，歡迎交流討論。開源與協作的本質，在於工具與知識的持續演化。
+            </p>
+
+            <hr class="border-white/10 my-10">
+
+            <div class="bg-gradient-to-r from-accent-purple/10 to-transparent p-6 rounded-2xl border-l-4 border-accent-purple shadow-xl">
+                <h4 class="text-white font-bold mb-4 flex items-center gap-2 text-lg">
+                    <i class="fas fa-tools text-accent-purple"></i> Tool Development & Token Optimization
+                </h4>
+                <p class="text-gray-300 text-sm leading-relaxed mb-4 font-light">
+                    目前持續開發各類輔助小工具，如有需求可聯繫。<br>
+                    關於 Token 優化，已初步撰寫對應 Skill，後續將釋出。考量 Pro 版帳號限制，預期仍有其他架構層面的優化空間可探討。
                 </p>
-
-                <div class="flex items-center gap-2 font-mono text-sm text-accent-purple bg-white/5 p-4 rounded-lg mb-6 overflow-x-auto">
-                    1. System Prompt (靜態) &rarr; 2. Tool Definitions (靜態) &rarr; 3. Chat History (動態) &rarr; 4. User Input (最後)
-                </div>
-
-                <strong class="text-white block mb-3">破壞緩存的常見陷阱：</strong>
-                <ul class="space-y-3 text-sm text-gray-400 list-none pl-0 m-0">
-                    <li class="flex items-start gap-3"><i class="fas fa-exclamation-triangle text-red-400 mt-0.5"></i> <span>在系統 Prompt 中放入動態內容（如時間戳）。動態資訊應透過 <code>&lt;system-reminder&gt;</code> 標籤放在用戶訊息中。</span></li>
-                    <li class="flex items-start gap-3"><i class="fas fa-exclamation-triangle text-red-400 mt-0.5"></i> <span>會話中途增刪工具，或非確定性地打亂工具定義順序。</span></li>
-                    <li class="flex items-start gap-3"><i class="fas fa-exclamation-triangle text-red-400 mt-0.5"></i> <span><strong class="text-white">中途切換模型：</strong> Prompt 緩存是綁定模型的。從 Opus 切換到 Haiku 需要重建整個緩存，反而更貴。應透過 Subagent 交接任務。</span></li>
-                </ul>
-            </section>
+            </div>
 
         </article>
 
@@ -202,12 +324,14 @@
             <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
                 View All Projects
             </a>
-            <a href="project_08.html" class="text-accent-purple hover:text-white transition-colors text-sm font-bold tracking-wide">
-                Next: 實戰與工具治理 (下) &rarr;
+            <a href="project_08.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                Next Project &rarr;
             </a>
         </div>
 
     </main>
+
     <div id="footer-placeholder"></div>
+
 </body>
 </html>

@@ -15,9 +15,7 @@
     
     <link rel="stylesheet" href="../style.css">
     
-    <script>
-        window.siteRoot = '../';
-    </script>
+    <script> window.siteRoot = '../'; </script>
     <script src="../main.js" defer></script>
 </head>
 
@@ -33,9 +31,9 @@
     <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
         
         <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
-            <a href="../articles.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
                 <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
-                BACK TO ARTICLES
+                BACK TO PROJECTS
             </a>
             <span class="opacity-50">EXP / P5</span>
         </div>
@@ -43,24 +41,24 @@
         <header class="mb-12 border-b border-white/10 pb-12">
             
             <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
-                LINE 訊息分析器：<br>
-                <span class="text-gradient text-2xl md:text-4xl">兩天深度重構全記錄</span>
+                AI 客服自動化系統建置：<br>
+                <span class="text-gradient text-2xl md:text-4xl">Make、LLM 與知識庫之整合架構</span>
             </h1>
 
             <div class="flex flex-wrap gap-3 mb-6">
                 <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
-                    Open Source
+                    AI & Automation
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Refactoring
+                    Workflow Automation
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Frontend
+                    LLM Application
                 </span>
             </div>
             
             <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
-                <span><i class="far fa-calendar mr-2"></i>2026.02.23</span>
+                <span><i class="far fa-calendar mr-2"></i>2026.02.20</span>
                 <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
             </div>
         </header>
@@ -68,195 +66,135 @@
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
             
             <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
-                本專案針對開源工具 <code>line-message-analyzer</code> 進行底層架構與前端介面的深度重構。該工具原具備基礎的訊息統計視覺化功能，但在長期缺乏維護下，暴露出硬體編碼 (Hardcoding) 限制與系統擴展性瓶頸。本次介入旨在透過現代化技術棧，解決核心邏輯缺陷並提升程式碼的可維護性。
+                在營運實體零售業務的場景中，面對大量且重複性高的進線諮詢，傳統依賴人力的處理模式將導致資源嚴重耗損。同時，常規的規則導向 (Rule-based) 機器人缺乏語意理解能力，無法處理非標準化提問。為最佳化人力配置並維持服務品質，本專案利用 Make 平台整合 LINE Messaging API、Google Workspace 與 LLM，建構一套具備意圖識別 (Intent Recognition) 與檢索增強生成 (RAG) 能力的自動化客服系統。
             </p>
+
+            <figure class="my-12">
+                <img src="../PNG/project_04.1.webp" 
+                     alt="Make 視覺化編輯器客服流程圖"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-500 mt-3 font-mono">
+                    於 Make 平台實作之視覺化工作流，涵蓋 API 請求、資料庫操作與多節點 LLM 邏輯推演。
+                </figcaption>
+            </figure>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 介面架構重構與渲染優化
+                <span class="text-accent-purple">#</span> 系統規格與架構目標
             </h3>
 
-            <p class="mb-6">
-                原始專案依賴高度耦合的 Bootstrap 樣式，導致組件層級扁平且缺乏跨裝置的自適應能力。重構策略如下：
-            </p>
-            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-8">
-                <li><strong class="text-white">樣式系統遷移：</strong> 全面導入 Tailwind CSS，透過 Utility-first 原則實現樣式與結構的邏輯分離。</li>
-                <li><strong class="text-white">響應式網格建構：</strong> 導入 Flexbox 佈局模型，依據視窗斷點 (Breakpoints) 動態分配容器寬度，解決行動裝置的渲染破版問題。</li>
-            </ul>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-10">
-                <figure class="m-0">
-                    <img src="../PNG/project_05.1.webp" 
-                         alt="視覺排版改版前"
-                         loading="lazy" class="w-full rounded-2xl border-2 border-red-500/30 shadow-lg opacity-80">
-                    <figcaption class="text-center text-sm text-red-400 mt-3 font-mono">
-                        <i class="fas fa-times-circle"></i> 架構迭代前：生硬卡片與靜態斷點限制
-                    </figcaption>
-                </figure>
-                <figure class="m-0">
-                    <img src="../PNG/project_05.2.webp" 
-                         alt="視覺排版改版後"
-                         loading="lazy" class="w-full rounded-2xl border-2 border-green-500/30 shadow-lg">
-                    <figcaption class="text-center text-sm text-green-400 mt-3 font-mono">
-                        <i class="fas fa-check-circle"></i> 架構迭代後：動態網格與層次化視覺元件
-                    </figcaption>
-                </figure>
+            <p>本專案的核心目標在於建立一個可擴展的自動化分流機制，具體功能模組化需求如下：</p>
+            
+            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 my-8 shadow-lg">
+                <ul class="space-y-4 text-gray-300 font-light m-0 pl-0 list-none">
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-code-branch text-accent-purple mt-1"></i>
+                        <div><strong class="text-white">意圖識別與流量分發：</strong>自動判定使用者語意，區分常規技術諮詢與需人工介入之特例狀況。</div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-brain text-accent-purple mt-1"></i>
+                        <div><strong class="text-white">檢索增強生成 (RAG) 實作：</strong>依據問題分類，動態調用外部領域知識庫（如 Google 文件）作為 LLM 運算基礎，降低生成幻覺 (Hallucination)。</div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-users text-accent-purple mt-1"></i>
+                        <div><strong class="text-white">狀態追蹤與上下文管理：</strong>建立使用者實體 (Entity) 資料庫，記錄互動歷程以提供具備上下文感知的連貫性對話。</div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-filter text-accent-purple mt-1"></i>
+                        <div><strong class="text-white">異常升級機制 (Escalation)：</strong>當系統判定輸入超出 AI 處理邊界，即時觸發人工客服推播通道。</div>
+                    </li>
+                </ul>
             </div>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 核心突破：資料結構與渲染邏輯解耦
+                <span class="text-accent-purple">#</span> 系統自動化工作流設計 (Workflow Design)
             </h3>
-
-            <p class="mb-6">
-                原系統最致命的架構缺陷在於「渲染節點綁死資料數量」。系統僅宣告了 <code>memberCanvas1</code> 與 <code>memberCanvas2</code> 兩個實體 DOM，導致高於兩人維度的群組資料在渲染層被強制截斷。
-            </p>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-10">
-                <figure class="m-0">
-                    <img src="../PNG/project_05.3.webp" 
-                         alt="2人限制改版前"
-                         loading="lazy" class="w-full rounded-2xl border-2 border-red-500/30 shadow-lg opacity-80">
-                    <figcaption class="text-center text-sm text-red-400 mt-3 font-mono">
-                        <i class="fas fa-times-circle"></i> 邏輯耦合：被寫死的雙人圖表結構
-                    </figcaption>
-                </figure>
-                <figure class="m-0">
-                    <img src="../PNG/project_05.4.webp" 
-                         alt="無限人數改版後"
-                         loading="lazy" class="w-full rounded-2xl border-2 border-green-500/30 shadow-lg">
-                    <figcaption class="text-center text-sm text-green-400 mt-3 font-mono">
-                        <i class="fas fa-check-circle"></i> 動態擴展：基於資料陣列自動映射 DOM 節點
-                    </figcaption>
-                </figure>
-            </div>
 
             <p>
-                解決方案為確立「資料驅動渲染 (Data-Driven Rendering)」機制：
+                在 Make 的視覺化編輯器中，我將業務邏輯拆解為多個獨立的節點 (Nodes)。各模組間透過標準化的資料結構傳遞狀態，確保系統的低耦合性：
             </p>
-            <ul class="list-none space-y-4 my-6 text-sm text-gray-400">
-                <li class="bg-white/5 p-4 rounded-xl border border-white/5">
-                    <strong class="text-white text-base block mb-2"><i class="fas fa-database text-accent-purple"></i> 解析層動態註冊</strong>
-                    重寫 <code>analyze.js</code> 模組。掃描文本時，系統會自動提取未重複的實體名稱 (Entities)，並於狀態池中動態建立相應的統計陣列，徹底消除人數上限之約束。
-                </li>
-                <li class="bg-white/5 p-4 rounded-xl border border-white/5">
-                    <strong class="text-white text-base block mb-2"><i class="fas fa-desktop text-accent-purple"></i> 渲染層映射輸出</strong>
-                    前端接收資料物件後，透過迴圈邏輯動態生成卡片容器與 Canvas 實例，並結合前述之 flex-wrap 網格，實現 N-Member 資料集的無縫展現。
-                </li>
-            </ul>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 系統架構現代化與狀態管理
-            </h3>
-
-            <p>原專案充斥全域變數汙染與過時的 DOM 操作語法。為確保系統穩定性，執行了以下工程規範：</p>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
-                <div class="bg-[#0A0A0A] p-5 rounded-xl border border-white/10">
-                    <h4 class="text-white font-bold mb-3 text-sm">狀態集中管理 (State Centralization)</h4>
-                    <pre class="bg-black/50 p-3 rounded text-xs text-green-400 overflow-x-auto m-0 font-mono"><code>const AppState = {
-  chatname: "",
-  members: [],
-  memberStats: {},
-  totalMessages: 0,
-  unsent: 0
-};</code></pre>
-                </div>
-                <div class="bg-[#0A0A0A] p-5 rounded-xl border border-white/10">
-                    <h4 class="text-white font-bold mb-3 text-sm">動態實例生成 (Dynamic Instantiation)</h4>
-                    <pre class="bg-black/50 p-3 rounded text-xs text-blue-400 overflow-x-auto m-0 font-mono"><code>sortedKeys.forEach((member, i) => {
-  let canvasId = `member_${i}`;
-  generateDonut(canvasId, 
-    [mTxt, st.stickers, st.photos], 
-    ['#EB9F9F', '#F0E5DE', '#7C7877']
-  );
-});</code></pre>
-                </div>
-            </div>
-
-            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-8">
-                <li><strong class="text-white">資料精確度修復：</strong> 修正「收回訊息」判讀之邏輯漏洞，重構 X 軸時間序列的生成演算法。</li>
-                <li><strong class="text-white">依賴環境淨化：</strong> 移除高度冗餘的 jQuery 依賴，改採原生 Vanilla JS 實作，降低系統封裝層級與渲染負擔。</li>
-                <li><strong class="text-white">測試隔離 (TDD 原則)：</strong> 建立 <code>debug.js</code> 測試環境，確保 Node.js 層的核心運算邏輯在注入前端前已通過驗證。</li>
-            </ul>
-
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> AI 代理協作的邊界與工程規範
-            </h3>
-
-            <p>本次重構高度依賴 AI 進行輔助開發，此過程實證了生成式 AI 於軟體工程中的協作特性與風險：</p>
-
-            <div class="space-y-4 my-8">
-                <div class="bg-white/5 p-5 rounded-xl border-l-4 border-accent-purple/50">
-                    <strong class="text-white flex items-center gap-2 mb-2"><i class="fas fa-check"></i> 生產力提升節點</strong>
-                    <p class="text-sm text-gray-400 m-0">在架構初始化 (Prototyping)、正規表達式推演與冗餘代碼重構上，AI 能顯著壓縮開發耗時。</p>
-                </div>
-                <div class="bg-white/5 p-5 rounded-xl border-l-4 border-accent-purple/50">
-                    <strong class="text-white flex items-center gap-2 mb-2"><i class="fas fa-exclamation-triangle"></i> 認知邊界與系統熵增風險</strong>
-                    <p class="text-sm text-gray-400 m-0">AI 缺乏全局狀態的深度理解，極易發生「修復單點臭蟲卻破壞全域結構」之問題，或擅自注入未授權之功能模組。</p>
-                </div>
-                <div class="bg-white/5 p-5 rounded-xl border-l-4 border-accent-purple/50">
-                    <strong class="text-white flex items-center gap-2 mb-2"><i class="fas fa-terminal"></i> 協作控制守則</strong>
-                    <p class="text-sm text-gray-400 m-0">開發者必須絕對掌握「架構決策權」。任務應嚴格拆分為原子化單元 (Atomic Commits)，並建立階段性回溯點，杜絕 AI 大規模覆寫核心邏輯。</p>
-                </div>
-            </div>
-
-            <hr class="border-white/10 my-12">
-
-            <h3 class="text-2xl font-bold text-white mt-8 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 待解決技術債與擴充藍圖
-            </h3>
-
-            <p class="text-gray-400 font-light mb-6">本次重構確立了高穩定度的底層骨架，未來系統優化將針對以下已知邊界條件進行修復與功能擴充：</p>
-
-            <div class="space-y-6 mb-10">
-                <div class="bg-white/5 p-6 rounded-xl border border-white/10">
-                    <h4 class="text-white font-bold mb-3 flex items-center gap-2 text-base">
-                        <i class="fas fa-bug text-accent-purple"></i> Issue #2 & #4：非結構化文本特例處理
+            <div class="space-y-6 my-8">
+                <div class="bg-white/5 p-6 rounded-xl border border-white/10 hover:border-accent-purple/30 transition-colors">
+                    <h4 class="text-white font-bold mb-2 flex items-center gap-2 text-lg m-0">
+                        <i class="fas fa-id-card text-accent-purple"></i> 1. 身分鑑別與資料庫初始化
                     </h4>
-                    <ul class="text-sm text-gray-400 space-y-2 m-0 pl-0 list-none">
-                        <li><strong class="text-white">名稱字串斷裂：</strong> 實體名稱包含空格 (如 "John Doe") 導致解析指針異常。已初步導入 Tab 分隔機制，未來需引入動態詞綴分析。</li>
-                        <li><strong class="text-white">時間戳記混淆：</strong> 英文匯出格式 (AM/PM) 無法相容既有正則表達式。需開發自適應語系偵測模組，動態切換匹配邏輯。</li>
-                    </ul>
+                    <p class="text-sm text-gray-400 leading-relaxed mt-2 mb-0">
+                        系統接收 Webhook 觸發後，透過 <code>HTTP</code> 模組呼叫 LINE API 擷取 <code>userId</code> 作為主鍵 (Primary Key)。<br>
+                        進入資料存放區檢索：若為新進節點，則執行初始化建檔程序；若為既有節點，則載入歷史對話陣列，為 LLM 準備上下文參數。
+                    </p>
+                </div>
+
+                <div class="bg-white/5 p-6 rounded-xl border border-white/10 hover:border-accent-purple/30 transition-colors">
+                    <h4 class="text-white font-bold mb-2 flex items-center gap-2 text-lg m-0">
+                        <i class="fas fa-search text-accent-purple"></i> 2. 節點一：意圖識別與路由決策
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed mt-2 mb-0">
+                        配置專屬的 Prompt Engineering，將首層 LLM 設定為「意圖分類器」。<br>
+                        輸入文本經特徵提取後，判定是否具備「尋求人工客服」之意圖。模型輸出被嚴格限制為布林值 (Boolean)，作為控制後續執行路徑的分流閥 (Router)。
+                    </p>
+                </div>
+
+                <div class="bg-white/5 p-6 rounded-xl border border-white/10 hover:border-accent-purple/30 transition-colors">
+                    <h4 class="text-white font-bold mb-2 flex items-center gap-2 text-lg m-0">
+                        <i class="fas fa-folder-tree text-accent-purple"></i> 3. 節點二：領域分類與檢索增強
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed mt-2 mb-0">
+                        判定為常規詢問的流量將進入次層網路。第二組 LLM 負責將問題細分為「B2C 銷售」或「專業技術支援」。<br>
+                        依據此分類標籤，系統動態指向特定的 Google 文件，擷取相應的文本內容，完成檢索增強生成 (RAG) 的前置數據準備。
+                    </p>
+                </div>
+
+                <div class="bg-white/5 p-6 rounded-xl border border-white/10 hover:border-accent-purple/30 transition-colors">
+                    <h4 class="text-white font-bold mb-2 flex items-center gap-2 text-lg m-0">
+                        <i class="fas fa-dragon text-accent-purple"></i> 4. 節點三：LLM 最終回覆生成
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed mt-2 mb-0">
+                        系統整併「原始提問」、「歷史上下文」與「檢索知識庫」做為最終 Prompt 變數。<br>
+                        • <strong>約束生成</strong>：強制 LLM 依據檢索文本生成結構化解答，避免發散。<br>
+                        • <strong>合規性控制</strong>：底層邏輯自動附加醫療免責聲明，確保資訊輸出之安全性。<br>
+                        • <strong>狀態寫回</strong>：將問答結果持久化存入資料庫，完成該次會話週期。
+                    </p>
+                </div>
+
+                <div class="bg-red-900/20 p-6 rounded-xl border border-red-900/50 hover:border-red-500/50 transition-colors">
+                    <h4 class="text-red-400 font-bold mb-2 flex items-center gap-2 text-lg m-0">
+                        <i class="fas fa-bell text-red-500"></i> 5. 節點四：人工介入防線 (Human-in-the-loop)
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed mt-2 mb-0">
+                        若首層節點觸發人工介入條件，系統將阻斷生成邏輯，向客戶端發送標準化安撫訊息。<br>
+                        同時，將原始輸入文本連同使用者 UID 打包，透過獨立的 API 通道推播至管理端，確保異常事件獲得零延遲的專人處理。
+                    </p>
                 </div>
             </div>
 
-            <h4 class="text-lg font-bold text-white mb-4">系統擴展維度分析</h4>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-400 font-light mb-12">
-                <div class="bg-[#0A0A0A] p-4 rounded-lg border border-white/5">
-                    <strong class="text-white block mb-1">1. 資料導出模組</strong>
-                    建立標準化 API，支援 JSON、CSV 格式匯出，便於二次數據挖掘。
-                </div>
-                <div class="bg-[#0A0A0A] p-4 rounded-lg border border-white/5">
-                    <strong class="text-white block mb-1">2. 高維度數據洞察</strong>
-                    導入時間序列分析，計算節點活躍時段、回應延遲等動態參數。
-                </div>
-                <div class="bg-[#0A0A0A] p-4 rounded-lg border border-white/5">
-                    <strong class="text-white block mb-1">3. 多資料集交叉比對</strong>
-                    支援多路徑數據注入，提供不同群組間之平行對比視覺化。
-                </div>
-                <div class="bg-[#0A0A0A] p-4 rounded-lg border border-white/5">
-                    <strong class="text-white block mb-1">4. 互動層升級</strong>
-                    實作 Canvas/SVG 事件監聽，提供數據點鑽取 (Drill-down) 與動態時間軸探索。
-                </div>
-            </div>
-
-            <hr class="border-white/10 my-12">
-
-            <h3 class="text-2xl font-bold text-white mt-8 mb-4 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 開源協作與系統演進
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 系統上線成效評估 (Performance Evaluation)
             </h3>
 
-            <p class="text-gray-300 leading-relaxed mb-6">
-                開源專案的價值在於邏輯的持續驗證與架構的無止境優化。若您對數據清洗邏輯或前端視覺架構具備更佳之實作方案，歡迎介入此專案之迭代：
-            </p>
-
-            <ul class="list-disc pl-5 space-y-2 text-gray-400 font-light mb-8">
-                <li><strong class="text-white">Repository：</strong> 專案原始碼已發布於 <a href="https://github.com/GHOST8787/line-message-analyzer2026" target="_blank" rel="noopener noreferrer" class="text-accent-purple hover:underline underline-offset-4 transition-colors">GitHub</a>。</li>
-                <li><strong class="text-white">Pull Requests：</strong> 歡迎提交任何優化底層效能或擴充功能之 PR。</li>
-                <li><strong class="text-white">Issue Tracking：</strong> 任何異常邊界條件或技術討論，皆可透過 Issue 系統發起。</li>
+            <p>自動化架構部署後，對營運指標產生了具體的優化：</p>
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-8">
+                <li><strong class="text-white">處理延遲極小化：</strong>系統成功攔截逾 90% 的 L1 常規諮詢，平均回應時間 (ART) 由人力處理的數小時縮減至系統推論的數秒級別。</li>
+                <li><strong class="text-white">服務覆蓋率最大化：</strong>達成 24/7 的非同步服務響應機制，有效消除非營業時段的服務空窗期。</li>
+                <li><strong class="text-white">資源重分配：</strong>將寶貴的人力算力從低維度的重複性任務中釋放，轉移至高複雜度問題排障與核心業務拓展。</li>
             </ul>
 
-            <p class="text-gray-400 italic text-sm">
-                致謝原始作者之基礎貢獻。軟體工程的本質即是不斷建立秩序以對抗系統熵增，期待此工具能在社群的參與下，收斂至更高的穩定狀態。
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 系統整合的反思與擴展性
+            </h3>
+
+            <p>
+                本次專案驗證了 Make 作為現代化系統架構中「API 聚合層 (API Orchestrator)」的優勢：
+            </p>
+            <ol class="list-decimal pl-5 space-y-2 text-gray-300 font-light mb-8">
+                <li><strong>低耦合架構：</strong>透過視覺化流程，系統模組間的依賴度極低。開發者可輕易抽換底層的 LLM 模型或知識庫來源。</li>
+                <li><strong>迭代成本低：</strong>針對 AI 產出的微調，無須改寫底層程式碼，僅需調整對應節點的 Prompt 參數即可快速收斂最佳解。</li>
+                <li><strong>領域適應性：</strong>本專案證實，在缺乏龐大算力進行模型微調 (Fine-tuning) 的前提下，透過嚴謹的提示詞工程與 RAG 架構，依然能使通用型大語言模型勝任高度專業化的垂直領域任務。</li>
+            </ol>
+
+            <hr class="border-white/10 my-10">
+
+            <p class="text-center text-gray-400 italic text-sm">
+                此自動化工作流並非受限於特定零售產業。其底層架構具備高度泛用性，只需抽換檢索資料庫與重新定義角色邊界，即可平滑移植至任何需處理高併發非結構化詢問之業務場景。
             </p>
 
         </article>

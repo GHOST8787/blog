@@ -2,23 +2,22 @@
 <html lang="zh-TW" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>EXP / P3 | GHOST.ouo</title>
     
     <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
     <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="../tailwind.config.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="tarot_style.css">
-    
-    <script> window.siteRoot = '../'; </script>
+    <script src="../tailwind.config.js"></script>
+    <script>
+        window.siteRoot = '../';
+    </script>
     <script src="../main.js" defer></script>
-    <script src="tarot_app.js" defer></script>
 </head>
 
 <body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
@@ -43,19 +42,19 @@
         <header class="mb-12 border-b border-white/10 pb-12">
             
             <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
-                塔羅 Prompt 煉金術師<br>
-                <span class="text-gradient text-2xl md:text-4xl">生成式 AI 之動態提示詞工程實作</span>
+                AI 助理框架部署 (下)：<br>
+                <span class="text-gradient text-2xl md:text-4xl">Google Workspace 整合與實戰</span>
             </h1>
 
             <div class="flex flex-wrap gap-3 mb-6">
                 <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
-                    Engineering
+                    AI & Automation
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Vanilla JS
+                    Google Workspace
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Prompt Engineering
+                    OAuth
                 </span>
             </div>
             
@@ -68,186 +67,95 @@
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
             
             <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
-                本專案實作一個輕量級的互動式前端模組。透過模擬隨機抽取機制，系統自動將對應的變數（卡牌屬性、正逆位狀態、使用者意圖領域）進行邏輯組裝，封裝成高質量的 System Prompt。<br>
-                此架構旨在降低終端使用者與大型語言模型 (LLM) 深度交互的技術門檻，將抽象的心理投射具象化為精準的機器指令。
+                接續上篇完成 Clawdbot 核心部署後，下篇將著重於安裝 Gog 技能並連接 Google 帳號，讓你的 AI 助理正式接管 Gmail 與行事曆。
             </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 第一步：安裝 Gog 技能
+            </h3>
+
+            <p>Gog 技能需要一個獨立的命令列工具，請在 VM 終端機執行以下指令進行安裝與配置：</p>
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre><code class="language-bash"># 1. 安裝 Gog CLI
+cd /tmp
+curl -fsSL https://api.github.com/repos/steipete/gogcli/releases/latest \
+  | grep browser_download_url \
+  | grep linux_amd64 \
+  | cut -d '"' -f 4 \
+  | xargs curl -fsSL -o gogcli.tgz
+
+tar -xzf gogcli.tgz
+sudo install -m 0755 gog /usr/local/bin/gog
+
+# 2. 安裝 Clawdbot 技能
+clawdbot skills install steipete/gog</code></pre>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 第二步：Google OAuth 授權
+            </h3>
+
+            <p>為了安全連接您的 Gmail 與日曆，我們需要透過 Google Cloud 設定 OAuth 憑證：</p>
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
+                <li>在 Google Cloud Console 建立專案並啟用 API (Gmail, Calendar, Drive 等)。</li>
+                <li>建立「桌面應用程式」類型的 OAuth 用戶端 ID，並下載 JSON。</li>
+            </ul>
             
+            <p>將下載的憑證透過 SCP 上傳到 VM：</p>
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre><code class="language-powershell">scp -i &lt;YOUR_KEY.pem&gt; client_secret.json &lt;YOUR_VM_USER&gt;@&lt;YOUR_VM_IP&gt;:~/</code></pre>
+            </div>
+
+            <p>在 VM 中完成授權配置：</p>
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre><code class="language-bash">gog auth credentials ~/client_secret.json
+gog auth add &lt;YOUR_EMAIL&gt; --services gmail,calendar,drive,contacts,sheets,docs</code></pre>
+            </div>
+            <p>執行後將獲得一串授權網址，請複製貼到本機瀏覽器中，完成 Google 登入與授權流程。</p>
+
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 技術架構與實作細節 (Technical Implementation)
+                <span class="text-accent-purple">#</span> 第三步：驗證與使用
             </h3>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
-                <div class="bg-white/5 p-6 rounded-xl border border-white/10">
-                    <h4 class="text-white font-bold mb-2 flex items-center gap-2 text-base">
-                        <i class="fas fa-layer-group text-accent-purple"></i> 自適應網格與負邊距運算
-                    </h4>
-                    <p class="text-sm text-gray-400 leading-relaxed m-0">
-                        為解決高達 78 個 DOM 節點（卡牌）在異質螢幕尺寸下的邊界溢出問題，捨棄了高維護成本的絕對座標定位。改採原生 JavaScript 動態偵測容器寬度，即時計算並注入「負邊距 (Negative Margin)」，確保龐大資料集能完美收斂於視窗框架內。
-                    </p>
-                </div>
-                <div class="bg-white/5 p-6 rounded-xl border border-white/10">
-                    <h4 class="text-white font-bold mb-2 flex items-center gap-2 text-base">
-                        <i class="fas fa-bolt text-accent-purple"></i> 渲染優化與硬體加速
-                    </h4>
-                    <p class="text-sm text-gray-400 leading-relaxed m-0">
-                        卡牌的洗牌、陣列展開與懸停抽取出列等動畫邏輯，全面採用 CSS <code>transform: translate3d</code> 結合 <code>will-change</code> 屬性。此舉強制將渲染負載轉移至 GPU 層，避免瀏覽器主執行緒阻塞，確保複雜交互過程的幀率穩定。
-                    </p>
-                </div>
-                <div class="bg-white/5 p-6 rounded-xl border border-white/10 md:col-span-2">
-                    <h4 class="text-white font-bold mb-2 flex items-center gap-2 text-base">
-                        <i class="fas fa-terminal text-accent-purple"></i> 結構化提示詞封裝 (Prompt Construction)
-                    </h4>
-                    <p class="text-sm text-gray-400 leading-relaxed m-0">
-                        核心運作並非單純映射靜態字串。當觸發抽卡事件後，系統會提取「領域參數 (Domain)」、「卡牌陣列索引 (Index)」與「正逆位布林值 (Orientation)」，依據預先定義的 Prompt Template 自動合成。該指令具備嚴格的系統邊界約束，強制 AI 屏除冗餘對話，直接執行精準的屬性映射與邏輯收斂。
-                    </p>
-                </div>
+            <p>回到 Control UI 聊天室，你可以直接用自然語言進行測試，例如：</p>
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre><code class="language-text">> "Check my latest emails"
+> "Show me my calendar for today"</code></pre>
+            </div>
+
+            <p>如果你想在 VM 終端機直接下指令，也可以這樣用：</p>
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre><code class="language-bash"># 搜尋最新 5 封信
+gog gmail search 'newer_than:1d' --max 5
+
+# 查看今日日曆
+gog calendar events primary --from $(date -I) --to $(date -I)</code></pre>
             </div>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 領域知識 (Domain Knowledge)：塔羅系統邏輯解構
+                <span class="text-accent-purple">#</span> 第四步：日常維護與注意事項
             </h3>
 
-            <figure class="my-10">
-                <img src="../PNG/project_03.1.webp" 
-                     alt="Tarot Cards Example"
-                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
-                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
-                    視覺化資料集：經典偉特系統 (Rider-Waite Tarot)
-                </figcaption>
-            </figure>
-
-            <p>
-                從系統分析視角切入，塔羅牌並非超自然媒介，而是一套<strong>「潛意識投射與聯想框架」</strong>。透過隨機提取具備高度象徵意義的視覺符號，強制大腦的認知神經網絡進行關聯性檢索，進而將隱含的內部狀態具象化為可解析的資訊。
-            </p>
-
-            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 my-8 shadow-lg">
-                <h4 class="text-white font-bold mb-4 flex items-center gap-2 border-b border-white/10 pb-3">
-                    <i class="fas fa-database text-accent-purple"></i> 基礎資料庫架構 (共 78 節點)
-                </h4>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
-                    <div>
-                        <strong class="text-accent-purple text-lg block mb-2">大阿爾克那 (Macro-Variables, 22張)</strong>
-                        <p class="text-sm text-gray-400 leading-relaxed">
-                            表徵系統中<strong>「不可逆的宏觀趨勢、核心原則與底層環境參數」</strong>。如：愚者 (高熵/初始狀態)、世界 (閉環/系統完成)。<br>
-                            提取此類節點，意味著當前分析標的具備較高的系統權重。
-                        </p>
-                    </div>
-                    <div>
-                        <strong class="text-white text-lg block mb-2">小阿爾克那 (Micro-Variables, 56張)</strong>
-                        <p class="text-sm text-gray-400 leading-relaxed">
-                            表徵<strong>「局部狀態、具體執行細節與短期反饋」</strong>。此資料集進一步細分為四大屬性分類：<br>
-                            🔥 <span class="text-gray-300">權杖 (動能與執行力)</span><br>
-                            💧 <span class="text-gray-300">聖杯 (關係拓撲與情緒)</span><br>
-                            💨 <span class="text-gray-300">寶劍 (邏輯運算與衝突)</span><br>
-                            🌍 <span class="text-gray-300">錢幣 (物質資源與結構)</span>
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <h4 class="text-xl font-bold text-white mt-10 mb-4">
-                資料集篩選策略 (Dataset Filtering)
-            </h4>
-            <ul class="space-y-4 text-gray-400 font-light">
-                <li class="flex gap-3 bg-white/5 p-4 rounded-xl border border-white/5">
-                    <i class="fas fa-sitemap text-accent-purple mt-1"></i>
-                    <div>
-                        <strong class="text-white">宏觀節點分析 (建議：限制於大阿爾克那)</strong><br>
-                        當分析標的涉及「長期職涯發展」或「人生階段轉換」等高維度議題時，限縮資料集於大牌，可濾除短期雜訊，獲取核心策略指引。
-                    </div>
-                </li>
-                <li class="flex gap-3 bg-white/5 p-4 rounded-xl border border-white/5">
-                    <i class="fas fa-layer-group text-accent-purple mt-1"></i>
-                    <div>
-                        <strong class="text-white">常態事件解析 (建議：啟用完整 78 張)</strong><br>
-                        針對日常維運、短期專案執行或具體事件評估，開放全量資料集，確保宏觀趨勢與微觀細節的交集運算。
-                    </div>
-                </li>
-                <li class="flex gap-3 bg-white/5 p-4 rounded-xl border border-white/5">
-                    <i class="fas fa-filter text-accent-purple mt-1"></i>
-                    <div>
-                        <strong class="text-white">特定維度收斂 (建議：單一元素子集)</strong><br>
-                        具備極度明確的分析目標時，如專注於資源分配（錢幣）或邏輯除錯（寶劍），直接指定子資料集以提升分析聚焦度。
-                    </div>
-                </li>
+            <p>維持系統穩定運作，請留意以下幾點原則：</p>
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
+                <li><strong class="text-white">保持 SSH 隧道開啟：</strong>只要需要訪問 Control UI，就必須保持本機的 SSH 隧道視窗開啟，關閉隧道等於斷開連線。</li>
+                <li><strong class="text-white">安全性提醒：</strong>絕對不要在任何地方輸入您的 Google 密碼（僅限官方登入頁面）。Token 相當於您的服務鑰匙，請妥善保存。</li>
+                <li><strong class="text-white">除錯起手式：</strong>如果遇到機器人不理人，請先查看服務狀態與日誌：</li>
             </ul>
 
-            <h4 class="text-xl font-bold text-white mt-12 mb-4">
-                資料抽取模型 (Extraction Models)
-            </h4>
-            <p class="text-gray-400 font-light mb-6">
-                抽取機制的設定取決於問題的複雜度。以下為幾種常規的模型架構：
-            </p>
-            
-            <div class="space-y-5 text-gray-300 font-light mb-12">
-                <div class="bg-gradient-to-r from-accent-purple/10 to-transparent p-5 rounded-xl border-l-2 border-accent-purple">
-                    <strong class="text-accent-purple text-lg block mb-1">1. 單一節點模型 (One-Card Pull) —— 本專案實作標的</strong>
-                    <p class="text-sm leading-relaxed mb-2">最高效的初始收斂方式。適用於釐清單一狀態、取得即時決策權重，或建立當日運行基線 (Baseline)。</p>
-                    <p class="text-xs text-gray-400 bg-black/30 p-2 rounded border border-white/5">
-                        <i class="fas fa-info-circle"></i> <strong>系統配置說明：</strong>本介面預設採用單一節點抽取邏輯。請確立輸入變數（提問），並於下方模組進行點擊，系統將自動合成深度解析所需之 AI 指令。
-                    </p>
-                </div>
-                
-                <div class="bg-white/5 p-5 rounded-xl border border-white/5">
-                    <strong class="text-white text-lg block mb-1">2. 線性序列模型 (Three-Card Spread)</strong>
-                    <p class="text-sm leading-relaxed">
-                        提取三個相鄰節點，用於建構事件的時間序列（如「過去狀態、當前變數、預測走向」），或邏輯推演（如「問題核心、行動建議、預期結果」）。此模型利於觀察節點間的關聯性與動態影響。
-                    </p>
-                </div>
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre><code class="language-bash"># 查看服務狀態
+systemctl --user status clawdbot-gateway.service
 
-                <div class="bg-white/5 p-5 rounded-xl border border-white/5">
-                    <strong class="text-white text-lg block mb-1">3. 複雜矩陣模型 (Celtic Cross)</strong>
-                    <p class="text-sm leading-relaxed">
-                        配置 10 個具備特定權重的節點矩陣。涵蓋內部潛意識、外部環境擾動、歷史阻力與長期收斂方向。專為解析牽涉多方變數的高度複雜系統而設計。
-                    </p>
-                </div>
+# 查看即時日誌抓蟲
+journalctl --user -u clawdbot-gateway.service -n 50</code></pre>
             </div>
+
             <hr class="border-white/10 my-12">
-
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> Interactive Module: Prompt Generator
-            </h3>
-
-            <div class="bg-[#0A0A0A] border border-white/10 rounded-3xl shadow-2xl p-6 md:p-10 flex flex-col gap-8 my-12 relative z-20">
-                
-                <div id="controls-area" class="flex flex-col sm:flex-row gap-4 justify-between items-center bg-white/5 p-4 rounded-2xl border border-white/10 relative z-30">
-                    <div class="flex items-center gap-2 w-full sm:w-auto">
-                        <i class="fas fa-filter text-accent-purple"></i>
-                        <select id="deck-filter" class="bg-[#0F0F0F] border border-white/10 text-sm text-gray-300 rounded-lg p-2 focus:border-accent-purple outline-none"></select>
-                    </div>
-                    <div id="topic-buttons" class="flex items-center gap-2 overflow-x-auto w-full sm:w-auto scrollbar-hide"></div>
-                    <button id="shuffle-btn" class="p-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-gray-400 hover:text-white transition-all shrink-0">
-                        <i class="fas fa-sync-alt"></i>
-                    </button>
-                </div>
-
-                <div class="relative w-full h-[420px] rounded-2xl bg-[#050505] border border-white/10 shadow-inner overflow-hidden flex flex-col items-center justify-center">
-                    <div class="absolute inset-0 bg-[radial-gradient(circle_at_bottom,_var(--tw-gradient-stops))] from-accent-purple/15 via-transparent to-transparent opacity-80 pointer-events-none"></div>
-                    
-                    <p id="deck-status" class="absolute top-6 left-1/2 -translate-x-1/2 text-xs font-mono text-gray-500 animate-pulse pointer-events-none z-0">AWAITING_EXTRACTION</p>
-                    
-                    <div id="spread-area" class="absolute inset-0 w-full h-full pt-12 pb-6"></div>
-                </div>
-
-                <div class="bg-[#050505] rounded-2xl border border-white/10 p-6 grid grid-cols-1 md:grid-cols-3 gap-8 relative z-30">
-                    
-                    <div id="card-display-slot" class="col-span-1 h-72 md:h-80 border-2 border-dashed border-white/10 rounded-xl flex flex-col items-center justify-center text-gray-600 bg-white/5 transition-all">
-                        <i class="fas fa-microchip text-3xl mb-3 opacity-20"></i>
-                        <span class="text-sm font-mono tracking-widest">AWAITING_CARD</span>
-                    </div>
-
-                    <div class="col-span-1 md:col-span-2 flex flex-col h-72 md:h-80">
-                        <div class="flex justify-between items-center mb-4">
-                            <span class="text-accent-purple font-mono text-sm"><i class="fas fa-terminal"></i> SYSTEM_PROMPT</span>
-                            <button id="copy-btn" disabled class="px-4 py-2 bg-white/5 text-gray-600 rounded-lg text-xs font-bold tracking-wide transition-all border border-white/5 cursor-not-allowed">
-                                <i class="fas fa-copy"></i> 複製指令
-                            </button>
-                        </div>
-                        <textarea id="prompt-output" readonly class="w-full flex-1 bg-[#0A0A0A] border border-white/10 rounded-xl p-5 text-gray-400 font-mono text-sm leading-relaxed resize-none focus:outline-none focus:border-accent-purple transition-colors" placeholder="[系統待命中]&#10;請先於上方區域完成資料抽取程序，系統將自動合成結構化之 AI 提示詞。"></textarea>
-                    </div>
-
-                </div>
-            </div>
+            
+            <p class="text-center text-gray-400 font-light">
+                部署完成！現在你的雲端伺服器上已經有了一個完全整合 Google 生態的 AI 助理。🤖
+            </p>
 
         </article>
 
@@ -264,6 +172,8 @@
         </div>
 
     </main>
+
     <div id="footer-placeholder"></div>
+
 </body>
 </html>

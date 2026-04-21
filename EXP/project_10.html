@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / P10 | GHOST.ouo</title>
+
+    <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script src="../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / P10</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                從非結構到可查詢：<br>
+                <span class="text-gradient text-2xl md:text-4xl">密室逃脫評級表的自動化整理</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">AI &amp; Automation</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Web Scraping</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Claude CoWork</span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.04.20</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                將一篇長篇部落格心得，透過 AI 自動化爬梳為可排序、可篩選的結構化資料表。過程紀錄與方法說明。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 問題：完整但難以檢索的資訊
+            </h3>
+
+            <p>
+                在挑選密室逃脫主題時，參考具公信力的長期心得紀錄是有效路徑。台灣密室圈中，Roger Song 的《密室逃脫無雷心得列表與推薦》是這類資料的代表：涵蓋面廣、有評級系統、持續更新且無雷。
+            </p>
+
+            <p>
+                然而，部落格的線性呈現格式與實際選店需求之間存在結構性落差。實際查詢情境通常是多條件篩選：
+            </p>
+
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
+                <li>評級 S、人數 4 人以下、特定地區</li>
+                <li>未玩過、評價 A 以上、難度中等</li>
+                <li>先列出所有 S 級作為短名單</li>
+            </ul>
+
+            <p>
+                部落格原生介面僅支援 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">Ctrl+F</code> 關鍵字搜尋，無法同時以「評級＋地區＋人數」進行交叉篩選。每次查詢需在長文中反覆瀏覽，耗時約 1–2 分鐘。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 方法：將爬梳流程交給 AI
+            </h3>
+
+            <p>
+                手動複製貼上再建立試算表是可行方案，但這次嘗試將整段工作交給 Claude CoWork 操作 Chrome 的自動化能力。整段流程沒有撰寫程式碼，主要工作集中在「明確定義目標結構（schema）」，再交由 AI 執行抽取與輸出。
+            </p>
+
+            <h4 class="text-xl font-bold text-white mt-10 mb-4">
+                步驟一：餵入原始資料
+            </h4>
+
+            <p>
+                將目標部落格網址貼入 Claude CoWork，由 AI 直接抓取整頁內容並解析 HTML 結構。原文雖長，但對 LLM 而言是一次性解析的範圍。
+            </p>
+
+            <h4 class="text-xl font-bold text-white mt-10 mb-4">
+                步驟二：定義 Schema 並抽取欄位
+            </h4>
+
+            <p>
+                預先定義每間密室需抽取的 9 個欄位：
+            </p>
+
+            <div class="w-full overflow-x-auto my-6">
+                <table class="w-full text-left border-collapse min-w-[500px]">
+                    <thead>
+                        <tr class="text-white font-mono text-xs uppercase tracking-wider">
+                            <th class="py-3 pr-4 border-b border-white/20 w-1/3">欄位</th>
+                            <th class="py-3 pl-4 border-b border-white/20 w-2/3">說明</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="border-b border-white/5"><td class="py-3 pr-4 font-bold text-white font-mono">工作室</td><td class="py-3 pl-4 text-gray-300">發行團隊</td></tr>
+                        <tr class="border-b border-white/5"><td class="py-3 pr-4 font-bold text-white font-mono">地址</td><td class="py-3 pl-4 text-gray-300">地區位置</td></tr>
+                        <tr class="border-b border-white/5"><td class="py-3 pr-4 font-bold text-white font-mono">主題名稱</td><td class="py-3 pl-4 text-gray-300">密室標題</td></tr>
+                        <tr class="border-b border-white/5"><td class="py-3 pr-4 font-bold text-white font-mono">評級</td><td class="py-3 pl-4 text-gray-300">S / A / B / C / D / &ndash;</td></tr>
+                        <tr class="border-b border-white/5"><td class="py-3 pr-4 font-bold text-white font-mono">人數</td><td class="py-3 pl-4 text-gray-300">建議人數</td></tr>
+                        <tr class="border-b border-white/5"><td class="py-3 pr-4 font-bold text-white font-mono">時間</td><td class="py-3 pl-4 text-gray-300">遊戲時長</td></tr>
+                        <tr class="border-b border-white/5"><td class="py-3 pr-4 font-bold text-white font-mono">類型</td><td class="py-3 pl-4 text-gray-300">主題分類</td></tr>
+                        <tr class="border-b border-white/5"><td class="py-3 pr-4 font-bold text-white font-mono">狀態</td><td class="py-3 pl-4 text-gray-300">營運中 / 封存</td></tr>
+                        <tr><td class="py-3 pr-4 font-bold text-white font-mono">備註</td><td class="py-3 pl-4 text-gray-300">補充資訊</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                評級系統完全沿用原作者標準，AI 僅負責搬運資料，不涉及價值判斷。
+            </p>
+
+            <h4 class="text-xl font-bold text-white mt-10 mb-4">
+                步驟三：輸出至 Google Sheets
+            </h4>
+
+            <p>
+                AI 將整理結果直接寫入 Google Sheets：第一列為標頭，後續每列一間密室。Sheets 原生支援排序與篩選，無需額外建置前端介面。
+            </p>
+
+            <p class="text-gray-400">
+                整段流程僅下達 3&ndash;4 次指令，其餘由 AI 自主完成。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 成果：兩層結構的查詢介面
+            </h3>
+
+            <p>
+                最終產出一份單純的 Google Sheets，結構分為兩層：
+            </p>
+
+            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 my-8">
+                <h4 class="text-white font-bold mb-4 flex items-center gap-2 border-b border-white/10 pb-3">
+                    <i class="fas fa-folder-tree text-accent-purple"></i> 工作表分頁（依地區）
+                </h4>
+                <div class="flex flex-wrap gap-2 text-sm">
+                    <span class="bg-white/5 px-3 py-1.5 rounded-md text-gray-300 font-mono">大台北</span>
+                    <span class="bg-white/5 px-3 py-1.5 rounded-md text-gray-300 font-mono">台中</span>
+                    <span class="bg-white/5 px-3 py-1.5 rounded-md text-gray-300 font-mono">桃園中壢</span>
+                    <span class="bg-white/5 px-3 py-1.5 rounded-md text-gray-300 font-mono">新竹・彰化・南投</span>
+                    <span class="bg-white/5 px-3 py-1.5 rounded-md text-gray-300 font-mono">台南</span>
+                    <span class="bg-white/5 px-3 py-1.5 rounded-md text-gray-300 font-mono">高雄</span>
+                    <span class="bg-white/5 px-3 py-1.5 rounded-md text-gray-300 font-mono">宜蘭・屏東・海外</span>
+                    <span class="bg-white/5 px-3 py-1.5 rounded-md text-gray-500 font-mono">+ 來源資訊</span>
+                </div>
+            </div>
+
+            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 my-8">
+                <h4 class="text-white font-bold mb-4 flex items-center gap-2 border-b border-white/10 pb-3">
+                    <i class="fas fa-table-columns text-accent-purple"></i> 欄位 Schema（各分頁共用）
+                </h4>
+                <div class="grid grid-cols-3 md:grid-cols-5 gap-2 text-sm">
+                    <div class="bg-white/5 p-2.5 rounded-lg text-center"><code class="text-accent-purple text-xs">工作室</code></div>
+                    <div class="bg-white/5 p-2.5 rounded-lg text-center"><code class="text-accent-purple text-xs">地址</code></div>
+                    <div class="bg-white/5 p-2.5 rounded-lg text-center"><code class="text-accent-purple text-xs">主題名稱</code></div>
+                    <div class="bg-white/5 p-2.5 rounded-lg text-center"><code class="text-accent-purple text-xs">評級</code></div>
+                    <div class="bg-white/5 p-2.5 rounded-lg text-center"><code class="text-accent-purple text-xs">人數</code></div>
+                    <div class="bg-white/5 p-2.5 rounded-lg text-center"><code class="text-accent-purple text-xs">時間</code></div>
+                    <div class="bg-white/5 p-2.5 rounded-lg text-center"><code class="text-accent-purple text-xs">類型</code></div>
+                    <div class="bg-white/5 p-2.5 rounded-lg text-center"><code class="text-accent-purple text-xs">狀態</code></div>
+                    <div class="bg-white/5 p-2.5 rounded-lg text-center"><code class="text-accent-purple text-xs">備註</code></div>
+                </div>
+            </div>
+
+            <h4 class="text-xl font-bold text-white mt-10 mb-4">
+                典型查詢路徑
+            </h4>
+
+            <ol class="list-decimal pl-6 space-y-2 text-gray-300 mb-6 marker:text-accent-purple">
+                <li>切換至目標地區工作表分頁</li>
+                <li>使用「資料 → 建立篩選器」</li>
+                <li>評級欄位篩選 S / A，狀態篩選「營運中」</li>
+                <li>以人數或類型欄位進一步收斂</li>
+                <li>掃描主題名稱，完成選擇</li>
+            </ol>
+
+            <p class="text-gray-400">
+                從開啟試算表到決定店家，時間壓縮至一分鐘以內。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 致謝與聲明
+            </h3>
+
+            <p>
+                本表所有店家、評級與心得內容皆出自 Roger Song 長期累積的原始整理，是其無償分享的心血結晶。此再整理僅為個人檢索便利，無任何營利或商業用途。
+            </p>
+
+            <p class="text-gray-400">
+                若原作者認為不妥，將立即撤下。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 成果連結
+            </h3>
+
+            <figure class="my-8">
+                <img src="../PNG/project_09.1.png"
+                     alt="密室逃脫整理 Sheet 介面示意"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    Sheet 介面示意（黃色 = 個人玩過、底下分頁切換地區）
+                </figcaption>
+            </figure>
+
+            <p>
+                <a href="https://docs.google.com/spreadsheets/d/1z7T0mnmIVwzoYdF60mkmLer-hC0a4leD/edit?gid=1684939645#gid=1684939645" target="_blank" rel="noopener noreferrer"
+                    class="text-accent-purple hover:text-white transition-colors underline decoration-accent-purple/30 underline-offset-4 font-mono">
+                    View Sheet&nbsp;<i class="fas fa-external-link-alt text-[10px]"></i>
+                </a>
+            </p>
+
+            <p class="text-sm text-gray-400 m-0">
+                黃色標記為個人玩過的店；不同「工作表」分頁代表不同地區，於 Sheets 下方切換。
+            </p>
+
+            <hr class="border-white/10 my-16">
+
+            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 flex flex-col md:flex-row items-start md:items-center gap-6">
+                <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center shrink-0 border border-white/10">
+                    <i class="fas fa-book-open text-gray-400 text-xl"></i>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-1">Reference &amp; Credits</h4>
+                    <p class="text-sm text-gray-400 m-0 leading-relaxed">
+                        資料來源：<strong>Roger Song</strong>《密室逃脫無雷心得列表與推薦》<br>
+                        <a href="https://roger5050.pixnet.net/blog/posts/15065131044" target="_blank" rel="noopener noreferrer" class="text-accent-purple hover:text-white transition-colors underline decoration-accent-purple/30 underline-offset-4 font-mono mt-1 inline-block">
+                            roger5050.pixnet.net/blog/posts/15065131044
+                        </a><br>
+                        <span class="text-xs text-gray-500 mt-2 inline-block">原文最後更新：2026.03.15　・　整理日期：2026.03.21</span>
+                    </p>
+                </div>
+            </div>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="project_09.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Project
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Projects
+            </a>
+            <a href="project_11.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                Next Project &rarr;
+            </a>
+        </div>
+
+    </main>
+    <div id="footer-placeholder"></div>
+</body>
+</html>

@@ -1,10 +1,46 @@
 [
-  { "url": "EXP/project_01.html", "category": "dev" },
-  { "url": "EXP/project_02.html", "category": "dev" },
-  { "url": "EXP/project_03.html", "category": "dev" },
-  { "url": "EXP/project_04.html", "category": "dev" },
-  { "url": "EXP/project_05.html", "category": "dev" },
-  { "url": "EXP/project_06.html", "category": "dev" },
-  { "url": "EXP/project_07.html", "category": "dev" },
-  { "url": "EXP/project_08.html", "category": "dev" }
+  {
+    "url": "EXP/project_01.html",
+    "category": "dev"
+  },
+  {
+    "url": "EXP/project_02.html",
+    "category": "dev"
+  },
+  {
+    "url": "EXP/project_03.html",
+    "category": "dev"
+  },
+  {
+    "url": "EXP/project_04.html",
+    "category": "dev"
+  },
+  {
+    "url": "EXP/project_05.html",
+    "category": "dev"
+  },
+  {
+    "url": "EXP/project_06.html",
+    "category": "dev"
+  },
+  {
+    "url": "EXP/project_07.html",
+    "category": "dev"
+  },
+  {
+    "url": "EXP/project_08.html",
+    "category": "dev"
+  },
+  {
+    "url": "EXP/project_09.html",
+    "category": "dev"
+  },
+  {
+    "url": "EXP/project_10.html",
+    "category": "dev"
+  },
+  {
+    "url": "EXP/project_11.html",
+    "category": "dev"
+  }
 ]

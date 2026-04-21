@@ -17,6 +17,106 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script type="module" src="main.js" defer></script>
+
+    <style>
+        /* Articles 頁面：仿 planet 樣式的 dropdown filter */
+        .ar-filter {
+            position: relative;
+            width: fit-content;
+            font-family: 'JetBrains Mono', monospace;
+            z-index: 30;
+        }
+        .ar-filter-trigger {
+            background: rgba(10, 10, 10, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #BF94FF;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+        .ar-filter-trigger .ar-current {
+            color: #fff;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+        .ar-filter-trigger .ar-caret {
+            font-size: 10px;
+            opacity: 0.6;
+            transition: transform 0.3s ease;
+        }
+        .ar-filter:hover .ar-filter-trigger,
+        .ar-filter.open .ar-filter-trigger {
+            background: rgba(191, 148, 255, 0.15);
+            border-color: #BF94FF;
+            color: white;
+        }
+        .ar-filter:hover .ar-caret,
+        .ar-filter.open .ar-caret {
+            transform: rotate(180deg);
+        }
+        .ar-filter-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: 8px;
+            background: rgba(5, 5, 5, 0.95);
+            border: 1px solid rgba(191, 148, 255, 0.3);
+            border-radius: 12px;
+            padding: 8px;
+            min-width: 200px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.8);
+        }
+        .ar-filter:hover .ar-filter-menu,
+        .ar-filter.open .ar-filter-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .ar-filter-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 11px;
+            color: #888;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+            letter-spacing: 0.05em;
+        }
+        .ar-filter-option:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+        }
+        .ar-filter-option.active {
+            background: rgba(191, 148, 255, 0.1);
+            border-color: rgba(191, 148, 255, 0.3);
+            color: white;
+            font-weight: bold;
+        }
+        .ar-filter-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+            box-shadow: 0 0 5px currentColor;
+            flex-shrink: 0;
+        }
+    </style>
 </head>
 
 <body class="font-sans selection:bg-accent-purple/30 selection:text-white">
@@ -30,62 +130,131 @@
     <div id="navbar-placeholder"></div>
 
 <main class="relative z-10 max-w-7xl mx-auto px-8 md:px-12 pt-32 pb-24">
-        
-        <div class="mb-12 relative z-20 pointer-events-none">
+
+        <div class="mb-6 relative z-20 pointer-events-none">
             <h1 class="text-3xl md:text-4xl font-extrabold mb-2 leading-tight tracking-tight text-gradient text-left w-fit">
                 Articles
             </h1>
             <p class="text-purple-400 font-mono text-xs uppercase tracking-wider">
-                Code, Design & Everything in between.
+                Thoughts, Stories & Lessons learned.
             </p>
+        </div>
+
+        <div class="ar-filter mb-8" id="filter-bar">
+            <div class="ar-filter-trigger">
+                <i class="fas fa-filter"></i>
+                <span>FILTER ·</span>
+                <span class="ar-current">ALL</span>
+                <i class="fas fa-chevron-down ar-caret"></i>
+            </div>
+            <div class="ar-filter-menu">
+                <div class="ar-filter-option active" data-filter="all" data-label="ALL">
+                    <div class="ar-filter-dot" style="color: #888"></div>
+                    ALL
+                </div>
+                <div class="ar-filter-option" data-filter="lifestyle" data-label="LIFESTYLE">
+                    <div class="ar-filter-dot" style="color: #F472B6"></div>
+                    LIFESTYLE
+                </div>
+                <div class="ar-filter-option" data-filter="thinking" data-label="THINKING">
+                    <div class="ar-filter-dot" style="color: #34D399"></div>
+                    THINKING
+                </div>
+                <div class="ar-filter-option" data-filter="ai-and-automation" data-label="AI & AUTOMATION">
+                    <div class="ar-filter-dot" style="color: #BF94FF"></div>
+                    AI &amp; AUTOMATION
+                </div>
+                <div class="ar-filter-option" data-filter="engineering" data-label="ENGINEERING">
+                    <div class="ar-filter-dot" style="color: #5EEAD4"></div>
+                    ENGINEERING
+                </div>
+            </div>
         </div>
 
         <div id="project-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
         </div>
-        
+
     </main>
 
     <div id="footer-placeholder"></div>
 
     <script>
+    // 從檔名解析編號：EXP/article_09.html → A09、EXP/article_NY1.html → ANY1
+    function parseNumberFromUrl(url, prefix) {
+        const m = url.match(/_([A-Za-z0-9]+)\.html$/i);
+        if (!m) return prefix + '?';
+        let n = m[1];
+        if (/^\d+$/.test(n)) n = n.padStart(2, '0');
+        return prefix + n.toUpperCase();
+    }
+
     // 關鍵修復：必須加上 async 才能在裡面用 await
     document.addEventListener('DOMContentLoaded', async () => {
         const container = document.getElementById('project-container');
         if (!container) return;
 
         try {
-            // 1. 讀取 JSON 清單 (確保檔名與路徑正確)
             const listResponse = await fetch('articles.json');
-            if (!listResponse.ok) throw new Error('無法取得專案清單');
+            if (!listResponse.ok) throw new Error('無法取得文章清單');
             const articles = (await listResponse.json()).reverse();
 
-            // 2. 使用 Promise.all 同步抓取所有文章內文，效率最高
             await Promise.all(articles.map(async (article) => {
                 const card = document.createElement('a');
                 card.href = article.url;
-                // 初始化為隱身狀態，等動畫啟動
+                card.setAttribute('data-category', 'unknown');
                 card.className = 'project-card-vertical group block opacity-0 translate-y-[30px]';
+                const number = parseNumberFromUrl(article.url, 'A');
                 card.innerHTML = `
                     <div class="relative aspect-video overflow-hidden rounded-t-3xl bg-white/5">
                         <img src="" alt="Loading..." class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
                     </div>
                     <div class="p-8 flex flex-col flex-grow text-left">
                         <div class="tag-box flex items-start gap-2 mb-4"></div>
-                        <div class="date-box text-xs font-mono text-gray-500 mb-4 flex items-center gap-2"></div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="date-box text-xs font-mono text-gray-500 flex items-center gap-2"></div>
+                            <span class="number-badge text-xs font-mono text-gray-500">${number}</span>
+                        </div>
                         <h4 class="text-lg font-bold text-white mb-3 group-hover:text-accent-purple transition-colors line-clamp-2">載入中...</h4>
                         <p class="text-gray-400 text-sm leading-normal line-clamp-3"></p>
                     </div>
                 `;
                 container.appendChild(card);
 
-                // 呼叫爬蟲函數填入資料
                 await fetchAndFillCard(card, article.url);
             }));
 
-            // 3. 核心修正：資料抓完後，才執行動畫偵測
             if (typeof window.refreshAnimations === 'function') {
                 window.initAnimations();
             }
+
+            // Filter 行為
+            const arFilter = document.getElementById('filter-bar');
+            const arTrigger = arFilter.querySelector('.ar-filter-trigger');
+            const arCurrent = arFilter.querySelector('.ar-current');
+            const arOptions = arFilter.querySelectorAll('.ar-filter-option');
+
+            arTrigger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                arFilter.classList.toggle('open');
+            });
+            document.addEventListener('click', () => arFilter.classList.remove('open'));
+            arFilter.addEventListener('click', (e) => e.stopPropagation());
+
+            arOptions.forEach(opt => {
+                opt.addEventListener('click', () => {
+                    const filter = opt.dataset.filter;
+                    const label = opt.dataset.label;
+
+                    arOptions.forEach(o => o.classList.remove('active'));
+                    opt.classList.add('active');
+                    arCurrent.textContent = label;
+                    arFilter.classList.remove('open');
+
+                    document.querySelectorAll('.project-card-vertical').forEach(card => {
+                        card.style.display = (filter === 'all' || card.dataset.category === filter) ? '' : 'none';
+                    });
+                });
+            });
 
         } catch (error) {
             console.error("articles 初始化失敗:", error);
@@ -99,23 +268,19 @@
             const parser = new DOMParser();
             const doc = parser.parseFromString(htmlText, 'text/html');
 
-            // 抓取日期
-            // 透過尋找帶有 .fa-calendar 的 icon，來定位包含日期的父元素
+            // 抓日期
             const dateIcon = doc.querySelector('header .fa-calendar');
             const cardDateBox = card.querySelector('.date-box');
-
             if (dateIcon && dateIcon.parentElement && cardDateBox) {
-                // 提取文字並去除前後空白，例如 "2026.01.31"
                 const dateText = dateIcon.parentElement.textContent.trim();
-                // 將日期與 icon 結構注入卡片
                 cardDateBox.innerHTML = `<i class="far fa-calendar text-gray-600"></i> ${dateText}`;
             }
-                        
-            // 抓取標題
+
+            // 抓標題
             const titleEl = doc.querySelector('header h1');
             if (titleEl) card.querySelector('h4').textContent = titleEl.innerText.trim();
 
-            // 抓取圖片並修正路徑 (移除 ../)
+            // 抓圖、修正路徑
             const firstImg = doc.querySelector('article img') || doc.querySelector('figure img');
             const cardImg = card.querySelector('img');
             if (firstImg) {
@@ -131,9 +296,17 @@
                 }
             }
 
-            // 抓取標籤
+            // 抓標籤，依第一個（紫色主標）推導 category
             const sourceTags = doc.querySelectorAll('header .flex.gap-3 span');
             const cardTagBox = card.querySelector('.tag-box');
+            if (sourceTags.length > 0) {
+                const primary = sourceTags[0].textContent.trim();
+                const slug = primary.toLowerCase()
+                    .replace(/&/g, 'and')
+                    .replace(/[^a-z0-9]+/g, '-')
+                    .replace(/^-|-$/g, '');
+                card.setAttribute('data-category', slug);
+            }
             if (sourceTags.length > 0 && cardTagBox) {
                 cardTagBox.innerHTML = '';
                 sourceTags.forEach(tag => {
@@ -149,7 +322,7 @@
                 });
             }
 
-            // 抓取摘要
+            // 抓摘要
             const summaryEl = doc.querySelector('article .text-xl') || doc.querySelector('article p');
             if (summaryEl) card.querySelector('p').textContent = summaryEl.innerText.trim();
 
