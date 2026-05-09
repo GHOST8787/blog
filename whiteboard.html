@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whiteboard | GHOST.ouo</title>
+    <meta name="description" content="把你想要的小工具留在白板，愛心多的我先做。GHOST.ouo 的需求白板">
+    <meta property="og:title" content="Whiteboard | GHOST.ouo">
+    <meta property="og:description" content="把你想要的小工具留在白板，愛心多的我先做。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ghost8787.github.io/blog/whiteboard.html">
+    <meta property="og:image" content="https://ghost8787.github.io/blog/PNG/pixelS2.png">
+    <meta property="og:locale" content="zh_TW">
+    <link rel="canonical" href="https://ghost8787.github.io/blog/whiteboard.html">
+    <link rel="icon" type="image/png" href="PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="PNG/pixelS2.png">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="main.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="tailwind.config.js"></script>
+    <script type="module" src="whiteboard.js"></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white">
+
+    <!-- 背景裝飾層 -->
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-600/10 rounded-full blur-[120px] animate-pulse-slow" style="animation-delay: 2s;"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-6xl xl:max-w-7xl mx-auto px-5 pt-24 md:pt-32 pb-24">
+
+        <!-- Hero -->
+        <header class="text-center mb-12">
+            <div class="inline-block px-3 py-1 rounded-full bg-accent-purple/10 border border-accent-purple/20 text-accent-purple text-[10px] font-bold uppercase tracking-wider mb-6">
+                IDEA WHITEBOARD
+            </div>
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-4 text-gradient leading-tight">
+                你想要什麼小工具？
+            </h1>
+            <p class="text-gray-400 text-sm md:text-base max-w-xl mx-auto">
+                投稿、按愛心 — 愛心多的我先做。<br>
+                <span class="text-accent-purple/70 font-mono text-xs">公開投稿 · 站長審核後上戰場</span>
+            </p>
+        </header>
+
+        <!-- Login bar（Task 4 啟用 Auth 後生效）-->
+        <div id="wb-auth-bar" class="flex items-center justify-center gap-3 mb-12">
+            <button id="wb-login-btn" class="hidden flex items-center gap-2 px-5 py-2.5 bg-white/5 border border-white/10 rounded-full text-sm hover:border-accent-purple hover:text-accent-purple transition-all">
+                <i class="fab fa-google"></i> 用 Google 登入後即可投稿與按愛心
+            </button>
+            <div id="wb-user-badge" class="hidden flex items-center gap-2 px-4 py-2 bg-accent-purple/10 border border-accent-purple/20 rounded-full text-sm text-accent-purple">
+                <span id="wb-user-email" class="font-mono text-xs">—</span>
+                <button id="wb-logout-btn" class="text-gray-500 hover:text-white text-xs ml-2" aria-label="登出">登出</button>
+            </div>
+        </div>
+
+        <!-- 上區：許願池 -->
+        <div class="section-head">
+            <h2>許願池</h2>
+            <span class="count" id="approved-count">載入中...</span>
+        </div>
+        <section id="wb-approved" class="grid grid-cols-1 md:grid-cols-12 gap-4 auto-rows-[120px]">
+            <div class="col-span-12 text-center text-gray-500 font-mono text-sm py-12">載入中...</div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- 下區：已實作 -->
+        <div class="section-head">
+            <h2 class="done-head">已實作</h2>
+            <span class="count" id="done-count">—</span>
+        </div>
+        <section id="wb-done">
+            <div class="text-center text-gray-500 font-mono text-sm py-6">—</div>
+        </section>
+
+        <p id="wb-stats" class="text-center text-gray-500 text-xs mt-12 font-mono">—</p>
+    </main>
+
+    <!-- 投稿 FAB -->
+    <button id="wb-fab" class="wb-fab" aria-label="投稿">
+        <i class="fas fa-plus"></i>
+        <span class="hidden md:inline">我也想要一個...</span>
+    </button>
+
+    <!-- 投稿 Modal -->
+    <div id="wb-modal" class="modal-bg" role="dialog" aria-labelledby="wb-modal-title" aria-hidden="true">
+        <div class="modal">
+            <h2 id="wb-modal-title" class="text-2xl font-bold mb-2 text-gradient">貼上你的小工具想法</h2>
+            <p class="text-gray-400 text-sm mb-6">送出後會進審核佇列，通過會出現在許願池。</p>
+            <textarea id="wb-modal-text" class="w-full bg-black border border-white/10 rounded-lg p-4 text-white placeholder-gray-600 focus:border-accent-purple focus:outline-none resize-none h-32" placeholder="例如：希望有一個自動把會議錄音整理成逐字稿+待辦的工具..." maxlength="500"></textarea>
+            <div class="flex items-center justify-between mt-2 mb-4">
+                <span id="wb-modal-counter" class="text-xs text-gray-500 font-mono">0 / 500</span>
+                <span id="wb-modal-error" class="text-xs text-red-400 font-mono"></span>
+            </div>
+            <div class="flex gap-3">
+                <button id="wb-modal-submit" class="flex-1 bg-accent-purple text-black font-bold py-3 rounded-full hover:shadow-[0_0_20px_rgba(191,148,255,.5)] transition-all disabled:opacity-50 disabled:cursor-not-allowed">送審</button>
+                <button id="wb-modal-cancel" class="px-6 border border-white/10 text-gray-400 rounded-full hover:border-white/30 transition-all">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 登入提示 Modal（未登入用戶點愛心 / 投稿時觸發）-->
+    <div id="wb-auth-modal" class="modal-bg" role="dialog" aria-labelledby="wb-auth-modal-title" aria-hidden="true">
+        <div class="modal text-center">
+            <div class="w-14 h-14 mx-auto mb-4 rounded-full bg-accent-purple/10 border border-accent-purple/30 flex items-center justify-center">
+                <i class="fas fa-lock text-accent-purple text-xl"></i>
+            </div>
+            <h2 id="wb-auth-modal-title" class="text-2xl font-bold mb-2 text-gradient">需要登入解鎖</h2>
+            <p class="text-gray-400 text-sm mb-6">
+                按愛心、投稿想法都要先用 Google 登入。
+                <span class="block text-gray-500 text-xs mt-2 font-mono">只用來去重 + 防 spam，不會公開你的身份</span>
+            </p>
+            <div class="flex flex-col gap-3">
+                <button id="wb-auth-modal-login" class="flex items-center justify-center gap-2 bg-accent-purple text-black font-bold py-3 rounded-full hover:shadow-[0_0_20px_rgba(191,148,255,.5)] transition-all">
+                    <i class="fab fa-google"></i> 用 Google 登入
+                </button>
+                <button id="wb-auth-modal-cancel" class="text-gray-500 text-sm hover:text-white transition-colors">下次再說</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+</body>
+</html>
