@@ -104,11 +104,67 @@ $authModal.addEventListener('click', (e) => { if (e.target === $authModal) hideA
 
 console.log('[whiteboard] initialized', { app: app.name });
 
-// Stub render（Task 5 / 8 會 override）
-$approved.innerHTML = '<div class="col-span-12 text-center text-gray-500 font-mono text-sm py-12">尚未串接（待 Task 5）</div>';
+// Stub done 區（Task 8 會覆寫）
 $done.innerHTML = '<div class="text-center text-gray-500 font-mono text-sm py-6">尚未串接（待 Task 8）</div>';
-$approvedCount.textContent = '— 則';
 $doneCount.textContent = '— 則';
 
-// 暫時佔位，Task 5 會覆寫
-function renderApproved() {}
+// === 大小階梯（依 likes 決定卡片大小）===
+function sizeClassFor(likes) {
+    if (likes >= 30) return { size: 'hero', col: 'md:col-span-8', row: 'md:row-span-3' };
+    if (likes >= 20) return { size: 'xl',   col: 'md:col-span-4', row: 'md:row-span-2' };
+    if (likes >= 10) return { size: 'lg',   col: 'md:col-span-4', row: 'md:row-span-1' };
+    if (likes >= 5)  return { size: 'md',   col: 'md:col-span-6', row: 'md:row-span-1' };
+    if (likes >= 2)  return { size: 'sm',   col: 'md:col-span-3', row: 'md:row-span-1' };
+    return                  { size: 'xs',   col: 'md:col-span-3', row: 'md:row-span-1' };
+}
+
+// === renderApproved ===
+function renderApproved(snapshot) {
+    window.__wbApprovedSnap = snapshot;  // 給 auth state 變化時 re-render 用
+    const data = snapshot.val() || {};
+    const items = Object.entries(data)
+        .map(([id, v]) => ({ id, ...v }))
+        .sort((a, b) => (b.likes || 0) - (a.likes || 0));
+
+    if (items.length === 0) {
+        $approved.innerHTML = '<div class="col-span-12 text-center text-gray-500 font-mono text-sm py-12">許願池還是空的，當第一個許願的人吧</div>';
+        $approvedCount.textContent = '0 則';
+        return;
+    }
+
+    const uid = currentUser ? currentUser.uid : null;
+    const html = items.map((item, idx) => {
+        const likes = item.likes || 0;
+        const { size, col, row } = sizeClassFor(likes);
+        const isKing = idx === 0 && likes >= 5;
+        const liked = uid && item.likedBy && item.likedBy[uid] === true;
+
+        return `
+            <article class="battle ${col} ${row} ${isKing ? 'king' : ''}" data-id="${item.id}">
+                <p class="size-${size}">${escapeHtml(item.text)}</p>
+                <div class="flex items-center justify-between mt-3 relative z-10">
+                    <div class="flex items-center gap-2">
+                        <span class="idea-badge">#${pad3(item.number || 0)}</span>
+                        <span class="idea-date">${formatDate(item.approvedAt || item.createdAt)}</span>
+                    </div>
+                    <button class="heart-btn ${liked ? 'liked' : ''}" data-id="${item.id}" data-liked="${liked ? '1' : '0'}">
+                        <i class="${liked ? 'fas' : 'far'} fa-heart heart-icon"></i>
+                        <span class="num">${likes}</span>
+                    </button>
+                </div>
+            </article>
+        `;
+    }).join('');
+
+    $approved.innerHTML = html;
+    $approvedCount.textContent = `${items.length} 則 · 排序依愛心數`;
+}
+
+// 啟動 listener
+const approvedRef = ref(db, 'whiteboard/approved');
+onValue(approvedRef, renderApproved, (err) => {
+    console.error('[whiteboard] approved listen failed', err);
+    $approved.innerHTML = '<div class="col-span-12 text-center text-red-400 font-mono text-sm py-12">載入失敗：' + escapeHtml(err.message) + '</div>';
+});
+
+console.log('[whiteboard] approved listener attached');
