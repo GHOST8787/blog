@@ -95,14 +95,39 @@
         <div class="modal">
             <h2 id="wb-modal-title" class="text-2xl font-bold mb-2 text-gradient">貼上你的小工具想法</h2>
             <p class="text-gray-400 text-sm mb-6">送出後會進審核佇列，通過會出現在許願池。</p>
-            <textarea id="wb-modal-text" class="w-full bg-black border border-white/10 rounded-lg p-4 text-white placeholder-gray-600 focus:border-accent-purple focus:outline-none resize-none h-32" placeholder="例如：希望有一個自動把會議錄音整理成逐字稿+待辦的工具..." maxlength="500"></textarea>
+
+            <label class="block text-xs text-gray-500 font-mono mb-1">標題（必填，60 字內）</label>
+            <input id="wb-modal-title-input" type="text" maxlength="60" placeholder="例如：Kindle 劃線同步到 Obsidian" class="w-full bg-black border border-white/10 rounded-lg p-3 text-white placeholder-gray-600 focus:border-accent-purple focus:outline-none mb-1">
+            <div class="flex items-center justify-between mb-3">
+                <span id="wb-modal-title-counter" class="text-xs text-gray-500 font-mono">0 / 60</span>
+            </div>
+
+            <label class="block text-xs text-gray-500 font-mono mb-1">補充說明（選填，500 字內）</label>
+            <textarea id="wb-modal-text" class="w-full bg-black border border-white/10 rounded-lg p-4 text-white placeholder-gray-600 focus:border-accent-purple focus:outline-none resize-none h-24" placeholder="可選：補充使用情境、為什麼想要、有沒有現成工具..." maxlength="500"></textarea>
             <div class="flex items-center justify-between mt-2 mb-4">
                 <span id="wb-modal-counter" class="text-xs text-gray-500 font-mono">0 / 500</span>
                 <span id="wb-modal-error" class="text-xs text-red-400 font-mono"></span>
             </div>
+
             <div class="flex gap-3">
                 <button id="wb-modal-submit" class="flex-1 bg-accent-purple text-black font-bold py-3 rounded-full hover:shadow-[0_0_20px_rgba(191,148,255,.5)] transition-all disabled:opacity-50 disabled:cursor-not-allowed">送審</button>
                 <button id="wb-modal-cancel" class="px-6 border border-white/10 text-gray-400 rounded-full hover:border-white/30 transition-all">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 詳情 Modal（點卡片開）-->
+    <div id="wb-detail-modal" class="modal-bg" role="dialog" aria-labelledby="wb-detail-title" aria-hidden="true">
+        <div class="modal">
+            <div class="flex items-start justify-between gap-3 mb-3">
+                <span id="wb-detail-badge" class="idea-badge">#000</span>
+                <span id="wb-detail-date" class="idea-date">—</span>
+            </div>
+            <h2 id="wb-detail-title" class="text-2xl md:text-3xl font-bold mb-4 text-gradient leading-tight">—</h2>
+            <p id="wb-detail-text" class="text-gray-300 text-sm md:text-base whitespace-pre-wrap mb-6 leading-relaxed">—</p>
+            <div class="flex items-center justify-between pt-4 border-t border-white/5">
+                <span id="wb-detail-likes" class="text-gray-500 font-mono text-xs">— 票</span>
+                <button id="wb-detail-close" class="px-5 py-2 border border-white/10 text-gray-400 rounded-full text-sm hover:border-accent-purple hover:text-accent-purple transition-all">關閉</button>
             </div>
         </div>
     </div>

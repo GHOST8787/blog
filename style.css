@@ -250,7 +250,10 @@ a:focus-visible {
     display:flex; flex-direction:column; justify-content:space-between;
     transition:all .5s cubic-bezier(.23,1,.32,1);
     position:relative; overflow:hidden;
-    cursor:default;
+    cursor:pointer;
+}
+.battle:focus-visible{
+    outline:2px solid #BF94FF; outline-offset:2px;
 }
 .battle::before{
     content:''; position:absolute; inset:0;
