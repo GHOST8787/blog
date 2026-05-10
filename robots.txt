@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /whiteboard-admin.html
 
 Sitemap: https://ghost8787.github.io/blog/sitemap.xml
