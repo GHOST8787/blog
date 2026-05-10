@@ -114,9 +114,90 @@ $authModal.addEventListener('click', (e) => { if (e.target === $authModal) hideA
 
 console.log('[whiteboard] initialized', { app: app.name });
 
-// Stub done 區（Task 8 會覆寫）
-$done.innerHTML = '<div class="text-center text-gray-500 font-mono text-sm py-6">尚未串接（待 Task 8）</div>';
-$doneCount.textContent = '— 則';
+// === Done 區（已實作）===
+const titleCache = {};
+
+async function getTitleFromHtml(url) {
+    if (titleCache[url]) return titleCache[url];
+    const ssKey = `wb:title:${url}`;
+    const cached = sessionStorage.getItem(ssKey);
+    if (cached) { titleCache[url] = cached; return cached; }
+    try {
+        const r = await fetch(url);
+        if (!r.ok) return null;
+        const html = await r.text();
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        const h1 = doc.querySelector('header h1');
+        const title = h1 ? h1.innerText.trim().replace(/\s+/g, ' ') : null;
+        if (title) {
+            titleCache[url] = title;
+            sessionStorage.setItem(ssKey, title);
+        }
+        return title;
+    } catch (err) {
+        console.warn('[whiteboard] fetch title failed', url, err);
+        return null;
+    }
+}
+
+function isInternalLink(url) {
+    if (!url) return false;
+    if (/^https?:\/\//i.test(url)) return false;
+    return /(?:^|\/)(?:EXP\/)?(?:project|article)_\d+\.html$/.test(url);
+}
+
+async function renderDoneItem(item) {
+    const display = escapeHtml(item.title || item.text || '');
+    const meta = `#${pad3(item.number || 0)} · DONE ${formatDate(item.doneAt)}`;
+
+    if (!item.linkUrl) {
+        return `
+            <div class="done-row">
+                <div class="check"><i class="fas fa-check"></i></div>
+                <div class="text">${display}</div>
+                <div class="meta">${meta}</div>
+            </div>
+        `;
+    }
+    let label = '→ 開啟連結 ↗';
+    if (isInternalLink(item.linkUrl)) {
+        const title = await getTitleFromHtml(item.linkUrl);
+        if (title) label = `→ ${escapeHtml(title)} ↗`;
+    }
+    const safeUrl = escapeHtml(item.linkUrl);
+    const isExternal = /^https?:\/\//i.test(item.linkUrl);
+    const target = isExternal ? ' target="_blank" rel="noopener"' : '';
+    return `
+        <a href="${safeUrl}"${target} class="done-row linked">
+            <div class="check"><i class="fas fa-check"></i></div>
+            <div class="text">${display} <span class="text-accent-purple/70">${label}</span></div>
+            <div class="meta">${meta}</div>
+        </a>
+    `;
+}
+
+async function renderDone(snapshot) {
+    const data = snapshot.val() || {};
+    const items = Object.entries(data)
+        .map(([id, v]) => ({ id, ...v }))
+        .sort((a, b) => (b.doneAt || 0) - (a.doneAt || 0));
+
+    if (items.length === 0) {
+        $done.innerHTML = '<div class="text-center text-gray-500 font-mono text-sm py-6">還沒有想法畢業，敬請期待</div>';
+        $doneCount.textContent = '0 則';
+        return;
+    }
+
+    const htmls = await Promise.all(items.map(renderDoneItem));
+    $done.innerHTML = htmls.join('');
+    $doneCount.textContent = `${items.length} 則 · 從許願池畢業`;
+}
+
+const doneRef = ref(db, 'whiteboard/done');
+onValue(doneRef, renderDone, (err) => {
+    console.error('[whiteboard] done listen failed', err);
+    $done.innerHTML = '<div class="text-center text-red-400 font-mono text-sm py-6">載入失敗：' + escapeHtml(err.message) + '</div>';
+});
 
 // === 大小階梯（依 likes 決定卡片大小）===
 function sizeClassFor(likes) {
