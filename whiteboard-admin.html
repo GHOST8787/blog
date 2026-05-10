@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Whiteboard Admin</title>
+    <link rel="icon" type="image/png" href="PNG/pixelS2.png">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="tailwind.config.js"></script>
+    <script type="module" src="whiteboard-admin.js"></script>
+</head>
+<body class="font-sans">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+    </div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-5 pt-16 pb-24">
+
+        <header class="mb-10">
+            <a href="whiteboard.html" class="text-gray-500 text-xs font-mono hover:text-accent-purple transition-colors">&larr; 回公開頁</a>
+            <h1 class="text-3xl font-bold mt-2 text-gradient">Whiteboard Admin</h1>
+            <p class="text-gray-500 text-xs font-mono mt-1" id="admin-uid">未登入</p>
+        </header>
+
+        <!-- Login -->
+        <section id="login-section" class="max-w-sm">
+            <div class="bg-surface border border-white/10 rounded-xl p-6">
+                <h2 class="text-lg font-bold text-white mb-2">Admin 登入</h2>
+                <p class="text-gray-500 text-xs mb-4 font-mono">用站長個人 Google 帳號登入。其他 Google 帳號會被擋下來。</p>
+                <button id="login-btn" class="w-full flex items-center justify-center gap-3 bg-white/5 border border-white/10 text-white font-bold py-3 rounded-full hover:border-accent-purple hover:text-accent-purple transition-all">
+                    <i class="fab fa-google"></i> 用 Google 登入
+                </button>
+                <p id="login-error" class="text-red-400 text-xs font-mono mt-3"></p>
+            </div>
+        </section>
+
+        <!-- Content (隱藏直到登入) -->
+        <section id="admin-content" class="hidden">
+            <div class="flex justify-end mb-6">
+                <button id="logout-btn" class="text-xs font-mono text-gray-500 hover:text-accent-purple transition-colors">登出</button>
+            </div>
+
+            <div class="mb-12">
+                <div class="section-head">
+                    <h2>待審清單</h2>
+                    <span class="count" id="pending-count">—</span>
+                </div>
+                <div id="pending-list">
+                    <p class="text-gray-500 font-mono text-sm">載入中...</p>
+                </div>
+            </div>
+
+            <div>
+                <div class="section-head">
+                    <h2>許願池（可畢業）</h2>
+                    <span class="count" id="approved-admin-count">—</span>
+                </div>
+                <div id="approved-list">
+                    <p class="text-gray-500 font-mono text-sm">載入中...</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 畢業 modal -->
+    <div id="grad-modal" class="modal-bg" role="dialog" aria-hidden="true">
+        <div class="modal">
+            <h2 class="text-xl font-bold mb-2 text-gradient">標記畢業</h2>
+            <p class="text-gray-400 text-sm mb-4" id="grad-text-preview">—</p>
+            <label class="block text-xs text-gray-500 font-mono mb-1">linkUrl（選填）</label>
+            <input id="grad-link" type="text" placeholder="EXP/project_03.html 或 https://..." class="w-full bg-black border border-white/10 rounded-lg p-3 text-white text-sm mb-2 focus:border-accent-purple focus:outline-none">
+            <p class="text-gray-600 text-xs font-mono mb-4">填內部相對路徑（含 EXP/ 前綴）會自動抓 header h1；外部網址會顯示「開啟連結」</p>
+            <div class="flex gap-3">
+                <button id="grad-confirm" class="flex-1 bg-accent-purple text-black font-bold py-3 rounded-full hover:shadow-[0_0_20px_rgba(191,148,255,.5)] transition-all">確認畢業</button>
+                <button id="grad-cancel" class="px-6 border border-white/10 text-gray-400 rounded-full hover:border-white/30 transition-all">取消</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

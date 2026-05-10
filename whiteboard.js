@@ -26,6 +26,8 @@ const db = getDatabase(app);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
+const ADMIN_UID = 'qIjxHkkrmhNjAe1On8JHxCnFIB42';
+
 // === DOM refs ===
 const $approved = document.getElementById('wb-approved');
 const $done = document.getElementById('wb-done');
@@ -35,6 +37,7 @@ const $stats = document.getElementById('wb-stats');
 const $loginBtn = document.getElementById('wb-login-btn');
 const $userBadge = document.getElementById('wb-user-badge');
 const $userEmail = document.getElementById('wb-user-email');
+const $adminLink = document.getElementById('wb-admin-link');
 const $logoutBtn = document.getElementById('wb-logout-btn');
 
 // === Helpers ===
@@ -62,11 +65,18 @@ onAuthStateChanged(auth, (user) => {
         $userBadge.classList.remove('hidden');
         $userBadge.classList.add('flex');
         $userEmail.textContent = user.email || user.displayName || user.uid.slice(0, 8);
+        // Admin 連結只給站長看到
+        if (user.uid === ADMIN_UID) {
+            $adminLink.classList.remove('hidden');
+        } else {
+            $adminLink.classList.add('hidden');
+        }
     } else {
         $loginBtn.classList.remove('hidden');
         $loginBtn.classList.add('flex');
         $userBadge.classList.add('hidden');
         $userBadge.classList.remove('flex');
+        $adminLink.classList.add('hidden');
     }
     // 重新觸發 approved render（讓 likedBy 狀態跟著 currentUser 變化）
     if (window.__wbApprovedSnap) renderApproved(window.__wbApprovedSnap);
@@ -254,7 +264,8 @@ $modalSubmit.addEventListener('click', async () => {
         const payload = {
             title,
             createdAt: serverTimestamp(),
-            submitterUid: currentUser.uid
+            submitterUid: currentUser.uid,
+            submitterEmail: currentUser.email || ''
         };
         if (text.length > 0) payload.text = text;
         await push(ref(db, 'whiteboard/pending'), payload);
