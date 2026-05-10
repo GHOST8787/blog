@@ -168,3 +168,56 @@ onValue(approvedRef, renderApproved, (err) => {
 });
 
 console.log('[whiteboard] approved listener attached');
+
+// === 愛心點擊事件委派 ===
+$approved.addEventListener('click', async (e) => {
+    const btn = e.target.closest('.heart-btn');
+    if (!btn) return;
+
+    // 未登入 → 跳 auth modal
+    if (!currentUser) {
+        showAuthModal();
+        return;
+    }
+
+    const id = btn.dataset.id;
+    const uid = currentUser.uid;
+    const wasLiked = btn.dataset.liked === '1';
+    const newLiked = !wasLiked;
+
+    // 樂觀 UI
+    const numEl = btn.querySelector('.num');
+    const iconEl = btn.querySelector('.heart-icon');
+    const oldNum = parseInt(numEl.textContent, 10);
+    btn.classList.toggle('liked', newLiked);
+    btn.dataset.liked = newLiked ? '1' : '0';
+    iconEl.classList.toggle('fas', newLiked);
+    iconEl.classList.toggle('far', !newLiked);
+    numEl.textContent = newLiked ? oldNum + 1 : oldNum - 1;
+    if (newLiked) {
+        // 簡單 pulse animation：scale 1 → 1.45 → 1，500ms
+        iconEl.style.animation = 'none';
+        void iconEl.offsetWidth;  // 觸發 reflow 重啟動畫
+        iconEl.style.animation = 'wb-heart-pulse .5s cubic-bezier(.2,.9,.3,1.4)';
+    }
+
+    // Step A: likes ±1 transaction
+    // Step B: likedBy/<uid> 寫 true 或 null
+    try {
+        await runTransaction(ref(db, `whiteboard/approved/${id}/likes`), (current) => {
+            const c = current || 0;
+            return newLiked ? c + 1 : c - 1;
+        });
+        await update(ref(db, `whiteboard/approved/${id}/likedBy`), {
+            [uid]: newLiked ? true : null
+        });
+    } catch (err) {
+        console.error('[whiteboard] heart write failed', err);
+        // 回滾 UI
+        btn.classList.toggle('liked', wasLiked);
+        btn.dataset.liked = wasLiked ? '1' : '0';
+        iconEl.classList.toggle('fas', wasLiked);
+        iconEl.classList.toggle('far', !wasLiked);
+        numEl.textContent = oldNum;
+    }
+});
