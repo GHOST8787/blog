@@ -7,7 +7,7 @@ import {
     getDatabase, ref, onValue, push, runTransaction, update, serverTimestamp, get
 } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
 import {
-    getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged
+    getAuth, GoogleAuthProvider, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -78,19 +78,22 @@ onAuthStateChanged(auth, (user) => {
         $userBadge.classList.remove('flex');
         $adminLink.classList.add('hidden');
     }
-    // 重新觸發 approved render（讓 likedBy 狀態跟著 currentUser 變化）
+    // 重新觸發 approved / done render（讓 likedBy 狀態跟著 currentUser 變化）
     if (window.__wbApprovedSnap) renderApproved(window.__wbApprovedSnap);
+    if (window.__wbDoneSnap) renderDone(window.__wbDoneSnap);
 });
 
-$loginBtn.addEventListener('click', async () => {
-    try {
-        await signInWithPopup(auth, provider);
-    } catch (err) {
-        console.error('[whiteboard] login failed', err);
-        if (err.code !== 'auth/popup-closed-by-user') alert('登入失敗：' + err.message);
-    }
+$loginBtn.addEventListener('click', () => {
+    // redirect flow：頁面會跳走，不需要 try-catch；錯誤跳回後從 getRedirectResult 拿
+    signInWithRedirect(auth, provider);
 });
 $logoutBtn.addEventListener('click', () => signOut(auth));
+
+// 跳回後檢查 redirect 結果（onAuthStateChanged 會處理 user 狀態，這裡只處理 error）
+getRedirectResult(auth).catch(err => {
+    console.error('[whiteboard] redirect login failed', err);
+    if (err && err.code) alert('登入失敗：' + err.message);
+});
 
 // === Auth modal（未登入要互動時跳）===
 const $authModal = document.getElementById('wb-auth-modal');
@@ -146,9 +149,18 @@ function isInternalLink(url) {
     return /(?:^|\/)(?:EXP\/)?(?:project|article)_\d+\.html$/.test(url);
 }
 
-async function renderDoneItem(item) {
+async function renderDoneItem(item, uid) {
     const display = escapeHtml(item.title || item.text || '');
     const meta = `#${pad3(item.number || 0)} · DONE ${formatDate(item.doneAt)}`;
+    const likes = item.likes || 0;
+    const liked = uid && item.likedBy && item.likedBy[uid] === true;
+    // 已實作的愛心：登入後可按，僅累計數字、不影響排序（done 永遠按 doneAt desc）
+    const heartHtml = `
+        <button class="heart-btn done-heart ${liked ? 'liked' : ''}" data-id="${item.id}" data-liked="${liked ? '1' : '0'}" aria-label="愛心">
+            <i class="${liked ? 'fas' : 'far'} fa-heart heart-icon"></i>
+            <span class="num">${likes}</span>
+        </button>
+    `;
 
     if (!item.linkUrl) {
         return `
@@ -156,6 +168,7 @@ async function renderDoneItem(item) {
                 <div class="check"><i class="fas fa-check"></i></div>
                 <div class="text">${display}</div>
                 <div class="meta">${meta}</div>
+                ${heartHtml}
             </div>
         `;
     }
@@ -172,11 +185,13 @@ async function renderDoneItem(item) {
             <div class="check"><i class="fas fa-check"></i></div>
             <div class="text">${display} <span class="text-accent-purple/70">${label}</span></div>
             <div class="meta">${meta}</div>
+            ${heartHtml}
         </a>
     `;
 }
 
 async function renderDone(snapshot) {
+    window.__wbDoneSnap = snapshot;  // 給 auth state 變化時 re-render 用
     const data = snapshot.val() || {};
     const items = Object.entries(data)
         .map(([id, v]) => ({ id, ...v }))
@@ -188,11 +203,21 @@ async function renderDone(snapshot) {
         return;
     }
 
-    const htmls = await Promise.all(items.map(renderDoneItem));
+    const uid = currentUser ? currentUser.uid : null;
+    const htmls = await Promise.all(items.map(item => renderDoneItem(item, uid)));
     $done.innerHTML = htmls.join('');
     $doneCount.textContent = `${items.length} 則 · 從許願池畢業`;
     updateStats();
 }
+
+// 已實作區的愛心點擊（用事件委派，且阻止外層 a tag 跳 link）
+$done.addEventListener('click', async (e) => {
+    const btn = e.target.closest('.heart-btn');
+    if (!btn) return;
+    e.preventDefault();
+    e.stopPropagation();
+    return await handleHeartClick(btn, 'whiteboard/done');
+});
 
 // === 底部統計 ===
 function updateStats() {
@@ -409,7 +434,7 @@ $approved.addEventListener('click', async (e) => {
     const btn = e.target.closest('.heart-btn');
     if (btn) {
         e.stopPropagation();
-        return await handleHeartClick(btn);
+        return await handleHeartClick(btn, 'whiteboard/approved');
     }
     // 點卡片其他位置 → 開 detail modal
     const card = e.target.closest('.battle');
@@ -423,7 +448,8 @@ $approved.addEventListener('click', async (e) => {
     }
 });
 
-async function handleHeartClick(btn) {
+// basePath = 'whiteboard/approved' 或 'whiteboard/done'，共用一個 handler
+async function handleHeartClick(btn, basePath) {
     // 未登入 → 跳 auth modal
     if (!currentUser) {
         showAuthModal();
@@ -454,11 +480,11 @@ async function handleHeartClick(btn) {
     // Step A: likes ±1 transaction
     // Step B: likedBy/<uid> 寫 true 或 null
     try {
-        await runTransaction(ref(db, `whiteboard/approved/${id}/likes`), (current) => {
+        await runTransaction(ref(db, `${basePath}/${id}/likes`), (current) => {
             const c = current || 0;
             return newLiked ? c + 1 : c - 1;
         });
-        await update(ref(db, `whiteboard/approved/${id}/likedBy`), {
+        await update(ref(db, `${basePath}/${id}/likedBy`), {
             [uid]: newLiked ? true : null
         });
     } catch (err) {

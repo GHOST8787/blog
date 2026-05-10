@@ -1,7 +1,7 @@
 // blog/whiteboard-admin.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
 import {
-    getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged
+    getAuth, GoogleAuthProvider, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
 import {
     getDatabase, ref, onValue, push, update, remove, serverTimestamp, get
@@ -51,25 +51,23 @@ function escapeHtml(s) {
 }
 
 // === Auth flow ===
-$loginBtn.addEventListener('click', async () => {
+$loginBtn.addEventListener('click', () => {
+    // redirect flow：頁面會直接跳走，不需要 try-catch；錯誤跳回後從 getRedirectResult 拿
     $loginErr.textContent = '';
     $loginBtn.disabled = true;
-    const oldHtml = $loginBtn.innerHTML;
-    $loginBtn.textContent = '登入中...';
-    try {
-        await signInWithPopup(auth, provider);
-    } catch (err) {
-        console.error('[admin] login failed', err);
-        if (err.code !== 'auth/popup-closed-by-user') {
-            $loginErr.textContent = err.message;
-        }
-    } finally {
-        $loginBtn.disabled = false;
-        $loginBtn.innerHTML = oldHtml;
-    }
+    $loginBtn.textContent = '跳轉至 Google...';
+    signInWithRedirect(auth, provider);
 });
 
 $logoutBtn.addEventListener('click', () => signOut(auth));
+
+// 跳回後檢查 redirect 結果（onAuthStateChanged 會處理 user 狀態，這裡只處理 error）
+getRedirectResult(auth).catch(err => {
+    console.error('[admin] redirect login failed', err);
+    if (err && err.code) {
+        $loginErr.textContent = err.message;
+    }
+});
 
 onAuthStateChanged(auth, (user) => {
     if (user) {
