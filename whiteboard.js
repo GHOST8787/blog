@@ -139,13 +139,17 @@ function renderApproved(snapshot) {
         const isKing = idx === 0 && likes >= 5;
         const liked = uid && item.likedBy && item.likedBy[uid] === true;
 
+        // 卡片只顯示 title 大字（fallback 到 text 兼容舊資料）
+        const display = item.title || item.text || '';
+        const hasNote = item.text && item.text.trim().length > 0 && item.title;
         return `
-            <article class="battle ${col} ${row} ${isKing ? 'king' : ''}" data-id="${item.id}">
-                <p class="size-${size}">${escapeHtml(item.text)}</p>
+            <article class="battle ${col} ${row} ${isKing ? 'king' : ''}" data-id="${item.id}" role="button" tabindex="0">
+                <p class="size-${size}">${escapeHtml(display)}</p>
                 <div class="flex items-center justify-between mt-3 relative z-10">
                     <div class="flex items-center gap-2">
                         <span class="idea-badge">#${pad3(item.number || 0)}</span>
                         <span class="idea-date">${formatDate(item.approvedAt || item.createdAt)}</span>
+                        ${hasNote ? '<span class="text-gray-600 text-[10px] font-mono">+ note</span>' : ''}
                     </div>
                     <button class="heart-btn ${liked ? 'liked' : ''}" data-id="${item.id}" data-liked="${liked ? '1' : '0'}">
                         <i class="${liked ? 'fas' : 'far'} fa-heart heart-icon"></i>
@@ -169,11 +173,156 @@ onValue(approvedRef, renderApproved, (err) => {
 
 console.log('[whiteboard] approved listener attached');
 
-// === 愛心點擊事件委派 ===
+// === 投稿 modal ===
+const $fab = document.getElementById('wb-fab');
+const $modal = document.getElementById('wb-modal');
+const $modalTitleInput = document.getElementById('wb-modal-title-input');
+const $modalTitleCounter = document.getElementById('wb-modal-title-counter');
+const $modalText = document.getElementById('wb-modal-text');
+const $modalCounter = document.getElementById('wb-modal-counter');
+const $modalError = document.getElementById('wb-modal-error');
+const $modalSubmit = document.getElementById('wb-modal-submit');
+const $modalCancel = document.getElementById('wb-modal-cancel');
+
+function openModal() {
+    $modalTitleInput.value = '';
+    $modalText.value = '';
+    $modalText.disabled = false;
+    $modalError.textContent = '';
+    $modalTitleCounter.textContent = '0 / 60';
+    $modalTitleCounter.style.color = '#666';
+    $modalCounter.textContent = '0 / 500';
+    $modalCounter.style.color = '#666';
+    $modalSubmit.disabled = false;
+    $modalSubmit.textContent = '送審';
+    $modal.classList.add('show');
+    $modal.setAttribute('aria-hidden', 'false');
+    setTimeout(() => $modalTitleInput.focus(), 50);
+}
+function closeModal() {
+    $modal.classList.remove('show');
+    $modal.setAttribute('aria-hidden', 'true');
+}
+
+// FAB 點擊：未登入跳 auth modal，已登入直接開投稿 modal
+$fab.addEventListener('click', () => {
+    if (!currentUser) {
+        showAuthModal();
+        return;
+    }
+    openModal();
+});
+$modalCancel.addEventListener('click', closeModal);
+$modal.addEventListener('click', (e) => { if (e.target === $modal) closeModal(); });
+
+$modalTitleInput.addEventListener('input', () => {
+    const len = $modalTitleInput.value.length;
+    $modalTitleCounter.textContent = `${len} / 60`;
+    $modalTitleCounter.style.color = len > 50 ? '#ff6b8a' : '#666';
+});
+$modalText.addEventListener('input', () => {
+    const len = $modalText.value.length;
+    $modalCounter.textContent = `${len} / 500`;
+    $modalCounter.style.color = len > 480 ? '#ff6b8a' : '#666';
+});
+
+$modalSubmit.addEventListener('click', async () => {
+    if (!currentUser) {
+        $modalError.textContent = '請先登入再送出';
+        return;
+    }
+    const title = $modalTitleInput.value.trim();
+    const text = $modalText.value.trim();
+    if (title.length < 1) {
+        $modalError.textContent = '標題不能空白';
+        return;
+    }
+    if (title.length > 60) {
+        $modalError.textContent = '標題超過 60 字';
+        return;
+    }
+    if (text.length > 500) {
+        $modalError.textContent = '說明超過 500 字';
+        return;
+    }
+
+    $modalSubmit.disabled = true;
+    $modalSubmit.textContent = '送出中...';
+    $modalError.textContent = '';
+
+    try {
+        const payload = {
+            title,
+            createdAt: serverTimestamp(),
+            submitterUid: currentUser.uid
+        };
+        if (text.length > 0) payload.text = text;
+        await push(ref(db, 'whiteboard/pending'), payload);
+        const preview = title.length > 30 ? title.slice(0, 30) + '...' : title;
+        $modalSubmit.textContent = '已送出，等站長審核';
+        $modalTitleInput.value = `已送出『${preview}』`;
+        $modalTitleInput.disabled = true;
+        $modalText.disabled = true;
+        setTimeout(() => {
+            $modalTitleInput.disabled = false;
+            $modalText.disabled = false;
+            closeModal();
+        }, 2200);
+    } catch (err) {
+        console.error('[whiteboard] submit failed', err);
+        $modalError.textContent = '送出失敗：' + err.message;
+        $modalSubmit.disabled = false;
+        $modalSubmit.textContent = '送審';
+    }
+});
+
+// === Detail modal（點卡片開）===
+const $detailModal = document.getElementById('wb-detail-modal');
+const $detailBadge = document.getElementById('wb-detail-badge');
+const $detailDate = document.getElementById('wb-detail-date');
+const $detailTitle = document.getElementById('wb-detail-title');
+const $detailText = document.getElementById('wb-detail-text');
+const $detailLikes = document.getElementById('wb-detail-likes');
+const $detailClose = document.getElementById('wb-detail-close');
+
+function openDetail(item) {
+    $detailBadge.textContent = `#${pad3(item.number || 0)}`;
+    $detailDate.textContent = formatDate(item.approvedAt || item.createdAt);
+    $detailTitle.textContent = item.title || item.text || '';
+    const noteText = (item.title && item.text) ? item.text : '';
+    $detailText.textContent = noteText || '（這個想法沒有補充說明）';
+    $detailText.style.color = noteText ? '#cbd5e1' : '#666';
+    $detailLikes.textContent = `${item.likes || 0} 票`;
+    $detailModal.classList.add('show');
+    $detailModal.setAttribute('aria-hidden', 'false');
+}
+function closeDetail() {
+    $detailModal.classList.remove('show');
+    $detailModal.setAttribute('aria-hidden', 'true');
+}
+$detailClose.addEventListener('click', closeDetail);
+$detailModal.addEventListener('click', (e) => { if (e.target === $detailModal) closeDetail(); });
+
+// === 卡片點擊事件委派（愛心 / 開 detail）===
 $approved.addEventListener('click', async (e) => {
     const btn = e.target.closest('.heart-btn');
-    if (!btn) return;
+    if (btn) {
+        e.stopPropagation();
+        return await handleHeartClick(btn);
+    }
+    // 點卡片其他位置 → 開 detail modal
+    const card = e.target.closest('.battle');
+    if (card) {
+        const id = card.dataset.id;
+        const snap = window.__wbApprovedSnap;
+        if (snap) {
+            const item = (snap.val() || {})[id];
+            if (item) openDetail({ id, ...item });
+        }
+    }
+});
 
+async function handleHeartClick(btn) {
     // 未登入 → 跳 auth modal
     if (!currentUser) {
         showAuthModal();
@@ -220,4 +369,4 @@ $approved.addEventListener('click', async (e) => {
         iconEl.classList.toggle('far', !wasLiked);
         numEl.textContent = oldNum;
     }
-});
+}
