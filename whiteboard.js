@@ -191,6 +191,14 @@ async function renderDone(snapshot) {
     const htmls = await Promise.all(items.map(renderDoneItem));
     $done.innerHTML = htmls.join('');
     $doneCount.textContent = `${items.length} 則 · 從許願池畢業`;
+    updateStats();
+}
+
+// === 底部統計 ===
+function updateStats() {
+    const a = $approved.querySelectorAll('.battle').length;
+    const d = $done.querySelectorAll('.done-row').length;
+    $stats.textContent = `目前 ${a} 則許願 · ${d} 則已實作`;
 }
 
 const doneRef = ref(db, 'whiteboard/done');
@@ -253,6 +261,7 @@ function renderApproved(snapshot) {
 
     $approved.innerHTML = html;
     $approvedCount.textContent = `${items.length} 則 · 排序依愛心數`;
+    updateStats();
 }
 
 // 啟動 listener
