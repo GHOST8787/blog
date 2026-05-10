@@ -58,7 +58,8 @@
             </button>
             <div id="wb-user-badge" class="hidden flex items-center gap-2 px-4 py-2 bg-accent-purple/10 border border-accent-purple/20 rounded-full text-sm text-accent-purple">
                 <span id="wb-user-email" class="font-mono text-xs">—</span>
-                <button id="wb-logout-btn" class="text-gray-500 hover:text-white text-xs ml-2" aria-label="登出">登出</button>
+                <a id="wb-admin-link" href="whiteboard-admin.html" class="hidden text-xs ml-2 text-gray-400 hover:text-white border-l border-white/10 pl-2">Admin</a>
+                <button id="wb-logout-btn" class="text-gray-500 hover:text-white text-xs ml-2 border-l border-white/10 pl-2" aria-label="登出">登出</button>
             </div>
         </div>
 
@@ -113,6 +114,14 @@
                 <button id="wb-modal-submit" class="flex-1 bg-accent-purple text-black font-bold py-3 rounded-full hover:shadow-[0_0_20px_rgba(191,148,255,.5)] transition-all disabled:opacity-50 disabled:cursor-not-allowed">送審</button>
                 <button id="wb-modal-cancel" class="px-6 border border-white/10 text-gray-400 rounded-full hover:border-white/30 transition-all">取消</button>
             </div>
+
+            <p class="text-gray-600 text-[11px] font-mono mt-5 pt-4 border-t border-white/5 leading-relaxed">
+                送出時會記錄你登入的 Google email，方便站長必要時回覆。<br>
+                有任何問題、bug 回報、合作邀請：
+                <a href="mailto:sunnyhuang0108@gmail.com" class="inline-flex items-center gap-1 text-accent-purple hover:underline ml-1">
+                    <i class="fas fa-envelope text-[10px]"></i> Email 站長
+                </a>
+            </p>
         </div>
     </div>
 
