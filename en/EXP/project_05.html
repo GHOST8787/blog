@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / P5 | GHOST.ouo</title>
+    <link rel="canonical" href="https://ghost8787.github.io/blog/en/EXP/project_05.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_05.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_05.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/project_05.html">
+
+    <link rel="icon" type="image/png" href="../../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script src="../../i18n.js" defer></script>
+    <script type="module" src="../../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / P5</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                Building an AI Customer Service Automation:<br>
+                <span class="text-gradient text-2xl md:text-4xl">Integrating Make, an LLM, and a Knowledge Base</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    AI &amp; Automation
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Workflow Automation
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    LLM Application
+                </span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.02.20</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                Running a physical retail business means high-volume, repetitive customer inquiries. Handling them with people burns hours. The usual rule-based bot has no semantic understanding and falls over on anything off-script. To free up staff while keeping service quality stable, I built an automation on Make that wires together LINE Messaging API, Google Workspace, and an LLM &mdash; with intent recognition and retrieval-augmented generation (RAG) built in.
+            </p>
+
+            <figure class="my-12">
+                <img src="../../PNG/project_04.1.webp"
+                     alt="Make visual editor showing the customer-service workflow"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-500 mt-3 font-mono">
+                    The visual workflow on Make: API calls, database ops, and multi-node LLM reasoning all in one chart.
+                </figcaption>
+            </figure>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> System Goals and Architecture
+            </h3>
+
+            <p>The goal: an extensible automated triage system. Concrete requirements broken into modules:</p>
+
+            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 my-8 shadow-lg">
+                <ul class="space-y-4 text-gray-300 font-light m-0 pl-0 list-none">
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-code-branch text-accent-purple mt-1"></i>
+                        <div><strong class="text-white">Intent recognition and routing:</strong> auto-detect user intent, separate routine technical questions from cases that need a human.</div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-brain text-accent-purple mt-1"></i>
+                        <div><strong class="text-white">RAG implementation:</strong> based on question category, dynamically pull external domain knowledge (Google Docs) as grounding for the LLM. Cuts hallucination.</div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-users text-accent-purple mt-1"></i>
+                        <div><strong class="text-white">State tracking and context:</strong> a user entity database that records interaction history, so the conversation has continuity.</div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-filter text-accent-purple mt-1"></i>
+                        <div><strong class="text-white">Escalation:</strong> when the input crosses the AI's boundary, fire a notification channel to a human agent.</div>
+                    </li>
+                </ul>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Workflow Design
+            </h3>
+
+            <p>
+                Inside Make's visual editor, I broke the business logic into independent nodes. Each module passes a standardized data shape to the next, so coupling stays low:
+            </p>
+
+            <div class="space-y-6 my-8">
+                <div class="bg-white/5 p-6 rounded-xl border border-white/10 hover:border-accent-purple/30 transition-colors">
+                    <h4 class="text-white font-bold mb-2 flex items-center gap-2 text-lg m-0">
+                        <i class="fas fa-id-card text-accent-purple"></i> 1. Identity check and DB init
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed mt-2 mb-0">
+                        Webhook fires. The HTTP module calls LINE API and pulls <code>userId</code> as the primary key.<br>
+                        Then a lookup in the data store: new user, run init and create a record. Returning user, load the conversation history array as LLM context.
+                    </p>
+                </div>
+
+                <div class="bg-white/5 p-6 rounded-xl border border-white/10 hover:border-accent-purple/30 transition-colors">
+                    <h4 class="text-white font-bold mb-2 flex items-center gap-2 text-lg m-0">
+                        <i class="fas fa-search text-accent-purple"></i> 2. Node one: intent recognition and routing
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed mt-2 mb-0">
+                        A dedicated prompt configures the first LLM as an intent classifier.<br>
+                        After feature extraction, it decides whether the user is asking for a human. The model is forced to output a boolean &mdash; that boolean acts as the router that splits the downstream path.
+                    </p>
+                </div>
+
+                <div class="bg-white/5 p-6 rounded-xl border border-white/10 hover:border-accent-purple/30 transition-colors">
+                    <h4 class="text-white font-bold mb-2 flex items-center gap-2 text-lg m-0">
+                        <i class="fas fa-folder-tree text-accent-purple"></i> 3. Node two: domain classification and retrieval
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed mt-2 mb-0">
+                        Routine questions flow into the second tier. A second LLM splits them into "B2C sales" or "technical support."<br>
+                        Based on that label, the system points to a specific Google Doc, pulls the relevant text, and stages the data for retrieval-augmented generation.
+                    </p>
+                </div>
+
+                <div class="bg-white/5 p-6 rounded-xl border border-white/10 hover:border-accent-purple/30 transition-colors">
+                    <h4 class="text-white font-bold mb-2 flex items-center gap-2 text-lg m-0">
+                        <i class="fas fa-dragon text-accent-purple"></i> 4. Node three: final LLM reply
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed mt-2 mb-0">
+                        The system merges the raw question, prior context, and retrieved knowledge into the final prompt.<br>
+                        &bull; <strong>Constrained generation:</strong> force the LLM to answer from the retrieved text, no drifting.<br>
+                        &bull; <strong>Compliance:</strong> the base layer auto-attaches a medical disclaimer where needed.<br>
+                        &bull; <strong>State write-back:</strong> the Q&amp;A is persisted to the database, closing the session cycle.
+                    </p>
+                </div>
+
+                <div class="bg-red-900/20 p-6 rounded-xl border border-red-900/50 hover:border-red-500/50 transition-colors">
+                    <h4 class="text-red-400 font-bold mb-2 flex items-center gap-2 text-lg m-0">
+                        <i class="fas fa-bell text-red-500"></i> 5. Node four: human-in-the-loop
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed mt-2 mb-0">
+                        If node one trips the human-intervention flag, the system short-circuits generation and sends the client a holding message.<br>
+                        At the same time, it packages the raw input plus user UID and pushes through a separate API channel to the admin side. The case lands on a real person with zero delay.
+                    </p>
+                </div>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Results After Launch
+            </h3>
+
+            <p>Operational metrics moved in concrete ways once the system went live:</p>
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-8">
+                <li><strong class="text-white">Latency drops sharply:</strong> the system intercepts over 90% of L1 routine inquiries. Average response time goes from hours (human) to seconds (inference).</li>
+                <li><strong class="text-white">24/7 coverage:</strong> async response runs around the clock. The off-hours service gap disappears.</li>
+                <li><strong class="text-white">Reallocated headcount:</strong> human attention moves off low-dimension repetition, onto high-complexity issues and core business work.</li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Reflection and Extensibility
+            </h3>
+
+            <p>
+                This project proved Make's strength as an API orchestrator in a modern stack:
+            </p>
+            <ol class="list-decimal pl-5 space-y-2 text-gray-300 font-light mb-8">
+                <li><strong>Low coupling:</strong> the visual flow keeps inter-module dependencies thin. Swap the underlying LLM or knowledge source without touching the rest.</li>
+                <li><strong>Cheap iteration:</strong> tuning AI output rarely needs code changes. Adjust the prompt at the relevant node and the system converges.</li>
+                <li><strong>Domain adaptability:</strong> without the compute to fine-tune a model, strict prompt engineering plus RAG can still get a general-purpose LLM to perform on a specialized vertical.</li>
+            </ol>
+
+            <hr class="border-white/10 my-10">
+
+            <p class="text-center text-gray-400 italic text-sm">
+                The same workflow generalizes well. Swap the retrieval source and rewrite the role boundaries, and it ports cleanly to any business with high-volume, unstructured questions.
+            </p>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="project_04.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Project
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Projects
+            </a>
+            <a href="project_06.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                Next Project &rarr;
+            </a>
+        </div>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+</body>
+</html>

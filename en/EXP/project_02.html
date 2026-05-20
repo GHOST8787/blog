@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / P2 | GHOST.ouo</title>
+    <link rel="canonical" href="https://ghost8787.github.io/blog/en/EXP/project_02.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_02.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_02.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/project_02.html">
+
+    <link rel="icon" type="image/png" href="../../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script src="../../i18n.js" defer></script>
+    <script type="module" src="../../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / P2</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                Deploying an AI Assistant Framework (Part 1):<br>
+                <span class="text-gradient text-2xl md:text-4xl">Infrastructure and Daemonized Services</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    Engineering
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Cloud Infrastructure
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Deployment
+                </span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.02.19</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                A log of deploying the AI agent framework (Clawdbot) on a cloud VM. Part 1 focuses on infrastructure: environment setup, daemonized services, and a secure tunnel to the control dashboard. The goal is a 24/7 AI service node I can reach remotely.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Stage 1: Prerequisites
+            </h3>
+
+            <p class="mb-4">For Clawdbot to run on dedicated, stable compute, the setup needs these physical and network pieces in place:</p>
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
+                <li><strong class="text-white">Compute node (Cloud VM):</strong> a cloud VM with a public IP. I used an Azure VM running Ubuntu.</li>
+                <li><strong class="text-white">Security credentials:</strong> an SSH private key (<code class="text-accent-purple bg-white/10 px-1 rounded">&lt;YOUR_KEY.pem&gt;</code>) for asymmetric auth.</li>
+                <li><strong class="text-white">Local control:</strong> a workstation with PowerShell or a comparable CLI terminal already set up.</li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Stage 2: Secure Connection (SSH)
+            </h3>
+
+            <p>Password login is disabled for security. From your local terminal, switch to the directory holding the key and SSH into the remote Ubuntu server:</p>
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre><code class="language-powershell">cd &lt;YOUR_LOCAL_KEY_PATH&gt;
+ssh -i &lt;YOUR_KEY.pem&gt; &lt;YOUR_VM_USER&gt;@&lt;YOUR_VM_IP&gt;</code></pre>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Stage 3: Core Service Setup and Daemonization
+            </h3>
+
+            <p>Install the framework via npm. To keep the AI agent process alive after the terminal session ends, register it as a systemd user service:</p>
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre><code class="language-bash"># 1. Global install
+sudo npm install -g clawdbot@latest
+
+# 2. Verify dependencies and version
+clawdbot --version
+
+# 3. Create and start the Systemd User Service
+clawdbot gateway setup --user
+systemctl --user start clawdbot-gateway.service
+
+# 4. Check service status (should read active (running))
+systemctl --user status clawdbot-gateway.service</code></pre>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Stage 4: Edge Case &mdash; Port Conflict Resolution
+            </h3>
+
+            <p>Across repeated deploys and restarts, the service occasionally refused to start. Reading the system logs, the error code <code class="text-accent-purple">Port 18789 is already in use</code> meant a zombie process or stale instance was holding the port. Force-cleanup procedure:</p>
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre><code class="language-bash"># 1. Stop and unload all related services and leftover unit files
+systemctl --user stop clawdbot-gateway.service
+systemctl --user stop openclaw-gateway.service 2>/dev/null
+systemctl --user disable openclaw-gateway.service 2>/dev/null
+rm -f ~/.config/systemd/user/openclaw-gateway.service
+
+# 2. Free the port: kill -9 anything still holding 18789
+sudo kill -9 $(sudo lsof -t -i:18789) 2>/dev/null
+
+# 3. Reload the daemon and restart the cleaned service
+systemctl --user daemon-reload
+systemctl --user reset-failed clawdbot-gateway.service
+systemctl --user start clawdbot-gateway.service</code></pre>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Stage 5: SSH Tunneling and Dashboard Access
+            </h3>
+
+            <p>For security, Clawdbot Gateway binds to localhost on the server. Opening the firewall to the outside world directly would be a serious hole. The cleaner move: <strong>SSH tunneling (port forwarding)</strong>. From a second local terminal, build an encrypted tunnel and map the remote 18789 port to your local machine:</p>
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre><code class="language-powershell">ssh -i &lt;YOUR_KEY.pem&gt; -N -L 18789:127.0.0.1:18789 &lt;YOUR_VM_USER&gt;@&lt;YOUR_VM_IP&gt;</code></pre>
+            </div>
+
+            <p>Back on the VM terminal, grab the dashboard URL and auth token:</p>
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre><code class="language-bash">clawdbot dashboard</code></pre>
+            </div>
+
+            <p>Copy the URL, swap <code class="text-gray-400">127.0.0.1</code> for <code class="text-gray-400">localhost</code>, and open it in your local browser. If the token gets rejected, force-overwrite it via CLI: <code class="text-gray-400">clawdbot config set gateway.auth.token &lt;TOKEN&gt;</code>.</p>
+
+            <figure class="my-12">
+                <img src="../../PNG/project_02.1.webp"
+                     alt="Clawdbot Gateway Dashboard"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    Clawdbot Gateway Dashboard tunneled to localhost via SSH
+                </figcaption>
+            </figure>
+
+            <hr class="border-white/10 my-12">
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Stage Validation
+            </h3>
+
+            <p>With the lower layer wired up and the service running as a daemon, I hooked Clawdbot to the Telegram API for an endpoint test. Message round-trip and AI agent responses both came through clean. Infrastructure layer is done. Higher-level intent logic can stack on top of this.</p>
+
+            <figure class="my-10">
+                <img src="../../PNG/project_02.2.webp"
+                     alt="Telegram Conversation with Clawdbot"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    Telegram endpoint test &mdash; AI agent reply confirmed
+                </figcaption>
+            </figure>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="project_01.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Project
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Projects
+            </a>
+            <a href="project_03.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                Next Project &rarr;
+            </a>
+        </div>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+</body>
+</html>

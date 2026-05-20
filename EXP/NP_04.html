@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EXP / P12 | GHOST.ouo</title>
+    <title>EXP / NP_04 | GHOST.ouo</title>
 
     <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
     <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
@@ -18,7 +18,7 @@
     <script>
         window.siteRoot = '../';
     </script>
-    <script src="../main.js" defer></script>
+    <script type="module" src="../main.js" defer></script>
 </head>
 
 <body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
@@ -37,7 +37,7 @@
                 <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
                 BACK TO PROJECTS
             </a>
-            <span class="opacity-50">EXP / P12</span>
+            <span class="opacity-50">EXP / NP_04 (draft)</span>
         </div>
 
         <header class="mb-12 border-b border-white/10 pb-12">
@@ -49,18 +49,21 @@
 
             <div class="flex flex-wrap gap-3 mb-6">
                 <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
-                    AI & Automation
+                    AI &amp; Automation
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Data Analysis
+                    GPT Automation
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Workflow Automation
+                    Government Grants
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Workflow
                 </span>
             </div>
 
             <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
-                <span><i class="far fa-calendar mr-2"></i>2024.07 — 2024.09</span>
+                <span><i class="far fa-calendar mr-2"></i>2024.07 &mdash; 2024.09</span>
                 <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
             </div>
         </header>
@@ -68,145 +71,140 @@
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
             <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
-                暑期實習於夢想智賦公司，負責政府補助計畫研究與數據整理。三個月內導入 GPT for Sheets 等 AI 工具，將原本大量手動查詢、比對、統整的補助研究流程半自動化，同時建立月報系統與執行單位分析框架。
+                夢想智賦實習任內負責政府補助案的研究、盤點與月度報告產出。把過去靠人工查網站、抄筆記的流程，改成 GPT for Sheets 自動化抽取 + Excel 樞紐分析。2024.08 月底盤點完成 77 個中央補助、49 個地方補助。
             </p>
 
-            <!-- ===== 核心數據 ===== -->
-            <div class="grid grid-cols-3 gap-4 my-10">
-                <div class="bg-white/5 border border-accent-purple/20 rounded-2xl p-6 text-center">
-                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">15+</div>
-                    <div class="text-xs text-gray-500 font-mono uppercase">研究報告產出</div>
-                </div>
-                <div class="bg-white/5 border border-accent-purple/20 rounded-2xl p-6 text-center">
-                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">3x</div>
-                    <div class="text-xs text-gray-500 font-mono uppercase">研究效率提升</div>
-                </div>
-                <div class="bg-white/5 border border-accent-purple/20 rounded-2xl p-6 text-center">
-                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">3</div>
-                    <div class="text-xs text-gray-500 font-mono uppercase">月報 + 總結報告</div>
-                </div>
-            </div>
-
-            <!-- ===== Before / After ===== -->
-            <h2 class="text-2xl font-bold text-white mt-16 mb-8">Before / After</h2>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
-                <div class="bg-white/5 rounded-2xl p-6 border border-white/10">
-                    <div class="text-xs font-mono text-gray-500 uppercase mb-4 flex items-center gap-2">
-                        <i class="fas fa-arrow-left text-red-400"></i> Before — 手動研究
-                    </div>
-                    <ul class="text-sm text-gray-400 space-y-2">
-                        <li>逐筆查詢政府補助計畫資料</li>
-                        <li>手動比對核定名單與政府手冊</li>
-                        <li>Excel 人工整理、格式不統一</li>
-                        <li>報告產出耗時，無標準化模板</li>
-                    </ul>
-                </div>
-                <div class="bg-accent-purple/5 rounded-2xl p-6 border border-accent-purple/20">
-                    <div class="text-xs font-mono text-accent-purple uppercase mb-4 flex items-center gap-2">
-                        <i class="fas fa-arrow-right text-accent-purple"></i> After — GPT 輔助
-                    </div>
-                    <ul class="text-sm text-gray-300 space-y-2">
-                        <li>GPT for Sheets 批次擷取與分類補助資訊</li>
-                        <li>自動比對核定名單，快速標記異常</li>
-                        <li>建立自訂 GPTs 統整分析執行單位規律</li>
-                        <li>標準化月報系統，產出速度提升 3 倍</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- ===== 我做了什麼 ===== -->
-            <h2 class="text-2xl font-bold text-white mt-16 mb-8">What I Did</h2>
-
-            <div class="space-y-4 text-gray-300">
-                <p><span class="text-white font-semibold">GPT for Sheets 導入</span> — 研究並導入 GPT for Sheets 擴充功能，比較 GPT-4 與其他模型在補助資料處理上的表現，製作內部教學文件與注意事項手冊供團隊使用。</p>
-                <p><span class="text-white font-semibold">補助計畫研究</span> — 負責地方與中央政府補助計畫的資料蒐集、分類與問題統整。針對臺北市 SITI 產業發展獎勵補助核定名單進行深度分析，解決資料異常問題。</p>
-                <p><span class="text-white font-semibold">月報系統建立</span> — 建立標準化月報流程，每月產出總結大報告（7 月、8 月、9 月），涵蓋補助資料統整、問題追蹤與執行建議。最終產出三個月統整報告。</p>
-                <p><span class="text-white font-semibold">執行單位規律分析</span> — 運用 GPT 分析補助計畫執行單位的申請模式與規律，識別高頻申請者與產業趨勢，為公司客戶提供策略參考。</p>
-                <p><span class="text-white font-semibold">自訂 GPTs 開發</span> — 建立專用 GPTs 自動化補助資料的統整與報告產出，降低重複性工作負擔，讓研究人員專注於分析而非整理。</p>
-            </div>
-
-            <!-- ===== 亮點提煉 ===== -->
-            <h2 class="text-2xl font-bold text-white mt-16 mb-8">Key Highlights</h2>
-
-            <div class="space-y-4 my-8">
-                <div class="flex gap-4 bg-white/5 p-5 rounded-xl border border-white/5">
-                    <i class="fas fa-robot text-accent-purple mt-1 text-lg"></i>
-                    <div>
-                        <strong class="text-white">AI 工具落地實戰</strong><br>
-                        <span class="text-sm text-gray-400">不是玩 demo，而是把 GPT for Sheets 和自訂 GPTs 實際導入日常工作流程，解決真實的資料處理瓶頸。</span>
-                    </div>
-                </div>
-                <div class="flex gap-4 bg-white/5 p-5 rounded-xl border border-white/5">
-                    <i class="fas fa-database text-accent-purple mt-1 text-lg"></i>
-                    <div>
-                        <strong class="text-white">政府補助數據分析</strong><br>
-                        <span class="text-sm text-gray-400">深入研究 SITI 核定名單等政府公開資料，從資料清洗到異常偵測，完整處理了真實世界的髒數據問題。</span>
-                    </div>
-                </div>
-                <div class="flex gap-4 bg-white/5 p-5 rounded-xl border border-white/5">
-                    <i class="fas fa-file-alt text-accent-purple mt-1 text-lg"></i>
-                    <div>
-                        <strong class="text-white">系統化報告產出</strong><br>
-                        <span class="text-sm text-gray-400">三個月內建立標準化月報模板，從零到穩定產出，最終完成跨月份統整報告，成為可複用的工作流程。</span>
-                    </div>
-                </div>
-                <div class="flex gap-4 bg-white/5 p-5 rounded-xl border border-white/5">
-                    <i class="fas fa-search text-accent-purple mt-1 text-lg"></i>
-                    <div>
-                        <strong class="text-white">執行單位規律洞察</strong><br>
-                        <span class="text-sm text-gray-400">用 GPT 輔助分析補助計畫執行單位的申請模式，發現產業趨勢與高頻申請者，提供公司策略級的參考資訊。</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ===== Gallery ===== -->
-            <h2 class="text-2xl font-bold text-white mt-16 mb-8">Gallery</h2>
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 8 月底盤點量級
+            </h3>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
-                <figure>
-                    <div class="w-full aspect-video rounded-xl border border-white/10 bg-white/5 flex items-center justify-center">
-                        <span class="text-gray-600 text-xs font-mono uppercase">Screenshot: GPT for Sheets</span>
-                    </div>
-                    <figcaption class="text-center text-xs text-gray-600 mt-2 font-mono">GPT for Sheets 補助資料處理</figcaption>
-                </figure>
-                <figure>
-                    <div class="w-full aspect-video rounded-xl border border-white/10 bg-white/5 flex items-center justify-center">
-                        <span class="text-gray-600 text-xs font-mono uppercase">Screenshot: Monthly Report</span>
-                    </div>
-                    <figcaption class="text-center text-xs text-gray-600 mt-2 font-mono">月報總結大報告</figcaption>
-                </figure>
-                <figure>
-                    <div class="w-full aspect-video rounded-xl border border-white/10 bg-white/5 flex items-center justify-center">
-                        <span class="text-gray-600 text-xs font-mono uppercase">Screenshot: SITI Analysis</span>
-                    </div>
-                    <figcaption class="text-center text-xs text-gray-600 mt-2 font-mono">SITI 核定名單分析</figcaption>
-                </figure>
-                <figure>
-                    <div class="w-full aspect-video rounded-xl border border-white/10 bg-white/5 flex items-center justify-center">
-                        <span class="text-gray-600 text-xs font-mono uppercase">Screenshot: Custom GPTs</span>
-                    </div>
-                    <figcaption class="text-center text-xs text-gray-600 mt-2 font-mono">自訂 GPTs 統整報告</figcaption>
-                </figure>
+                <div class="bg-white/5 border border-accent-purple/20 rounded-2xl p-6 text-center">
+                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">77</div>
+                    <div class="text-xs text-gray-500 font-mono uppercase">中央補助（細分）</div>
+                </div>
+                <div class="bg-white/5 border border-accent-purple/20 rounded-2xl p-6 text-center">
+                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">49</div>
+                    <div class="text-xs text-gray-500 font-mono uppercase">地方補助（細分）</div>
+                </div>
             </div>
+
+            <p>大綱 / 細分兩種粒度：中央 63 個大綱 / 77 個細分；地方 43 個大綱 / 49 個細分。</p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 中央補助 14 大類別
+            </h3>
+
+            <p>用 14 類 taxonomy 重新分類所有中央補助，協助客戶辨識可優先申請的方向：</p>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider whitespace-nowrap w-32">類別</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">補助數量</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">12 民生化工</td><td class="px-4 py-3 font-mono">37</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">10 金屬機電</td><td class="px-4 py-3 font-mono">22</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">07 淨零排放</td><td class="px-4 py-3 font-mono">18</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">05 財務管理</td><td class="px-4 py-3 font-mono">13</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">01 生產管理</td><td class="px-4 py-3 font-mono">12</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">02 市場行銷</td><td class="px-4 py-3 font-mono">10</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">08 創業育成</td><td class="px-4 py-3 font-mono">9</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">13 服務產業</td><td class="px-4 py-3 font-mono">7</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">03 人才發展</td><td class="px-4 py-3 font-mono">6</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">11 電子資訊</td><td class="px-4 py-3 font-mono">5</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">14 中小企業</td><td class="px-4 py-3 font-mono">4</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">09 綜合服務</td><td class="px-4 py-3 font-mono">3</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">04 研發創新</td><td class="px-4 py-3 font-mono">2</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">06 數位創新</td><td class="px-4 py-3 font-mono">2</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 政府手冊 vs 公司資料對比
+            </h3>
+
+            <p>比對「113 年度產業輔導資源手冊」與公司既有補助清單，找出可新增的補助機會：</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-8">
+                <div class="bg-white/5 border border-accent-purple/20 rounded-2xl p-6 text-center">
+                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">150</div>
+                    <div class="text-xs text-gray-500 font-mono uppercase">政府獨有（公司可新增）</div>
+                </div>
+                <div class="bg-white/5 border border-accent-purple/20 rounded-2xl p-6 text-center">
+                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">49</div>
+                    <div class="text-xs text-gray-500 font-mono uppercase">公司獨有</div>
+                </div>
+                <div class="bg-white/5 border border-accent-purple/20 rounded-2xl p-6 text-center">
+                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">14</div>
+                    <div class="text-xs text-gray-500 font-mono uppercase">兩者重疊</div>
+                </div>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 中央主辦單位分佈（77 個補助）
+            </h3>
+
+            <p>依主辦單位拆分：經濟部相關 48 個、其他部會 29 個。承辦量大的執行單位：</p>
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">A+ 企業創新專案辦公室</strong> &mdash; 13 個補助（最多）</li>
+                <li><strong class="text-white">財團法人台灣中小企業聯合輔導基金會</strong> &mdash; 11 個</li>
+                <li><strong class="text-white">數位發展部數位產業署</strong> &mdash; 11 個</li>
+                <li><strong class="text-white">財團法人中國生產力中心</strong> &mdash; 6 個</li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 地方補助 49 個分佈
+            </h3>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">城市</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">補助數量</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">高雄市</td><td class="px-4 py-3 font-mono">16</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">新北市</td><td class="px-4 py-3 font-mono">11</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">台北市</td><td class="px-4 py-3 font-mono">10</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">桃園市</td><td class="px-4 py-3 font-mono">8</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">台南市</td><td class="px-4 py-3 font-mono">4</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 工具與工作流
+            </h3>
+
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">GPT for Sheets</strong> &mdash; 在 Google Sheets 內直接呼叫 GPT，批次處理補助文案（分類 / 摘要 / 比對）</li>
+                <li><strong class="text-white">GPT-4（介面版）</strong> &mdash; 對話式驗證 GPT for Sheets 的輸出結果，做 prompt 微調</li>
+                <li><strong class="text-white">Excel 樞紐分析</strong> &mdash; 主辦單位 / 類別 / 地區三軸切片</li>
+                <li><strong class="text-white">月度總結報告</strong> &mdash; 7 月、8 月、9 月各一份 PowerPoint，含進度 / 主辦單位 / 比對結果 / 結論</li>
+            </ul>
 
         </article>
 
         <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
-            <a href="project_11.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
                 &larr; Prev Project
             </a>
             <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
                 View All Projects
             </a>
-            <a href="project_13.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
                 Next Project &rarr;
             </a>
         </div>
 
     </main>
-
     <div id="footer-placeholder"></div>
-
 </body>
 </html>

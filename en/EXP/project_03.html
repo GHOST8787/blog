@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>EXP / P3 | GHOST.ouo</title>
+    <link rel="canonical" href="https://ghost8787.github.io/blog/en/EXP/project_03.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_03.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_03.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/project_03.html">
+
+    <link rel="icon" type="image/png" href="../../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../style.css">
+    <script src="../../tailwind.config.js"></script>
+    <script> window.siteRoot = '../'; </script>
+    <script src="../../i18n.js" defer></script>
+    <script type="module" src="../../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / P3</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                Deploying an AI Assistant Framework (Part 2):<br>
+                <span class="text-gradient text-2xl md:text-4xl">Google Workspace Integration in Practice</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    AI &amp; Automation
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Google Workspace
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    OAuth
+                </span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.02.19</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                Picking up from Part 1, this part installs the Gog skill and wires the AI assistant to a Google account &mdash; so it can run Gmail and Calendar directly.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Step 1: Install the Gog Skill
+            </h3>
+
+            <p>The Gog skill needs its own CLI tool. On the VM terminal, run these to install and configure it:</p>
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre><code class="language-bash"># 1. Install Gog CLI
+cd /tmp
+curl -fsSL https://api.github.com/repos/steipete/gogcli/releases/latest \
+  | grep browser_download_url \
+  | grep linux_amd64 \
+  | cut -d '"' -f 4 \
+  | xargs curl -fsSL -o gogcli.tgz
+
+tar -xzf gogcli.tgz
+sudo install -m 0755 gog /usr/local/bin/gog
+
+# 2. Install the Clawdbot skill
+clawdbot skills install steipete/gog</code></pre>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Step 2: Google OAuth
+            </h3>
+
+            <p>To connect Gmail and Calendar safely, set up OAuth credentials via Google Cloud:</p>
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
+                <li>In Google Cloud Console, create a project and enable the APIs you need (Gmail, Calendar, Drive, etc.).</li>
+                <li>Create an OAuth client ID of type "Desktop app" and download the JSON.</li>
+            </ul>
+
+            <p>Upload the credential file to the VM via SCP:</p>
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre><code class="language-powershell">scp -i &lt;YOUR_KEY.pem&gt; client_secret.json &lt;YOUR_VM_USER&gt;@&lt;YOUR_VM_IP&gt;:~/</code></pre>
+            </div>
+
+            <p>Finish the auth setup on the VM:</p>
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre><code class="language-bash">gog auth credentials ~/client_secret.json
+gog auth add &lt;YOUR_EMAIL&gt; --services gmail,calendar,drive,contacts,sheets,docs</code></pre>
+            </div>
+            <p>This prints an authorization URL. Copy it into your local browser, sign in to Google, and complete the consent flow.</p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Step 3: Verify and Use
+            </h3>
+
+            <p>Back in the Control UI chat, you can test it directly in natural language, for example:</p>
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre><code class="language-text">&gt; "Check my latest emails"
+&gt; "Show me my calendar for today"</code></pre>
+            </div>
+
+            <p>Prefer to drive it from the VM terminal? You can:</p>
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre><code class="language-bash"># Search the 5 most recent emails
+gog gmail search 'newer_than:1d' --max 5
+
+# Show today's calendar
+gog calendar events primary --from $(date -I) --to $(date -I)</code></pre>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Step 4: Daily Maintenance and Caveats
+            </h3>
+
+            <p>To keep the system stable, a few rules to keep in mind:</p>
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
+                <li><strong class="text-white">Keep the SSH tunnel open:</strong> whenever you want to reach the Control UI, the local SSH tunnel window has to stay open. Close the tunnel and the connection drops.</li>
+                <li><strong class="text-white">Security reminder:</strong> never type your Google password anywhere except the official Google login page. Your token is the service key &mdash; protect it.</li>
+                <li><strong class="text-white">Debugging starter:</strong> if the bot stops responding, check service status and logs first:</li>
+            </ul>
+
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre><code class="language-bash"># Service status
+systemctl --user status clawdbot-gateway.service
+
+# Live logs for debugging
+journalctl --user -u clawdbot-gateway.service -n 50</code></pre>
+            </div>
+
+            <hr class="border-white/10 my-12">
+
+            <p class="text-center text-gray-400 font-light">
+                Deployment done. Your cloud VM now hosts an AI assistant fully wired into the Google ecosystem.
+            </p>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="project_02.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Project
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Projects
+            </a>
+            <a href="project_04.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                Next Project &rarr;
+            </a>
+        </div>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+</body>
+</html>

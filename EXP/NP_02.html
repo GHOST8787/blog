@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EXP / P10 | GHOST.ouo</title>
+    <title>EXP / NP_02 | GHOST.ouo</title>
 
     <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
     <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
@@ -18,7 +18,7 @@
     <script>
         window.siteRoot = '../';
     </script>
-    <script src="../main.js" defer></script>
+    <script type="module" src="../main.js" defer></script>
 </head>
 
 <body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
@@ -37,7 +37,7 @@
                 <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
                 BACK TO PROJECTS
             </a>
-            <span class="opacity-50">EXP / P10</span>
+            <span class="opacity-50">EXP / NP_02 (draft)</span>
         </div>
 
         <header class="mb-12 border-b border-white/10 pb-12">
@@ -55,12 +55,15 @@
                     Project Management
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Content Strategy
+                    Team Collaboration
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Content Production
                 </span>
             </div>
 
             <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
-                <span><i class="far fa-calendar mr-2"></i>2023.09 — 2025.06</span>
+                <span><i class="far fa-calendar mr-2"></i>2023.09 &mdash; 2025.06</span>
                 <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
             </div>
         </header>
@@ -68,162 +71,148 @@
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
             <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
-                大二下加入 HSVI Studio，從行銷組成員一路到專案管理核心。這是一個跨年齡、跨校的 Vtuber 創作社群——成員分散各地，從高中生到大學生都有，所有協作全靠線上完成。在這裡，我學會怎麼讓一群沒見過面的人，一起把東西做出來。
+                HSVI Studio 是一個跨校線上協作的創作者支援工作室，主要產出 VTuber 角色的內容與行銷企劃。任職期間負責行銷組相關事務 &mdash; 從面試招募、甘特圖排程、心智圖規劃、廣告投放到成效分析。
             </p>
 
-            <!-- ===== 核心數據 ===== -->
-            <div class="grid grid-cols-3 gap-4 my-10">
-                <div class="bg-white/5 border border-accent-purple/20 rounded-2xl p-6 text-center">
-                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">6+</div>
-                    <div class="text-xs text-gray-500 font-mono uppercase">跨組別協作團隊</div>
-                </div>
-                <div class="bg-white/5 border border-accent-purple/20 rounded-2xl p-6 text-center">
-                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">50+</div>
-                    <div class="text-xs text-gray-500 font-mono uppercase">週排程表產出</div>
-                </div>
-                <div class="bg-white/5 border border-accent-purple/20 rounded-2xl p-6 text-center">
-                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">2 年</div>
-                    <div class="text-xs text-gray-500 font-mono uppercase">持續營運週期</div>
-                </div>
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 工作室分工架構
+            </h3>
+
+            <p>
+                Studio 內部依職能分組，每組對接不同的產製環節，在每週的線上會議與線下聚會中交互回報進度：
+            </p>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider whitespace-nowrap w-32">組別</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">職責</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">中之人組</td>
+                            <td class="px-4 py-3">角色配音、台詞演繹、直播主持</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">繪師組</td>
+                            <td class="px-4 py-3">角色立繪、Q 圖、畫面設計與劇情大綱</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">混音組</td>
+                            <td class="px-4 py-3">BGM、音效、小動畫（畫面銜接）</td>
+                        </tr>
+                        <tr class="border-t border-white/10 bg-accent-purple/5">
+                            <td class="px-4 py-3 font-bold text-white">行銷組</td>
+                            <td class="px-4 py-3">心智圖規劃、甘特圖排程、廣告投放、社群素材、面試招募（任職位）</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
-            <!-- ===== 數據截圖區 — 請替換 ===== -->
-            <!--
-                Sunny：請把相關截圖放到 PNG/ 資料夾，
-                然後把下面的 src 改成實際檔名，例如：
-                src="../PNG/hsvi_weekly_schedule.webp"
-            -->
-            <figure class="my-10 mx-auto">
-                <div class="w-full aspect-video rounded-2xl border border-white/10 bg-white/5 flex items-center justify-center">
-                    <span class="text-gray-600 text-xs font-mono uppercase">Screenshot: Weekly Schedule — Canva Design</span>
-                </div>
-                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
-                    每週產出的 Weekly Schedule，同步社群活動與直播排程
-                </figcaption>
-            </figure>
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 行銷組工作流
+            </h3>
 
-            <!-- ===== Before / After ===== -->
-            <h2 class="text-2xl font-bold text-white mt-16 mb-8">Before / After</h2>
+            <p>實際在行銷組執行過的工作流程：</p>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
-                <div class="bg-white/5 rounded-2xl p-6 border border-white/10">
-                    <div class="text-xs font-mono text-gray-500 uppercase mb-4 flex items-center gap-2">
-                        <i class="fas fa-arrow-left text-red-400"></i> Before — 加入前
-                    </div>
-                    <ul class="text-sm text-gray-400 space-y-2">
-                        <li>各組各做各的，缺乏統一排程</li>
-                        <li>影片製作流程沒有明確分工與時程</li>
-                        <li>頻道內容策略模糊，發布節奏不穩定</li>
-                        <li>跨組溝通靠私訊，資訊容易遺漏</li>
-                    </ul>
-                </div>
-                <div class="bg-accent-purple/5 rounded-2xl p-6 border border-accent-purple/20">
-                    <div class="text-xs font-mono text-accent-purple uppercase mb-4 flex items-center gap-2">
-                        <i class="fas fa-arrow-right text-accent-purple"></i> After — 建立管理制度後
-                    </div>
-                    <ul class="text-sm text-gray-300 space-y-2">
-                        <li>心智圖規劃內容產製流程與優先順序</li>
-                        <li>甘特圖追蹤多月份工作進度</li>
-                        <li>每週排程表公開同步全體成員</li>
-                        <li>線下會議制度化，統一決策與方向</li>
-                    </ul>
-                </div>
-            </div>
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">招募面試</strong> &mdash; 2023.07 行銷組面試與成績統整（用 Excel 評分表追蹤候選人）</li>
+                <li><strong class="text-white">甘特圖排程</strong> &mdash; 2023.07-09 月度甘特圖兩次迭代版（追蹤跨組工作節奏）</li>
+                <li><strong class="text-white">心智圖規劃</strong> &mdash; 初配信行銷計畫、影片發佈順序、官方頻道架構三張心智圖（協助跨組對齊方向）</li>
+                <li><strong class="text-white">廣告投放</strong> &mdash; YouTube In-feed video for Consideration（動態內影片廣告）</li>
+                <li><strong class="text-white">線下聚會統籌</strong> &mdash; 2023.07.15 全體成員實體聚會（增進工作默契、討論工作室相關事項）</li>
+            </ul>
 
-            <!-- ===== 我做了什麼 ===== -->
-            <h2 class="text-2xl font-bold text-white mt-16 mb-8">What I Did</h2>
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 初配信行銷目標（2023.07）
+            </h3>
 
-            <div class="space-y-4 text-gray-300">
-                <p><span class="text-white font-semibold">心智圖規劃</span> — 繪製初配信行銷計畫心智圖與影片順序心智圖，拆解從世界觀介紹、日常動畫、Cover 曲到初配信的完整內容產製路線。</p>
-                <p><span class="text-white font-semibold">週表排程管理</span> — 使用 Canva 設計 Weekly Schedule，每週更新直播、發文、互動活動排程，讓分散各地的成員都能掌握進度。</p>
-                <p><span class="text-white font-semibold">甘特圖與時程控管</span> — 建立多月份甘特圖（7-9 月），追蹤 PV 組、繪師組、混音組、行銷組、配音組的交付時程與相依關係。</p>
-                <p><span class="text-white font-semibold">會議制度化</span> — 規劃線下聚會（台北場地租借、交通安排、議程設計），將口頭討論轉化為正式會議紀錄與行動項目。</p>
-                <p><span class="text-white font-semibold">頻道經營策略</span> — 協助規劃官方頻道與 VT 頻道的雙軌內容策略，區分世界觀介紹（官方）vs. Shorts/Cover/日常動畫（VT），建立清晰的品牌分層。</p>
-                <p><span class="text-white font-semibold">影片剪輯與素材管理</span> — 參與影片初剪、歌回剪輯、合作影片製作，同時建立素材分類資料夾體系（心智圖/週表/發文素材/網站素材/影片剪輯）。</p>
-                <p><span class="text-white font-semibold">行銷與廣告投放</span> — 撰寫行銷企劃書、評估廣告投放策略、分析廣告成效數據，並協助 FANIC 等平台合作建議。</p>
-            </div>
-
-            <!-- ===== 亮點提煉 ===== -->
-            <h2 class="text-2xl font-bold text-white mt-16 mb-8">Key Highlights</h2>
-
-            <div class="space-y-4 my-8">
-                <div class="flex gap-4 bg-white/5 p-5 rounded-xl border border-white/5">
-                    <i class="fas fa-project-diagram text-accent-purple mt-1 text-lg"></i>
-                    <div>
-                        <strong class="text-white">全遠端跨校協作</strong><br>
-                        <span class="text-sm text-gray-400">成員從高中生到大學生、散布不同縣市，所有協作 100% 線上完成。用心智圖拆解任務、甘特圖追蹤進度、週表同步排程，讓從未見面的人也能穩定產出。</span>
-                    </div>
-                </div>
-                <div class="flex gap-4 bg-white/5 p-5 rounded-xl border border-white/5">
-                    <i class="fas fa-layer-group text-accent-purple mt-1 text-lg"></i>
-                    <div>
-                        <strong class="text-white">6 組別跨域整合</strong><br>
-                        <span class="text-sm text-gray-400">PV 組、繪師組、混音組、行銷組、配音組、中之人——每支影片都需要多組接力。建立的流程讓每個環節知道自己的上下游是誰、什麼時候交付。</span>
-                    </div>
-                </div>
-                <div class="flex gap-4 bg-white/5 p-5 rounded-xl border border-white/5">
-                    <i class="fas fa-route text-accent-purple mt-1 text-lg"></i>
-                    <div>
-                        <strong class="text-white">內容產製路線圖</strong><br>
-                        <span class="text-sm text-gray-400">從零設計出「世界觀介紹 → 日常動畫 → Cover 曲 → 背景故事 → Live2D 介紹 → 初配信」的完整內容路線，讓頻道不再隨機發片，而是有策略地建構品牌認知。</span>
-                    </div>
-                </div>
-                <div class="flex gap-4 bg-white/5 p-5 rounded-xl border border-white/5">
-                    <i class="fas fa-masks-theater text-accent-purple mt-1 text-lg"></i>
-                    <div>
-                        <strong class="text-white">Vtuber 產業實戰</strong><br>
-                        <span class="text-sm text-gray-400">不是傳統社團，而是一個有 Live2D 模型、原創世界觀、多角色企劃的虛擬創作者工作室。在這裡累積的是 Vtuber 產業的企劃、行銷與製作管理經驗。</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ===== Gallery ===== -->
-            <h2 class="text-2xl font-bold text-white mt-16 mb-8">Gallery</h2>
+            <p>
+                心智圖內訂定的兩項數字目標：
+            </p>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
-                <figure>
-                    <div class="w-full aspect-video rounded-xl border border-white/10 bg-white/5 flex items-center justify-center">
-                        <span class="text-gray-600 text-xs font-mono uppercase">Screenshot: Mind Map — Marketing Plan</span>
-                    </div>
-                    <figcaption class="text-center text-xs text-gray-600 mt-2 font-mono">初配信行銷計畫心智圖</figcaption>
-                </figure>
-                <figure>
-                    <div class="w-full aspect-video rounded-xl border border-white/10 bg-white/5 flex items-center justify-center">
-                        <span class="text-gray-600 text-xs font-mono uppercase">Screenshot: Mind Map — Video Pipeline</span>
-                    </div>
-                    <figcaption class="text-center text-xs text-gray-600 mt-2 font-mono">影片順序心智圖：內容產製路線</figcaption>
-                </figure>
-                <figure>
-                    <div class="w-full aspect-video rounded-xl border border-white/10 bg-white/5 flex items-center justify-center">
-                        <span class="text-gray-600 text-xs font-mono uppercase">Screenshot: Gantt Chart</span>
-                    </div>
-                    <figcaption class="text-center text-xs text-gray-600 mt-2 font-mono">7-9 月甘特圖：跨組別進度追蹤</figcaption>
-                </figure>
-                <figure>
-                    <div class="w-full aspect-video rounded-xl border border-white/10 bg-white/5 flex items-center justify-center">
-                        <span class="text-gray-600 text-xs font-mono uppercase">Screenshot: Channel Strategy</span>
-                    </div>
-                    <figcaption class="text-center text-xs text-gray-600 mt-2 font-mono">官方頻道 vs. VT 頻道雙軌策略</figcaption>
-                </figure>
+                <div class="bg-white/5 border border-accent-purple/20 rounded-2xl p-6 text-center">
+                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">5,000</div>
+                    <div class="text-xs text-gray-500 font-mono uppercase">各平台推廣文章關注數</div>
+                </div>
+                <div class="bg-white/5 border border-accent-purple/20 rounded-2xl p-6 text-center">
+                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">3,000</div>
+                    <div class="text-xs text-gray-500 font-mono uppercase">三位中之人個別訂閱數</div>
+                </div>
             </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 廣告投放成效（2024.04.17 — 05.04）
+            </h3>
+
+            <p>
+                YouTube In-feed video for Consideration（動態內影片廣告）兩週投放結果：
+            </p>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">指標</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">總和</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">曝光</td>
+                            <td class="px-4 py-3 font-mono">13,734</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">觀看次數</td>
+                            <td class="px-4 py-3 font-mono">204</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">總費用</td>
+                            <td class="px-4 py-3 font-mono">$193.63</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">單日峰值（4/21）</td>
+                            <td class="px-4 py-3 font-mono">曝光 3,933、觀看 65</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 內容產製工具鏈
+            </h3>
+
+            <p>
+                Studio 的對內協作走以下七個資產分類，每個對應一個獨立資料夾、有負責人：
+            </p>
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">心智圖</strong> &mdash; 跨組規劃用，初配信行銷、影片順序、官方頻道架構各一張</li>
+                <li><strong class="text-white">周表</strong> &mdash; 每週工作分配（含面試成績、廣告分析、甘特圖等 Excel 系列）</li>
+                <li><strong class="text-white">發文素材</strong> &mdash; 社群推廣文與配圖</li>
+                <li><strong class="text-white">網站素材</strong> &mdash; 官方頻道與相關頁面素材</li>
+                <li><strong class="text-white">影片剪輯</strong> &mdash; 短影片、初配宣傳、cover 曲、日常影片</li>
+                <li><strong class="text-white">QR / 其他素材</strong> &mdash; 線下宣傳用</li>
+                <li><strong class="text-white">粉絲賀圖</strong> &mdash; UGC 集中區</li>
+            </ul>
 
         </article>
 
         <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
-            <a href="project_09.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
                 &larr; Prev Project
             </a>
             <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
                 View All Projects
             </a>
-            <a href="project_11.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
                 Next Project &rarr;
             </a>
         </div>
 
     </main>
-
     <div id="footer-placeholder"></div>
-
 </body>
 </html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 | GHOST.ouo</title>
+    <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../tailwind.config.js"></script>
+    <style>
+        body { background-color: #050505; }
+        .dot-pattern {
+            background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #FFFFFF 0%, #BF94FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        .animate-float { animation: float 3s ease-in-out infinite; }
+        @media (prefers-reduced-motion: reduce) {
+            .animate-float { animation: none; }
+        }
+    </style>
+</head>
+<body class="font-sans text-white min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px]"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-600/10 rounded-full blur-[120px]"></div>
+    </div>
+
+    <main class="relative z-10 text-center px-6">
+        <div class="animate-float mb-8">
+            <span class="text-8xl md:text-[10rem] font-extrabold text-gradient leading-none">404</span>
+        </div>
+
+        <p class="text-gray-400 text-sm md:text-base font-mono mb-2 tracking-wider">PAGE NOT FOUND</p>
+        <p class="text-gray-500 text-xs md:text-sm mb-10 max-w-md mx-auto">
+            This page either moved or was never here.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="index.html" class="px-6 py-3 bg-accent-purple text-black font-bold rounded-full text-sm tracking-wide hover:shadow-[0_0_20px_rgba(191,148,255,0.5)] transition-all cursor-pointer">
+                <i class="fas fa-home mr-2"></i>Back to Home
+            </a>
+            <a href="projects.html" class="px-6 py-3 border border-white/10 text-gray-300 font-bold rounded-full text-sm tracking-wide hover:border-accent-purple hover:text-accent-purple transition-all cursor-pointer">
+                <i class="fas fa-folder mr-2"></i>View Projects
+            </a>
+        </div>
+    </main>
+
+    <footer class="absolute bottom-6 text-center">
+        <p class="text-gray-600 text-[10px] font-mono uppercase tracking-[0.2em]">&copy; 2026 GHOST.ouo</p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / P10 | GHOST.ouo</title>
+    <link rel="canonical" href="https://ghost8787.github.io/blog/en/EXP/project_10.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_10.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_10.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/project_10.html">
+
+    <link rel="icon" type="image/png" href="../../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script src="../../i18n.js" defer></script>
+    <script type="module" src="../../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / P10</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                From Unstructured Text to a Queryable Table:<br>
+                <span class="text-gradient text-2xl md:text-4xl">Automating an Escape Room Rating List</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">AI &amp; Automation</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Web Scraping</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Claude CoWork</span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.04.20</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                Taking a long-form blog review and using AI to turn it into a sortable, filterable structured table. A record of the process and the method.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> The Problem: Complete Information, Hard to Query
+            </h3>
+
+            <p>
+                When picking an escape room, leaning on a credible long-term review list is the efficient path. In Taiwan's escape room scene, Roger Song's "Spoiler-Free Escape Room Review and Recommendation List" is the reference of choice: broad coverage, a rating system, frequently updated, no spoilers.
+            </p>
+
+            <p>
+                The linear blog format does not match how the list actually gets used. Real queries are multi-condition filters:
+            </p>
+
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
+                <li>Rating S, party of 4 or fewer, specific city</li>
+                <li>Not played yet, rating A or above, medium difficulty</li>
+                <li>List every S-rated room first as a shortlist</li>
+            </ul>
+
+            <p>
+                The blog UI only supports <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">Ctrl+F</code> keyword search. Cross-filtering by "rating + city + party size" simultaneously is not on the table. Each query takes 1&ndash;2 minutes of scrolling.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Approach: Hand the Extraction to AI
+            </h3>
+
+            <p>
+                Manual copy-paste into a spreadsheet works. This time I handed the whole thing to Claude CoWork driving a Chrome session. No code got written. The work concentrated on one thing: defining the target schema clearly. AI handled the extraction and the output.
+            </p>
+
+            <h4 class="text-xl font-bold text-white mt-10 mb-4">
+                Step 1: Feed in the source
+            </h4>
+
+            <p>
+                Paste the blog URL into Claude CoWork. The AI fetches the full page and parses the HTML. The original post is long, but it sits inside a single LLM parse window.
+            </p>
+
+            <h4 class="text-xl font-bold text-white mt-10 mb-4">
+                Step 2: Define the schema and extract fields
+            </h4>
+
+            <p>
+                Pre-defined nine fields per room:
+            </p>
+
+            <div class="w-full overflow-x-auto my-6">
+                <table class="w-full text-left border-collapse min-w-[500px]">
+                    <thead>
+                        <tr class="text-white font-mono text-xs uppercase tracking-wider">
+                            <th class="py-3 pr-4 border-b border-white/20 w-1/3">Field</th>
+                            <th class="py-3 pl-4 border-b border-white/20 w-2/3">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="border-b border-white/5"><td class="py-3 pr-4 font-bold text-white font-mono">Studio</td><td class="py-3 pl-4 text-gray-300">Operating team</td></tr>
+                        <tr class="border-b border-white/5"><td class="py-3 pr-4 font-bold text-white font-mono">Address</td><td class="py-3 pl-4 text-gray-300">City and location</td></tr>
+                        <tr class="border-b border-white/5"><td class="py-3 pr-4 font-bold text-white font-mono">Theme</td><td class="py-3 pl-4 text-gray-300">Room title</td></tr>
+                        <tr class="border-b border-white/5"><td class="py-3 pr-4 font-bold text-white font-mono">Rating</td><td class="py-3 pl-4 text-gray-300">S / A / B / C / D / &ndash;</td></tr>
+                        <tr class="border-b border-white/5"><td class="py-3 pr-4 font-bold text-white font-mono">Party size</td><td class="py-3 pl-4 text-gray-300">Recommended player count</td></tr>
+                        <tr class="border-b border-white/5"><td class="py-3 pr-4 font-bold text-white font-mono">Duration</td><td class="py-3 pl-4 text-gray-300">Playtime</td></tr>
+                        <tr class="border-b border-white/5"><td class="py-3 pr-4 font-bold text-white font-mono">Genre</td><td class="py-3 pl-4 text-gray-300">Theme category</td></tr>
+                        <tr class="border-b border-white/5"><td class="py-3 pr-4 font-bold text-white font-mono">Status</td><td class="py-3 pl-4 text-gray-300">Open / archived</td></tr>
+                        <tr><td class="py-3 pr-4 font-bold text-white font-mono">Notes</td><td class="py-3 pl-4 text-gray-300">Extra info</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                The rating system follows the original author's standard verbatim. The AI moves data. It does not make judgment calls.
+            </p>
+
+            <h4 class="text-xl font-bold text-white mt-10 mb-4">
+                Step 3: Output to Google Sheets
+            </h4>
+
+            <p>
+                The AI writes results straight into Google Sheets. First row is the header. Each subsequent row is one room. Sheets handles sorting and filtering natively. No frontend needed.
+            </p>
+
+            <p class="text-gray-400">
+                The whole run took 3&ndash;4 prompts. The AI did the rest on its own.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Outcome: a Two-Layer Query Interface
+            </h3>
+
+            <p>
+                The final artifact is a plain Google Sheet, structured in two layers:
+            </p>
+
+            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 my-8">
+                <h4 class="text-white font-bold mb-4 flex items-center gap-2 border-b border-white/10 pb-3">
+                    <i class="fas fa-folder-tree text-accent-purple"></i> Sheet tabs (by region)
+                </h4>
+                <div class="flex flex-wrap gap-2 text-sm">
+                    <span class="bg-white/5 px-3 py-1.5 rounded-md text-gray-300 font-mono">Greater Taipei</span>
+                    <span class="bg-white/5 px-3 py-1.5 rounded-md text-gray-300 font-mono">Taichung</span>
+                    <span class="bg-white/5 px-3 py-1.5 rounded-md text-gray-300 font-mono">Taoyuan / Zhongli</span>
+                    <span class="bg-white/5 px-3 py-1.5 rounded-md text-gray-300 font-mono">Hsinchu / Changhua / Nantou</span>
+                    <span class="bg-white/5 px-3 py-1.5 rounded-md text-gray-300 font-mono">Tainan</span>
+                    <span class="bg-white/5 px-3 py-1.5 rounded-md text-gray-300 font-mono">Kaohsiung</span>
+                    <span class="bg-white/5 px-3 py-1.5 rounded-md text-gray-300 font-mono">Yilan / Pingtung / Overseas</span>
+                    <span class="bg-white/5 px-3 py-1.5 rounded-md text-gray-500 font-mono">+ Source info</span>
+                </div>
+            </div>
+
+            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 my-8">
+                <h4 class="text-white font-bold mb-4 flex items-center gap-2 border-b border-white/10 pb-3">
+                    <i class="fas fa-table-columns text-accent-purple"></i> Schema (shared across tabs)
+                </h4>
+                <div class="grid grid-cols-3 md:grid-cols-5 gap-2 text-sm">
+                    <div class="bg-white/5 p-2.5 rounded-lg text-center"><code class="text-accent-purple text-xs">Studio</code></div>
+                    <div class="bg-white/5 p-2.5 rounded-lg text-center"><code class="text-accent-purple text-xs">Address</code></div>
+                    <div class="bg-white/5 p-2.5 rounded-lg text-center"><code class="text-accent-purple text-xs">Theme</code></div>
+                    <div class="bg-white/5 p-2.5 rounded-lg text-center"><code class="text-accent-purple text-xs">Rating</code></div>
+                    <div class="bg-white/5 p-2.5 rounded-lg text-center"><code class="text-accent-purple text-xs">Party</code></div>
+                    <div class="bg-white/5 p-2.5 rounded-lg text-center"><code class="text-accent-purple text-xs">Duration</code></div>
+                    <div class="bg-white/5 p-2.5 rounded-lg text-center"><code class="text-accent-purple text-xs">Genre</code></div>
+                    <div class="bg-white/5 p-2.5 rounded-lg text-center"><code class="text-accent-purple text-xs">Status</code></div>
+                    <div class="bg-white/5 p-2.5 rounded-lg text-center"><code class="text-accent-purple text-xs">Notes</code></div>
+                </div>
+            </div>
+
+            <h4 class="text-xl font-bold text-white mt-10 mb-4">
+                Typical query path
+            </h4>
+
+            <ol class="list-decimal pl-6 space-y-2 text-gray-300 mb-6 marker:text-accent-purple">
+                <li>Switch to the target region tab</li>
+                <li>Use "Data &rarr; Create a filter"</li>
+                <li>Filter rating to S / A, status to "Open"</li>
+                <li>Narrow by party size or genre</li>
+                <li>Scan the theme column. Pick.</li>
+            </ol>
+
+            <p class="text-gray-400">
+                From opening the sheet to landing on a venue: under one minute.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Credits and Notice
+            </h3>
+
+            <p>
+                Every venue, rating, and review in this sheet comes from Roger Song's long-running original work, freely shared. This restructuring exists for personal lookup. No revenue, no commercial use.
+            </p>
+
+            <p class="text-gray-400">
+                If the original author objects, it comes down immediately.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Result Link
+            </h3>
+
+            <figure class="my-8">
+                <img src="../../PNG/project_09.1.png"
+                     alt="Sheet UI preview of the escape room rating table"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    Sheet preview (yellow = played personally, bottom tabs switch region)
+                </figcaption>
+            </figure>
+
+            <p>
+                <a href="https://docs.google.com/spreadsheets/d/1z7T0mnmIVwzoYdF60mkmLer-hC0a4leD/edit?gid=1684939645#gid=1684939645" target="_blank" rel="noopener noreferrer"
+                    class="text-accent-purple hover:text-white transition-colors underline decoration-accent-purple/30 underline-offset-4 font-mono">
+                    View Sheet&nbsp;<i class="fas fa-external-link-alt text-[10px]"></i>
+                </a>
+            </p>
+
+            <p class="text-sm text-gray-400 m-0">
+                Yellow rows are rooms I've played personally. Each sheet tab is a region. Switch tabs at the bottom of the Sheets UI.
+            </p>
+
+            <hr class="border-white/10 my-16">
+
+            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 flex flex-col md:flex-row items-start md:items-center gap-6">
+                <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center shrink-0 border border-white/10">
+                    <i class="fas fa-book-open text-gray-400 text-xl"></i>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-1">Reference &amp; Credits</h4>
+                    <p class="text-sm text-gray-400 m-0 leading-relaxed">
+                        Source: <strong>Roger Song</strong>, "Spoiler-Free Escape Room Review and Recommendation List"<br>
+                        <a href="https://roger5050.pixnet.net/blog/posts/15065131044" target="_blank" rel="noopener noreferrer" class="text-accent-purple hover:text-white transition-colors underline decoration-accent-purple/30 underline-offset-4 font-mono mt-1 inline-block">
+                            roger5050.pixnet.net/blog/posts/15065131044
+                        </a><br>
+                        <span class="text-xs text-gray-500 mt-2 inline-block">Original last updated: 2026.03.15　・　Compiled: 2026.03.21</span>
+                    </p>
+                </div>
+            </div>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="project_09.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Project
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Projects
+            </a>
+            <a href="project_11.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                Next Project &rarr;
+            </a>
+        </div>
+
+    </main>
+    <div id="footer-placeholder"></div>
+</body>
+</html>

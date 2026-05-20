@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / A2 | GHOST.ouo</title>
+    <link rel="canonical" href="https://ghost8787.github.io/blog/en/EXP/article_02.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/article_02.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/article_02.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/article_02.html">
+
+    <link rel="icon" type="image/png" href="../../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../style.css">
+
+    <script>
+        window.siteRoot = '../';
+    </script>
+    <script src="../../i18n.js" defer></script>
+    <script type="module" src="../../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../articles.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO ARTICLES
+            </a>
+            <span class="opacity-50">EXP / A2</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                Social Dynamics as a Game:<br>
+                <span class="text-gradient text-2xl md:text-4xl">Trust Evolution, System Noise, and Tit for Tat</span>
+            </h1>
+
+            <div class="flex gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    Thinking
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Game Theory
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Social Dynamics
+                </span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.02.08</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                Information overload, dense social graphs. How do I build a survival strategy with a positive long-run expected value?
+            </p>
+
+            <p>
+                I started thinking about this while watching digital communities die. Most of them eventually go quiet. The driver: individuals hiding real intent to avoid risk (the lurker behavior). Once a system only consumes information and produces nothing back, thermodynamics takes over. The system drifts into disorder and ends in heat death.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Game Theory and Trust Evolution
+            </h3>
+
+            <p>
+                Trust is a dynamic game. Game theory frames it well. The classic interactive model <em>The Evolution of Trust</em> abstracts human interaction into the Iterated Prisoner's Dilemma, and from there you can derive the actual mathematical floor that trust is built on.
+            </p>
+
+            <figure class="my-10 mx-auto max-w-sm">
+                <img src="../../PNG/article_02.1.webp"
+                     alt="The Evolution of Trust"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    <a href="https://ncase.me/trust/" target="_blank" rel="noopener noreferrer" class="hover:text-accent-purple transition-colors underline decoration-gray-700 underline-offset-2">The Evolution of Trust (interactive)</a>
+                </figcaption>
+            </figure>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> The Optimal Strategy: Tit for Tat
+            </h3>
+
+            <p>
+                Computer simulations of the iterated prisoner's dilemma show one strategy with the highest long-run payoff. The algorithm is brutally simple:
+            </p>
+
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre><code class="language-python"># Strategy logic:
+
+1. Initial state:
+   Cooperate. With no prior data, assume the other side is a good-faith node.
+
+2. Reciprocity:
+   Mirror the opponent's last move.
+   (If they defect, trigger defense. If they cooperate, keep cooperating.)
+
+3. Forgiveness:
+   If the opponent switches back to cooperation, drop the defense immediately
+   and resume cooperation. Avoids spiraling into infinite revenge.
+</code></pre>
+            </div>
+
+            <p>
+                The power of this strategy is in its memorylessness and determinism. The deterministic counter-punch blocks one-sided exploitation. The forgiveness gate maximizes the long-run cooperation dividend in any non-zero-sum game.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Environment and the Zero-Sum Drift
+            </h3>
+
+            <p>
+                The data shows high-quality connections in modern social graphs are dropping fast. The core reason: repeated interactions are getting rarer, so the cost of building long-term trust mechanisms is climbing steeply.
+            </p>
+
+            <p>
+                On top of that, the cultural frame is sliding toward zero-sum thinking:
+            </p>
+            <ul class="list-disc pl-5 space-y-3 text-gray-300 font-light">
+                <li><strong class="text-white">Zero-sum frame:</strong> the individual treats system resources as fixed, and assumes their gain has to come from someone else's loss.</li>
+                <li><strong class="text-white">Non-zero-sum frame:</strong> cooperation creates new value in the system. This is the environment parameter required for trust mechanisms to propagate at scale.</li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> How System Noise Breaks Strategy Stability
+            </h3>
+
+            <p>
+                Information transmission always carries noise. Call it misunderstanding. Three strategies to compare:
+            </p>
+
+            <ul class="list-disc pl-5 space-y-3 text-gray-300 font-light mb-6">
+                <li><strong class="text-white">Copycat:</strong> start cooperating, then mirror the opponent's last move. One defection triggers immediate retaliation. No forgiveness window. A single misunderstanding starts a mutual revenge loop.</li>
+                <li><strong class="text-white">Copykitten:</strong> mirror the last move, but only defect after two consecutive defections. One misread gets a free pass. Built-in tolerance.</li>
+                <li><strong class="text-white">Always Cheat:</strong> defects no matter what. Exploits cooperators in the short run, builds no trust network in the long run.</li>
+            </ul>
+
+            <p>
+                The winner shifts with the noise level:
+            </p>
+            <ul class="list-none space-y-3 text-gray-400 text-sm font-mono border-l-2 border-white/10 pl-4 my-6">
+                <li class="flex items-start gap-3"><span class="text-accent-purple w-24 shrink-0 whitespace-nowrap">0% noise</span><span>Copycat takes the global optimum.</span></li>
+                <li class="flex items-start gap-3"><span class="text-accent-purple w-24 shrink-0 whitespace-nowrap">1%-9% noise</span><span><strong class="text-white">Copykitten wins.</strong> Small amounts of noise push the system toward higher tolerance.</span></li>
+                <li class="flex items-start gap-3"><span class="text-accent-purple w-24 shrink-0 whitespace-nowrap">10%+ noise</span><span>System collapse. Always Cheat dominates.</span></li>
+            </ul>
+
+            <p>
+                The takeaway: <strong>moderate noise breeds more resilient forgiveness mechanisms; overload destroys the trust network entirely.</strong>
+            </p>
+
+            <hr class="border-white/10 my-12">
+
+            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 shadow-xl">
+                <h4 class="text-white font-bold mb-4 flex items-center gap-2">
+                    <i class="fas fa-lightbulb text-accent-purple"></i> Conclusion
+                </h4>
+                <p class="text-gray-300 mb-4 leading-relaxed">
+                    Core lesson from game theory: the rules of the game shape player behavior. Rules can be read, and they can be chosen.
+                </p>
+                <p class="text-white font-bold text-lg mb-2">
+                    At the micro level, environment parameters constrain individual strategy. At the macro level, the aggregate behavior of individuals is the core variable that builds the environment itself.
+                </p>
+                <p class="text-sm text-gray-400">
+                    The long-run best practice: actively construct networks with repeated-interaction properties, keep information transmission precise to lower system noise, and hold the line on reciprocity plus measured forgiveness.
+                </p>
+            </div>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="article_01.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Article
+            </a>
+            <a href="../articles.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Articles
+            </a>
+            <a href="article_03.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                Next Article &rarr;
+            </a>
+        </div>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+</body>
+</html>

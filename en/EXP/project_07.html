@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / P7 | GHOST.ouo</title>
+    <link rel="canonical" href="https://ghost8787.github.io/blog/en/EXP/project_07.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_07.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_07.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/project_07.html">
+
+    <link rel="icon" type="image/png" href="../../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../style.css">
+
+    <script>
+        window.siteRoot = '../';
+    </script>
+    <script src="../../i18n.js" defer></script>
+    <script type="module" src="../../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / P7</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                Decomposing the AI Agent Ecosystem:<br>
+                <span class="text-gradient text-2xl md:text-4xl">From Rewriting Pixel Agents to Placing Skills</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    AI &amp; Automation
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Claude
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    System Design
+                </span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.03.02</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                Coming out of an open-source rewrite, I want to draw a clear line between Skills, Custom Commands, MCP, and Subagents in the Claude ecosystem. They get mixed up. They are not the same thing.
+            </p>
+
+            <figure class="my-10 mx-auto">
+                <img src="../../PNG/project_06.1.webp"
+                     alt="A PRO account that burned out in under five hours"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    A PRO account that burned out in under five hours.
+                </figcaption>
+            </figure>
+
+            <p>
+                A few days back I found Pixel Agents on GitHub. The project visualizes AI agents as pixel-style office characters in a virtual room. The original design watches and manages agent state. With some Claude-assisted rewriting, I adapted it into a small control surface that tracks local AI task status.
+            </p>
+
+            <p>
+                The rewrite exposed a structural issue. Claude CLI and Claude Code are engineer-first tools. Their file layout and configuration logic do not feel obvious to non-technical users. "Where does this go?" "Why is it set up this way?" become the first entry barriers.
+            </p>
+
+            <figure class="my-10 mx-auto">
+                <img src="../../PNG/project_06.2.webp"
+                     alt="The local web-based bot"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    The local web-based bot.
+                </figcaption>
+            </figure>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-10">
+                <figure class="m-0">
+                    <img src="../../PNG/project_06.3.webp"
+                         alt="The cute robot sitting at the top of the screen"
+                         loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-lg opacity-90 hover:opacity-100 transition-opacity">
+                    <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                        The cute robot sitting at the top of the screen.
+                    </figcaption>
+                </figure>
+                <figure class="m-0">
+                    <img src="../../PNG/project_06.4.webp"
+                         alt="When it's working, it sprouts wheels"
+                         loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-lg opacity-90 hover:opacity-100 transition-opacity">
+                    <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                        When it's working, it sprouts wheels.
+                    </figcaption>
+                </figure>
+            </div>
+
+            <p>
+                On the Pro plan, even pure Q&amp;A development burns tokens fast. My current trade-off: wire MCP (Model Context Protocol) into Obsidian and let it auto-update Markdown files as a project knowledge base. Development context stays saved and retrievable. I do not have to rebuild the situation every session.
+            </p>
+
+            <figure class="my-10 mx-auto max-w-lg">
+                <img src="../../PNG/project_06.5.webp"
+                     alt="Burning tokens every day"
+                     loading="lazy" class="w-full rounded-2xl border border-red-500/20 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-red-400 mt-3 font-mono">
+                    Burning tokens every day.
+                </figcaption>
+            </figure>
+
+            <p>
+                Through a few rounds of trial and tuning, I noticed the Claude ecosystem has several "personalization/customization" mechanisms with overlapping positioning. <strong>Skills</strong> especially deserves to be separated cleanly from the others.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Comparing the Mechanisms
+            </h3>
+
+            <p>This table lines up the four mechanisms so a developer can pick the right one:</p>
+
+            <div class="w-full overflow-x-auto border border-white/10 rounded-xl bg-[#0A0A0A] my-8 shadow-lg">
+                <table class="w-full table-fixed border-collapse min-w-[700px] md:min-w-full">
+                    <thead>
+                        <tr>
+                            <th class="bg-white/5 text-white font-mono text-[0.75rem] uppercase tracking-wider font-bold border-b border-white/10 p-3 sm:p-4 text-left align-top break-words w-[14%]">Mechanism</th>
+                            <th class="bg-white/5 text-white font-mono text-[0.75rem] uppercase tracking-wider font-bold border-b border-white/10 p-3 sm:p-4 text-left align-top break-words w-[18%]">Trigger</th>
+                            <th class="bg-white/5 text-white font-mono text-[0.75rem] uppercase tracking-wider font-bold border-b border-white/10 p-3 sm:p-4 text-left align-top break-words w-[12%]">Persistence</th>
+                            <th class="bg-white/5 text-white font-mono text-[0.75rem] uppercase tracking-wider font-bold border-b border-white/10 p-3 sm:p-4 text-left align-top break-words w-[22%]">Core content</th>
+                            <th class="bg-white/5 text-white font-mono text-[0.75rem] uppercase tracking-wider font-bold border-b border-white/10 p-3 sm:p-4 text-left align-top break-words w-[12%]">Load timing</th>
+                            <th class="bg-white/5 text-white font-mono text-[0.75rem] uppercase tracking-wider font-bold border-b border-white/10 p-3 sm:p-4 text-left align-top break-words w-[22%]">Best fit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-white/5 last:border-b-0 transition-colors hover:bg-white/5">
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">
+                                <div class="font-bold font-mono text-accent-purple">
+                                    Skills
+                                    <span class="text-white font-sans font-normal text-[0.65rem] sm:text-[0.75rem] block mt-1 opacity-80">capability</span>
+                                </div>
+                            </td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">
+                                AI decides
+                                <span class="text-gray-400 text-[0.6rem] sm:text-[0.7rem] block mt-1 font-mono">from task description</span>
+                            </td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">across sessions<br>across projects</td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">procedural knowledge, workflows<br>executable script bundles</td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">
+                                dynamic load
+                                <span class="text-gray-400 text-[0.6rem] sm:text-[0.7rem] block mt-1 font-mono">on demand</span>
+                            </td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">when Claude needs to apply domain expertise on its own</td>
+                        </tr>
+                        <tr class="border-b border-white/5 last:border-b-0 transition-colors hover:bg-white/5">
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">
+                                <div class="font-bold font-mono text-white">
+                                    Custom Commands
+                                    <span class="text-gray-400 font-sans font-normal text-[0.65rem] sm:text-[0.75rem] block mt-1">shortcuts</span>
+                                </div>
+                            </td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">
+                                user types it
+                                <span class="text-gray-400 text-[0.6rem] sm:text-[0.7rem] block mt-1 font-mono">e.g. /review-pr</span>
+                            </td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">project scope<br>or user scope</td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">
+                                Prompt template
+                                <span class="text-gray-400 text-[0.6rem] sm:text-[0.7rem] block mt-1 font-mono">single file</span>
+                            </td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">loaded when the user triggers it</td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">when the user knows exactly what fixed operation to run</td>
+                        </tr>
+                        <tr class="border-b border-white/5 last:border-b-0 transition-colors hover:bg-white/5">
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">
+                                <div class="font-bold font-mono text-white">
+                                    MCP
+                                    <span class="text-gray-400 font-sans font-normal text-[0.65rem] sm:text-[0.75rem] block mt-1">Model Context Protocol</span>
+                                </div>
+                            </td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">tool call</td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">loaded at startup</td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">
+                                ways to reach external services
+                                <span class="text-gray-400 text-[0.6rem] sm:text-[0.7rem] block mt-1 font-mono">APIs, databases, etc.</span>
+                            </td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">called on demand</td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">when Claude needs to fetch external data or use an external tool</td>
+                        </tr>
+                        <tr class="border-b border-white/5 last:border-b-0 transition-colors hover:bg-white/5">
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">
+                                <div class="font-bold font-mono text-white">
+                                    Subagents
+                                    <span class="text-gray-400 font-sans font-normal text-[0.65rem] sm:text-[0.75rem] block mt-1">child agents</span>
+                                </div>
+                            </td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">Claude delegates<br>or you start one</td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">task lifetime</td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">independent AI instances</td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">spawned on demand</td>
+                            <td class="text-gray-300 text-[0.75rem] sm:text-sm p-3 sm:p-4 align-top break-words">complex task decomposition with isolated context, parallelism</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> What Each Mechanism Actually Is
+            </h3>
+
+            <div class="space-y-8 my-8">
+                <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/10 shadow-lg">
+                    <h4 class="text-white font-bold mb-3 flex items-center gap-2 text-lg">
+                        <i class="fas fa-brain text-accent-purple"></i> 1. Skills: procedural knowledge, applied by the AI
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed m-0">
+                        Skills differ in one key way: the AI decides when to use them. They follow a progressive-disclosure design that only loads relevant context on demand. The user does not invoke them. Claude picks them up from the task description.<br><br>
+                        Structurally, a Skill is a capsule of procedural knowledge: workflow, decision logic, executable script. Persistence stretches across sessions and projects. Skills are the right place to build Claude's specialized capability library.
+                    </p>
+                </div>
+
+                <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/10 shadow-lg">
+                    <h4 class="text-white font-bold mb-3 flex items-center gap-2 text-lg">
+                        <i class="fas fa-terminal text-blue-400"></i> 2. Custom Commands: user-triggered shortcuts
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed m-0">
+                        Custom Commands fire when the user types a specific command (like <code class="bg-white/10 px-1.5 py-0.5 rounded text-accent-purple">/review-pr</code>). Persistence stays at the project or user level. Content is a single Prompt template.<br><br>
+                        Fit: situations where the user already knows exactly what to run &mdash; code review, formatted document generation, repetitive ops. Control stays on the user side.
+                    </p>
+                </div>
+
+                <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/10 shadow-lg">
+                    <h4 class="text-white font-bold mb-3 flex items-center gap-2 text-lg">
+                        <i class="fas fa-network-wired text-green-400"></i> 3. MCP: the bridge to the outside world
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed m-0">
+                        MCP positions cleanly: a standardized protocol for connecting external services so Claude can safely reach external systems and data through structured tools. API access, database queries, or in this case Obsidian file read/write &mdash; MCP is Claude's communication channel with the outside.<br><br>
+                        Its essence: a collection of tool methods. Not a knowledge or process bundle. That is the cleanest line between MCP and Skills: Skills wrap "how to do it," MCP supplies "what external resources are available."
+                    </p>
+                </div>
+
+                <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/10 shadow-lg">
+                    <h4 class="text-white font-bold mb-3 flex items-center gap-2 text-lg">
+                        <i class="fas fa-sitemap text-yellow-400"></i> 4. Subagents: parallel work and isolated context
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed m-0">
+                        Subagents exist to handle complex task decomposition. When Claude decides a subtask needs its own context or can run in parallel, it spawns a Subagent. The child agent holds independent state and tool permissions. The parent only receives and integrates the final result. This trims token load and the resource is reclaimed when the task ends.<br><br>
+                        These are dynamically created compute units. Persistence equals the task's lifetime. The clearest contrast with Skills: Skills are capabilities, Subagents are execution instances.
+                    </p>
+                </div>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Early Practical Notes
+            </h3>
+
+            <p>From the Pixel Agents rewrite, a cleaner collaboration pattern emerges:</p>
+
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">1. Skills build the core capability library</strong> &mdash; define what Claude can do</li>
+                <li><strong class="text-white">2. MCP connects the outside world</strong> &mdash; define what Claude can reach</li>
+                <li><strong class="text-white">3. Custom Commands standardize repetitive flows</strong> &mdash; define what the user can invoke quickly</li>
+                <li><strong class="text-white">4. Subagents handle complex decomposition</strong> &mdash; define how tasks can run in parallel</li>
+            </ul>
+
+            <figure class="my-10">
+                <img src="../../PNG/project_06.6.webp"
+                     alt="Dashboard for monitoring bot activity"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    Dashboard for monitoring bot activity.
+                </figcaption>
+            </figure>
+
+            <p>
+                The current Obsidian + MCP setup is, in effect, plugging an external knowledge base (Markdown files) into Claude through MCP. Claude can read project docs through the build cycle without me reloading context each time. Token pressure eases. Project management gets more structured.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> A Living Experiment
+            </h3>
+
+            <p class="mb-10">
+                The architecture is still in motion. Where Skills end and other mechanisms begin, when to choose Custom Commands over Skills, how to design MCP services well &mdash; all of these stay open. If you are running similar AI Agent experiments, get in touch. Open source and collaboration come down to letting tools and knowledge keep evolving.
+            </p>
+
+            <hr class="border-white/10 my-10">
+
+            <div class="bg-gradient-to-r from-accent-purple/10 to-transparent p-6 rounded-2xl border-l-4 border-accent-purple shadow-xl">
+                <h4 class="text-white font-bold mb-4 flex items-center gap-2 text-lg">
+                    <i class="fas fa-tools text-accent-purple"></i> Tool Development &amp; Token Optimization
+                </h4>
+                <p class="text-gray-300 text-sm leading-relaxed mb-4 font-light">
+                    I keep building small auxiliary tools. Reach out if you need something.<br>
+                    A first draft of a token-optimization Skill is written and will ship soon. Given Pro plan limits, more architectural room to optimize is still there.
+                </p>
+            </div>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="project_06.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Project
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Projects
+            </a>
+            <a href="project_08.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                Next Project &rarr;
+            </a>
+        </div>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / P1 | GHOST.ouo</title>
+    <link rel="canonical" href="https://ghost8787.github.io/blog/en/EXP/project_01.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_01.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_01.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/project_01.html">
+
+    <link rel="icon" type="image/png" href="../../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script src="../../i18n.js" defer></script>
+    <script type="module" src="../../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / P1</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                Building This Site:<br>
+                <span class="text-gradient text-2xl md:text-4xl">Static Stack, GitHub Pages, AI Co-Development</span>
+            </h1>
+
+            <div class="flex gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    Engineering
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Web Development
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    VibeCoding
+                </span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.01.31</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                A log of building this personal site (v1.0). I moved from heavily packaged CMS platforms like WordPress to a hand-written static stack &mdash; HTML, CSS, JS &mdash; hosted on GitHub Pages. The point was to take back control of the underlying structure and keep the door open for extension.
+            </p>
+
+            <figure class="my-10">
+                <img src="../../PNG/project_01.1.webp"
+                     alt="2026 Personal Website"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    Current state of the site
+                </figcaption>
+            </figure>
+
+            <p>
+                Layout to deployment, everything ran on VibeCoding with an AI agent as co-developer.<br>
+                This version is a basic static presentation layer. Future iterations will refine the structure and tune performance as I find reasons to.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Architecture: Modules and Component Separation
+            </h3>
+
+            <p>
+                During the early Excalidraw planning phase, I wanted the code to stay maintainable. So I pulled global blocks like Navbar and Footer out as standalone components, mounted dynamically with plain JavaScript.<br>
+                This directory structure follows Separation of Concerns &mdash; pages stay loosely coupled, and adding new pages or unifying changes later stays cheap.
+            </p>
+
+            <figure class="my-10">
+                <img src="../../PNG/project_01.2.webp"
+                     alt="excalidraw"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    First architecture sketch and component breakdown
+                </figcaption>
+            </figure>
+
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Workflow and AI-Assisted Debugging
+            </h3>
+
+            <p>
+                Automation tools dropped the syntax barrier hard. My focus shifted from remembering syntax to designing system logic.<br>
+                I owned the core business logic and interface structure. The AI agent handled the implementation. Effective collaboration came down to two things on my side: asking precise questions, and keeping the global picture in my head.
+            </p>
+
+            <p>From those iterations, two practical rules stuck:</p>
+
+            <div class="my-8 p-8 bg-white/5 rounded-2xl border border-white/10 font-light">
+                <ul class="list-none space-y-4">
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-bug text-accent-purple mt-1.5"></i>
+                        <span>
+                            <strong class="text-white">Context Window Management:</strong><br>
+                            When a single conversation thread runs too long, the AI's context window overflows. Code hallucinations show up. Fix attempts diverge &mdash; classic "the more it tries, the worse it gets." The right move is to set a clear breakpoint, open a new conversation, and inject a clean snippet of target code to reset the AI's state.
+                        </span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-brain text-accent-purple mt-1.5"></i>
+                        <span>
+                            <strong class="text-white">Decision Authority Stays With the Human:</strong><br>
+                            The AI generates code fast. Architecture decisions and trade-off calls stay with me. I keep logic ownership, pair with Live Server for instant rendering feedback, and run a tight loop: prompt &rarr; visual check &rarr; logic adjustment.
+                        </span>
+                    </li>
+                </ul>
+            </div>
+
+            <hr class="border-white/10 my-12">
+
+            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5">
+                <h4 class="text-white font-bold mb-4 flex items-center gap-2">
+                    <i class="fas fa-box-archive text-gray-500"></i> Archived Projects Info
+                </h4>
+
+                <div class="my-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <figure class="m-0 group">
+                        <img src="../../PNG/project_01.3_HSVI Website 1.webp" alt="NTOU Website 1" loading="lazy" class="w-full h-96 md:h-128 object-cover object-top rounded-xl border border-white/10 opacity-80 group-hover:opacity-100 transition-opacity">
+                    </figure>
+                    <figure class="m-0 group">
+                        <img src="../../PNG/project_01.4_HSVI Website 2.webp" alt="NTOU Website 2" loading="lazy" class="w-full h-96 md:h-128 object-cover object-top rounded-xl border border-white/10 opacity-80 group-hover:opacity-100 transition-opacity">
+                    </figure>
+
+                    <figure class="m-0 group">
+                        <img src="../../PNG/project_01.5_NTOU Website 1.webp" alt="HSVI Website 1" loading="lazy" class="w-full h-96 md:h-128 object-cover object-top rounded-xl border border-white/10 opacity-80 group-hover:opacity-100 transition-opacity">
+                    </figure>
+                    <figure class="m-0 group">
+                        <img src="../../PNG/project_01.6_NTOU Website 2.webp" alt="HSVI Website 2" loading="lazy" class="w-full h-96 md:h-128 object-cover object-top rounded-xl border border-white/10 opacity-80 group-hover:opacity-100 transition-opacity">
+                    </figure>
+                </div>
+
+                <ul class="space-y-2 text-sm text-gray-400">
+                    <li class="mb-2">
+                        Earlier CMS-based sites I built, kept here as a baseline reference for how the web work has evolved:
+                    </li>
+                    <li>
+                        <span class="text-accent-purple mr-2">●</span>
+                        <a href="https://ntoutbr.wordpress.com/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                            2024.03 NTOU Tropical Biology Club official site (WordPress)
+                        </a>
+                    </li>
+
+                    <li>
+                        <span class="text-accent-purple mr-2">●</span>
+                        <a href="https://hsvi111.wordpress.com/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                            2024 HSVI Yōya Studio official site (WordPress)
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                &larr; Prev Project
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Projects
+            </a>
+            <a href="project_02.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                Next Project &rarr;
+            </a>
+        </div>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+</body>
+</html>

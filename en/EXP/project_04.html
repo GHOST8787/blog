@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / P4 | GHOST.ouo</title>
+    <link rel="canonical" href="https://ghost8787.github.io/blog/en/EXP/project_04.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_04.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_04.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/project_04.html">
+
+    <link rel="icon" type="image/png" href="../../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../EXP/tarot_style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script src="../../i18n.js" defer></script>
+    <script type="module" src="../../main.js" defer></script>
+    <script src="../../EXP/tarot_app.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / P4</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                The Tarot Prompt Alchemist:<br>
+                <span class="text-gradient text-2xl md:text-4xl">Dynamic Prompt Engineering for Generative AI</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    Engineering
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Vanilla JS
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Prompt Engineering
+                </span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.02.19</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                This project is a lightweight, interactive frontend module. It simulates a random-draw mechanism, then automatically composes the relevant variables (card attributes, upright/reversed state, the user's intent domain) into a high-quality System Prompt.<br>
+                The point: lower the technical barrier for end users to interact with a large language model in depth. Turn abstract psychological projection into a precise machine instruction.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Technical Implementation
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
+                <div class="bg-white/5 p-6 rounded-xl border border-white/10">
+                    <h4 class="text-white font-bold mb-2 flex items-center gap-2 text-base">
+                        <i class="fas fa-layer-group text-accent-purple"></i> Adaptive Grid &amp; Negative-Margin Math
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed m-0">
+                        Rendering 78 DOM nodes (cards) on screens of every size produces overflow problems. I dropped absolute coordinates &mdash; too high-maintenance &mdash; and switched to native JavaScript that detects container width on the fly and injects a calculated negative margin. The whole dataset stays inside the viewport, no matter the device.
+                    </p>
+                </div>
+                <div class="bg-white/5 p-6 rounded-xl border border-white/10">
+                    <h4 class="text-white font-bold mb-2 flex items-center gap-2 text-base">
+                        <i class="fas fa-bolt text-accent-purple"></i> Rendering Optimization &amp; Hardware Acceleration
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed m-0">
+                        Shuffle, fan-out, and hover-extract animations all run on CSS <code>transform: translate3d</code> with <code>will-change</code>. Render work moves to the GPU layer. The main thread stays free, framerate stays stable through the complex interactions.
+                    </p>
+                </div>
+                <div class="bg-white/5 p-6 rounded-xl border border-white/10 md:col-span-2">
+                    <h4 class="text-white font-bold mb-2 flex items-center gap-2 text-base">
+                        <i class="fas fa-terminal text-accent-purple"></i> Structured Prompt Construction
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed m-0">
+                        Core behavior: synthesize the prompt dynamically. When a draw fires, the system extracts the domain parameter, the card array index, and the orientation boolean, then assembles them into a pre-defined Prompt Template. The result has strict system-boundary constraints &mdash; no idle chat, just precise attribute mapping and logical convergence.
+                    </p>
+                </div>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Domain Knowledge: Decomposing the Tarot System
+            </h3>
+
+            <figure class="my-10">
+                <img src="../../PNG/project_03.1.webp"
+                     alt="Tarot Cards Example"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    Visual dataset: the classic Rider-Waite Tarot.
+                </figcaption>
+            </figure>
+
+            <p>
+                From a systems analysis angle, tarot is <strong>a framework for subconscious projection and association</strong>. Pulling visual symbols with high symbolic density forces the brain's associative network into retrieval. The hidden internal state surfaces as something readable.
+            </p>
+
+            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 my-8 shadow-lg">
+                <h4 class="text-white font-bold mb-4 flex items-center gap-2 border-b border-white/10 pb-3">
+                    <i class="fas fa-database text-accent-purple"></i> Base Dataset (78 Nodes)
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                    <div>
+                        <strong class="text-accent-purple text-lg block mb-2">Major Arcana (Macro-Variables, 22)</strong>
+                        <p class="text-sm text-gray-400 leading-relaxed">
+                            These represent <strong>irreversible macro trends, core principles, and base environment parameters</strong>. The Fool (high entropy, initial state). The World (closed loop, system complete).<br>
+                            Drawing one means the analysis target carries heavy system weight.
+                        </p>
+                    </div>
+                    <div>
+                        <strong class="text-white text-lg block mb-2">Minor Arcana (Micro-Variables, 56)</strong>
+                        <p class="text-sm text-gray-400 leading-relaxed">
+                            These represent <strong>local state, execution detail, short-term feedback</strong>. The set splits into four suits:<br>
+                            🔥 <span class="text-gray-300">Wands (momentum and execution)</span><br>
+                            💧 <span class="text-gray-300">Cups (relational topology and emotion)</span><br>
+                            💨 <span class="text-gray-300">Swords (logic and conflict)</span><br>
+                            🌍 <span class="text-gray-300">Pentacles (material resources and structure)</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="text-xl font-bold text-white mt-10 mb-4">
+                Dataset Filtering Strategy
+            </h4>
+            <ul class="space-y-4 text-gray-400 font-light">
+                <li class="flex gap-3 bg-white/5 p-4 rounded-xl border border-white/5">
+                    <i class="fas fa-sitemap text-accent-purple mt-1"></i>
+                    <div>
+                        <strong class="text-white">Macro-node analysis (recommend: Major Arcana only)</strong><br>
+                        For high-dimension questions like long-term career direction or life-stage transitions, restricting the draw to the Major Arcana filters out short-term noise. You get a core strategic read.
+                    </div>
+                </li>
+                <li class="flex gap-3 bg-white/5 p-4 rounded-xl border border-white/5">
+                    <i class="fas fa-layer-group text-accent-purple mt-1"></i>
+                    <div>
+                        <strong class="text-white">Routine event parsing (recommend: full 78 cards)</strong><br>
+                        For daily operations, short-term projects, or specific event reads, open the full set so macro trends and micro detail can intersect.
+                    </div>
+                </li>
+                <li class="flex gap-3 bg-white/5 p-4 rounded-xl border border-white/5">
+                    <i class="fas fa-filter text-accent-purple mt-1"></i>
+                    <div>
+                        <strong class="text-white">Targeted convergence (recommend: a single suit)</strong><br>
+                        With a sharply defined target &mdash; resource allocation (Pentacles), logical debugging (Swords) &mdash; pin the draw to one subset. Focus goes up.
+                    </div>
+                </li>
+            </ul>
+
+            <h4 class="text-xl font-bold text-white mt-12 mb-4">
+                Extraction Models
+            </h4>
+            <p class="text-gray-400 font-light mb-6">
+                The draw configuration depends on the question's complexity. A few standard model shapes:
+            </p>
+
+            <div class="space-y-5 text-gray-300 font-light mb-12">
+                <div class="bg-gradient-to-r from-accent-purple/10 to-transparent p-5 rounded-xl border-l-2 border-accent-purple">
+                    <strong class="text-accent-purple text-lg block mb-1">1. One-Card Pull &mdash; this project's target</strong>
+                    <p class="text-sm leading-relaxed mb-2">The most efficient initial convergence. Useful for clarifying a single state, getting an immediate decision weight, or setting a daily baseline.</p>
+                    <p class="text-xs text-gray-400 bg-black/30 p-2 rounded border border-white/5">
+                        <i class="fas fa-info-circle"></i> <strong>System config:</strong> this interface uses single-node extraction by default. State your input variable (the question), then click in the module below. The system will synthesize the AI instruction for deep analysis.
+                    </p>
+                </div>
+
+                <div class="bg-white/5 p-5 rounded-xl border border-white/5">
+                    <strong class="text-white text-lg block mb-1">2. Three-Card Spread</strong>
+                    <p class="text-sm leading-relaxed">
+                        Three adjacent nodes. Used for building a time series (past state, current variable, projected direction) or a logical chain (core problem, recommended action, expected outcome). Good for watching how nodes influence one another.
+                    </p>
+                </div>
+
+                <div class="bg-white/5 p-5 rounded-xl border border-white/5">
+                    <strong class="text-white text-lg block mb-1">3. Celtic Cross</strong>
+                    <p class="text-sm leading-relaxed">
+                        A matrix of 10 weighted nodes. Covers internal subconscious, external disturbance, historical resistance, long-term direction. Built for systems with many interacting variables.
+                    </p>
+                </div>
+            </div>
+            <hr class="border-white/10 my-12">
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Interactive Module: Prompt Generator
+            </h3>
+
+            <div class="bg-[#0A0A0A] border border-white/10 rounded-3xl shadow-2xl p-6 md:p-10 flex flex-col gap-8 my-12 relative z-20">
+
+                <div id="controls-area" class="flex flex-col sm:flex-row gap-4 justify-between items-center bg-white/5 p-4 rounded-2xl border border-white/10 relative z-30">
+                    <div class="flex items-center gap-2 w-full sm:w-auto">
+                        <i class="fas fa-filter text-accent-purple"></i>
+                        <select id="deck-filter" class="bg-[#0F0F0F] border border-white/10 text-sm text-gray-300 rounded-lg p-2 focus:border-accent-purple outline-none"></select>
+                    </div>
+                    <div id="topic-buttons" class="flex items-center gap-2 overflow-x-auto w-full sm:w-auto scrollbar-hide"></div>
+                    <button id="shuffle-btn" class="p-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-gray-400 hover:text-white transition-all shrink-0">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+
+                <div class="relative w-full h-[420px] rounded-2xl bg-[#050505] border border-white/10 shadow-inner overflow-hidden flex flex-col items-center justify-center">
+                    <div class="absolute inset-0 bg-[radial-gradient(circle_at_bottom,_var(--tw-gradient-stops))] from-accent-purple/15 via-transparent to-transparent opacity-80 pointer-events-none"></div>
+
+                    <p id="deck-status" class="absolute top-6 left-1/2 -translate-x-1/2 text-xs font-mono text-gray-500 animate-pulse pointer-events-none z-0">AWAITING_EXTRACTION</p>
+
+                    <div id="spread-area" class="absolute inset-0 w-full h-full pt-12 pb-6"></div>
+                </div>
+
+                <div class="bg-[#050505] rounded-2xl border border-white/10 p-6 grid grid-cols-1 md:grid-cols-3 gap-8 relative z-30">
+
+                    <div id="card-display-slot" class="col-span-1 h-72 md:h-80 border-2 border-dashed border-white/10 rounded-xl flex flex-col items-center justify-center text-gray-600 bg-white/5 transition-all">
+                        <i class="fas fa-microchip text-3xl mb-3 opacity-20"></i>
+                        <span class="text-sm font-mono tracking-widest">AWAITING_CARD</span>
+                    </div>
+
+                    <div class="col-span-1 md:col-span-2 flex flex-col h-72 md:h-80">
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="text-accent-purple font-mono text-sm"><i class="fas fa-terminal"></i> SYSTEM_PROMPT</span>
+                            <button id="copy-btn" disabled class="px-4 py-2 bg-white/5 text-gray-600 rounded-lg text-xs font-bold tracking-wide transition-all border border-white/5 cursor-not-allowed">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                        </div>
+                        <textarea id="prompt-output" readonly class="w-full flex-1 bg-[#0A0A0A] border border-white/10 rounded-xl p-5 text-gray-400 font-mono text-sm leading-relaxed resize-none focus:outline-none focus:border-accent-purple transition-colors" placeholder="[System on standby]&#10;Complete the draw above first. The structured AI prompt will be synthesized automatically."></textarea>
+                    </div>
+
+                </div>
+            </div>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="project_03.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Project
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Projects
+            </a>
+            <a href="project_05.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                Next Project &rarr;
+            </a>
+        </div>
+
+    </main>
+    <div id="footer-placeholder"></div>
+</body>
+</html>

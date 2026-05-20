@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EXP / P8 | GHOST.ouo</title>
-    
+    <link rel="canonical" href="https://ghost8787.github.io/blog/EXP/project_08.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_08.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_08.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/project_08.html">
+
     <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
     <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
     
@@ -16,7 +20,8 @@
     <link rel="stylesheet" href="../style.css">
     
     <script> window.siteRoot = '../'; </script>
-    <script src="../main.js" defer></script>
+    <script src="../i18n.js" defer></script>
+    <script type="module" src="../main.js" defer></script>
 </head>
 
 <body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
@@ -59,7 +64,7 @@
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
             
             <p class="text-xl text-gray-400 font-light mb-16 leading-relaxed">
-                本篇整理自近半年深度使用 Claude Code 的踩坑經驗。剛開始容易將其視為 ChatBot，但很快會發現：上下文越來越亂、工具越來越多但效果變差、規則越長越不遵守。這並非 Prompt 的問題，而是系統架構設計的本質。要駕馭它，必須先理解其底層的「六層架構」與「上下文邊界」。
+                本篇整理自近半年深度使用 Claude Code 的踩坑經驗。剛開始容易將其視為 ChatBot，但很快會發現：上下文越來越亂、工具越來越多但效果變差、規則越長越不遵守。這是系統架構設計的本質問題。要駕馭它，必須先理解其底層的「六層架構」與「上下文邊界」。
             </p>
 
             <section class="mb-16">
@@ -68,11 +73,11 @@
                 </h3>
                 
                 <p class="mb-6 text-gray-300">
-                    Claude Code 的核心不是「回答」，而是一個反覆循環的代理過程：<br>
+                    Claude Code 的核心是一個反覆循環的代理過程：<br>
                     <code class="text-accent-purple bg-accent-purple/10 px-2 py-1 rounded">收集上下文 → 採取行動 → 驗證結果 → [完成 or 回到收集]</code>
                 </p>
 
-                <p class="mb-6 text-gray-400 text-sm">卡住的地方幾乎從來不是模型不夠聰明，而是給了錯誤的上下文，或是缺乏驗證與撤回機制。理解系統，最好的方式是將其拆分為六層：</p>
+                <p class="mb-6 text-gray-400 text-sm">卡住的地方幾乎都來自錯誤的上下文，或缺乏驗證與撤回機制——模型聰明程度通常不是瓶頸。理解系統，最好的方式是將其拆分為六層：</p>
 
                 <div class="w-full overflow-x-auto mb-6">
                     <table class="w-full text-left border-collapse min-w-[600px]">
@@ -149,7 +154,7 @@
                     <i class="fas fa-database text-accent-purple"></i> 上下文工程：最核心的系統約束
                 </h3>
                 
-                <p class="mb-4 text-gray-300">多數人把上下文當作「容量問題」，但卡住通常是因為「太吵了」。200K 的上下文並非全部可用，MCP Server 的工具定義是最大的隱形殺手。</p>
+                <p class="mb-4 text-gray-300">多數人把上下文當作「容量問題」，但卡住通常是因為「太吵了」。200K 的上下文實際只有一部分可用，MCP Server 的工具定義是最大的隱形殺手。</p>
 
                 <div class="bg-white/5 p-5 rounded-xl border-l-4 border-white/10 font-mono text-sm text-gray-300 mb-8 overflow-x-auto">
 <pre class="m-0"><code>建議的上下文分層策略：
@@ -166,8 +171,8 @@
                         預設的壓縮演算法會優先刪除早期的 Tool Output 和檔案內容，順帶把<strong class="text-accent-purple">架構決策和約束理由</strong>也一起丟了。
                     </p>
                     <ul class="list-none pl-0 space-y-2 text-sm text-gray-400 m-0">
-                        <li class="flex items-start gap-2"><i class="fas fa-check text-green-400 mt-1"></i> 在 <code>CLAUDE.md</code> 明確寫入 <code>Compact Instructions</code>（規定壓縮時必須保留架構決策、修改檔案等）。</li>
-                        <li class="flex items-start gap-2"><i class="fas fa-check text-green-400 mt-1"></i> <strong class="text-white">更主動的方案：</strong>切換複雜會話前，讓 Claude 寫一份 <code>HANDOFF.md</code>（記錄進展、走通的路、死路與下一步）。新實例只需讀取此檔案即可無縫接軌。</li>
+                        <li class="flex items-start gap-2"><i class="fas fa-check text-green-400 mt-1 shrink-0"></i><span>在 <code>CLAUDE.md</code> 明確寫入 <code>Compact Instructions</code>（規定壓縮時必須保留架構決策、修改檔案等）。</span></li>
+                        <li class="flex items-start gap-2"><i class="fas fa-check text-green-400 mt-1 shrink-0"></i><span><strong class="text-white">更主動的方案：</strong>切換複雜會話前，讓 Claude 寫一份 <code>HANDOFF.md</code>（記錄進展、走通的路、死路與下一步）。新實例只需讀取此檔案即可無縫接軌。</span></li>
                     </ul>
                 </div>
             </section>
@@ -193,6 +198,23 @@
                 </ul>
             </section>
 
+            <hr class="border-white/10 my-16">
+
+            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 flex flex-col md:flex-row items-start md:items-center gap-6">
+                <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center shrink-0 border border-white/10">
+                    <i class="fas fa-book-open text-gray-400 text-xl"></i>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-1">Reference & Credits</h4>
+                    <p class="text-sm text-gray-400 m-0 leading-relaxed">
+                        本系列 P8 與 P9 兩篇文章之核心架構與工程思路，深度參考並萃取自開源開發者 <strong>Tw93</strong> 的文章：<br>
+                        <a href="https://tw93.fun/2026-03-12/claude.html" target="_blank" rel="noopener noreferrer" class="text-accent-purple hover:text-white transition-colors underline decoration-accent-purple/30 underline-offset-4 font-mono mt-1 inline-block">
+                            《你不知道的 Claude Code：架構、治理與工程實踐》
+                        </a>
+                    </p>
+                </div>
+            </div>
+
         </article>
 
         <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
@@ -202,7 +224,7 @@
             <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
                 View All Projects
             </a>
-            <a href="project_08.html" class="text-accent-purple hover:text-white transition-colors text-sm font-bold tracking-wide">
+            <a href="project_09.html" class="text-accent-purple hover:text-white transition-colors text-sm font-bold tracking-wide">
                 Next: 實戰與工具治理 (下) &rarr;
             </a>
         </div>

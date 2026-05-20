@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / P6 | GHOST.ouo</title>
+    <link rel="canonical" href="https://ghost8787.github.io/blog/en/EXP/project_06.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_06.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_06.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/project_06.html">
+
+    <link rel="icon" type="image/png" href="../../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../style.css">
+
+    <script>
+        window.siteRoot = '../';
+    </script>
+    <script src="../../i18n.js" defer></script>
+    <script type="module" src="../../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / P6</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                LINE Message Analyzer:<br>
+                <span class="text-gradient text-2xl md:text-4xl">A Two-Day Deep Refactor Log</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    Open Source
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Refactoring
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Frontend
+                </span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.02.23</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                A deep refactor of the open-source tool <code>line-message-analyzer</code> &mdash; both the underlying architecture and the frontend. The original gave basic message stat visualization, but years of low maintenance left hardcoded limits and scaling ceilings. The job: a modern stack, fixed logic bugs, and code that holds up to maintenance.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> UI Refactor and Render Optimization
+            </h3>
+
+            <p class="mb-6">
+                The original leaned hard on Bootstrap, which made the components flat and coupled. Responsive behavior was missing. The refactor:
+            </p>
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-8">
+                <li><strong class="text-white">Style system migration:</strong> moved the whole project to Tailwind CSS. Utility-first separates style from structure logically.</li>
+                <li><strong class="text-white">Responsive grid:</strong> introduced Flexbox layout that allocates container width by breakpoint. The mobile rendering breakage is gone.</li>
+            </ul>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-10">
+                <figure class="m-0">
+                    <img src="../../PNG/project_05.1.webp"
+                         alt="Layout before the refactor"
+                         loading="lazy" class="w-full rounded-2xl border-2 border-red-500/30 shadow-lg opacity-80">
+                    <figcaption class="text-center text-sm text-red-400 mt-3 font-mono">
+                        <i class="fas fa-times-circle"></i> Before: stiff cards, static breakpoints
+                    </figcaption>
+                </figure>
+                <figure class="m-0">
+                    <img src="../../PNG/project_05.2.webp"
+                         alt="Layout after the refactor"
+                         loading="lazy" class="w-full rounded-2xl border-2 border-green-500/30 shadow-lg">
+                    <figcaption class="text-center text-sm text-green-400 mt-3 font-mono">
+                        <i class="fas fa-check-circle"></i> After: dynamic grid with layered visual components
+                    </figcaption>
+                </figure>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Core Breakthrough: Decoupling Data from Rendering
+            </h3>
+
+            <p class="mb-6">
+                The most damaging architectural flaw: render nodes were hardwired to a fixed data count. The system declared exactly two DOM canvases, <code>memberCanvas1</code> and <code>memberCanvas2</code>. Any group with more than two members got truncated at render time.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-10">
+                <figure class="m-0">
+                    <img src="../../PNG/project_05.3.webp"
+                         alt="Two-person hard limit before the fix"
+                         loading="lazy" class="w-full rounded-2xl border-2 border-red-500/30 shadow-lg opacity-80">
+                    <figcaption class="text-center text-sm text-red-400 mt-3 font-mono">
+                        <i class="fas fa-times-circle"></i> Coupled: a chart structure hardcoded for two people
+                    </figcaption>
+                </figure>
+                <figure class="m-0">
+                    <img src="../../PNG/project_05.4.webp"
+                         alt="Arbitrary member count after the fix"
+                         loading="lazy" class="w-full rounded-2xl border-2 border-green-500/30 shadow-lg">
+                    <figcaption class="text-center text-sm text-green-400 mt-3 font-mono">
+                        <i class="fas fa-check-circle"></i> Dynamic: DOM nodes mapped from the data array
+                    </figcaption>
+                </figure>
+            </div>
+
+            <p>
+                Fix: switch to data-driven rendering.
+            </p>
+            <ul class="list-none space-y-4 my-6 text-sm text-gray-400">
+                <li class="bg-white/5 p-4 rounded-xl border border-white/5">
+                    <strong class="text-white text-base block mb-2"><i class="fas fa-database text-accent-purple"></i> Dynamic registration in the parser</strong>
+                    Rewrote <code>analyze.js</code>. While scanning text, the system extracts unique entity names and dynamically allocates a stats array in the state pool. The member-count ceiling is gone.
+                </li>
+                <li class="bg-white/5 p-4 rounded-xl border border-white/5">
+                    <strong class="text-white text-base block mb-2"><i class="fas fa-desktop text-accent-purple"></i> Render layer maps data to DOM</strong>
+                    The frontend receives the data object and loops over it, dynamically creating card containers and Canvas instances. Combined with the flex-wrap grid above, an N-member dataset renders smoothly.
+                </li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Modernizing the Architecture and State Management
+            </h3>
+
+            <p>The original was full of global-variable pollution and outdated DOM API calls. To keep the system stable, a few engineering rules:</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
+                <div class="bg-[#0A0A0A] p-5 rounded-xl border border-white/10">
+                    <h4 class="text-white font-bold mb-3 text-sm">State Centralization</h4>
+                    <pre class="bg-black/50 p-3 rounded text-xs text-green-400 overflow-x-auto m-0 font-mono"><code>const AppState = {
+  chatname: "",
+  members: [],
+  memberStats: {},
+  totalMessages: 0,
+  unsent: 0
+};</code></pre>
+                </div>
+                <div class="bg-[#0A0A0A] p-5 rounded-xl border border-white/10">
+                    <h4 class="text-white font-bold mb-3 text-sm">Dynamic Instantiation</h4>
+                    <pre class="bg-black/50 p-3 rounded text-xs text-blue-400 overflow-x-auto m-0 font-mono"><code>sortedKeys.forEach((member, i) => {
+  let canvasId = `member_${i}`;
+  generateDonut(canvasId,
+    [mTxt, st.stickers, st.photos],
+    ['#EB9F9F', '#F0E5DE', '#7C7877']
+  );
+});</code></pre>
+                </div>
+            </div>
+
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-8">
+                <li><strong class="text-white">Data accuracy fix:</strong> patched the "unsent message" detection logic. Rebuilt the X-axis time-series generator.</li>
+                <li><strong class="text-white">Dependency cleanup:</strong> removed jQuery, the most redundant dependency, and rewrote in vanilla JS. The wrapper layers and render load both shrink.</li>
+                <li><strong class="text-white">Test isolation (TDD):</strong> built a <code>debug.js</code> test environment. Core logic gets verified at the Node.js layer before it ships to the frontend.</li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Working with AI Agents: Boundaries and Discipline
+            </h3>
+
+            <p>This refactor leaned hard on AI assistance. The process surfaced both its strengths and its failure modes in software engineering:</p>
+
+            <div class="space-y-4 my-8">
+                <div class="bg-white/5 p-5 rounded-xl border-l-4 border-accent-purple/50">
+                    <strong class="text-white flex items-center gap-2 mb-2"><i class="fas fa-check"></i> Where productivity went up</strong>
+                    <p class="text-sm text-gray-400 m-0">Prototyping, regex reasoning, and cleaning redundant code. AI cuts the time on these significantly.</p>
+                </div>
+                <div class="bg-white/5 p-5 rounded-xl border-l-4 border-accent-purple/50">
+                    <strong class="text-white flex items-center gap-2 mb-2"><i class="fas fa-exclamation-triangle"></i> Where it breaks things</strong>
+                    <p class="text-sm text-gray-400 m-0">AI does not hold the global state well. It happily fixes a local bug while destroying the broader structure. It will also slip in unauthorized "improvements."</p>
+                </div>
+                <div class="bg-white/5 p-5 rounded-xl border-l-4 border-accent-purple/50">
+                    <strong class="text-white flex items-center gap-2 mb-2"><i class="fas fa-terminal"></i> Collaboration rules</strong>
+                    <p class="text-sm text-gray-400 m-0">The developer owns architectural decisions. Tasks get split into atomic commits with rollback points. No giant AI-driven rewrites of core logic.</p>
+                </div>
+            </div>
+
+            <hr class="border-white/10 my-12">
+
+            <h3 class="text-2xl font-bold text-white mt-8 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Tech Debt and Roadmap
+            </h3>
+
+            <p class="text-gray-400 font-light mb-6">The refactor settled the underlying skeleton. The next round of optimization targets these known edge cases:</p>
+
+            <div class="space-y-6 mb-10">
+                <div class="bg-white/5 p-6 rounded-xl border border-white/10">
+                    <h4 class="text-white font-bold mb-3 flex items-center gap-2 text-base">
+                        <i class="fas fa-bug text-accent-purple"></i> Issue #2 &amp; #4: edge cases in unstructured text
+                    </h4>
+                    <ul class="text-sm text-gray-400 space-y-2 m-0 pl-0 list-none">
+                        <li><strong class="text-white">Name string fragmentation:</strong> entity names with spaces (like "John Doe") trip the parser pointer. I added a Tab-separated mechanism as a first pass. Long term, dynamic affix analysis is needed.</li>
+                        <li><strong class="text-white">Timestamp confusion:</strong> the English export format (AM/PM) does not match the existing regex. An adaptive locale detector that switches the matching logic is the right fix.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h4 class="text-lg font-bold text-white mb-4">Extension Dimensions</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-400 font-light mb-12">
+                <div class="bg-[#0A0A0A] p-4 rounded-lg border border-white/5">
+                    <strong class="text-white block mb-1">1. Data export module</strong>
+                    A standardized API for JSON and CSV export. Makes downstream data mining easy.
+                </div>
+                <div class="bg-[#0A0A0A] p-4 rounded-lg border border-white/5">
+                    <strong class="text-white block mb-1">2. Higher-dimension insights</strong>
+                    Time-series analysis. Compute per-node active hours, response latency, and similar dynamic metrics.
+                </div>
+                <div class="bg-[#0A0A0A] p-4 rounded-lg border border-white/5">
+                    <strong class="text-white block mb-1">3. Cross-dataset comparison</strong>
+                    Support multiple data inputs. Run parallel comparison visualizations across groups.
+                </div>
+                <div class="bg-[#0A0A0A] p-4 rounded-lg border border-white/5">
+                    <strong class="text-white block mb-1">4. Interaction upgrade</strong>
+                    Canvas/SVG event listeners. Drill-down on data points, exploratory timeline scrubbing.
+                </div>
+            </div>
+
+            <hr class="border-white/10 my-12">
+
+            <h3 class="text-2xl font-bold text-white mt-8 mb-4 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Open Source and System Evolution
+            </h3>
+
+            <p class="text-gray-300 leading-relaxed mb-6">
+                Open source lives on ongoing validation and architectural improvement. If you have a better take on the data cleaning logic or the frontend architecture, jump in:
+            </p>
+
+            <ul class="list-disc pl-5 space-y-2 text-gray-400 font-light mb-8">
+                <li><strong class="text-white">Repository:</strong> source on <a href="https://github.com/GHOST8787/line-message-analyzer2026" target="_blank" rel="noopener noreferrer" class="text-accent-purple hover:underline underline-offset-4 transition-colors">GitHub</a>.</li>
+                <li><strong class="text-white">Pull requests:</strong> performance fixes and feature additions welcome.</li>
+                <li><strong class="text-white">Issue tracking:</strong> edge cases and technical discussion all go through Issues.</li>
+            </ul>
+
+            <p class="text-gray-400 italic text-sm">
+                Credit to the original author for the foundation. Software engineering is the work of building order against entropy. With more hands, this tool can settle into a more stable shape.
+            </p>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="project_05.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Project
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Projects
+            </a>
+            <a href="project_07.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                Next Project &rarr;
+            </a>
+        </div>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+</body>
+</html>
