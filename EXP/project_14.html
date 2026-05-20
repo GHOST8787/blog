@@ -60,9 +60,6 @@
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
                     Chrome Extension
                 </span>
-                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    i18n
-                </span>
             </div>
 
             <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
@@ -73,9 +70,16 @@
 
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
-            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
                 Device Tabs Opener v2.1.0 上架後，功能面已完成跨裝置分頁的批次開啟。v2.2.0 這一輪集中處理視覺與互動：整套 UI 重做、加上中英雙語切換、把「整裝置一鍵」拆成「分頁層級勾選」。送 Chrome Web Store 審核中。
             </p>
+
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">诶嘿</div>
+                <p class="m-0">
+                    Device Tabs Opener 是一款 Chrome Extension（裝在 Chrome 瀏覽器的小型外掛），功能是把手機 Chrome 上開著的分頁，按一鍵全開到桌面瀏覽器繼續看。v2.1.0 解決核心功能、上架到 Chrome Web Store；v2.2.0 是視覺與互動層的全面重整，相關背景與基礎用法可參考 <a href="project_11.html" class="text-accent-purple hover:text-white transition-colors underline decoration-accent-purple/30 underline-offset-4">P11 v2.1.0 的紀錄</a>。
+                </p>
+            </div>
 
             <figure class="my-10 mx-auto">
                 <img src="../PNG/device_tabs_v22_hero.png"
@@ -239,8 +243,8 @@
             </h3>
 
             <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
-                <li><strong class="text-white"><code>:focus-visible</code></strong> &mdash; 鍵盤 tab 導覽顯示橘色焦點環，滑鼠點擊保持原樣。</li>
-                <li><strong class="text-white"><code>prefers-reduced-motion: reduce</code></strong> &mdash; 系統開啟減少動態時，全部 transition 退到 0s。</li>
+                <li><strong class="text-white"><code>:focus-visible</code></strong> &mdash; CSS 媒體查詢，可區分使用者是用鍵盤 tab 鍵還是滑鼠操作。鍵盤導覽顯示橘色焦點環方便視覺追蹤，滑鼠點擊保持原樣以免干擾。</li>
+                <li><strong class="text-white"><code>prefers-reduced-motion: reduce</code></strong> &mdash; CSS 媒體查詢，偵測使用者是否在作業系統開啟「減少動態效果」選項（前庭功能障礙者常用設定）。偵測到時，全部 transition 動畫退到 0s。</li>
                 <li><strong class="text-white">系統高對比模式</strong> &mdash; 由瀏覽器原生樣式處理，未覆蓋 CSS。</li>
             </ul>
 

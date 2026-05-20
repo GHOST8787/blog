@@ -63,9 +63,16 @@
 
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
-            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
                 Same requirement &mdash; turn a YouTube video into a Chinese digest I can actually keep &mdash; built twice with two completely different engineering approaches. This is a log of what changed between the two generations, what V1 left unsolved, and how V2 picked it up.
             </p>
+
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">Heya</div>
+                <p class="m-0">
+                    A personal tool: drop a YouTube URL in, get back a structured Chinese digest a few minutes later (chapter jumps, key sections, takeaways worth keeping, original transcript, Excel archive). V1 used n8n (a visual node-based automation tool, similar to Zapier) wired to a GEMINI plain-text summarizer, writing output to Google Sheets. V2 was rebuilt end-to-end: web login plus URL paste, Claude Sonnet 4.6 reading transcript and frames together, output rendered as a shareable web page.
+                </p>
+            </div>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> The Problem: a 30-Minute Video, 5 Calls Worth Keeping

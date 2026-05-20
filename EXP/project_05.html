@@ -70,9 +70,16 @@
 
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
             
-            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
                 在營運實體零售業務的場景中，面對大量且重複性高的進線諮詢，傳統依賴人力的處理模式將導致資源嚴重耗損。同時，常規的規則導向 (Rule-based) 機器人缺乏語意理解能力，無法處理非標準化提問。為最佳化人力配置並維持服務品質，本專案利用 Make 平台整合 LINE Messaging API、Google Workspace 與 LLM，建構一套具備意圖識別 (Intent Recognition) 與檢索增強生成 (RAG) 能力的自動化客服系統。
             </p>
+
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">诶嘿</div>
+                <p class="m-0">
+                    這是替一家實體零售店家做的 LINE 官方帳號智慧客服。客戶在 LINE 上問問題，後台由 AI 自動分流：屬於常見問題（產品規格、保固、購買流程）就讓 AI 查公司既有的資料庫直接回覆；判斷需要真人處理就轉接人工客服。整套系統用 <strong class="text-gray-300">Make</strong>（一款拖拉式自動化流程平台，類似 Zapier）串接 LINE API、Google 文件、AI 模型，無須寫底層程式碼。<strong class="text-gray-300">RAG</strong>（檢索增強生成）指 AI 回答前先去查公司文件，根據查到的資料作答，避免 AI 自己亂編答案。
+                </p>
+            </div>
 
             <figure class="my-12">
                 <img src="../PNG/project_04.1.webp" 

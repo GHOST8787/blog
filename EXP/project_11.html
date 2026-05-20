@@ -63,9 +63,16 @@
 
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
-            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
                 一支解決「從其他裝置批次開啟分頁」需求的 Chrome Extension。涵蓋 Manifest V3、Vanilla JS 實作、MIT 開源授權與 Web Store 上架流程紀錄。
             </p>
+
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">诶嘿</div>
+                <p class="m-0">
+                    Chrome Extension 是裝在 Chrome 瀏覽器上的小型外掛程式，安裝後在工具列出現一個圖示，點開就能執行特定功能。本專案的功能是把手機 Chrome 上開著的分頁，按一個按鈕全部開到桌面瀏覽器繼續看。Manifest V3 是 Chrome 自 2024 年起對新上架擴充功能要求的技術規範，本專案依此規範開發、走完 Chrome Web Store 審核並上架。
+                </p>
+            </div>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 問題：功能存在，但操作路徑破碎
@@ -96,8 +103,8 @@
             </h4>
 
             <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
-                <li><strong class="text-white">Manifest V3</strong>：Chrome 自 2024 年起要求新上架擴充功能採用 V3 規範，以 Service Worker 取代 Background Page，權限模型更嚴格。</li>
-                <li><strong class="text-white">Vanilla JavaScript</strong>：無框架、無打包工具。整體為單一 HTML + 單一 JS 檔案，約數百行。</li>
+                <li><strong class="text-white">Manifest V3</strong>：Chrome 自 2024 年起要求新上架擴充功能採用 V3 規範，以 Service Worker（背景常駐的輕量化程序，需要時才喚醒、不用時自動休眠以節省記憶體）取代舊版常駐型的 Background Page，整體權限模型更嚴格。</li>
+                <li><strong class="text-white">Vanilla JavaScript</strong>：原生 JavaScript，不使用 React、Vue 等前端框架，也不引入打包工具。整體為單一 HTML + 單一 JS 檔案，約數百行。功能規模單純的工具型擴充採用此選擇可降低依賴與維護成本。</li>
             </ul>
 
             <p>
@@ -230,6 +237,16 @@
             <p>
                 使用者可從 Chrome Web Store 直接點擊「加到 Chrome」，無需開發者模式或下載 zip。
             </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 對使用者的意義
+            </h3>
+
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">直接解決原本的多次點擊負擔</strong> &mdash; 10 個待處理分頁從「逐筆點 10 次」壓縮到「點圖示、全選、開啟」三步驟，約 2&ndash;3 秒。</li>
+                <li><strong class="text-white">補上原生功能的缺口</strong> &mdash; Chrome 早已實作跨裝置分頁同步，本擴充補上「批次操作」的最後一哩，避免使用者另外去找協作工具或第三方服務。</li>
+                <li><strong class="text-white">最小權限可信</strong> &mdash; 僅宣告 <code class="text-accent-purple">sessions</code> 與 <code class="text-accent-purple">tabs</code> 兩個權限、無後端、無資料上傳、原始碼開源並採 MIT 授權，使用者可自行檢視程式碼確認無隱私疑慮。</li>
+            </ul>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 專案連結

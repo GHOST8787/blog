@@ -63,9 +63,16 @@
 
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
-            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
                 同一個需求 &mdash; 把 YouTube 影片轉成可以帶走的中文整理 &mdash; 用兩種完全不同的工程方法各做了一次。這篇紀錄兩個世代的架構差異，以及 V1 留下了什麼問題、V2 是用什麼方法接手。
             </p>
+
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">诶嘿</div>
+                <p class="m-0">
+                    這是一個自用工具：丟一條 YouTube 連結進去，幾分鐘後拿到一份結構化的中文整理（章節跳轉、重點段落、可帶走的判斷、原文字幕、Excel 留底）。V1 用 n8n（一種以拖拉節點建立自動化流程的視覺化工具）串接 GEMINI 純文字摘要，輸出寫進 Google Sheets。V2 整套重做：網頁登入貼 URL、Claude Sonnet 4.6 讀字幕加影格畫面整理、產出可分享的網頁。
+                </p>
+            </div>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 問題：30 分鐘影片只想帶走 5 條判斷
@@ -167,7 +174,7 @@
             </h3>
 
             <p>
-                第二個版本整個架構重做。從「n8n 工作流」變成「web app + queue + 本機 worker」：
+                第二個版本整個架構重做。從「n8n 工作流」變成「web app + queue + 本機 worker」：使用者在網頁丟連結後，雲端 API 將任務寫進 Firestore（Google 提供的雲端資料庫）等待處理，桌機上 24 小時常駐的 worker 程式偵測到新任務、下載影片、轉字幕、抽影格、丟給 Claude 整理、寫回資料庫；網頁端透過監聽資料庫變化即時渲染結果。
             </p>
 
             <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
@@ -184,6 +191,10 @@
        &darr;
 [Vercel /v/[id]] onSnapshot &rarr; 渲染完整報告</code></pre>
             </div>
+
+            <p class="text-sm text-gray-500 italic">
+                架構圖術語對照：<strong class="text-gray-400">yt-dlp</strong> 下載 YouTube 影片與原始字幕、<strong class="text-gray-400">Whisper</strong> 是 OpenAI 開源的語音轉文字模型、<strong class="text-gray-400">transcript</strong> 是逐句帶時間戳的字幕檔、<strong class="text-gray-400">frame</strong> 是影片中某個時間點的畫面截圖、<strong class="text-gray-400">vision</strong> 表示模型同時讀文字加圖片。
+            </p>
 
             <figure class="my-8">
                 <img src="../PNG/project_12.2.png"
@@ -203,8 +214,8 @@
             </p>
 
             <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
-                <li><strong class="text-white">Call 1（純文字）：</strong>讀 transcript，先規劃章節結構 &mdash; 每個章節幾分到幾分、主題是什麼、哪些 timestamp 需要看畫面（例如講者展示了表格、引用了一張圖）。輸出是一個 ChapterPlan JSON。</li>
-                <li><strong class="text-white">中間步驟：</strong>根據 Call 1 提的時間點，從原始影片抽出對應 frames（用 ffmpeg）。每個章節各拿一張代表性畫面。</li>
+                <li><strong class="text-white">Call 1（純文字）：</strong>讀 transcript，先規劃章節結構 &mdash; 每個章節幾分到幾分、主題是什麼、哪些 timestamp 需要看畫面（例如講者展示了表格、引用了一張圖）。輸出是一個 ChapterPlan JSON（結構化的章節規劃檔，後續步驟讀取它來決定要從影片抽哪些時間點的畫面）。</li>
+                <li><strong class="text-white">中間步驟：</strong>根據 Call 1 提的時間點，從原始影片抽出對應 frames（用 ffmpeg，一套處理影音檔的命令列工具）。每個章節各拿一張代表性畫面。</li>
                 <li><strong class="text-white">Call 2（文字 + vision）：</strong>把 transcript、章節骨架、frame 圖片一起餵給 model，產出最終結構化整理 &mdash; 含每章重點、可帶走的判斷、frame 描述、信心註記。</li>
             </ul>
 

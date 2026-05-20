@@ -55,9 +55,6 @@
                     AI &amp; Automation
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    LLM
-                </span>
-                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
                     Datasheet Extraction
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
@@ -73,18 +70,25 @@
 
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
-            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
                 國立臺灣科技大學「<a href="https://ai.ntust.edu.tw/p/404-1087-140681.php?Lang=zh-tw" target="_blank" rel="noopener" class="text-accent-purple hover:text-white transition-colors underline decoration-accent-purple/30 underline-offset-4">Cloud Solution Architect 培訓班</a>」2026 春季期末作業。題目核心是「跑通一條 LLM pipeline 把 10 份電子元件 datasheet PDF 抽成 11 個結構化欄位」。在培訓班基本要求之外，我用培訓班提供的 Azure AI Foundry V1 API quota 額外設計了雙軸實驗（PDF 抽取方法 × LLM 模型），把 V1 交件版的 60.9% 推到 V2 的 76.4%。
             </p>
+
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">诶嘿</div>
+                <p class="m-0">
+                    每個電子零件出廠時都附一份規格書（英文叫 datasheet），上面有品名、工作溫度、最大電壓、腳位數量等技術參數。工程師選零件、設計電路前要查這些參數。題目給 10 份這種 PDF，要求做一條自動化流程：丟 PDF 進去，AI 自動把規格參數抓出來填進 Excel，每份共 11 個欄位。老師事先準備好正確答案表（<code class="text-accent-purple">specbook.xlsx</code>），用來逐欄比對 AI 答對幾題、算出準確率。要求「跑通一遍 + 交報告」就及格。
+                </p>
+            </div>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 任務規格
             </h3>
 
             <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
-                <li><strong class="text-white">輸入</strong> &mdash; 10 份電子元件 datasheet PDF（二極體 / 整流橋 / 電晶體封裝）</li>
-                <li><strong class="text-white">輸出</strong> &mdash; 每份 PDF 抽出 11 個結構化欄位：Part Number、Operating Temperature、封裝尺寸、PIN Number、I_O、I_F、V_F、V_RRM、I_R</li>
-                <li><strong class="text-white">評分</strong> &mdash; 與 <code class="text-accent-purple">specbook.xlsx</code> 標答 byte-for-byte 比對，計算欄位準確率</li>
+                <li><strong class="text-white">輸入</strong> &mdash; 10 份電子元件 datasheet PDF（二極體 / 整流橋 / 電晶體封裝，這三類都是電源電路常用的小零件）</li>
+                <li><strong class="text-white">輸出</strong> &mdash; 每份 PDF 抽出 11 個結構化欄位：Part Number（零件型號）、Operating Temperature（工作溫度範圍）、封裝尺寸（零件外觀的長寬高 mm）、PIN Number（腳位數量）、I_O / I_F（輸出 / 順向電流）、V_F（順向電壓）、V_RRM（最大反向電壓）、I_R（反向漏電流）</li>
+                <li><strong class="text-white">評分</strong> &mdash; 與 <code class="text-accent-purple">specbook.xlsx</code> 標答 byte-for-byte 比對，計算欄位準確率（11 欄 × 10 份 PDF = 110 個答案，答對幾題就是幾 %）</li>
                 <li><strong class="text-white">基本要求</strong> &mdash; 跑通 pipeline、交一份成果報告即可過關</li>
             </ul>
 
@@ -93,29 +97,41 @@
             </h3>
 
             <p>
-                培訓班這個學期提供 Azure AI Foundry V1 API quota，多數作業只要跑通一個模型就符合及格條件。我把這個 quota 拿來做系統性的雙軸對照實驗：
+                培訓班這個學期提供 Azure AI Foundry V1 API quota（連到微軟雲端跑大型 AI 模型的免費額度），多數作業只要跑通一個模型就符合及格條件。我把這個 quota 拿來做系統性的雙軸對照實驗：
             </p>
+
+            <div class="my-6 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">雙軸對照實驗</div>
+                <p class="m-0 mb-3">
+                    一條 pipeline 由兩個關鍵零件組成：「把 PDF 解析成文字」的工具，加上「讀文字、抽欄位」的 AI 模型。要判斷哪個零件對結果影響最大，就要同時準備幾個候選互換，把所有組合都跑一次。3 種 PDF 抽取工具 × 5 種 AI 模型 = 15 種跑法，每種都用同一份 prompt、同一批 PDF、同一套標答評分。
+                </p>
+                <p class="m-0">
+                    這是科學實驗的對照組概念：固定其他變數，只動一個變數，比較結果差多少。V1 交件版（最弱的 qwen2.5:7b + pdfplumber）當基準線，剩下 14 種組合都跟它比，看是「換 PDF 工具」推得多還是「換 AI 模型」推得多。
+                </p>
+            </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
                 <div class="bg-white/5 p-6 rounded-2xl border border-accent-purple/20">
                     <div class="text-xs font-mono text-accent-purple uppercase mb-3">軸 1</div>
                     <h4 class="text-white font-bold mb-3">PDF 抽取方法</h4>
                     <ul class="text-sm text-gray-400 space-y-1 list-disc pl-5 m-0">
-                        <li>pdfplumber（純文字 layer）</li>
-                        <li>PyMuPDF / fitz（向量物件層）</li>
-                        <li>camelot-py（lattice 表格偵測，需 Ghostscript）</li>
+                        <li>pdfplumber（讀 PDF 內建的文字層，速度快）</li>
+                        <li>PyMuPDF / fitz（讀 PDF 的向量物件，能拿到字的座標）</li>
+                        <li>camelot-py（專門偵測表格框線，相依 Ghostscript）</li>
                     </ul>
+                    <p class="text-xs text-gray-500 mt-3 m-0">三者皆為 Python 常用的 PDF 抽取套件，各自擅長不同類型 PDF。</p>
                 </div>
                 <div class="bg-white/5 p-6 rounded-2xl border border-accent-purple/20">
                     <div class="text-xs font-mono text-accent-purple uppercase mb-3">軸 2</div>
                     <h4 class="text-white font-bold mb-3">LLM 模型</h4>
                     <ul class="text-sm text-gray-400 space-y-1 list-disc pl-5 m-0">
-                        <li>本地 Ollama + qwen2.5:7b（V1 基線）</li>
-                        <li>本地 Ollama + qwen2.5:14b</li>
-                        <li>Azure GPT-4o</li>
-                        <li>Azure Llama-4-Maverick</li>
-                        <li>Azure mistral-medium-2505</li>
+                        <li>本地 Ollama + qwen2.5:7b（V1 基線，最小最快）</li>
+                        <li>本地 Ollama + qwen2.5:14b（同家族大一號）</li>
+                        <li>Azure GPT-4o（OpenAI 旗艦）</li>
+                        <li>Azure Llama-4-Maverick（Meta 開源旗艦）</li>
+                        <li>Azure mistral-medium-2505（Mistral 中量級）</li>
                     </ul>
+                    <p class="text-xs text-gray-500 mt-3 m-0">本地表示模型權重下載至個人電腦、由顯卡執行，容量受限於 VRAM；雲端表示透過 API 連 Azure 執行旗艦級模型，消耗培訓班額度。</p>
                 </div>
             </div>
 
@@ -173,7 +189,7 @@
             <h4 class="text-lg font-bold text-white mt-10 mb-4">線 1：Prompt 改造（12 條盲設計決策）</h4>
 
             <p>
-                V2 prompt 採盲設計原則 &mdash; 只用 11 個欄位名稱與一般電子工程 datasheet 領域常識推導，避免引用 V1 跑出的具體結果反向修正。12 條決策按類型整理：
+                V2 prompt 採盲設計原則 &mdash; 只用 11 個欄位名稱與一般電子工程 datasheet 領域常識推導，避免引用 V1 跑出的具體結果反向修正。盲設計指：寫 prompt 時不參照 V1 結果挑錯題反推規則，僅依欄位定義與 datasheet 領域慣例設計，以保留對未見樣本的泛化能力。12 條決策按類型整理：
             </p>
 
             <div class="overflow-x-auto my-6">
@@ -292,6 +308,10 @@
                 <span class="text-accent-purple">#</span> 雙軸極差：模型升級效益是 PDF 改良的 4 倍
             </h3>
 
+            <p>
+                極差 = 在所有跑過的組合裡，「最高分減最低分」的差距。同樣是換一個變數，差距越大代表這個變數對結果的槓桿越大。
+            </p>
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
                 <div class="bg-white/5 border border-accent-purple/20 rounded-2xl p-6 text-center">
                     <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">14.6%</div>
@@ -356,8 +376,18 @@
             </ul>
 
             <p>
-                理論上 per-PDF best-of-3 ensemble 上限為 80.9%，屬於 overfit 估計（用 ground truth 反推哪家最強），在無標答情境下不可用。單模型實用上限 76.4%。
+                若每份 PDF 都從三家雲端模型中選出該份得分最高者、再合併答案，理論上限為 80.9%。此估計需先擁有標準答案才能挑選最佳模型，屬於 overfit 估計（用 ground truth 反推哪家最強），實際使用情境下無標答可比對，因此 80.9% 無法達成。單一模型實測上限為 76.4%。
             </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 76.4% 在這個任務上代表什麼
+            </h3>
+
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">就課程要求而言</strong> &mdash; 基本要求為「跑通即過關」，並未訂定準確率門檻。V2 的 76.4% 較交件版 60.9% 高出 15.5 個百分點。</li>
+                <li><strong class="text-white">就任務難度而言</strong> &mdash; 110 個答案中命中 84 題。datasheet 來自不同廠商、不同年代，欄位命名與表格排版差異顯著，此準確率反映 pipeline 對未見 PDF 樣本具備跨樣本的泛化能力。</li>
+                <li><strong class="text-white">就方法可複製性而言</strong> &mdash; 雙軸實驗設計可移植至同類型任務。面對任何「非結構化文件抽欄位」題目，先以雙軸矩陣跑一輪基準，即可量化判斷預算應投入哪個方向。</li>
+            </ul>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 技術棧

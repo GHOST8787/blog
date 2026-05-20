@@ -63,9 +63,19 @@
 
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
-            <p class="text-xl text-gray-400 font-light mb-16 leading-relaxed">
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
                 Written from six months of going in circles with Claude Code. At first it looks like a ChatBot. Then the context turns noisy, the toolbelt grows but the output gets worse, and the rules I wrote stop being followed. That is a system architecture problem. To get Claude Code to behave, I had to understand the underlying six-layer structure and where the context boundaries actually sit.
             </p>
+
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed mb-16">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">Heya</div>
+                <p class="m-0 mb-3">
+                    Claude Code is Anthropic's command-line developer tool. After installation, the user chats with Claude in a local terminal, lets it read and write project files, run shell commands, and refactor across multiple files. Think "AI engineering assistant that knows how to use tools."
+                </p>
+                <p class="m-0">
+                    This and the next piece form a series, logging the underlying architecture observed after six months of heavy use. Context refers to all the information the AI has to read before each response &mdash; user rules, file contents, tool definitions. "Context turning noisy" means this information accumulates and interferes with itself, causing the AI to skip instructions and degrade in quality. The series breaks down the cause of this problem and the engineering solutions.
+                </p>
+            </div>
 
             <section class="mb-16">
                 <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-3 border-b border-white/10 pb-4">

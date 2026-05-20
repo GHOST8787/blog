@@ -70,9 +70,16 @@
 
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
-            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
                 Running a physical retail business means high-volume, repetitive customer inquiries. Handling them with people burns hours. The usual rule-based bot has no semantic understanding and falls over on anything off-script. To free up staff while keeping service quality stable, I built an automation on Make that wires together LINE Messaging API, Google Workspace, and an LLM &mdash; with intent recognition and retrieval-augmented generation (RAG) built in.
             </p>
+
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">Heya</div>
+                <p class="m-0">
+                    Built for a brick-and-mortar retail client's LINE Official Account smart support. When a customer asks a question on LINE, the backend routes it automatically: common questions (product specs, warranty, purchase flow) get an AI-generated answer drawn from the company's existing knowledge base; cases needing a human get forwarded to live support. The whole system is wired through <strong class="text-gray-300">Make</strong> (a drag-and-drop automation platform, similar to Zapier), connecting LINE API, Google Docs, and the AI model without any low-level code. <strong class="text-gray-300">RAG</strong> (retrieval-augmented generation) means the AI looks up company documents before answering, grounding its responses in retrieved content rather than making things up.
+                </p>
+            </div>
 
             <figure class="my-12">
                 <img src="../../PNG/project_04.1.webp"
