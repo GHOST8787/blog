@@ -72,9 +72,16 @@
 
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
             
-            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
                 本專案針對開源工具 <code>line-message-analyzer</code> 進行底層架構與前端介面的深度重構。該工具原具備基礎的訊息統計視覺化功能，但在長期缺乏維護下，暴露出硬體編碼 (Hardcoding) 限制與系統擴展性瓶頸。本次介入旨在透過現代化技術棧，解決核心邏輯缺陷並提升程式碼的可維護性。
             </p>
+
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">诶嘿</div>
+                <p class="m-0">
+                    <code class="text-accent-purple">line-message-analyzer</code> 是一個開源網頁工具：使用者把 LINE 群組對話匯出成 txt 檔上傳，工具自動產出統計圖表，例如每個成員傳了多少訊息、貼圖比例、活躍時段等。原專案有兩個侷限：只能處理「正好兩個人」的對話（多人就壞）、UI 在手機上會破版。本專案紀錄這次重構：把架構改成支援任意人數、UI 改響應式設計、刪除過時依賴套件、發回原專案社群。
+                </p>
+            </div>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 介面架構重構與渲染優化

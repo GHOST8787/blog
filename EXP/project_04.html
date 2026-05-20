@@ -72,10 +72,17 @@
 
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
             
-            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
                 本專案實作一個輕量級的互動式前端模組。透過模擬隨機抽取機制，系統自動將對應的變數（卡牌屬性、正逆位狀態、使用者意圖領域）進行邏輯組裝，封裝成高質量的 System Prompt。<br>
                 此架構旨在降低終端使用者與大型語言模型 (LLM) 深度交互的技術門檻，將抽象的心理投射具象化為精準的機器指令。
             </p>
+
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">诶嘿</div>
+                <p class="m-0">
+                    這是一個互動網頁：使用者選擇詢問的主題（事業 / 關係 / 健康等）、點擊抽一張塔羅牌，網頁自動產生一段給 ChatGPT 等 AI 工具的提問指令（含抽到的牌、正位 / 逆位、提問領域等資訊），複製貼到 AI 對話框就能得到結構化的解牌結果。功能定位類似「塔羅版的 prompt generator」，把「想問塔羅但不知道怎麼跟 AI 描述」這個門檻拿掉。
+                </p>
+            </div>
             
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 技術架構與實作細節 (Technical Implementation)

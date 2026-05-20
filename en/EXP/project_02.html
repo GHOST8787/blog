@@ -70,9 +70,19 @@
 
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
-            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
                 A log of deploying the AI agent framework (Clawdbot) on a cloud VM. Part 1 focuses on infrastructure: environment setup, daemonized services, and a secure tunnel to the control dashboard. The goal is a 24/7 AI service node I can reach remotely.
             </p>
+
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">Heya</div>
+                <p class="m-0 mb-3">
+                    Clawdbot is an open-source AI agent framework. Once deployed on a cloud server (this project uses an Azure VM), it becomes a personal AI assistant running 24/7. With the full setup (Part 2), it can take over Gmail inbox handling, Google Calendar, Drive, etc. &mdash; commands like "check today's mail" or "what's on my calendar tomorrow" are issued in natural language and executed directly.
+                </p>
+                <p class="m-0">
+                    Part 1 logs every infrastructure step needed to get the assistant stable: SSH into the cloud host, install dependencies, configure the program as a daemonized background service, and access the dashboard from a local machine through an encrypted tunnel. Part 2 covers wiring it to a Google account and actual usage.
+                </p>
+            </div>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Stage 1: Prerequisites

@@ -63,9 +63,16 @@
 
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
-            <p class="text-xl text-gray-400 font-light mb-16 leading-relaxed">
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
                 Part 1 set up the macro boundaries and the context rules. This part zooms into execution: how to design tools an agent picks correctly, the actual job of subagents, the engineering meaning behind a few high-frequency commands, and the three evolutionary stages every developer goes through.
             </p>
+
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed mb-16">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">Heya</div>
+                <p class="m-0">
+                    Claude Code is Anthropic's command-line AI developer tool. This piece is Part 2 of the "Claude Code Architecture Deconstruction" series, continuing the six-layer architecture (Context / Action / Methodology / Control / Isolation / Verification) discussion from <a href="project_08.html" class="text-accent-purple hover:text-white transition-colors underline decoration-accent-purple/30 underline-offset-4">P8 Part 1</a>. Subagents are sub-AI instances the main process delegates tasks to, with isolated contexts to prevent pollution of the main process. This part logs their correct usage, tool design principles, and engineering-grade verification loops.
+                </p>
+            </div>
 
             <section class="mb-16">
                 <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-3 border-b border-white/10 pb-4">

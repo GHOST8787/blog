@@ -72,9 +72,16 @@
 
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
-            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
                 A deep refactor of the open-source tool <code>line-message-analyzer</code> &mdash; both the underlying architecture and the frontend. The original gave basic message stat visualization, but years of low maintenance left hardcoded limits and scaling ceilings. The job: a modern stack, fixed logic bugs, and code that holds up to maintenance.
             </p>
+
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">Heya</div>
+                <p class="m-0">
+                    <code class="text-accent-purple">line-message-analyzer</code> is an open-source web tool: a user uploads an exported LINE chat <code>.txt</code> file, the tool generates stat charts &mdash; messages per member, sticker ratio, peak activity hours, etc. The original had two main limitations: it only handled exactly two-person chats (broke on group chats) and the UI broke on mobile. This project documents the refactor: rebuilt the architecture to support any number of members, switched to a responsive UI, removed outdated dependencies, contributed the changes back to the original project's community.
+                </p>
+            </div>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> UI Refactor and Render Optimization

@@ -55,9 +55,6 @@
                     AI &amp; Automation
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    LLM
-                </span>
-                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
                     Datasheet Extraction
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
@@ -73,18 +70,25 @@
 
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
-            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
                 Final project for the National Taiwan University of Science and Technology (NTUST) <a href="https://ai.ntust.edu.tw/p/404-1087-140681.php?Lang=zh-tw" target="_blank" rel="noopener" class="text-accent-purple hover:text-white transition-colors underline decoration-accent-purple/30 underline-offset-4">Cloud Solution Architect training program</a>, Spring 2026. The brief: build an LLM pipeline that extracts 10 electronic component datasheet PDFs into 11 structured fields. On top of the minimum bar, I used the Azure AI Foundry V1 API quota provided by the program to run a two-axis experiment (PDF extraction method × LLM model), pushing the V1 submission's 60.9% up to V2's 76.4%.
             </p>
+
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">Heya</div>
+                <p class="m-0">
+                    Every electronic component ships with an official spec sheet (called a datasheet) listing part number, operating temperature range, max voltage, pin count and similar parameters. Engineers consult these before picking a part or designing a circuit. The brief gives 10 such PDFs and asks for an automated pipeline: feed in a PDF, the AI extracts the spec parameters and fills 11 columns of an Excel sheet. The instructor prepared an answer key (<code class="text-accent-purple">specbook.xlsx</code>) for cell-by-cell scoring. The minimum bar is "pipeline runs + submit one report" &mdash; pass.
+                </p>
+            </div>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Task Spec
             </h3>
 
             <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
-                <li><strong class="text-white">Input</strong> &mdash; 10 electronic component datasheet PDFs (diodes / rectifier bridges / transistor packages)</li>
-                <li><strong class="text-white">Output</strong> &mdash; 11 structured fields per PDF: Part Number, Operating Temperature, Package Dimensions, PIN Number, I_O, I_F, V_F, V_RRM, I_R</li>
-                <li><strong class="text-white">Scoring</strong> &mdash; byte-for-byte comparison against the <code class="text-accent-purple">specbook.xlsx</code> answer key, per-field accuracy</li>
+                <li><strong class="text-white">Input</strong> &mdash; 10 electronic component datasheet PDFs (diodes / rectifier bridges / transistor packages, all small components common in power circuits)</li>
+                <li><strong class="text-white">Output</strong> &mdash; 11 structured fields per PDF: Part Number (model code), Operating Temperature (working temperature range), Package Dimensions (component LxWxH in mm), PIN Number (pin count), I_O / I_F (output / forward current), V_F (forward voltage), V_RRM (max reverse voltage), I_R (reverse leakage current)</li>
+                <li><strong class="text-white">Scoring</strong> &mdash; byte-for-byte comparison against the <code class="text-accent-purple">specbook.xlsx</code> answer key, per-field accuracy (11 columns × 10 PDFs = 110 answers, % = how many hit)</li>
                 <li><strong class="text-white">Minimum bar</strong> &mdash; pipeline runs end-to-end, one results report submitted, pass.</li>
             </ul>
 
@@ -93,29 +97,41 @@
             </h3>
 
             <p>
-                The program supplied Azure AI Foundry V1 API quota this semester. Most students used it to get one model running for credit. I spent the quota on a systematic two-axis experiment instead:
+                The program supplied Azure AI Foundry V1 API quota this semester (free credits for running large AI models on Microsoft's cloud). Most students used it to get one model running for credit. I spent the quota on a systematic two-axis experiment instead:
             </p>
+
+            <div class="my-6 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">Two-Axis Design</div>
+                <p class="m-0 mb-3">
+                    A pipeline like this has two critical parts: the tool that parses the PDF into text, plus the AI model that reads the text and extracts the fields. To find out which part has the biggest effect on accuracy, prepare several candidates for each and run every combination. 3 PDF extractors × 5 AI models = 15 runs, every run uses the same prompt, the same PDFs, the same answer key.
+                </p>
+                <p class="m-0">
+                    Classic controlled experiment: hold the rest constant, change one variable, measure the delta. V1 submission (the weakest qwen2.5:7b + pdfplumber) becomes the baseline. The other 14 combinations all compare against it, separating "swap the PDF tool" gains from "swap the AI model" gains.
+                </p>
+            </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
                 <div class="bg-white/5 p-6 rounded-2xl border border-accent-purple/20">
                     <div class="text-xs font-mono text-accent-purple uppercase mb-3">Axis 1</div>
                     <h4 class="text-white font-bold mb-3">PDF Extraction Method</h4>
                     <ul class="text-sm text-gray-400 space-y-1 list-disc pl-5 m-0">
-                        <li>pdfplumber (plain text layer)</li>
-                        <li>PyMuPDF / fitz (vector object layer)</li>
-                        <li>camelot-py (lattice table detection, Ghostscript dependency)</li>
+                        <li>pdfplumber (reads the PDF's embedded text layer, fast)</li>
+                        <li>PyMuPDF / fitz (reads PDF vector objects, exposes character coordinates)</li>
+                        <li>camelot-py (table-border detection, requires Ghostscript)</li>
                     </ul>
+                    <p class="text-xs text-gray-500 mt-3 m-0">All three are common Python PDF extraction libraries, each strongest on a different PDF profile.</p>
                 </div>
                 <div class="bg-white/5 p-6 rounded-2xl border border-accent-purple/20">
                     <div class="text-xs font-mono text-accent-purple uppercase mb-3">Axis 2</div>
                     <h4 class="text-white font-bold mb-3">LLM Model</h4>
                     <ul class="text-sm text-gray-400 space-y-1 list-disc pl-5 m-0">
-                        <li>Local Ollama + qwen2.5:7b (V1 baseline)</li>
-                        <li>Local Ollama + qwen2.5:14b</li>
-                        <li>Azure GPT-4o</li>
-                        <li>Azure Llama-4-Maverick</li>
-                        <li>Azure mistral-medium-2505</li>
+                        <li>Local Ollama + qwen2.5:7b (V1 baseline, smallest and fastest)</li>
+                        <li>Local Ollama + qwen2.5:14b (same family, one size up)</li>
+                        <li>Azure GPT-4o (OpenAI flagship)</li>
+                        <li>Azure Llama-4-Maverick (Meta open-source flagship)</li>
+                        <li>Azure mistral-medium-2505 (Mistral mid-tier)</li>
                     </ul>
+                    <p class="text-xs text-gray-500 mt-3 m-0">Local means the model weights are downloaded to a personal machine and run on its GPU, capped by VRAM. Cloud means calling Azure through an API to run flagship-tier models, consuming the program's quota.</p>
                 </div>
             </div>
 
@@ -173,7 +189,7 @@
             <h4 class="text-lg font-bold text-white mt-10 mb-4">Track 1: Prompt Redesign (12 Blind Design Decisions)</h4>
 
             <p>
-                The V2 prompt follows a blind design principle &mdash; derived only from the 11 field names and general electronics datasheet domain knowledge, without referencing V1's actual outputs to reverse-fit. The 12 decisions grouped by type:
+                The V2 prompt follows a blind design principle &mdash; derived only from the 11 field names and general electronics datasheet domain knowledge, without referencing V1's actual outputs to reverse-fit. Blind design means: prompt rules are derived from the field definitions and datasheet domain conventions alone, never picked from V1's wrong answers to back-solve. This preserves generalization to unseen samples. The 12 decisions grouped by type:
             </p>
 
             <div class="overflow-x-auto my-6">
@@ -292,6 +308,10 @@
                 <span class="text-accent-purple">#</span> Two-Axis Spread: Model Upgrade Pays 4× the PDF Method
             </h3>
 
+            <p>
+                Spread = the gap between the highest and lowest scores across all combinations along a single axis. A larger spread means the variable has more leverage on the result.
+            </p>
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
                 <div class="bg-white/5 border border-accent-purple/20 rounded-2xl p-6 text-center">
                     <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">14.6%</div>
@@ -356,8 +376,18 @@
             </ul>
 
             <p>
-                A per-PDF best-of-3 ensemble would theoretically cap at 80.9%, but that's overfit (uses ground truth to pick the best). Not usable in a no-answer-key setting. The practical single-model ceiling stays at 76.4%.
+                If each PDF were assigned to whichever of the three cloud models scored highest on that specific document and their answers merged, the theoretical ceiling is 80.9%. The estimate requires the answer key to pick the best model per PDF, classifying it as an overfit ceiling (uses ground truth to pick the best). In actual use, with no answer key to compare against, the 80.9% is unreachable. The practical single-model ceiling stays at 76.4%.
             </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> What 76.4% Means in Context
+            </h3>
+
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">Against the course bar</strong> &mdash; the minimum requirement is "pipeline runs, pass," with no accuracy threshold. V2's 76.4% is 15.5 percentage points above the submission baseline of 60.9%.</li>
+                <li><strong class="text-white">Against task difficulty</strong> &mdash; 84 hits out of 110 answers. The datasheets come from different vendors and different eras, with substantial variance in field naming and table layout. The accuracy reflects cross-sample generalization on unseen PDFs.</li>
+                <li><strong class="text-white">Against future portability</strong> &mdash; the two-axis design transfers directly to similar tasks. For any "extract structured fields from unstructured documents" brief, running a two-axis matrix first gives a quantitative answer to where the budget should go.</li>
+            </ul>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Stack
