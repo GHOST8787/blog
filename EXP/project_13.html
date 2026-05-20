@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / P13 | GHOST.ouo</title>
+    <link rel="canonical" href="https://ghost8787.github.io/blog/EXP/project_13.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_13.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_13.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/project_13.html">
+
+    <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script src="../i18n.js" defer></script>
+    <script type="module" src="../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / P13</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                NTUST AI 期末作業：<br>
+                <span class="text-gradient text-2xl md:text-4xl">用學校 Azure quota 把 60.9% 推到 76.4% 的雙軸實驗</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    AI &amp; Automation
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    LLM
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Datasheet Extraction
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Experiment Design
+                </span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.05.08 &mdash; 2026.05.10</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                國立臺灣科技大學「<a href="https://ai.ntust.edu.tw/p/404-1087-140681.php?Lang=zh-tw" target="_blank" rel="noopener" class="text-accent-purple hover:text-white transition-colors underline decoration-accent-purple/30 underline-offset-4">Cloud Solution Architect 培訓班</a>」2026 春季期末作業。題目核心是「跑通一條 LLM pipeline 把 10 份電子元件 datasheet PDF 抽成 11 個結構化欄位」。在培訓班基本要求之外，我用培訓班提供的 Azure AI Foundry V1 API quota 額外設計了雙軸實驗（PDF 抽取方法 × LLM 模型），把 V1 交件版的 60.9% 推到 V2 的 76.4%。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 任務規格
+            </h3>
+
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">輸入</strong> &mdash; 10 份電子元件 datasheet PDF（二極體 / 整流橋 / 電晶體封裝）</li>
+                <li><strong class="text-white">輸出</strong> &mdash; 每份 PDF 抽出 11 個結構化欄位：Part Number、Operating Temperature、封裝尺寸、PIN Number、I_O、I_F、V_F、V_RRM、I_R</li>
+                <li><strong class="text-white">評分</strong> &mdash; 與 <code class="text-accent-purple">specbook.xlsx</code> 標答 byte-for-byte 比對，計算欄位準確率</li>
+                <li><strong class="text-white">基本要求</strong> &mdash; 跑通 pipeline、交一份成果報告即可過關</li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 培訓班基本要求之外的雙軸實驗設計
+            </h3>
+
+            <p>
+                培訓班這個學期提供 Azure AI Foundry V1 API quota，多數作業只要跑通一個模型就符合及格條件。我把這個 quota 拿來做系統性的雙軸對照實驗：
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
+                <div class="bg-white/5 p-6 rounded-2xl border border-accent-purple/20">
+                    <div class="text-xs font-mono text-accent-purple uppercase mb-3">軸 1</div>
+                    <h4 class="text-white font-bold mb-3">PDF 抽取方法</h4>
+                    <ul class="text-sm text-gray-400 space-y-1 list-disc pl-5 m-0">
+                        <li>pdfplumber（純文字 layer）</li>
+                        <li>PyMuPDF / fitz（向量物件層）</li>
+                        <li>camelot-py（lattice 表格偵測，需 Ghostscript）</li>
+                    </ul>
+                </div>
+                <div class="bg-white/5 p-6 rounded-2xl border border-accent-purple/20">
+                    <div class="text-xs font-mono text-accent-purple uppercase mb-3">軸 2</div>
+                    <h4 class="text-white font-bold mb-3">LLM 模型</h4>
+                    <ul class="text-sm text-gray-400 space-y-1 list-disc pl-5 m-0">
+                        <li>本地 Ollama + qwen2.5:7b（V1 基線）</li>
+                        <li>本地 Ollama + qwen2.5:14b</li>
+                        <li>Azure GPT-4o</li>
+                        <li>Azure Llama-4-Maverick</li>
+                        <li>Azure mistral-medium-2505</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> V1 → V2 成果對照
+            </h3>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">階段</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">模型</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">PDF 抽取</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">整體準確率</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V1 交件</td>
+                            <td class="px-4 py-3">qwen2.5:7b（本地）</td>
+                            <td class="px-4 py-3">pdfplumber</td>
+                            <td class="px-4 py-3 font-mono">60.9%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V2 本地最佳</td>
+                            <td class="px-4 py-3">qwen2.5:14b（本地）</td>
+                            <td class="px-4 py-3">pdfplumber</td>
+                            <td class="px-4 py-3 font-mono">64.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10 bg-accent-purple/5">
+                            <td class="px-4 py-3 font-bold text-white">V2 整體最佳</td>
+                            <td class="px-4 py-3"><strong class="text-accent-purple">GPT-4o</strong>（Azure）</td>
+                            <td class="px-4 py-3">pdfplumber</td>
+                            <td class="px-4 py-3 font-mono font-bold text-accent-purple">76.4%</td>
+                        </tr>
+                        <tr class="border-t border-white/10 bg-accent-purple/5">
+                            <td class="px-4 py-3 font-bold text-white">V2 整體最佳</td>
+                            <td class="px-4 py-3"><strong class="text-accent-purple">mistral-medium-2505</strong>（Azure）</td>
+                            <td class="px-4 py-3">pdfplumber</td>
+                            <td class="px-4 py-3 font-mono font-bold text-accent-purple">76.4%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 迭代過程：三條線並進
+            </h3>
+
+            <p>
+                從 V1 交件版到 V2 整體最佳，分三條獨立但會互相影響的調整線。每一次跑完都歸檔到 <code class="text-accent-purple">output/_archive/</code> 內對應的子資料夾（如 <code class="text-accent-purple">v1_qwen7b/</code>、<code class="text-accent-purple">v2_iter6_qwen14b/</code>、<code class="text-accent-purple">v2_pdfplumber_azure_gpt_4o/</code>），確保前一版結果不被覆蓋。
+            </p>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">線 1：Prompt 改造（12 條盲設計決策）</h4>
+
+            <p>
+                V2 prompt 採盲設計原則 &mdash; 只用 11 個欄位名稱與一般電子工程 datasheet 領域常識推導，避免引用 V1 跑出的具體結果反向修正。12 條決策按類型整理：
+            </p>
+
+            <div class="overflow-x-auto my-6">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider whitespace-nowrap w-44">類型</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">決策</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">輸入處理</td>
+                            <td class="px-4 py-3">D1 Part Number 當 input（pipeline 執行前已知）</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">範例引導</td>
+                            <td class="px-4 py-3">D2 每欄位 ✓/✗ contrastive 範例（instruction-tuned 模型 edge case 顯著優於純正例）</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">語意消歧</td>
+                            <td class="px-4 py-3">D3 Tj vs Tstg 點名警告、D10 V_RRM 別名清單（V_RWM / Working Peak）</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white whitespace-nowrap">單位與字符規範</td>
+                            <td class="px-4 py-3">D4 L/W/H 取 MAX（非 NOM/TYP）、D5 mA→A、mV→V、inch→mm 換算、D7 全形頓號 `、` 當分隔、D9 μ→u 字符替換、D12 JSON key 特殊字元保留</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">多值處理</td>
+                            <td class="px-4 py-3">D6 V_F / I_R 列所有測試條件（字串型別暗示多值）</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white whitespace-nowrap">領域知識注入</td>
+                            <td class="px-4 py-3">D8 封裝→PIN 對照表（JEDEC / 工業標準封裝）</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">自我驗證</td>
+                            <td class="px-4 py-3">D11 Self-check 7 條（覆蓋 D3-D9 高頻錯誤）</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">線 2：PDF 抽取方法</h4>
+
+            <p>
+                同一份 prompt 與模型下，輪流換 PDF 抽取 backend，量化每種抽法對最終準確率的影響：
+            </p>
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">pdfplumber</strong> &mdash; 純文字 layer，對標準格式 datasheet 表現最穩，成為 V2 預設。</li>
+                <li><strong class="text-white">PyMuPDF / fitz</strong> &mdash; 向量物件層，對含 inline 註解與圖片的頁面解析較細，但整體準確率與 pdfplumber 接近。</li>
+                <li><strong class="text-white">camelot-py</strong> &mdash; lattice 模式偵測表格框線，需 Ghostscript 依賴；對純表格 datasheet 有優勢但整體不及 pdfplumber。</li>
+            </ul>
+
+            <p>
+                結論：在這 10 份 datasheet 樣本上，PDF 軸極差只有 3.6%（見下節雙軸極差）。
+            </p>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">線 3：模型升級</h4>
+
+            <div class="overflow-x-auto my-6">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">階段</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">組合</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">整體</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V1 交件</td>
+                            <td class="px-4 py-3">qwen2.5:7b + 基本 prompt + pdfplumber</td>
+                            <td class="px-4 py-3 font-mono">60.9%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V2 iter6</td>
+                            <td class="px-4 py-3">qwen2.5:7b + 12 條 prompt + validators 後處理</td>
+                            <td class="px-4 py-3 font-mono">61.8%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V2 本地容量上限</td>
+                            <td class="px-4 py-3">qwen2.5:14b + 12 條 prompt</td>
+                            <td class="px-4 py-3 font-mono">64.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10 bg-accent-purple/5">
+                            <td class="px-4 py-3 font-bold text-white">V2 雲端躍升</td>
+                            <td class="px-4 py-3">Azure GPT-4o / mistral-medium-2505 + 12 條 prompt</td>
+                            <td class="px-4 py-3 font-mono font-bold text-accent-purple">76.4%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                主要躍升點在「本地 qwen 14b → 雲端 GPT-4o / Mistral」這一步，一次推 +12%。
+            </p>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">後處理：validators.py</h4>
+
+            <p>
+                prompt 改造後仍會有約 10% 的格式 / 邏輯邊角錯。<code class="text-accent-purple">validators.py</code> 接在 LLM 輸出後做規則修正：
+            </p>
+            <ul class="list-none space-y-2 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li>單位再次標準化（μ→u、mA→A 等覆核）</li>
+                <li>L/W/H 強制取 MAX</li>
+                <li>多值欄位排序 + 全形頓號重組</li>
+                <li>JSON 缺欄位補 <code class="text-accent-purple">null</code></li>
+            </ul>
+
+            <p>
+                V2 iter6 用 validator 把 qwen2.5:7b 從 60.9% 推到 61.8%（同一模型，只靠後處理）。後續換模型後，validator 同步沿用。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 雙軸極差：模型升級效益是 PDF 改良的 4 倍
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
+                <div class="bg-white/5 border border-accent-purple/20 rounded-2xl p-6 text-center">
+                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">14.6%</div>
+                    <div class="text-xs text-gray-500 font-mono uppercase">Model 軸極差（換模型上升空間）</div>
+                </div>
+                <div class="bg-white/5 border border-white/10 rounded-2xl p-6 text-center">
+                    <div class="text-3xl md:text-4xl font-extrabold text-gray-300 mb-2">3.6%</div>
+                    <div class="text-xs text-gray-500 font-mono uppercase">PDF 軸極差（換抽取方法上升空間）</div>
+                </div>
+            </div>
+
+            <p>
+                這個比例（4×）說明在這個任務上，把固定預算花在升級模型，比花在優化 PDF 預處理回報高。本地 qwen 14b → 雲端 GPT-4o 一步 +12%，是整個實驗的主要躍升點。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 模型強項分化（per-PDF 觀察）
+            </h3>
+
+            <p>
+                MBR15U150 是一份 multi-product datasheet（同份 PDF 涵蓋多個型號變體），成為模型容量的試金石：
+            </p>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">模型</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">MBR15U150 命中（共 11 欄）</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">qwen2.5:7b（本地）</td>
+                            <td class="px-4 py-3 font-mono">1 / 11</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">qwen2.5:14b（本地）</td>
+                            <td class="px-4 py-3 font-mono">4 / 11</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">Llama-4-Maverick（Azure）</td>
+                            <td class="px-4 py-3 font-mono">2 / 11<span class="text-xs text-gray-500 ml-2">（MoE active 參數較小，退化）</span></td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">mistral-medium-2505（Azure）</td>
+                            <td class="px-4 py-3 font-mono">6 / 11</td>
+                        </tr>
+                        <tr class="border-t border-white/10 bg-accent-purple/5">
+                            <td class="px-4 py-3 font-bold text-white">GPT-4o（Azure）</td>
+                            <td class="px-4 py-3 font-mono font-bold text-accent-purple">7 / 11</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>三家雲端模型在不同類型 PDF 上各有強項：</p>
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">GPT-4o</strong> &mdash; multi-product datasheet 王（MBR15U150 7/11）+ 一般電氣參數王（BAT750 10/11）</li>
+                <li><strong class="text-white">Llama-4-Maverick + mistral-medium-2505</strong> &mdash; 簡單表格王（CD4148WTP 雙雙 11/11 滿分）</li>
+                <li><strong class="text-white">mistral-medium-2505</strong> &mdash; 橋式整流王（MSB30M 9/11）</li>
+            </ul>
+
+            <p>
+                理論上 per-PDF best-of-3 ensemble 上限為 80.9%，屬於 overfit 估計（用 ground truth 反推哪家最強），在無標答情境下不可用。單模型實用上限 76.4%。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 技術棧
+            </h3>
+
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">語言 / 主要套件</strong> &mdash; Python 3.11.5、pdfplumber、PyMuPDF、camelot-py、openpyxl、openai SDK、python-dotenv</li>
+                <li><strong class="text-white">本地推理</strong> &mdash; Ollama + qwen2.5:7b / 14b（Q4_K_M 量化）</li>
+                <li><strong class="text-white">雲端推理</strong> &mdash; Azure AI Foundry V1 統一 API（OpenAI 相容 endpoint，由培訓班提供 quota）</li>
+                <li><strong class="text-white">推理設定</strong> &mdash; <code class="text-accent-purple">temperature=0</code>、<code class="text-accent-purple">num_ctx=16384</code>、<code class="text-accent-purple">format=json</code></li>
+                <li><strong class="text-white">表格抽取輔助</strong> &mdash; Ghostscript 10.07.0（camelot lattice 模式依賴）</li>
+                <li><strong class="text-white">架構抽象</strong> &mdash; <code class="text-accent-purple">pdf_extractor.py</code> / <code class="text-accent-purple">llm_backend.py</code> 雙抽象層，可在 <code class="text-accent-purple">.env</code> 切換 <code class="text-accent-purple">BACKEND × PDF_EXTRACTOR</code> runtime 組合</li>
+            </ul>
+
+            <hr class="border-white/10 my-16">
+
+            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 flex flex-col md:flex-row items-start md:items-center gap-6">
+                <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center shrink-0 border border-white/10">
+                    <i class="fas fa-graduation-cap text-gray-400 text-xl"></i>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-1">致謝</h4>
+                    <p class="text-sm text-gray-400 m-0 leading-relaxed">
+                        感謝國立臺灣科技大學「<strong>Cloud Solution Architect 培訓班</strong>」舉辦這次課程並提供 Azure AI Foundry V1 API quota，讓雙軸實驗的雲端模型部分有資源能完整跑完。<br>
+                        <a href="https://ai.ntust.edu.tw/p/404-1087-140681.php?Lang=zh-tw" target="_blank" rel="noopener" class="text-accent-purple hover:text-white transition-colors underline decoration-accent-purple/30 underline-offset-4 font-mono mt-1 inline-block">
+                            ai.ntust.edu.tw/p/404-1087-140681
+                        </a>
+                    </p>
+                </div>
+            </div>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="project_12.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Project
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Projects
+            </a>
+            <a href="project_14.html" class="text-accent-purple hover:text-white transition-colors text-sm font-bold tracking-wide">
+                Next: Device Tabs Opener v2.2.0 &rarr;
+            </a>
+        </div>
+
+    </main>
+    <div id="footer-placeholder"></div>
+</body>
+</html>
