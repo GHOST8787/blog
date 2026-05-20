@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / P13 | GHOST.ouo</title>
+    <link rel="canonical" href="https://ghost8787.github.io/blog/en/EXP/project_13.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_13.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_13.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/project_13.html">
+
+    <link rel="icon" type="image/png" href="../../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script src="../../i18n.js" defer></script>
+    <script type="module" src="../../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / P13</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                NTUST AI Final Project:<br>
+                <span class="text-gradient text-2xl md:text-4xl">Pushing 60.9% to 76.4% with a Two-Axis Experiment on School Azure Quota</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    AI &amp; Automation
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    LLM
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Datasheet Extraction
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Experiment Design
+                </span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.05.08 &mdash; 2026.05.10</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                Final project for the National Taiwan University of Science and Technology (NTUST) <a href="https://ai.ntust.edu.tw/p/404-1087-140681.php?Lang=zh-tw" target="_blank" rel="noopener" class="text-accent-purple hover:text-white transition-colors underline decoration-accent-purple/30 underline-offset-4">Cloud Solution Architect training program</a>, Spring 2026. The brief: build an LLM pipeline that extracts 10 electronic component datasheet PDFs into 11 structured fields. On top of the minimum bar, I used the Azure AI Foundry V1 API quota provided by the program to run a two-axis experiment (PDF extraction method × LLM model), pushing the V1 submission's 60.9% up to V2's 76.4%.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Task Spec
+            </h3>
+
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">Input</strong> &mdash; 10 electronic component datasheet PDFs (diodes / rectifier bridges / transistor packages)</li>
+                <li><strong class="text-white">Output</strong> &mdash; 11 structured fields per PDF: Part Number, Operating Temperature, Package Dimensions, PIN Number, I_O, I_F, V_F, V_RRM, I_R</li>
+                <li><strong class="text-white">Scoring</strong> &mdash; byte-for-byte comparison against the <code class="text-accent-purple">specbook.xlsx</code> answer key, per-field accuracy</li>
+                <li><strong class="text-white">Minimum bar</strong> &mdash; pipeline runs end-to-end, one results report submitted, pass.</li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Two-Axis Experiment Beyond the Minimum
+            </h3>
+
+            <p>
+                The program supplied Azure AI Foundry V1 API quota this semester. Most students used it to get one model running for credit. I spent the quota on a systematic two-axis experiment instead:
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
+                <div class="bg-white/5 p-6 rounded-2xl border border-accent-purple/20">
+                    <div class="text-xs font-mono text-accent-purple uppercase mb-3">Axis 1</div>
+                    <h4 class="text-white font-bold mb-3">PDF Extraction Method</h4>
+                    <ul class="text-sm text-gray-400 space-y-1 list-disc pl-5 m-0">
+                        <li>pdfplumber (plain text layer)</li>
+                        <li>PyMuPDF / fitz (vector object layer)</li>
+                        <li>camelot-py (lattice table detection, Ghostscript dependency)</li>
+                    </ul>
+                </div>
+                <div class="bg-white/5 p-6 rounded-2xl border border-accent-purple/20">
+                    <div class="text-xs font-mono text-accent-purple uppercase mb-3">Axis 2</div>
+                    <h4 class="text-white font-bold mb-3">LLM Model</h4>
+                    <ul class="text-sm text-gray-400 space-y-1 list-disc pl-5 m-0">
+                        <li>Local Ollama + qwen2.5:7b (V1 baseline)</li>
+                        <li>Local Ollama + qwen2.5:14b</li>
+                        <li>Azure GPT-4o</li>
+                        <li>Azure Llama-4-Maverick</li>
+                        <li>Azure mistral-medium-2505</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> V1 → V2 Results
+            </h3>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">Stage</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">Model</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">PDF Extractor</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">Overall Accuracy</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V1 submission</td>
+                            <td class="px-4 py-3">qwen2.5:7b (local)</td>
+                            <td class="px-4 py-3">pdfplumber</td>
+                            <td class="px-4 py-3 font-mono">60.9%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V2 best local</td>
+                            <td class="px-4 py-3">qwen2.5:14b (local)</td>
+                            <td class="px-4 py-3">pdfplumber</td>
+                            <td class="px-4 py-3 font-mono">64.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10 bg-accent-purple/5">
+                            <td class="px-4 py-3 font-bold text-white">V2 overall best</td>
+                            <td class="px-4 py-3"><strong class="text-accent-purple">GPT-4o</strong> (Azure)</td>
+                            <td class="px-4 py-3">pdfplumber</td>
+                            <td class="px-4 py-3 font-mono font-bold text-accent-purple">76.4%</td>
+                        </tr>
+                        <tr class="border-t border-white/10 bg-accent-purple/5">
+                            <td class="px-4 py-3 font-bold text-white">V2 overall best</td>
+                            <td class="px-4 py-3"><strong class="text-accent-purple">mistral-medium-2505</strong> (Azure)</td>
+                            <td class="px-4 py-3">pdfplumber</td>
+                            <td class="px-4 py-3 font-mono font-bold text-accent-purple">76.4%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Iteration: Three Tracks Running in Parallel
+            </h3>
+
+            <p>
+                From V1 submission to V2 overall best, three independent but interacting tracks. Every run gets archived into a dedicated subfolder under <code class="text-accent-purple">output/_archive/</code> (e.g. <code class="text-accent-purple">v1_qwen7b/</code>, <code class="text-accent-purple">v2_iter6_qwen14b/</code>, <code class="text-accent-purple">v2_pdfplumber_azure_gpt_4o/</code>), so prior results stay intact.
+            </p>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">Track 1: Prompt Redesign (12 Blind Design Decisions)</h4>
+
+            <p>
+                The V2 prompt follows a blind design principle &mdash; derived only from the 11 field names and general electronics datasheet domain knowledge, without referencing V1's actual outputs to reverse-fit. The 12 decisions grouped by type:
+            </p>
+
+            <div class="overflow-x-auto my-6">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider whitespace-nowrap w-44">Type</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">Decision</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">Input handling</td>
+                            <td class="px-4 py-3">D1 Part Number passed as input (already known before pipeline runs)</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">Few-shot guidance</td>
+                            <td class="px-4 py-3">D2 ✓/✗ contrastive examples per field (edge case behavior of instruction-tuned models improves clearly over positive-only examples)</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">Disambiguation</td>
+                            <td class="px-4 py-3">D3 Tj vs Tstg explicit warning, D10 V_RRM aliases (V_RWM / Working Peak)</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white whitespace-nowrap">Units &amp; character rules</td>
+                            <td class="px-4 py-3">D4 take MAX for L/W/H (not NOM/TYP), D5 mA→A / mV→V / inch→mm normalization, D7 use 、 as separator for multi-value strings, D9 μ→u character substitution, D12 preserve special characters in JSON keys</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">Multi-value</td>
+                            <td class="px-4 py-3">D6 list every test condition for V_F / I_R (string type hints multi-value)</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white whitespace-nowrap">Domain knowledge injection</td>
+                            <td class="px-4 py-3">D8 package → PIN mapping table (JEDEC / industry standard packages)</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">Self-validation</td>
+                            <td class="px-4 py-3">D11 7-item self-check (covers high-frequency errors from D3-D9)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">Track 2: PDF Extraction Method</h4>
+
+            <p>
+                Holding the same prompt and model constant, I rotated the PDF extraction backend to quantify how much each approach affects final accuracy:
+            </p>
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">pdfplumber</strong> &mdash; plain text layer, most stable on standard-format datasheets. V2 default.</li>
+                <li><strong class="text-white">PyMuPDF / fitz</strong> &mdash; vector object layer, parses pages with inline annotations and images more granularly, but overall accuracy ties with pdfplumber.</li>
+                <li><strong class="text-white">camelot-py</strong> &mdash; lattice mode detects table borders, requires Ghostscript. Strong on pure-table datasheets but trails pdfplumber overall.</li>
+            </ul>
+
+            <p>
+                Conclusion: across these 10 datasheet samples, the PDF axis spread is only 3.6% (see two-axis spread section below).
+            </p>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">Track 3: Model Upgrade</h4>
+
+            <div class="overflow-x-auto my-6">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">Stage</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">Combination</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">Overall</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V1 submission</td>
+                            <td class="px-4 py-3">qwen2.5:7b + baseline prompt + pdfplumber</td>
+                            <td class="px-4 py-3 font-mono">60.9%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V2 iter6</td>
+                            <td class="px-4 py-3">qwen2.5:7b + 12-rule prompt + post-process validators</td>
+                            <td class="px-4 py-3 font-mono">61.8%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V2 local ceiling</td>
+                            <td class="px-4 py-3">qwen2.5:14b + 12-rule prompt</td>
+                            <td class="px-4 py-3 font-mono">64.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10 bg-accent-purple/5">
+                            <td class="px-4 py-3 font-bold text-white">V2 cloud jump</td>
+                            <td class="px-4 py-3">Azure GPT-4o / mistral-medium-2505 + 12-rule prompt</td>
+                            <td class="px-4 py-3 font-mono font-bold text-accent-purple">76.4%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                The main jump sits at "local qwen 14b → cloud GPT-4o / Mistral", a single step worth +12%.
+            </p>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">Post-processing: validators.py</h4>
+
+            <p>
+                Even with the prompt redesign, around 10% of outputs still slip on format or logic edge cases. <code class="text-accent-purple">validators.py</code> sits after the LLM and applies rule-based corrections:
+            </p>
+            <ul class="list-none space-y-2 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li>Unit re-normalization (μ→u, mA→A, etc. as a second pass)</li>
+                <li>L/W/H forced to MAX</li>
+                <li>Multi-value field sorting + 、 separator recomposition</li>
+                <li>Missing JSON fields filled with <code class="text-accent-purple">null</code></li>
+            </ul>
+
+            <p>
+                V2 iter6 used the validator to push qwen2.5:7b from 60.9% to 61.8% (same model, post-processing only). The validator stayed in the pipeline after the model upgrades.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Two-Axis Spread: Model Upgrade Pays 4× the PDF Method
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
+                <div class="bg-white/5 border border-accent-purple/20 rounded-2xl p-6 text-center">
+                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">14.6%</div>
+                    <div class="text-xs text-gray-500 font-mono uppercase">Model axis spread (headroom from swapping models)</div>
+                </div>
+                <div class="bg-white/5 border border-white/10 rounded-2xl p-6 text-center">
+                    <div class="text-3xl md:text-4xl font-extrabold text-gray-300 mb-2">3.6%</div>
+                    <div class="text-xs text-gray-500 font-mono uppercase">PDF axis spread (headroom from swapping extractors)</div>
+                </div>
+            </div>
+
+            <p>
+                The 4× ratio says: on this task, spending a fixed budget on a stronger model pays more than spending it on PDF preprocessing. Local qwen 14b → cloud GPT-4o in one step was +12%, the largest single jump in the entire experiment.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Model Strength Specialization (per-PDF observation)
+            </h3>
+
+            <p>
+                MBR15U150 is a multi-product datasheet (one PDF covering several model variants). It became a stress test for model capacity:
+            </p>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">Model</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">MBR15U150 hits (out of 11)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">qwen2.5:7b (local)</td>
+                            <td class="px-4 py-3 font-mono">1 / 11</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">qwen2.5:14b (local)</td>
+                            <td class="px-4 py-3 font-mono">4 / 11</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">Llama-4-Maverick (Azure)</td>
+                            <td class="px-4 py-3 font-mono">2 / 11<span class="text-xs text-gray-500 ml-2">(MoE active params smaller, regression)</span></td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">mistral-medium-2505 (Azure)</td>
+                            <td class="px-4 py-3 font-mono">6 / 11</td>
+                        </tr>
+                        <tr class="border-t border-white/10 bg-accent-purple/5">
+                            <td class="px-4 py-3 font-bold text-white">GPT-4o (Azure)</td>
+                            <td class="px-4 py-3 font-mono font-bold text-accent-purple">7 / 11</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>The three cloud models each lead in different PDF profiles:</p>
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">GPT-4o</strong> &mdash; multi-product datasheet leader (MBR15U150 7/11) and general electrical parameter leader (BAT750 10/11)</li>
+                <li><strong class="text-white">Llama-4-Maverick + mistral-medium-2505</strong> &mdash; simple-table leaders (CD4148WTP both score 11/11)</li>
+                <li><strong class="text-white">mistral-medium-2505</strong> &mdash; bridge rectifier leader (MSB30M 9/11)</li>
+            </ul>
+
+            <p>
+                A per-PDF best-of-3 ensemble would theoretically cap at 80.9%, but that's overfit (uses ground truth to pick the best). Not usable in a no-answer-key setting. The practical single-model ceiling stays at 76.4%.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Stack
+            </h3>
+
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">Language / main libraries</strong> &mdash; Python 3.11.5, pdfplumber, PyMuPDF, camelot-py, openpyxl, openai SDK, python-dotenv</li>
+                <li><strong class="text-white">Local inference</strong> &mdash; Ollama + qwen2.5:7b / 14b (Q4_K_M quantization)</li>
+                <li><strong class="text-white">Cloud inference</strong> &mdash; Azure AI Foundry V1 unified API (OpenAI-compatible endpoint, quota provided by the training program)</li>
+                <li><strong class="text-white">Inference config</strong> &mdash; <code class="text-accent-purple">temperature=0</code>, <code class="text-accent-purple">num_ctx=16384</code>, <code class="text-accent-purple">format=json</code></li>
+                <li><strong class="text-white">Table extraction support</strong> &mdash; Ghostscript 10.07.0 (camelot lattice mode dependency)</li>
+                <li><strong class="text-white">Architecture</strong> &mdash; <code class="text-accent-purple">pdf_extractor.py</code> / <code class="text-accent-purple">llm_backend.py</code> two abstraction layers, runtime combinations switchable through <code class="text-accent-purple">BACKEND × PDF_EXTRACTOR</code> in <code class="text-accent-purple">.env</code></li>
+            </ul>
+
+            <hr class="border-white/10 my-16">
+
+            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 flex flex-col md:flex-row items-start md:items-center gap-6">
+                <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center shrink-0 border border-white/10">
+                    <i class="fas fa-graduation-cap text-gray-400 text-xl"></i>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-1">Credits</h4>
+                    <p class="text-sm text-gray-400 m-0 leading-relaxed">
+                        Thanks to NTUST's <strong>Cloud Solution Architect training program</strong> for running this course and providing the Azure AI Foundry V1 API quota that made the cloud-model side of the two-axis experiment possible.<br>
+                        <a href="https://ai.ntust.edu.tw/p/404-1087-140681.php?Lang=zh-tw" target="_blank" rel="noopener" class="text-accent-purple hover:text-white transition-colors underline decoration-accent-purple/30 underline-offset-4 font-mono mt-1 inline-block">
+                            ai.ntust.edu.tw/p/404-1087-140681
+                        </a>
+                    </p>
+                </div>
+            </div>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="project_12.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Project
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Projects
+            </a>
+            <a href="project_14.html" class="text-accent-purple hover:text-white transition-colors text-sm font-bold tracking-wide">
+                Next: Device Tabs Opener v2.2.0 &rarr;
+            </a>
+        </div>
+
+    </main>
+    <div id="footer-placeholder"></div>
+</body>
+</html>

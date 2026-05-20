@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / P14 | GHOST.ouo</title>
+    <link rel="canonical" href="https://ghost8787.github.io/blog/en/EXP/project_14.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_14.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_14.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/project_14.html">
+
+    <link rel="icon" type="image/png" href="../../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script src="../../i18n.js" defer></script>
+    <script type="module" src="../../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / P14</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                Device Tabs Opener v2.2.0:<br>
+                <span class="text-gradient text-2xl md:text-4xl">UI Redesign, Bilingual, and Per-Tab Checkboxes</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    Engineering
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    UI Redesign
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Chrome Extension
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    i18n
+                </span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.05.19</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                v2.1.0 covered the functional ground: batch-opening synced tabs across devices. v2.2.0 reworks the visuals and interaction layer. The whole UI gets redesigned, bilingual switching ships, and "open everything from one device" splits into per-tab checkboxes. Currently in Chrome Web Store review.
+            </p>
+
+            <figure class="my-10 mx-auto">
+                <img src="../../PNG/device_tabs_v22_hero.png"
+                     alt="v2.2.0 hero promotional in warm Editorial style"
+                     class="w-full rounded-2xl border border-white/10 shadow-2xl">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    v2.2.0 hero promo &mdash; cream background, warm orange primary, checkbox-driven CTA
+                </figcaption>
+            </figure>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Starting Point: Two Gaps from v2.1.0
+            </h3>
+
+            <p>
+                v2.1.0 prioritized getting the function working. The interface ran on a saturated dark palette with one "open all" button per device. After using it for a while, two gaps surfaced:
+            </p>
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">1. Visual tone vs Chrome Web Store store-page tone</strong> &mdash; dark and saturated reads fine for a brief popup, but on a 1280×800 promotional screenshot the whole thing leans into game-demo territory, drifting from the "daily productivity tool" position.</li>
+                <li><strong class="text-white">2. Interaction unit too coarse</strong> &mdash; synced tabs often include a dozen noise pages. "Open everything from this device" opens the noise too. In practice I had to close the noise on my phone first, then open the rest with the extension. The filtering cost gets pushed back to the user.</li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Four Dimensions, Before and After
+            </h3>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">Dimension</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">v2.1.0</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">v2.2.0</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">Palette</td>
+                            <td class="px-4 py-3">Deep blue-purple body, purple buttons, red CTA</td>
+                            <td class="px-4 py-3">Cream <code class="text-accent-purple">#faf3e8</code> background, warm orange <code class="text-accent-purple">#d65a3a</code> primary, terracotta / purple / yellow accents</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">Interaction grain</td>
+                            <td class="px-4 py-3">Device-level "open all" button</td>
+                            <td class="px-4 py-3">Per-tab checkboxes + device-level "select all / clear" toggle</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">Language</td>
+                            <td class="px-4 py-3">Chinese only</td>
+                            <td class="px-4 py-3">Chinese + English bilingual, EN/中 toggle in the top right, <code class="text-accent-purple">chrome.storage</code> remembers the choice</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">Information density</td>
+                            <td class="px-4 py-3">Tab count</td>
+                            <td class="px-4 py-3">Tab count + last-synced time per device (e.g. "synced 5 minutes ago", "synced 1 hour ago")</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">Accessibility</td>
+                            <td class="px-4 py-3">Browser default focus styles</td>
+                            <td class="px-4 py-3"><code class="text-accent-purple">:focus-visible</code> focus ring + <code class="text-accent-purple">prefers-reduced-motion</code> animation fallback</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Palette: Editorial Sunset Coral
+            </h3>
+
+            <p>
+                The palette goal: let the popup and the store-page promotional shots share the same design tokens, with overall feel closer to print magazine / Editorial. Four color blocks, each with a role:
+            </p>
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">Cream <code>#faf3e8</code></strong> &mdash; background and card surface, mimics printed paper.</li>
+                <li><strong class="text-white">Warm orange <code>#d65a3a</code></strong> &mdash; primary, CTA buttons + focus text + chip borders.</li>
+                <li><strong class="text-white">Terracotta / purple / yellow</strong> &mdash; three accent colors, used in logo blocks and promo visuals. Keeps a single orange from getting heavy.</li>
+                <li><strong class="text-white">Black / gray</strong> &mdash; body and secondary text, carries information density through contrast.</li>
+            </ul>
+
+            <figure class="my-10 mx-auto max-w-md">
+                <div class="aspect-square bg-[#faf3e8] rounded-2xl border border-white/10 overflow-hidden p-8 shadow-2xl">
+                    <img src="../../PNG/device_tabs_v22_icon_hires.png"
+                         alt="v2.2.0 high-res icon showing the Sunset Coral three-color blocks"
+                         class="w-full h-full object-contain">
+                </div>
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    v2.2.0 icon &mdash; warm orange / purple / yellow blocks on Sunset Coral background
+                </figcaption>
+            </figure>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Interaction: Give Filtering Back to the User
+            </h3>
+
+            <p>
+                The single batch button breaks into three layers of control:
+            </p>
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">Per-tab</strong> &mdash; each tab row gets a checkbox, unchecked by default. The user checks the ones to open.</li>
+                <li><strong class="text-white">Per-device</strong> &mdash; the header offers a "select all / clear" toggle. The original batch flow still covers in one click.</li>
+                <li><strong class="text-white">Global CTA</strong> &mdash; the bottom button text updates live: "Open 3 selected tabs". Disabled when no tabs are checked.</li>
+            </ul>
+
+            <p>
+                Outcome: a sync of 30 tabs can now skip 27 noise items and open just the 3 working tabs. No need to close noise on the phone first.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-10">
+                <figure class="flex flex-col">
+                    <div class="aspect-[4/5] bg-[#1a1d3a] rounded-xl border border-white/10 overflow-hidden flex items-center justify-center">
+                        <img src="../../PNG/device_tabs_v21_popup.jpg"
+                             alt="v2.1.0 popup with whole-device single-click CTA"
+                             class="max-w-full max-h-full object-contain">
+                    </div>
+                    <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                        v2.1.0 &mdash; per-device "open all" button
+                    </figcaption>
+                </figure>
+                <figure class="flex flex-col">
+                    <div class="aspect-[4/5] bg-[#faf3e8] rounded-xl border border-white/10 overflow-hidden flex items-center justify-center">
+                        <img src="../../PNG/device_tabs_v22_popup_real.png"
+                             alt="v2.2.0 popup with per-tab checkboxes and dynamic CTA"
+                             class="max-w-full max-h-full object-contain">
+                    </div>
+                    <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                        v2.2.0 &mdash; per-tab checkbox + "Open N selected tabs"
+                    </figcaption>
+                </figure>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> i18n: Two messages.json Files + One Toggle
+            </h3>
+
+            <p>
+                Chrome Extension supports the <code class="text-accent-purple">_locales/</code> directory pattern natively:
+            </p>
+
+            <div class="bg-white/5 p-5 rounded-xl border-l-4 border-accent-purple font-mono text-sm text-gray-300 mb-8 overflow-x-auto">
+<pre class="m-0"><code>_locales/
+  zh_TW/messages.json   ← default
+  en/messages.json      ← toggle target</code></pre>
+            </div>
+
+            <p>
+                <code class="text-accent-purple">manifest.json</code> declares <code class="text-accent-purple">default_locale: "zh_TW"</code> and the <code class="text-accent-purple">storage</code> permission. The top-right toggle writes to <code class="text-accent-purple">chrome.storage.local</code>. On every popup open, the user's stored choice takes priority; if missing, it falls back to <code class="text-accent-purple">chrome.i18n.getUILanguage()</code>.
+            </p>
+
+            <figure class="my-10 mx-auto">
+                <img src="../../PNG/device_tabs_v22_bilingual.png"
+                     alt="v2.2.0 Chinese-English bilingual toggle comparison"
+                     loading="lazy"
+                     class="w-full rounded-2xl border border-white/10 shadow-2xl">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    EN / 中 toggle in the top right re-renders the popup immediately on switch
+                </figcaption>
+            </figure>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Accessibility: Two Media Queries
+            </h3>
+
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white"><code>:focus-visible</code></strong> &mdash; keyboard tab navigation shows an orange focus ring, mouse clicks keep the default styling.</li>
+                <li><strong class="text-white"><code>prefers-reduced-motion: reduce</code></strong> &mdash; when the system flag is on, all transitions drop to 0s.</li>
+                <li><strong class="text-white">System high-contrast mode</strong> &mdash; handled by the browser's native styles, no CSS override.</li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Logo and Web Store Assets
+            </h3>
+
+            <p>
+                Logo redrawn at 128px: warm orange gradient behind a browser chrome shape (three dots + window), purple stroke + yellow cursor dot. Color blocks share the popup palette.
+            </p>
+            <p>
+                All five promotional shots switch to warm Editorial style:
+            </p>
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">Hero (1280×800)</strong> &mdash; "Tabs from your phone, opened on your desktop in one click" + popup mockup</li>
+                <li><strong class="text-white">Bilingual (1280×800)</strong> &mdash; Chinese / English cards side by side</li>
+                <li><strong class="text-white">Select (1280×800)</strong> &mdash; "Check what you want. Skip what you don't." + three-step numbered list</li>
+                <li><strong class="text-white">Tile Small (440×280)</strong> &mdash; logo + tagline + "Phone tabs, one click, opened on desktop"</li>
+                <li><strong class="text-white">Marquee (1400×560)</strong> &mdash; main visual + four selling-point chips (Free / Bilingual / Open Source MIT / Zero data collection)</li>
+            </ul>
+
+            <h4 class="text-lg font-bold text-white mt-12 mb-4">Chrome Web Store Page, Side by Side</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-6">
+                <figure class="flex flex-col">
+                    <div class="aspect-[16/10] bg-white/5 rounded-xl border border-white/10 overflow-hidden flex items-center justify-center">
+                        <img src="../../PNG/device_tabs_v21_store.jpg"
+                             alt="v2.1.0 Chrome Web Store page"
+                             class="w-full h-full object-cover">
+                    </div>
+                    <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                        v2.1.0 store page &mdash; deep purple, game-demo feel
+                    </figcaption>
+                </figure>
+                <figure class="flex flex-col">
+                    <div class="aspect-[16/10] bg-white/5 rounded-xl border border-white/10 overflow-hidden flex items-center justify-center">
+                        <img src="../../PNG/device_tabs_v22_store.png"
+                             alt="v2.2.0 Chrome Web Store page"
+                             class="w-full h-full object-cover">
+                    </div>
+                    <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                        v2.2.0 store page &mdash; warm Editorial feel
+                    </figcaption>
+                </figure>
+            </div>
+
+            <h4 class="text-lg font-bold text-white mt-12 mb-4">Full Promo Set</h4>
+            <figure class="my-6 mx-auto">
+                <div class="aspect-[1400/560] bg-white/5 rounded-2xl border border-white/10 overflow-hidden">
+                    <img src="../../PNG/device_tabs_v22_marquee.png"
+                         alt="v2.2.0 marquee promotional 1400x560"
+                         class="w-full h-full object-cover">
+                </div>
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    1400×560 marquee &mdash; main visual + four selling-point chips
+                </figcaption>
+            </figure>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-10">
+                <figure class="flex flex-col">
+                    <div class="aspect-[16/10] bg-white/5 rounded-xl border border-white/10 overflow-hidden flex items-center justify-center">
+                        <img src="../../PNG/device_tabs_v22_select.png"
+                             alt="v2.2.0 select promo with three-step explanation"
+                             class="w-full h-full object-cover">
+                    </div>
+                    <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                        select promo &mdash; three steps: "Check what you want. Skip what you don't."
+                    </figcaption>
+                </figure>
+                <figure class="flex flex-col">
+                    <div class="aspect-[16/10] bg-white/5 rounded-xl border border-white/10 overflow-hidden flex items-center justify-center p-6">
+                        <img src="../../PNG/device_tabs_v22_tile.png"
+                             alt="v2.2.0 tile small 440x280"
+                             class="max-w-full max-h-full object-contain">
+                    </div>
+                    <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                        440×280 tile &mdash; logo + tagline
+                    </figcaption>
+                </figure>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Packaging and Review Status
+            </h3>
+
+            <p>
+                Packaged as <code class="text-accent-purple">device-tabs-opener-v2.2.0.zip</code>, 31 KB, 9 files (including <code class="text-accent-purple">_locales/</code>), excluding README / LICENSE / promo / backup. Submitted to the Chrome Web Store on 2026-05-19, review usually takes 1-3 business days. The current v2.1.0 stays live during review, so user experience holds.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Links
+            </h3>
+
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">GitHub</strong> &mdash; <a href="https://github.com/GHOST8787/device-tabs-opener" target="_blank" rel="noopener" class="text-accent-purple hover:text-white transition-colors underline decoration-accent-purple/30 underline-offset-4">GHOST8787/device-tabs-opener</a></li>
+                <li><strong class="text-white">Chrome Web Store</strong> &mdash; v2.1.0 live, v2.2.0 in review</li>
+                <li><strong class="text-white">License</strong> &mdash; MIT</li>
+            </ul>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="project_13.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Project
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Projects
+            </a>
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                Next Project &rarr;
+            </a>
+        </div>
+
+    </main>
+    <div id="footer-placeholder"></div>
+</body>
+</html>
