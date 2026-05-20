@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects | GHOST.ouo</title>
+    <meta name="description" content="GHOST.ouo portfolio — AI automation, web development, workflow tooling.">
+    <meta property="og:title" content="Projects | GHOST.ouo">
+    <meta property="og:description" content="AI automation, web development, workflow tooling.">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="en_US">
+    <link rel="canonical" href="https://ghost8787.github.io/blog/en/projects.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/projects.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/projects.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/projects.html">
+    <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <script>
+        window.siteRoot = '';
+    </script>
+    <script src="../i18n.js" defer></script>
+    <script type="module" src="../main.js" defer></script>
+
+    <style>
+        .pj-filter { position: relative; width: fit-content; font-family: 'JetBrains Mono', monospace; z-index: 30; }
+        .pj-filter-trigger {
+            background: rgba(10, 10, 10, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #BF94FF;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+        .pj-filter-trigger .pj-current { color: #fff; font-weight: 700; letter-spacing: 0.05em; }
+        .pj-filter-trigger .pj-caret { font-size: 10px; opacity: 0.6; transition: transform 0.3s ease; }
+        .pj-filter:hover .pj-filter-trigger, .pj-filter.open .pj-filter-trigger {
+            background: rgba(191, 148, 255, 0.15);
+            border-color: #BF94FF;
+            color: white;
+        }
+        .pj-filter:hover .pj-caret, .pj-filter.open .pj-caret { transform: rotate(180deg); }
+        .pj-filter-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: 8px;
+            background: rgba(5, 5, 5, 0.95);
+            border: 1px solid rgba(191, 148, 255, 0.3);
+            border-radius: 12px;
+            padding: 8px;
+            min-width: 180px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.8);
+        }
+        .pj-filter:hover .pj-filter-menu, .pj-filter.open .pj-filter-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+        .pj-filter-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 11px;
+            color: #888;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+            letter-spacing: 0.05em;
+        }
+        .pj-filter-option:hover { background: rgba(255, 255, 255, 0.05); color: white; }
+        .pj-filter-option.active { background: rgba(191, 148, 255, 0.1); border-color: rgba(191, 148, 255, 0.3); color: white; font-weight: bold; }
+        .pj-filter-dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; box-shadow: 0 0 5px currentColor; flex-shrink: 0; }
+        .empty-state { color: #666; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.05em; }
+    </style>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-600/10 rounded-full blur-[120px] animate-pulse-slow" style="animation-delay: 2s;"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-7xl mx-auto px-8 md:px-12 pt-32 pb-24">
+
+        <div class="mb-6 relative z-20 pointer-events-none">
+            <h1 class="text-3xl md:text-4xl font-extrabold mb-2 leading-tight tracking-tight text-gradient text-left w-fit">
+                Projects
+            </h1>
+            <p class="text-purple-400 font-mono text-xs uppercase tracking-wider">
+                Code, design &amp; everything in between.
+            </p>
+        </div>
+
+        <div class="pj-filter mb-8" id="filter-bar">
+            <div class="pj-filter-trigger">
+                <i class="fas fa-filter"></i>
+                <span>FILTER ·</span>
+                <span class="pj-current">ALL</span>
+                <i class="fas fa-chevron-down pj-caret"></i>
+            </div>
+            <div class="pj-filter-menu">
+                <div class="pj-filter-option active" data-filter="all" data-label="ALL">
+                    <div class="pj-filter-dot" style="color: #888"></div>
+                    ALL
+                </div>
+                <div class="pj-filter-option" data-filter="engineering" data-label="ENGINEERING">
+                    <div class="pj-filter-dot" style="color: #5EEAD4"></div>
+                    ENGINEERING
+                </div>
+                <div class="pj-filter-option" data-filter="ai-and-automation" data-label="AI & AUTOMATION">
+                    <div class="pj-filter-dot" style="color: #BF94FF"></div>
+                    AI &amp; AUTOMATION
+                </div>
+                <div class="pj-filter-option" data-filter="open-source" data-label="OPEN SOURCE">
+                    <div class="pj-filter-dot" style="color: #FBBF24"></div>
+                    OPEN SOURCE
+                </div>
+            </div>
+        </div>
+
+        <div id="project-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        </div>
+
+        <div id="empty-hint" class="hidden mt-12 text-center empty-state">
+            English translations are landing one by one. <a href="../projects.html" class="text-accent-purple hover:underline">Read the Chinese versions →</a>
+        </div>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script>
+    function parseNumberFromUrl(url, prefix) {
+        const m = url.match(/_([A-Za-z0-9]+)\.html$/i);
+        if (!m) return prefix + '?';
+        let n = m[1];
+        if (/^\d+$/.test(n)) n = n.padStart(2, '0');
+        return prefix + n.toUpperCase();
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        const container = document.getElementById('project-container');
+        if (!container) return;
+
+        try {
+            const listResponse = await fetch('projects.json');
+            if (!listResponse.ok) throw new Error('Failed to fetch project list');
+            const projects = (await listResponse.json()).reverse();
+
+            if (projects.length === 0) {
+                document.getElementById('empty-hint').classList.remove('hidden');
+            }
+
+            await Promise.all(projects.map(async (article) => {
+                const card = document.createElement('a');
+                card.href = article.url;
+                card.setAttribute('data-category', article.category || 'other');
+                card.className = 'project-card-vertical group block opacity-0 translate-y-[30px]';
+                const number = parseNumberFromUrl(article.url, 'P');
+                card.innerHTML = `
+                    <div class="relative aspect-video overflow-hidden rounded-t-3xl bg-white/5">
+                        <img src="" alt="Loading..." class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                    </div>
+                    <div class="p-8 flex flex-col flex-grow text-left">
+                        <div class="tag-box flex items-start gap-2 mb-4"></div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="date-box text-xs font-mono text-gray-500 flex items-center gap-2"></div>
+                            <span class="number-badge text-xs font-mono text-gray-500">${number}</span>
+                        </div>
+                        <h4 class="text-lg font-bold text-white mb-3 group-hover:text-accent-purple transition-colors line-clamp-2">Loading...</h4>
+                        <p class="text-gray-400 text-sm leading-normal line-clamp-3"></p>
+                    </div>
+                `;
+                container.appendChild(card);
+
+                await fetchAndFillCard(card, article.url);
+            }));
+
+            if (typeof window.refreshAnimations === 'function') {
+                window.initAnimations();
+            }
+
+            const pjFilter = document.getElementById('filter-bar');
+            const pjTrigger = pjFilter.querySelector('.pj-filter-trigger');
+            const pjCurrent = pjFilter.querySelector('.pj-current');
+            const pjOptions = pjFilter.querySelectorAll('.pj-filter-option');
+
+            pjTrigger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                pjFilter.classList.toggle('open');
+            });
+            document.addEventListener('click', () => pjFilter.classList.remove('open'));
+            pjFilter.addEventListener('click', (e) => e.stopPropagation());
+
+            pjOptions.forEach(opt => {
+                opt.addEventListener('click', () => {
+                    const filter = opt.dataset.filter;
+                    const label = opt.dataset.label;
+
+                    pjOptions.forEach(o => o.classList.remove('active'));
+                    opt.classList.add('active');
+                    pjCurrent.textContent = label;
+                    pjFilter.classList.remove('open');
+
+                    document.querySelectorAll('.project-card-vertical').forEach(card => {
+                        card.style.display = (filter === 'all' || card.dataset.category === filter) ? '' : 'none';
+                    });
+                });
+            });
+
+        } catch (error) {
+            console.error("projects init failed:", error);
+        }
+    });
+
+    async function fetchAndFillCard(card, url) {
+        try {
+            const response = await fetch(url);
+            const htmlText = await response.text();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(htmlText, 'text/html');
+
+            const dateIcon = doc.querySelector('header .fa-calendar');
+            const cardDateBox = card.querySelector('.date-box');
+            if (dateIcon && dateIcon.parentElement && cardDateBox) {
+                const dateText = dateIcon.parentElement.textContent.trim();
+                cardDateBox.innerHTML = `<i class="far fa-calendar text-gray-600"></i> ${dateText}`;
+            }
+
+            const titleEl = doc.querySelector('header h1');
+            if (titleEl) card.querySelector('h4').textContent = titleEl.innerText.trim();
+
+            const firstImg = doc.querySelector('article img') || doc.querySelector('figure img');
+            const cardImg = card.querySelector('img');
+            if (firstImg) {
+                let imgSrc = firstImg.getAttribute('src');
+                if (imgSrc && imgSrc.startsWith('../../')) imgSrc = imgSrc.substring(3);
+                else if (imgSrc && imgSrc.startsWith('../')) imgSrc = imgSrc.substring(3);
+                cardImg.src = imgSrc;
+            } else {
+                cardImg.remove();
+                const placeholder = card.querySelector('.aspect-video');
+                if (placeholder) {
+                    placeholder.classList.add('flex', 'items-center', 'justify-center');
+                    placeholder.innerHTML = '<span class="text-gray-600 text-xs font-mono uppercase tracking-wider">No Image</span>';
+                }
+            }
+
+            const sourceTags = doc.querySelectorAll('header .flex.gap-3 span');
+            const cardTagBox = card.querySelector('.tag-box');
+            if (sourceTags.length > 0) {
+                const primary = sourceTags[0].textContent.trim();
+                const slug = primary.toLowerCase()
+                    .replace(/&/g, 'and')
+                    .replace(/[^a-z0-9]+/g, '-')
+                    .replace(/^-|-$/g, '');
+                card.setAttribute('data-category', slug);
+            }
+            if (sourceTags.length > 0 && cardTagBox) {
+                cardTagBox.innerHTML = '';
+                sourceTags.forEach(tag => {
+                    const newTag = document.createElement('span');
+                    newTag.className = 'text-[9px] px-2 py-1 rounded font-bold uppercase tracking-wider text-center leading-tight';
+                    if (cardTagBox.children.length === 0) {
+                        newTag.classList.add('bg-accent-purple/10', 'border', 'border-accent-purple/20', 'text-accent-purple');
+                    } else {
+                        newTag.classList.add('bg-white/5', 'border', 'border-white/10', 'text-gray-400');
+                    }
+                    newTag.textContent = tag.textContent.trim();
+                    cardTagBox.appendChild(newTag);
+                });
+            }
+
+            const summaryEl = doc.querySelector('article .text-xl') || doc.querySelector('article p');
+            if (summaryEl) card.querySelector('p').textContent = summaryEl.innerText.trim();
+
+        } catch (err) {
+            console.warn(`Project fetch failed: ${url}`, err);
+        }
+    }
+</script>
+
+</body>
+</html>

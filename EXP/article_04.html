@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EXP / A4 | GHOST.ouo</title>
-    
+    <link rel="canonical" href="https://ghost8787.github.io/blog/EXP/article_04.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/article_04.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/article_04.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/article_04.html">
+
     <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
     <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
     
@@ -18,7 +22,8 @@
     <script>
         window.siteRoot = '../';
     </script>
-    <script src="../main.js" defer></script>
+    <script src="../i18n.js" defer></script>
+    <script type="module" src="../main.js" defer></script>
 </head>
 
 <body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
@@ -69,7 +74,7 @@
             
             <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
                 專案「塔羅 Prompt 煉金術師」上線後，最常面臨的架構提問為：「為何不直接串接 API，建構一鍵輸出的封閉式占卜平台？」<br><br>
-                此決策並非單純的技術路線妥協，而是基於生成式 AI 時代下的產品架構思維，以及對底層算力成本、運作邏輯的理性權衡。
+                此決策的依據是生成式 AI 時代下的產品架構思維，以及對底層算力成本、運作邏輯的理性權衡。
             </p>
 
             <figure class="my-10">
@@ -144,7 +149,7 @@
                 選擇「開放提示詞」架構的核心，源於對塔羅牌底層運作邏輯的解構。
             </p>
             <p>
-                塔羅牌的本質並非靜態的鍵值對 (Key-Value Pair) 對應，無法簡化為「A 牌面 + 正位 = B 結果」的線性程式碼。其解析精準度高度依賴當下語境 (Context)、使用者的心理投射，以及對話過程中的動態資訊聚焦。
+                塔羅牌的本質是動態的語境推演 (Contextual Inference)，無法簡化為「A 牌面 + 正位 = B 結果」的線性程式碼。其解析精準度高度依賴當下語境 (Context)、使用者的心理投射，以及對話過程中的動態資訊聚焦。
             </p>
             <p>
                 一張牌的深層意涵，需透過經驗庫的檢索與多輪交互，逐步收斂問題核心。若將其封裝為一鍵解答的 API，AI 往往僅能輸出缺乏適應性的泛用解析。這在根本上抹殺了塔羅牌作為「心理梳理工具」，需透過對話釐清思維的原始設計目的。

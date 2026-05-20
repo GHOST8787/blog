@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / A4 | GHOST.ouo</title>
+    <link rel="canonical" href="https://ghost8787.github.io/blog/en/EXP/article_04.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/article_04.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/article_04.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/article_04.html">
+
+    <link rel="icon" type="image/png" href="../../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../style.css">
+
+    <script>
+        window.siteRoot = '../';
+    </script>
+    <script src="../../i18n.js" defer></script>
+    <script type="module" src="../../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../articles.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO ARTICLES
+            </a>
+            <span class="opacity-50">EXP / A4</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                Why I Only Built a Prompt Generator:<br>
+                <span class="text-gradient text-2xl md:text-4xl">Architecture Choices and Product Philosophy Behind an AI Tarot Tool</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    AI & Automation
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Prompt Engineering
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Product Strategy
+                </span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.02.19</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                After "Tarot Prompt Alchemist" went live, the most common architecture question I got was: why not just wire it up to an API and ship a one-click closed tarot platform?<br><br>
+                The answer comes from how I think about product architecture in the generative-AI era, plus a cold look at compute cost and the operational logic underneath.
+            </p>
+
+            <figure class="my-10">
+                <img src="../../PNG/article_04.1.webp"
+                     alt="AI Tarot Concept Art"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    Architecture sketch for the open prompt framework.
+                </figcaption>
+            </figure>
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Closed Oracle vs. Open Prompt Framework
+            </h3>
+
+            <p class="mb-6">
+                Look at the market. Most AI tarot services run a black-box API wrap: frontend takes input, backend returns a one-shot reading. I went the other way. I went with prompt engineering, packaging the environment instructions into something the user runs inside their own LLM of choice (ChatGPT, Claude, whatever they live in).
+            </p>
+
+            <p class="mb-6">
+                The two designs reflect different views on product positioning and how much agency you hand to the user:
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-10">
+                <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/10 shadow-lg relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-blue-500/50"></div>
+                    <h4 class="text-white font-bold mb-4 flex items-center gap-2 text-lg">
+                        <i class="fas fa-box text-blue-400"></i> Closed Reading Platform (Black Box)
+                    </h4>
+                    <ul class="space-y-3 text-sm text-gray-400 font-light">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-plus-circle text-green-400 mt-1"></i>
+                            <div><strong class="text-gray-200">Lower cognitive bar:</strong> smooth UX, no need to understand the underlying logic or switch environments.</div>
+                        </li>
+                        <li class="flex items-start gap-2 border-t border-white/5 pt-3 mt-3">
+                            <i class="fas fa-minus-circle text-red-400 mt-1"></i>
+                            <div><strong class="text-gray-200">Compute cost shifts to the developer:</strong> dev pays the token bill. The business model lands on paywalls or ads, and UX takes the long-term hit.</div>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-minus-circle text-red-400 mt-1"></i>
+                            <div><strong class="text-gray-200">Shallow context:</strong> single-shot request architecture cannot run multi-turn depth or converge on the user's actual emotional state.</div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/10 shadow-lg relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-accent-purple/50"></div>
+                    <h4 class="text-white font-bold mb-4 flex items-center gap-2 text-lg">
+                        <i class="fas fa-terminal text-accent-purple"></i> Environment Prompt Generator (Open Framework)
+                    </h4>
+                    <ul class="space-y-3 text-sm text-gray-400 font-light">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-plus-circle text-green-400 mt-1"></i>
+                            <div><strong class="text-gray-200">Compute autonomy (unlimited inference):</strong> runs on the user's local or existing LLM account. Breaks the hard API quota wall. Deep interaction with zero marginal cost.</div>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-plus-circle text-green-400 mt-1"></i>
+                            <div><strong class="text-gray-200">User empowerment:</strong> the system turns from a one-way oracle into a two-way counseling space with memory. Interpretation rights and data privacy go back to the user.</div>
+                        </li>
+                        <li class="flex items-start gap-2 border-t border-white/5 pt-3 mt-3">
+                            <i class="fas fa-minus-circle text-red-400 mt-1"></i>
+                            <div><strong class="text-gray-200">Operational friction:</strong> needs basic prompt literacy. Copy-paste and environment switching add steps.</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Underneath: Dynamic Projection and Information Convergence
+            </h3>
+
+            <p>
+                The reason I went open-prompt comes from how tarot actually runs underneath.
+            </p>
+            <p>
+                Tarot is contextual inference in motion. You cannot collapse it into "card A upright equals outcome B." The accuracy of a reading depends on the live context, the user's psychological projection, and the dynamic focus that emerges across the conversation.
+            </p>
+            <p>
+                The deeper meaning of a card surfaces through experience-library lookup plus multiple turns of back-and-forth that converge on the real question. Wrap that into a one-click API and the AI defaults to generic, low-fit readings. That guts the original purpose of tarot — a tool for mental sorting that needs dialogue to untangle thinking.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Role Decoupling: Outsource the Logic, Own the Environment
+            </h3>
+
+            <p>
+                From there, the system architecture comes down to role decoupling: <strong>hand the heavy parsing and logical inference back to a general-purpose generative AI; keep the dev surface focused on high-precision environment variables and boundary instructions.</strong>
+            </p>
+            <p>
+                A deeply tuned system prompt locks down the AI's role frame and empathy weights, and sets hard anti-hallucination boundaries. More importantly, the instructions force the AI to trigger a "ask back" gate before producing a final read, so it pulls more parameters out of the user first. That pattern turns the LLM from a one-way text generator into a context-aware dynamic analysis model.
+            </p>
+
+            <div class="bg-gradient-to-r from-accent-purple/10 to-transparent p-6 rounded-xl border-l-2 border-accent-purple my-10">
+                <p class="text-gray-300 italic m-0">
+                    "In the trade-off between compute cost and product value, I would rather hand the user a precisely packaged key — useful inside an unlimited space, with full ownership of the introspection — than build a closed terminal that is rate-limited by my API budget and can only return standardized answers."
+                </p>
+            </div>
+
+            <p>
+                That is the product philosophy here. Closed platforms lower the bar for the general public, sure. The compute liberation and conversational depth of the open framework is what makes generative AI actually valuable for psychological work over the long run. Ship the navigation algorithm. Skip the fixed destination coordinates. For a technical person, that is how you give the user real agency.
+            </p>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="article_03.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Article
+            </a>
+            <a href="../articles.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Articles
+            </a>
+            <a href="article_05.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                Next Article &rarr;
+            </a>
+        </div>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+</body>
+</html>

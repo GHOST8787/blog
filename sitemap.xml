@@ -1,83 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <!-- 中文版（zh-Hant，預設語言）-->
   <url>
     <loc>https://ghost8787.github.io/blog/</loc>
     <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/"/>
   </url>
   <url>
     <loc>https://ghost8787.github.io/blog/projects.html</loc>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/projects.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/projects.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/projects.html"/>
   </url>
   <url>
     <loc>https://ghost8787.github.io/blog/articles.html</loc>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/articles.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/articles.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/articles.html"/>
   </url>
   <url>
     <loc>https://ghost8787.github.io/blog/whiteboard.html</loc>
     <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/whiteboard.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/whiteboard.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/whiteboard.html"/>
   </url>
-  <url>
-    <loc>https://ghost8787.github.io/blog/EXP/project_01.html</loc>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://ghost8787.github.io/blog/EXP/project_02.html</loc>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://ghost8787.github.io/blog/EXP/project_03.html</loc>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://ghost8787.github.io/blog/EXP/project_04.html</loc>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://ghost8787.github.io/blog/EXP/project_05.html</loc>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://ghost8787.github.io/blog/EXP/project_06.html</loc>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://ghost8787.github.io/blog/EXP/project_07.html</loc>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://ghost8787.github.io/blog/EXP/project_08.html</loc>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://ghost8787.github.io/blog/EXP/article_01.html</loc>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://ghost8787.github.io/blog/EXP/article_02.html</loc>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://ghost8787.github.io/blog/EXP/article_03.html</loc>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://ghost8787.github.io/blog/EXP/article_04.html</loc>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://ghost8787.github.io/blog/EXP/article_05.html</loc>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://ghost8787.github.io/blog/EXP/article_06.html</loc>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://ghost8787.github.io/blog/EXP/article_07.html</loc>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://ghost8787.github.io/blog/EXP/article_08.html</loc>
-    <priority>0.6</priority>
-  </url>
+
+  <!-- Project pages -->
+  <url><loc>https://ghost8787.github.io/blog/EXP/project_01.html</loc><priority>0.6</priority><xhtml:link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_01.html"/><xhtml:link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_01.html"/></url>
+  <url><loc>https://ghost8787.github.io/blog/EXP/project_02.html</loc><priority>0.6</priority><xhtml:link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_02.html"/><xhtml:link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_02.html"/></url>
+  <url><loc>https://ghost8787.github.io/blog/EXP/project_03.html</loc><priority>0.6</priority><xhtml:link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_03.html"/><xhtml:link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_03.html"/></url>
+  <url><loc>https://ghost8787.github.io/blog/EXP/project_04.html</loc><priority>0.6</priority><xhtml:link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_04.html"/><xhtml:link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_04.html"/></url>
+  <url><loc>https://ghost8787.github.io/blog/EXP/project_05.html</loc><priority>0.6</priority><xhtml:link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_05.html"/><xhtml:link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_05.html"/></url>
+  <url><loc>https://ghost8787.github.io/blog/EXP/project_06.html</loc><priority>0.6</priority><xhtml:link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_06.html"/><xhtml:link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_06.html"/></url>
+  <url><loc>https://ghost8787.github.io/blog/EXP/project_07.html</loc><priority>0.6</priority><xhtml:link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_07.html"/><xhtml:link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_07.html"/></url>
+  <url><loc>https://ghost8787.github.io/blog/EXP/project_08.html</loc><priority>0.6</priority><xhtml:link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_08.html"/><xhtml:link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_08.html"/></url>
+  <url><loc>https://ghost8787.github.io/blog/EXP/project_09.html</loc><priority>0.6</priority><xhtml:link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_09.html"/><xhtml:link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_09.html"/></url>
+  <url><loc>https://ghost8787.github.io/blog/EXP/project_10.html</loc><priority>0.6</priority><xhtml:link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_10.html"/><xhtml:link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_10.html"/></url>
+  <url><loc>https://ghost8787.github.io/blog/EXP/project_11.html</loc><priority>0.6</priority><xhtml:link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_11.html"/><xhtml:link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_11.html"/></url>
+  <url><loc>https://ghost8787.github.io/blog/EXP/project_12.html</loc><priority>0.6</priority><xhtml:link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_12.html"/><xhtml:link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_12.html"/></url>
+
+  <!-- Article pages -->
+  <url><loc>https://ghost8787.github.io/blog/EXP/article_01.html</loc><priority>0.6</priority><xhtml:link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/article_01.html"/><xhtml:link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/article_01.html"/></url>
+  <url><loc>https://ghost8787.github.io/blog/EXP/article_02.html</loc><priority>0.6</priority><xhtml:link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/article_02.html"/><xhtml:link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/article_02.html"/></url>
+  <url><loc>https://ghost8787.github.io/blog/EXP/article_03.html</loc><priority>0.6</priority><xhtml:link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/article_03.html"/><xhtml:link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/article_03.html"/></url>
+  <url><loc>https://ghost8787.github.io/blog/EXP/article_04.html</loc><priority>0.6</priority><xhtml:link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/article_04.html"/><xhtml:link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/article_04.html"/></url>
+  <url><loc>https://ghost8787.github.io/blog/EXP/article_05.html</loc><priority>0.6</priority><xhtml:link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/article_05.html"/><xhtml:link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/article_05.html"/></url>
+  <url><loc>https://ghost8787.github.io/blog/EXP/article_06.html</loc><priority>0.6</priority><xhtml:link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/article_06.html"/><xhtml:link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/article_06.html"/></url>
+  <url><loc>https://ghost8787.github.io/blog/EXP/article_07.html</loc><priority>0.6</priority><xhtml:link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/article_07.html"/><xhtml:link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/article_07.html"/></url>
+  <url><loc>https://ghost8787.github.io/blog/EXP/article_08.html</loc><priority>0.6</priority><xhtml:link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/article_08.html"/><xhtml:link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/article_08.html"/></url>
+  <url><loc>https://ghost8787.github.io/blog/EXP/article_09.html</loc><priority>0.6</priority><xhtml:link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/article_09.html"/><xhtml:link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/article_09.html"/></url>
+
 </urlset>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Chill Blog | GHOST.ouo</title>
+    <meta name="description" content="GHOST.ouo's blog — practical notes on AI automation, Python, and developer tooling.">
+    <meta property="og:title" content="Chill Blog | GHOST.ouo">
+    <meta property="og:description" content="Practical AI tooling and workflow automation.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ghost8787.github.io/blog/en/">
+    <meta property="og:image" content="https://ghost8787.github.io/blog/PNG/pixelS2.png">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:locale:alternate" content="zh_TW">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Chill Blog | GHOST.ouo">
+    <meta name="twitter:description" content="Practical AI tooling and workflow automation.">
+    <link rel="canonical" href="https://ghost8787.github.io/blog/en/">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/">
+    <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
+    <!-- External resources: Tailwind CSS, FontAwesome, Google Fonts -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../style.css">
+    <script>
+        window.siteRoot = '';
+    </script>
+    <script src="../i18n.js" defer></script>
+    <script type="module" src="../main.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../tailwind.config.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white">
+
+    <!-- Background & decorative layers -->
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-600/10 rounded-full blur-[120px] animate-pulse-slow" style="animation-delay: 2s;"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <!-- Main content (Bento Grid) -->
+    <main class="relative z-10 max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 pt-24 md:pt-32 pb-16 md:pb-24 overflow-x-hidden">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+
+            <!-- Hero (anchor: About) -->
+            <div id="about" role="region" aria-labelledby="about-heading" class="bento-item col-span-1 md:col-span-8 p-8 md:p-12 xl:p-16 flex flex-col justify-center items-start min-h-[420px] scroll-mt-32">
+
+                <div class="inline-block px-3 py-1 rounded-full bg-accent-purple/10 border border-accent-purple/20 text-accent-purple text-[10px] font-bold uppercase tracking-wider mb-6">
+                    WORK SMARTER, NOT HARDER
+                </div>
+
+                <h1 id="about-heading" class="text-3xl md:text-5xl xl:text-6xl font-extrabold mb-6 leading-tight tracking-tight text-gradient text-left">
+                    Just wanna make some cool shit. <br>
+                    <span class="text-accent-purple text-2xl md:text-4xl">AI &amp; Automation.</span>
+                </h1>
+
+                <div class="mb-8 w-full flex justify-start">
+                    <p id="typewriter-text" class="animate-typewriter text-accent-purple font-mono text-lg md:text-xl tracking-tight min-h-[1.5em]">
+                        Python / Google Apps Script / OpenAI API / n8n
+                    </p>
+                </div>
+
+                <div class="space-y-4 max-w-xl text-gray-400 leading-relaxed text-sm md:text-base text-left">
+                    <p><span class="text-white font-semibold">GHOST_1010</span> , trust it and make it. 💜</p>
+                    <p>I build practical AI and automation. The goal: turn the repetitive parts of admin, data work, and content into workflows that run, and keep running.</p>
+                    <p>Take the leap. Regardless of the outcome, come back with insights and lessons learned.</p>
+                </div>
+
+                <div class="flex flex-wrap gap-3 mt-8">
+                    <a href="projects.html" class="px-5 py-2.5 bg-accent-purple text-black font-bold rounded-full text-xs tracking-wide hover:shadow-[0_0_20px_rgba(191,148,255,0.5)] transition-all cursor-pointer">
+                        View Projects <i class="fas fa-arrow-right ml-1 text-[10px]"></i>
+                    </a>
+                    <a href="articles.html" class="px-5 py-2.5 border border-white/10 text-gray-300 font-bold rounded-full text-xs tracking-wide hover:border-accent-purple hover:text-accent-purple transition-all cursor-pointer">
+                        Read Articles <i class="fas fa-arrow-right ml-1 text-[10px]"></i>
+                    </a>
+                    <a href="whiteboard.html" class="px-5 py-2.5 border border-white/10 text-gray-300 font-bold rounded-full text-xs tracking-wide hover:border-accent-purple hover:text-accent-purple transition-all cursor-pointer">
+                        Open Whiteboard <i class="fas fa-arrow-right ml-1 text-[10px]"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="bento-item col-span-1 md:col-span-4 rounded-3xl p-6 flex items-center justify-center relative overflow-hidden group">
+
+                <img src="../PNG/20260125P.webp" alt="Profile"
+                class="absolute top-20 right-0 bottom-0 left-0 w-full h-full object-cover z-1
+                        object-top  opacity-50 scale-[1.1] grayscale-[0.3] origin-center
+                        group-hover:opacity-100 group-hover:scale-[1.2] group-hover:grayscale-0
+                        transition-all duration-1000 ease-in-out">
+
+                <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent z-1 opacity-80"></div>
+
+                <div class="absolute bottom-4 right-4 z-10">
+                    <span class="text-gray-400 text-[10px] font-mono uppercase tracking-[0.2em] backdrop-blur-md bg-black/30 px-3 py-1 rounded-full border border-white/10 group-hover:text-accent-purple group-hover:border-accent-purple/50 transition-all">
+                        GHOST_1010
+                    </span>
+                </div>
+
+            </div>
+
+            <!-- Contact (anchor: Contact) -->
+            <div id="contact" role="region" aria-labelledby="contact-heading" class="bento-item contact-card-bento col-span-1 md:col-span-12 rounded-3xl p-8 flex flex-col justify-between min-h-[200px] scroll-mt-32">
+                <div>
+                    <h2 id="contact-heading" class="text-2xl font-bold mb-2 text-white">Contact Me</h2>
+                    <p class="text-gray-400 text-xs mb-6">Tech starts with people.</p>
+                    <p class="text-gray-400 text-xs">Let's build something cool.</p>
+                    <p class="text-gray-400 text-xs">Feel free to reach out for insights or collaboration.</p>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex gap-5">
+                        <a href="https://www.linkedin.com/in/netghost1010" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-accent-blue transition-colors">
+                            <i class="fab fa-linkedin-in text-xl"></i>
+                        </a>
+                        <a href="https://github.com/GHOST8787" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-github text-xl"></i>
+                        </a>
+                        <a href="https://www.instagram.com/rbt_ghost_1010/" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-pink-400 transition-colors">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                    </div>
+                    <button id="heart-trigger" aria-label="Send love to this blog" class="px-6 py-3 border border-accent-purple text-accent-purple font-mono font-bold rounded-xl text-xs hover:bg-accent-purple hover:text-black hover:shadow-[0_0_20px_rgba(191,148,255,0.5)] transition-all duration-100 cursor-pointer active:scale-90 flex items-center gap-2">
+                        🖤 <span class="hidden sm:inline">Send Love</span>
+                        <span id="heart-count" class="font-mono opacity-80">...</span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+</body>
+</html>

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / A5 | GHOST.ouo</title>
+    <link rel="canonical" href="https://ghost8787.github.io/blog/en/EXP/article_05.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/article_05.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/article_05.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/article_05.html">
+
+    <link rel="icon" type="image/png" href="../../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../style.css">
+
+    <script>
+        window.siteRoot = '../';
+    </script>
+    <script src="../../i18n.js" defer></script>
+    <script type="module" src="../../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../articles.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO ARTICLES
+            </a>
+            <span class="opacity-50">EXP / A5</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                Stress-Testing the Edges of AI-Assisted Development:<br>
+                <span class="text-gradient text-2xl md:text-4xl">Refactoring an Open-Source Project and Rethinking Engineering Discipline</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    Engineering
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    AI Collaboration
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    System Design
+                </span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.02.21</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                Stepping into the <code>line-message-analyzer</code> open-source refactor started as a fix for a legacy parsing bug. The actual goal ran wider. I wanted a live environment to validate four technical bets:
+            </p>
+
+            <div class="bg-white/5 p-6 rounded-2xl border border-white/10 mb-10 shadow-lg">
+                <ul class="space-y-4 text-gray-300 font-light m-0 pl-0 list-none">
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-microscope text-accent-purple mt-1"></i>
+                        <div><strong class="text-white">Validate the VibeCoding stack:</strong> measure how productively pure natural-language-assisted dev converts into real engineering, and whether the resulting architecture holds up.</div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-robot text-accent-purple mt-1"></i>
+                        <div><strong class="text-white">Stress-test agent collaboration boundaries:</strong> work directly with autonomous AI agents (like Antigravity), and find where the permission cap and system-convergence threshold actually sit.</div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-code-branch text-accent-purple mt-1"></i>
+                        <div><strong class="text-white">Refactor the open-source architecture:</strong> break the long-standing bottleneck and hand the community a cleaner, more extensible logical core.</div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-chart-pie text-accent-purple mt-1"></i>
+                        <div><strong class="text-white">Run the full data pipeline live:</strong> end-to-end from unstructured data extraction, data cleaning, state management, through to visual rendering.</div>
+                    </li>
+                </ul>
+            </div>
+
+            <p class="mb-6">
+                What it actually became: a deep audit of data complexity and AI model hallucination.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Structuring Real-World Data is the Hard Part
+            </h3>
+
+            <p class="mb-6">
+                The initial scope was Issue #2 (whitespace parsing breaking) and #4 (anomalous time formats). Once I got into the core logic, the real-world data turned out to be far messier than expected. LINE chat exports come in a loose, inconsistent shape:
+            </p>
+
+            <ul class="list-disc pl-5 space-y-3 text-sm text-gray-400 font-light mb-8">
+                <li><strong class="text-white">Fragmented formats:</strong> date structures follow no single convention. Standard <code>2026/02/21</code> sits next to entries with special characters like <code>2025.08.04 Monday</code>. Pattern matching gets ugly fast.</li>
+                <li><strong class="text-white">Missing identifying features:</strong> system events, media messages, and voice call logs lack clear label prefixes. A single-dimension regex cannot filter them reliably.</li>
+            </ul>
+
+            <p>
+                Lean on one fragile delimiter (whitespace) to handle high-dimensional text and the system collapses on edge cases. The fix: refactor the underlying parser, switch to a strict Tab-separated mechanism, and stand up an edge-case stress-test environment.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> AI Agent Hallucination and System Entropy
+            </h3>
+
+            <p>
+                To speed up the dev cycle I brought in an AI assistant and constrained its behavior with custom Skills. The exercise exposed a real flaw in how current models handle global state.
+            </p>
+
+            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/10 shadow-lg my-8 relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-1 h-full bg-red-500/50"></div>
+                <h4 class="text-red-400 font-bold mb-4 flex items-center gap-2 text-lg">
+                    <i class="fas fa-bug"></i> The Cost of Handing Over Global Control
+                </h4>
+                <p class="text-sm text-gray-400 leading-relaxed mb-4">
+                    Give the AI a high-freedom modification instruction and the architectural complexity scales non-linearly:
+                </p>
+                <ol class="list-decimal pl-5 space-y-2 text-sm text-gray-400 font-light">
+                    <li><strong>Scope creep:</strong> the AI ignores the original requirement boundary, drops in unauthorized modules (charts that nobody asked for), and damages the core data structure definitions.</li>
+                    <li><strong>Render-layer decoupling failure:</strong> no global awareness of the existing UI framework. Component styles fracture. Data formatting logic disappears.</li>
+                    <li><strong>Control-flow corruption:</strong> in specific data-cleaning loops (like detecting unsent messages) the AI mis-applies logic statements, truncates downstream valid data, and breaks data integrity hard.</li>
+                </ol>
+            </div>
+
+            <p>
+                The pattern is clear. The AI does not have deep architectural understanding yet. Hand a refactor over to a black-box model and you land in an infinite loop of "fixed A, broke B." Architectural control is the developer's floor and you do not give it up.
+            </p>
+
+            <figure class="my-10">
+                <img src="../../PNG/article_05.1.webp"
+                     alt="Debugging the chaos"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    Anomaly investigation: working through broken data structures and failed chart rendering.
+                </figcaption>
+            </figure>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Rewriting Engineering Discipline for the AI Era
+            </h3>
+
+            <p class="mb-6">
+                After enough rounds of system state drift, I pulled the AI's global modification rights back and locked in four practical rules to keep the dev process converging:
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
+                <div class="bg-white/5 p-6 rounded-xl border border-white/10 hover:border-accent-purple/30 transition-colors">
+                    <h4 class="text-white font-bold mb-2 flex items-center gap-2 text-base m-0">
+                        <i class="fas fa-database text-accent-purple"></i> 1. Test-Driven Development with Data Isolation
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed mt-2 mb-0">
+                        Strict separation between data layer and render layer. Before any data hits the DOM or a chart instance, a standalone validation script runs in the backend environment to lock down array structure and computation logic.
+                    </p>
+                </div>
+                <div class="bg-white/5 p-6 rounded-xl border border-white/10 hover:border-accent-purple/30 transition-colors">
+                    <h4 class="text-white font-bold mb-2 flex items-center gap-2 text-base m-0">
+                        <i class="fas fa-code-commit text-accent-purple"></i> 2. Atomic Commits
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed mt-2 mb-0">
+                        Reject the AI's bulk refactor scripts. Break tasks down to the smallest unit. Verify one change at a time, commit immediately. Keeps the rollback cost from uncontrolled code at a minimum.
+                    </p>
+                </div>
+                <div class="bg-white/5 p-6 rounded-xl border border-white/10 hover:border-accent-purple/30 transition-colors">
+                    <h4 class="text-white font-bold mb-2 flex items-center gap-2 text-base m-0">
+                        <i class="fas fa-broom text-accent-purple"></i> 3. State Cache and Redundancy Management
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed mt-2 mb-0">
+                        Watch for stale state in the dev environment. Aggressively clean redundant style classes. Force-reload to avoid drawing wrong conclusions from cached behavior.
+                    </p>
+                </div>
+                <div class="bg-white/5 p-6 rounded-xl border border-white/10 hover:border-accent-purple/30 transition-colors">
+                    <h4 class="text-white font-bold mb-2 flex items-center gap-2 text-base m-0">
+                        <i class="fas fa-crop-simple text-accent-purple"></i> 4. Visual and Render Logic Decoupling
+                    </h4>
+                    <p class="text-sm text-gray-400 leading-relaxed mt-2 mb-0">
+                        For Canvas elements and responsive layouts, keep physical dimensions and CSS logic tightly aligned. Bring in media queries. Avoid single-dimension settings that throw off container calculations.
+                    </p>
+                </div>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Results and Technical Read-Outs
+            </h3>
+
+            <p class="mb-6">
+                Against the four original bets, here is where I landed:
+            </p>
+
+            <div class="space-y-6 mb-12">
+                <div class="bg-[#0A0A0A] p-6 rounded-xl border-l-4 border-white/20">
+                    <h4 class="text-white font-bold mb-2 text-lg">1. VibeCoding Performance</h4>
+                    <p class="text-sm text-gray-400 leading-relaxed m-0">
+                        <strong>Verdict: high efficiency on architectural bootstrap, micro-decisions still need a human.</strong><br>
+                        Pure natural-language development holds up well for early-stage build-out and code hygiene. For specific logic fixes and fine-grained layout work, the cost of going back and forth with the AI ends up higher than just writing the code directly. Logic selection and final micro-tuning still need human mental models in the loop. No way around that today.
+                    </p>
+                </div>
+
+                <div class="bg-[#0A0A0A] p-6 rounded-xl border-l-4 border-white/20">
+                    <h4 class="text-white font-bold mb-2 text-lg">2. Agent Collaboration Boundaries</h4>
+                    <p class="text-sm text-gray-400 leading-relaxed m-0">
+                        <strong>Verdict: system-architecture control is non-transferable.</strong><br>
+                        As context accumulates, the AI agent develops drift and stacks hallucinations on top of earlier ones. Workable collaboration needs hard boundaries: humans define the frame and the rules; the AI runs strictly bounded sub-tasks.
+                    </p>
+                </div>
+
+                <div class="bg-[#0A0A0A] p-6 rounded-xl border-l-4 border-white/20">
+                    <h4 class="text-white font-bold mb-2 text-lg">3. Open-Source Refactor</h4>
+                    <p class="text-sm text-gray-400 leading-relaxed m-0">
+                        <strong>Verdict: clean module separation and a closed loop on the workflow.</strong><br>
+                        Got the open-source branch-collaboration flow running, and finished the first round of underlying-logic decoupling. The foundation for deeper system optimization is in place.
+                    </p>
+                </div>
+
+                <div class="bg-[#0A0A0A] p-6 rounded-xl border-l-4 border-white/20">
+                    <h4 class="text-white font-bold mb-2 text-lg">4. Data Pipeline Validation</h4>
+                    <p class="text-sm text-gray-400 leading-relaxed m-0">
+                        <strong>Verdict: data cleaning is the load-bearing wall.</strong><br>
+                        Frontend rendering stability is fully downstream of backend data quality. When you design the pipeline, the unstructured-data cleaning logic gets the highest budget for resources and time.
+                    </p>
+                </div>
+            </div>
+
+            <hr class="border-white/10 my-10">
+
+            <div class="bg-gradient-to-r from-accent-purple/10 to-transparent p-6 rounded-xl border-l-2 border-accent-purple">
+                <h4 class="text-white font-bold mb-2 flex items-center gap-2">
+                    <i class="fas fa-flag-checkered text-accent-purple"></i> Stage Review of the Refactor
+                </h4>
+                <p class="text-gray-300 text-sm leading-relaxed mb-4">
+                    Where things stand: state management module refactored, strict data validation in place, AI agent collaboration boundaries clarified. The visual layer still wants more polish, and the underlying data flow and system skeleton are now solid.
+                </p>
+                <p class="text-gray-400 text-xs italic m-0">
+                    Iteration is just continuous logic debugging and system refactoring. Build the right mental model and the engineering discipline. That is the actual lever for working with automated development tools.
+                </p>
+            </div>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="article_04.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Article
+            </a>
+            <a href="../articles.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Articles
+            </a>
+            <a href="article_06.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                Next Article &rarr;
+            </a>
+        </div>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+</body>
+</html>

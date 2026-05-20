@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / P11 | GHOST.ouo</title>
+    <link rel="canonical" href="https://ghost8787.github.io/blog/en/EXP/project_11.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_11.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_11.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/project_11.html">
+
+    <link rel="icon" type="image/png" href="../../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script src="../../i18n.js" defer></script>
+    <script type="module" src="../../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / P11</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                Closing the Gap in Chrome's Synced Tabs:<br>
+                <span class="text-gradient text-2xl md:text-4xl">Device Tabs Opener</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">Engineering</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Chrome Extension</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Open Source</span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.04.20</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                A Chrome Extension that solves one thing: opening tabs from other devices in batch. Covers Manifest V3, vanilla JS implementation, MIT licensing, and the Web Store submission flow.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> The Problem: Feature Exists, UX Path Broken
+            </h3>
+
+            <p>
+                Chrome's cross-device tab sync already pushes open tabs from iPhone / iPad up to the desktop. The access path:
+            </p>
+
+            <div class="my-6 p-5 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400">
+                Chrome &rarr; History &rarr; Tabs from other devices
+            </div>
+
+            <p>
+                The list only supports opening one tab at a time. 10 tabs to clear means 10 clicks. After each click the focus jumps away from the list, so you scroll back in. For "drop everything I had open on my phone onto the desktop right now," the friction is too high.
+            </p>
+
+            <p class="text-gray-400">
+                Chrome already implemented the sync. What's missing is the batch action layer.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Implementation: Three APIs, a Minimum Loop
+            </h3>
+
+            <h4 class="text-xl font-bold text-white mt-10 mb-4">
+                Stack
+            </h4>
+
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
+                <li><strong class="text-white">Manifest V3</strong>: Chrome requires V3 for new extensions since 2024. Service Worker replaces background pages. Permission model is stricter.</li>
+                <li><strong class="text-white">Vanilla JavaScript</strong>: no framework, no bundler. One HTML file plus one JS file. A few hundred lines total.</li>
+            </ul>
+
+            <p>
+                File layout:
+            </p>
+
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre class="m-0"><code>device-tabs-opener/
+├── manifest.json     # permissions and entry points
+├── popup.html        # UI shown when the toolbar icon is clicked
+├── popup.js          # interaction logic and batch open
+├── background.js     # Service Worker (required in V3)
+└── icons/            # toolbar icons</code></pre>
+            </div>
+
+            <h4 class="text-xl font-bold text-white mt-10 mb-4">
+                Core APIs
+            </h4>
+
+            <div class="w-full overflow-x-auto my-6">
+                <table class="w-full text-left border-collapse min-w-[500px]">
+                    <thead>
+                        <tr class="text-white font-mono text-xs uppercase tracking-wider">
+                            <th class="py-3 pr-4 border-b border-white/20 w-1/3">API</th>
+                            <th class="py-3 pl-4 border-b border-white/20 w-2/3">Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 font-bold text-white font-mono"><code class="text-accent-purple">chrome.sessions.getDevices()</code></td>
+                            <td class="py-4 pl-4 text-gray-300">Returns all synced devices and their tab lists as structured objects (device name, title, URL, last used).</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 font-bold text-white font-mono"><code class="text-accent-purple">chrome.windows.create({ url: [...] })</code></td>
+                            <td class="py-4 pl-4 text-gray-300">Opens a URL array in a new window. I chose a new window over the current one to avoid disrupting the existing workflow with a flood of tabs.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 pr-4 font-bold text-white font-mono">popup UI</td>
+                            <td class="py-4 pl-4 text-gray-300">Lists every device and tab with a checkbox per row. Three buttons: select all, clear, open selected.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p class="text-gray-400">
+                Click the icon, click open, and the new window appears in 2&ndash;3 seconds.
+            </p>
+
+            <h4 class="text-xl font-bold text-white mt-10 mb-4">
+                Permissions and Privacy
+            </h4>
+
+            <p>
+                <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">manifest.json</code> declares only two permissions:
+            </p>
+
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
+                <li><code class="text-accent-purple bg-accent-purple/10 px-1 rounded">sessions</code>: read synced tab lists from other devices</li>
+                <li><code class="text-accent-purple bg-accent-purple/10 px-1 rounded">tabs</code>: open selected tabs in a new window</li>
+            </ul>
+
+            <p>
+                No <code>storage</code>, no <code>activeTab</code>, no <code>host_permissions</code>. All data stays local. Discarded after execution. No backend. No third-party tracking. No user data collection. Source code is open on GitHub under MIT.
+            </p>
+
+            <figure class="my-8">
+                <img src="../../PNG/project_10.1.png"
+                     alt="Chrome Web Store listing page showing extension details and privacy disclosure"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    Chrome Web Store listing: extension details and privacy disclosure
+                </figcaption>
+            </figure>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> The Submission Flow
+            </h3>
+
+            <p>
+                First time taking a Chrome Extension all the way through Web Store submission. Key checkpoints:
+            </p>
+
+            <h4 class="text-xl font-bold text-white mt-10 mb-4">
+                1. License: MIT
+            </h4>
+
+            <p>
+                Personal tool. I wanted others to fork and modify freely, so MIT &mdash; keep the copyright notice and you can use, modify, and redistribute commercially.
+            </p>
+
+            <h4 class="text-xl font-bold text-white mt-10 mb-4">
+                2. Chrome Web Store developer account
+            </h4>
+
+            <p>
+                One-time 5 USD registration fee. After that, extensions can be created.
+            </p>
+
+            <h4 class="text-xl font-bold text-white mt-10 mb-4">
+                3. Packaging and assets
+            </h4>
+
+            <p>
+                Zip the directory and upload. The extra assets:
+            </p>
+
+            <ul class="list-disc pl-5 space-y-1 text-gray-300 font-light mb-6">
+                <li>Extension icon (128&times;128)</li>
+                <li>Promo image (440&times;280)</li>
+                <li>Store screenshots (1280&times;800)</li>
+                <li>Listing description and permission justification</li>
+            </ul>
+
+            <p>
+                The assets took longer than the code did. The code was finished early.
+            </p>
+
+            <h4 class="text-xl font-bold text-white mt-10 mb-4">
+                4. Review
+            </h4>
+
+            <p>
+                Single-purpose, minimal permissions, no extra data collection &mdash; approved on the first pass. The only wait was queue time.
+            </p>
+
+            <h4 class="text-xl font-bold text-white mt-10 mb-4">
+                5. Install experience after launch
+            </h4>
+
+            <p>
+                Users click "Add to Chrome" from the Web Store page. No developer mode, no zip download.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Project Links
+            </h3>
+
+            <p>
+                <a href="https://chromewebstore.google.com/detail/idmlpeiehifpmfbgpefcdjlbdchjmjpc" target="_blank" rel="noopener noreferrer" class="text-accent-purple hover:text-white transition-colors underline decoration-accent-purple/30 underline-offset-4 font-mono">
+                    Chrome Web Store&nbsp;<i class="fas fa-external-link-alt text-[10px]"></i>
+                </a>
+                　｜
+                <a href="https://github.com/GHOST8787/device-tabs-opener" target="_blank" rel="noopener noreferrer" class="text-accent-purple hover:text-white transition-colors underline decoration-accent-purple/30 underline-offset-4 font-mono">
+                    GitHub&nbsp;<i class="fas fa-external-link-alt text-[10px]"></i>
+                </a>
+            </p>
+
+            <p class="text-sm text-gray-500 font-mono">
+                v2.1.0　｜　MIT License　｜　Manifest V3
+            </p>
+
+            <hr class="border-white/10 my-16">
+
+            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 flex flex-col md:flex-row items-start md:items-center gap-6">
+                <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center shrink-0 border border-white/10">
+                    <i class="fab fa-github text-gray-400 text-xl"></i>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-1">Project Info</h4>
+                    <p class="text-sm text-gray-400 m-0 leading-relaxed">
+                        Chrome Extension · personal tool · batch-open synced tabs across devices<br>
+                        <span class="text-xs text-gray-500 mt-2 inline-block">Version v2.1.0　・　Launched 2026.03.29　・　Manifest V3</span>
+                    </p>
+                </div>
+            </div>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="project_10.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Project
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Projects
+            </a>
+            <a href="project_12.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                Next Project &rarr;
+            </a>
+        </div>
+
+    </main>
+    <div id="footer-placeholder"></div>
+</body>
+</html>

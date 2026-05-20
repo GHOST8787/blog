@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / P12 | GHOST.ouo</title>
+    <link rel="canonical" href="https://ghost8787.github.io/blog/EXP/project_12.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_12.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_12.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/project_12.html">
+
+    <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script src="../i18n.js" defer></script>
+    <script type="module" src="../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / P12</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                自用 YouTube 整理工具的兩個世代：<br>
+                <span class="text-gradient text-2xl md:text-4xl">從 n8n Excel 到 Vision Pipeline</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">AI &amp; Automation</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Vision Pipeline</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Self-hosted</span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.05.18</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                同一個需求 &mdash; 把 YouTube 影片轉成可以帶走的中文整理 &mdash; 用兩種完全不同的工程方法各做了一次。這篇紀錄兩個世代的架構差異，以及 V1 留下了什麼問題、V2 是用什麼方法接手。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 問題：30 分鐘影片只想帶走 5 條判斷
+            </h3>
+
+            <p>
+                每天會看不少 YouTube 影片，但回放本身效率很低 &mdash; 30 分鐘的內容裡，真正能帶走的判斷可能只有 5 條。需要的是<strong class="text-white">壓縮過後可以直接歸檔的整理</strong>：
+            </p>
+
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
+                <li>章節跳轉，能直接跳到某段討論的時間點</li>
+                <li>系統化重點，把整支影片用幾段話交代清楚</li>
+                <li>可帶走的判斷，獨立成立、不需要回看影片就能理解</li>
+                <li>Excel 留底，方便事後彙整月度看了什麼</li>
+            </ul>
+
+            <p>
+                兩個世代都在解這個問題，差別在工程方法 &mdash; 以及這個方法能做到多深。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> V1：n8n + Python + GEMINI + Excel
+            </h3>
+
+            <p>
+                第一個版本用 n8n 串起整條工作流。架構單純：
+            </p>
+
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre class="m-0"><code>手動丟連結 &rarr; n8n webhook
+            &rarr; Python (yt-dlp + transcript)
+            &rarr; GEMINI generateContent
+            &rarr; Google Sheets append</code></pre>
+            </div>
+
+            <figure class="my-8">
+                <img src="../PNG/project_12.1.png"
+                     alt="V1 輸出：Google Sheets 中以欄位形式儲存的影片整理紀錄"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    V1 輸出：Google Sheets 一行一支影片，欄位含一句摘要、重點條列、AI 來源、分析時間
+                </figcaption>
+            </figure>
+
+            <h4 class="text-xl font-bold text-white mt-10 mb-4">
+                V1 的特性
+            </h4>
+
+            <div class="w-full overflow-x-auto my-6">
+                <table class="w-full text-left border-collapse min-w-[500px]">
+                    <thead>
+                        <tr class="text-white font-mono text-xs uppercase tracking-wider">
+                            <th class="py-3 pr-4 border-b border-white/20 w-1/3">面向</th>
+                            <th class="py-3 pl-4 border-b border-white/20 w-2/3">實作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 font-bold text-white">觸發方式</td>
+                            <td class="py-4 pl-4 text-gray-300">手動把 URL 丟進 n8n webhook</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 font-bold text-white">整理引擎</td>
+                            <td class="py-4 pl-4 text-gray-300">GEMINI 純文字摘要（只讀 transcript）</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 font-bold text-white">輸出結構</td>
+                            <td class="py-4 pl-4 text-gray-300">一句摘要 + 條列 5&ndash;8 點，存進 Google Sheets 一個 row</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 font-bold text-white">介面</td>
+                            <td class="py-4 pl-4 text-gray-300">沒有獨立 UI，看 Google Sheets</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 pr-4 font-bold text-white">處理時間</td>
+                            <td class="py-4 pl-4 text-gray-300">2&ndash;5 分鐘 / 支，不可見（n8n 跑完才寫入）</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4 class="text-xl font-bold text-white mt-10 mb-4">
+                V1 解決的問題與未解的問題
+            </h4>
+
+            <p>
+                V1 的價值在於<strong class="text-white">把流程跑通</strong>。從手動寫筆記變成自動化產出條列，這一步替後續節省了很多時間。但有幾件事 V1 沒能處理：
+            </p>
+
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
+                <li><strong class="text-white">影片畫面的資訊全丟。</strong>講者展示的 slide、白板、截圖、表格 &mdash; transcript 只有口語、抓不到視覺資訊。對技術型內容影響最大。</li>
+                <li><strong class="text-white">沒有章節跳轉。</strong>事後要回看某段討論，只能用關鍵字在 transcript 裡 ctrl+F。</li>
+                <li><strong class="text-white">摘要層級偏單一。</strong>一句摘要 + 條列適合快速 scan，但「值得獨立記下來的判斷」需要更結構化的呈現。</li>
+                <li><strong class="text-white">改一條 prompt 要改 n8n。</strong>工作流的 visual editor 在原型階段方便，但版本控制、回滾、code review 都不順手。</li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> V2：Next.js + Firebase + Claude Vision + 本機 Worker
+            </h3>
+
+            <p>
+                第二個版本整個架構重做。從「n8n 工作流」變成「web app + queue + 本機 worker」：
+            </p>
+
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre class="m-0"><code>網頁登入 + 貼 URL
+       &darr;
+[Vercel /api/videos/process] &rarr; Firestore status=queued
+       &uarr;&darr;
+[本機 worker daemon]                ← 桌機 24h 開著
+   - yt-dlp + Whisper       &rarr; transcript + meta
+   - Claude Call 1 (text)   &rarr; ChapterPlan + 要看畫面的 timestamps
+   - extract_frames.py      &rarr; 每章一張 frame
+   - Firebase Storage upload
+   - Claude Call 2 (text+vision) &rarr; StructuredVideoFull
+       &darr;
+[Vercel /v/[id]] onSnapshot &rarr; 渲染完整報告</code></pre>
+            </div>
+
+            <figure class="my-8">
+                <img src="../PNG/project_12.2.png"
+                     alt="V2 介面：影片頁含 YouTube 嵌入、章節跳轉、處理資訊"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    V2 介面：YouTube 嵌入、章節跳轉、處理元資訊（轉錄模型、整理模型、花費、處理時間）
+                </figcaption>
+            </figure>
+
+            <h4 class="text-xl font-bold text-white mt-10 mb-4">
+                核心改變：2-Call Vision Pipeline
+            </h4>
+
+            <p>
+                V2 最關鍵的工程決策是<strong class="text-white">把整理拆成兩次 LLM 呼叫</strong>，而不是把整支 transcript 一次丟給模型：
+            </p>
+
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
+                <li><strong class="text-white">Call 1（純文字）：</strong>讀 transcript，先規劃章節結構 &mdash; 每個章節幾分到幾分、主題是什麼、哪些 timestamp 需要看畫面（例如講者展示了表格、引用了一張圖）。輸出是一個 ChapterPlan JSON。</li>
+                <li><strong class="text-white">中間步驟：</strong>根據 Call 1 提的時間點，從原始影片抽出對應 frames（用 ffmpeg）。每個章節各拿一張代表性畫面。</li>
+                <li><strong class="text-white">Call 2（文字 + vision）：</strong>把 transcript、章節骨架、frame 圖片一起餵給 model，產出最終結構化整理 &mdash; 含每章重點、可帶走的判斷、frame 描述、信心註記。</li>
+            </ul>
+
+            <p>
+                這樣做的好處是<strong class="text-white">只在「需要看畫面」的地方付 vision token 的錢</strong>，而不是整支影片每秒抽一張。Call 1 規劃得準的話，每支 30 分鐘的影片大約抽 5&ndash;8 張 frame 就夠。
+            </p>
+
+            <figure class="my-8">
+                <img src="../PNG/project_12.3.png"
+                     alt="V2 內容：系統化整理段落 + 可帶走的判斷編號列表"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    V2 輸出：系統化整理 + 結論段落，後接編號的可帶走判斷
+                </figcaption>
+            </figure>
+
+            <h4 class="text-xl font-bold text-white mt-10 mb-4">
+                V2 暴露的元資訊
+            </h4>
+
+            <p>
+                介面右下角會顯示這支影片的處理紀錄：
+            </p>
+
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
+                <li><strong class="text-white">轉錄：</strong>whisper-large-v3</li>
+                <li><strong class="text-white">整理：</strong>claude-sonnet-4-6</li>
+                <li><strong class="text-white">花費：</strong>每支約 0.10&ndash;0.20 USD</li>
+                <li><strong class="text-white">處理時間：</strong>3 分鐘左右</li>
+            </ul>
+
+            <p>
+                這個透明度在 V1 看不到。每支影片成本與時間直接攤開後，要不要再做一次、要不要換模型，判斷依據變清楚。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 中途的轉折：執行位置是設計決策
+            </h3>
+
+            <p>
+                V2 在落地過程中，<strong class="text-white">「程式碼跑在哪裡」</strong>本身就改了三次。這部分值得獨立紀錄，因為它揭露了一個容易被當成「之後再說」的問題。
+            </p>
+
+            <div class="w-full overflow-x-auto my-6">
+                <table class="w-full text-left border-collapse min-w-[500px]">
+                    <thead>
+                        <tr class="text-white font-mono text-xs uppercase tracking-wider">
+                            <th class="py-3 pr-4 border-b border-white/20 w-1/4">嘗試</th>
+                            <th class="py-3 px-4 border-b border-white/20 w-1/3">執行位置</th>
+                            <th class="py-3 pl-4 border-b border-white/20 w-5/12">結果</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 font-bold text-white">Try 1</td>
+                            <td class="py-4 px-4 text-gray-300">Vercel function 直接跑 yt-dlp</td>
+                            <td class="py-4 pl-4 text-gray-300">Vercel runtime 缺 ffmpeg、Linux ARM 不相容，落地失敗</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 font-bold text-white">Try 2</td>
+                            <td class="py-4 px-4 text-gray-300">GitHub Actions runner</td>
+                            <td class="py-4 pl-4 text-gray-300">3 支 e2e 全失敗，YouTube 回「Sign in to confirm you&rsquo;re not a bot」 &mdash; datacenter IP 段被擋</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 pr-4 font-bold text-white">Try 3</td>
+                            <td class="py-4 px-4 text-gray-300">本機 worker daemon（家用 IP）</td>
+                            <td class="py-4 pl-4 text-gray-300">通過。桌機 24h 開著當 Firestore listener，雲端 queue 把工作丟下來在家用 IP 跑</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                這次踩坑可以濃縮成一句教訓：
+            </p>
+
+            <blockquote class="border-l-2 border-accent-purple pl-6 my-8 text-gray-300 italic">
+                自動化 pipeline 的「執行位置」是設計決策，牽涉反爬策略。某些目標站對特定 IP 段有限制，hosting 選錯地方，整個架構需要重做。
+            </blockquote>
+
+            <p>
+                V2 最後的形態是<strong class="text-white">雲端 + 本機混合</strong>：認證、UI、queue 全在 Vercel + Firebase；實際下載與處理留在家用 IP 上。這個分工是被 YouTube 的反爬規則逼出來的，不是一開始就規劃好的。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 兩個世代的對照
+            </h3>
+
+            <div class="w-full overflow-x-auto my-6">
+                <table class="w-full text-left border-collapse min-w-[600px]">
+                    <thead>
+                        <tr class="text-white font-mono text-xs uppercase tracking-wider">
+                            <th class="py-3 pr-4 border-b border-white/20 w-1/4">維度</th>
+                            <th class="py-3 px-4 border-b border-white/20 w-3/8">V1</th>
+                            <th class="py-3 pl-4 border-b border-white/20 w-3/8">V2</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 font-bold text-white">觸發方式</td>
+                            <td class="py-4 px-4 text-gray-300">手動丟 webhook</td>
+                            <td class="py-4 pl-4 text-gray-300">網頁登入 + 貼 URL</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 font-bold text-white">整理模型</td>
+                            <td class="py-4 px-4 text-gray-300">GEMINI（純文字）</td>
+                            <td class="py-4 pl-4 text-gray-300">Claude Sonnet 4.6（vision）</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 font-bold text-white">輸入維度</td>
+                            <td class="py-4 px-4 text-gray-300">transcript</td>
+                            <td class="py-4 pl-4 text-gray-300">transcript + chapter frames</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 font-bold text-white">章節跳轉</td>
+                            <td class="py-4 px-4 text-gray-300">無</td>
+                            <td class="py-4 pl-4 text-gray-300">有，YouTube 嵌入 + 時間戳</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 font-bold text-white">輸出層級</td>
+                            <td class="py-4 px-4 text-gray-300">一句摘要 + 條列</td>
+                            <td class="py-4 pl-4 text-gray-300">系統化整理 + 可帶走判斷 + 章節 frame 描述</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 font-bold text-white">介面</td>
+                            <td class="py-4 px-4 text-gray-300">Google Sheets</td>
+                            <td class="py-4 pl-4 text-gray-300">Next.js web app</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 font-bold text-white">執行位置</td>
+                            <td class="py-4 px-4 text-gray-300">n8n 雲端 + Python local</td>
+                            <td class="py-4 pl-4 text-gray-300">Vercel queue + 本機 worker daemon</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 font-bold text-white">成本可見性</td>
+                            <td class="py-4 px-4 text-gray-300">不可見</td>
+                            <td class="py-4 pl-4 text-gray-300">每支顯示花費 + 處理時間</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 pr-4 font-bold text-white">Excel 匯出</td>
+                            <td class="py-4 px-4 text-gray-300">即輸出本身</td>
+                            <td class="py-4 pl-4 text-gray-300">每月一鍵匯出</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 下一個轉折
+            </h3>
+
+            <p>
+                目前 V2 的本機 worker 綁定在一台桌機上。下一個變化點是<strong class="text-white">把 worker 打包成可分發的安裝程式</strong>，讓家用 IP 不再綁定在一台特定電腦，整套架構從「個人工具」往「可以分發」靠一步。
+            </p>
+
+            <hr class="border-white/10 my-12">
+
+            <div class="mt-8 text-sm font-mono text-gray-500 border-l-2 border-accent-purple pl-4">
+                V1 到 V2 之間真正改變的是把「輸入維度、執行位置、輸出層級」三件事各自當設計決策來重新處理。模型只是其中一個變數。
+            </div>
+
+            <p class="text-sm text-gray-500 font-mono mt-12">
+                Stack：Next.js 16 ・ Tailwind v4 ・ Firebase Auth + Firestore + Storage ・ Vercel ・ Claude Sonnet 4.6 ・ Whisper Large v3 ・ yt-dlp ・ ffmpeg
+            </p>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="project_11.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Project
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Projects
+            </a>
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                Next Project &rarr;
+            </a>
+        </div>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EXP / P13 | GHOST.ouo</title>
+    <title>EXP / NP_05 | GHOST.ouo</title>
 
     <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
     <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
@@ -18,7 +18,7 @@
     <script>
         window.siteRoot = '../';
     </script>
-    <script src="../main.js" defer></script>
+    <script type="module" src="../main.js" defer></script>
 </head>
 
 <body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
@@ -37,7 +37,7 @@
                 <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
                 BACK TO PROJECTS
             </a>
-            <span class="opacity-50">EXP / P13</span>
+            <span class="opacity-50">EXP / NP_05 (draft)</span>
         </div>
 
         <header class="mb-12 border-b border-white/10 pb-12">
@@ -55,12 +55,15 @@
                     Operations
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Content Production
+                    Project Management
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Content Strategy
                 </span>
             </div>
 
             <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
-                <span><i class="far fa-calendar mr-2"></i>2025.01 — Present</span>
+                <span><i class="far fa-calendar mr-2"></i>2025.01 &mdash; Present</span>
                 <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
             </div>
         </header>
@@ -68,135 +71,133 @@
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
             <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
-                加入一間影視製作公司擔任製作助理，從日常行政支援起步，逐步建立合約模板、器材管理、週匯報制度與社群內容排程等標準化流程，讓原本依賴口頭交代的工作模式轉變為可追蹤、可交接的營運系統。
+                影視製作公司實習任內負責建立對內運作流程與小助理 SOP。從「大改 vs 小修」工作分類定義、影片排程命名、月度行政規範到開箱影片 VOOM 數據分析框架，整理成可交接的書面文件。
             </p>
 
-            <!-- ===== 核心數據 ===== -->
-            <div class="grid grid-cols-3 gap-4 my-10">
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 大改 vs 小修：工作分類定義
+            </h3>
+
+            <p>
+                為了避免「修改範圍模糊 → 跨部門協調成本爆炸」的問題，老闆同意把腳本修改拆兩類，並訂出明確判斷依據：
+            </p>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider whitespace-nowrap w-24">面向</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">小修</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">大改</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">範圍</td>
+                            <td class="px-4 py-3">特定場景、對白、動作</td>
+                            <td class="px-4 py-3">整體結構、主題或重要場景</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">目的</td>
+                            <td class="px-4 py-3">語氣 / 描述 / 細節優化</td>
+                            <td class="px-4 py-3">重寫情節、調整角色動機、改變結局</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">影響</td>
+                            <td class="px-4 py-3">不動分鏡、拍攝計畫、後製</td>
+                            <td class="px-4 py-3">可能要重排分鏡、拍攝、預算</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">協調層</td>
+                            <td class="px-4 py-3">編劇 / 編輯團隊現場快速處理</td>
+                            <td class="px-4 py-3">製片或客戶批准 + 跨部門重新協調</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">判斷依據</td>
+                            <td class="px-4 py-3">局部優化、整體影響有限</td>
+                            <td class="px-4 py-3">會動到分鏡 / 場景設計 / 拍攝計畫</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 小助理守則：排程與行政
+            </h3>
+
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">影片歸檔</strong> &mdash; 剪完的影片依客戶或創作者名稱，存到對應雲端資料夾</li>
+                <li><strong class="text-white">排程編號</strong> &mdash; 「月-次數」格式（例：3-1 = 3 月第一次拍攝）</li>
+                <li><strong class="text-white">月度簽到</strong> &mdash; 月初印簽到表、貼門口、舊表歸檔；每天檢查簽到狀況；人事變動時更新名單</li>
+                <li><strong class="text-white">發票歸檔</strong> &mdash; 雙月月底處理</li>
+                <li><strong class="text-white">分組對接</strong> &mdash; 企劃編導、拍攝剪輯、後續助理三個職能，各自對接不同案件</li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 開箱影片 VOOM 數據分析框架
+            </h3>
+
+            <p>
+                負責的開箱類影片發佈於 VOOM 平台。為了讓老闆能用同一套指標跨支影片比較，整理了一套五層轉換率公式：
+            </p>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider whitespace-nowrap w-44">指標</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">公式</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">用途</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">點擊率 (CTR)</td><td class="px-4 py-3 font-mono">點擊 ÷ 曝光</td><td class="px-4 py-3">封面是否吸引人</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">3 秒觀看率</td><td class="px-4 py-3 font-mono">3 秒觀看 ÷ 曝光</td><td class="px-4 py-3">開頭是否留得住</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">1 分鐘觀看率</td><td class="px-4 py-3 font-mono">1 分鐘觀看 ÷ 曝光</td><td class="px-4 py-3">深度觀眾比例</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">3 秒到 1 分鐘留存率</td><td class="px-4 py-3 font-mono">1 分鐘 ÷ 3 秒觀看</td><td class="px-4 py-3">滑過 → 認真觀看的轉換</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">互動率</td><td class="px-4 py-3 font-mono">(反應 + 留言) ÷ 曝光</td><td class="px-4 py-3">觸及到互動的轉換</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 異常識別規則
+            </h3>
+
+            <p>有了五層公式後，把常見的「異常組合 → 可能原因」整理成判斷規則：</p>
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">點擊率高但觀看低</strong> &mdash; 封面黨（封面誤導內容）</li>
+                <li><strong class="text-white">觀看高但互動低</strong> &mdash; 影片品質可以但缺 CTA（call-to-action）</li>
+                <li><strong class="text-white">3 秒觀看多但 1 分鐘觀看少</strong> &mdash; 開頭不吸引、留不住觀眾</li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 工作量級（2025.06-07 開箱系列）
+            </h3>
+
+            <p>
+                兩個月內發佈 13 支開箱影片，覆蓋生活用品、廚房用品、彩妝、健身工具等品類。其中單支峰值表現：
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-8">
                 <div class="bg-white/5 border border-accent-purple/20 rounded-2xl p-6 text-center">
-                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">數十份</div>
-                    <div class="text-xs text-gray-500 font-mono uppercase">標準化模板文件</div>
+                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">67K</div>
+                    <div class="text-xs text-gray-500 font-mono uppercase">單支峰值曝光</div>
                 </div>
                 <div class="bg-white/5 border border-accent-purple/20 rounded-2xl p-6 text-center">
-                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">每週 1+</div>
-                    <div class="text-xs text-gray-500 font-mono uppercase">進度匯報制度</div>
+                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">37K</div>
+                    <div class="text-xs text-gray-500 font-mono uppercase">單支峰值 3 秒觀看</div>
                 </div>
                 <div class="bg-white/5 border border-accent-purple/20 rounded-2xl p-6 text-center">
-                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">100+</div>
-                    <div class="text-xs text-gray-500 font-mono uppercase">臨演人員資料庫</div>
+                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">301</div>
+                    <div class="text-xs text-gray-500 font-mono uppercase">單支峰值互動</div>
                 </div>
-            </div>
-
-            <!-- ===== Before / After ===== -->
-            <h2 class="text-2xl font-bold text-white mt-16 mb-8">Before / After</h2>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
-                <div class="bg-white/5 rounded-2xl p-6 border border-white/10">
-                    <div class="text-xs font-mono text-gray-500 uppercase mb-4 flex items-center gap-2">
-                        <i class="fas fa-arrow-left text-red-400"></i> Before — 加入前
-                    </div>
-                    <ul class="text-sm text-gray-400 space-y-2">
-                        <li>合約、報價單格式不統一，每次重新做</li>
-                        <li>器材借用靠口頭登記，歸還無追蹤</li>
-                        <li>工作進度靠群組訊息回報，難以彙整</li>
-                        <li>臨演資源分散，選角靠記憶</li>
-                        <li>社群貼文無排程，想到才發</li>
-                    </ul>
-                </div>
-                <div class="bg-accent-purple/5 rounded-2xl p-6 border border-accent-purple/20">
-                    <div class="text-xs font-mono text-accent-purple uppercase mb-4 flex items-center gap-2">
-                        <i class="fas fa-arrow-right text-accent-purple"></i> After — 建立制度後
-                    </div>
-                    <ul class="text-sm text-gray-300 space-y-2">
-                        <li>合約、報價單、通告單等公版模板齊備</li>
-                        <li>器材借用申請表 + 貼紙標籤管理</li>
-                        <li>每週固定週匯報，月度彙整分析</li>
-                        <li>臨演人員庫分類建檔，附照片可查詢</li>
-                        <li>社群內容文案模板 + 排程化經營</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- ===== 我做了什麼 ===== -->
-            <h2 class="text-2xl font-bold text-white mt-16 mb-8">What I Did</h2>
-
-            <div class="space-y-4 text-gray-300">
-                <p><span class="text-white font-semibold">合約模板標準化</span> — 建立短影片、長影片製作合約公版，統一報價單、通告單、肖像授權書等文件格式，減少每次從零起草的時間成本。</p>
-                <p><span class="text-white font-semibold">器材管理制度</span> — 設計攝影器材借用申請單與歸還流程，製作器材貼紙標籤系統，讓每項設備都有追蹤紀錄。</p>
-                <p><span class="text-white font-semibold">週匯報制度</span> — 從零建立每週進度匯報機制，半年內累積產出十餘份週報與月報，讓團隊工作進度透明可追蹤。</p>
-                <p><span class="text-white font-semibold">社群內容排程</span> — 撰寫社群貼文文案、規劃內容日曆，將發布流程從「想到才做」轉為系統化排程經營。</p>
-                <p><span class="text-white font-semibold">臨演人員調度</span> — 建立包含上百人的臨演資料庫，依性別、外型分類建檔附照片，大幅提升選角效率。</p>
-                <p><span class="text-white font-semibold">腳本與分鏡模板</span> — 製作空白腳本、分鏡表公版，讓創意發想有標準化的起點，加速前期規劃流程。</p>
-            </div>
-
-            <!-- ===== 亮點提煉 ===== -->
-            <h2 class="text-2xl font-bold text-white mt-16 mb-8">Key Highlights</h2>
-
-            <div class="space-y-4 my-8">
-                <div class="flex gap-4 bg-white/5 p-5 rounded-xl border border-white/5">
-                    <i class="fas fa-file-contract text-accent-purple mt-1 text-lg"></i>
-                    <div>
-                        <strong class="text-white">從混亂到模板化</strong><br>
-                        <span class="text-sm text-gray-400">在沒有前例可循的情況下，自行建立數十份標準化文件模板，涵蓋合約、報價、通告、授權等製作全流程。</span>
-                    </div>
-                </div>
-                <div class="flex gap-4 bg-white/5 p-5 rounded-xl border border-white/5">
-                    <i class="fas fa-clipboard-check text-accent-purple mt-1 text-lg"></i>
-                    <div>
-                        <strong class="text-white">制度化匯報機制</strong><br>
-                        <span class="text-sm text-gray-400">持續半年以上的週匯報制度，讓工作產出可視化。不只是寫報告，而是建立團隊溝通的固定節奏。</span>
-                    </div>
-                </div>
-                <div class="flex gap-4 bg-white/5 p-5 rounded-xl border border-white/5">
-                    <i class="fas fa-users text-accent-purple mt-1 text-lg"></i>
-                    <div>
-                        <strong class="text-white">人員資料庫系統</strong><br>
-                        <span class="text-sm text-gray-400">從零建立上百人的臨演資料庫，解決過去選角全靠記憶、每次重新找人的痛點。</span>
-                    </div>
-                </div>
-                <div class="flex gap-4 bg-white/5 p-5 rounded-xl border border-white/5">
-                    <i class="fas fa-cogs text-accent-purple mt-1 text-lg"></i>
-                    <div>
-                        <strong class="text-white">助理角色的系統思維</strong><br>
-                        <span class="text-sm text-gray-400">不只完成交辦事項，而是主動識別流程斷點並建立制度。用工程師的系統化思維做營運管理。</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ===== Gallery ===== -->
-            <h2 class="text-2xl font-bold text-white mt-16 mb-8">Gallery</h2>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
-                <figure>
-                    <div class="w-full aspect-video rounded-xl border border-white/10 bg-white/5 flex items-center justify-center">
-                        <span class="text-gray-600 text-xs font-mono uppercase">Screenshot: Contract Templates</span>
-                    </div>
-                    <figcaption class="text-center text-xs text-gray-600 mt-2 font-mono">標準化合約模板系統</figcaption>
-                </figure>
-                <figure>
-                    <div class="w-full aspect-video rounded-xl border border-white/10 bg-white/5 flex items-center justify-center">
-                        <span class="text-gray-600 text-xs font-mono uppercase">Screenshot: Weekly Report</span>
-                    </div>
-                    <figcaption class="text-center text-xs text-gray-600 mt-2 font-mono">週匯報制度範例</figcaption>
-                </figure>
-                <figure>
-                    <div class="w-full aspect-video rounded-xl border border-white/10 bg-white/5 flex items-center justify-center">
-                        <span class="text-gray-600 text-xs font-mono uppercase">Screenshot: Talent Database</span>
-                    </div>
-                    <figcaption class="text-center text-xs text-gray-600 mt-2 font-mono">臨演人員資料庫</figcaption>
-                </figure>
-                <figure>
-                    <div class="w-full aspect-video rounded-xl border border-white/10 bg-white/5 flex items-center justify-center">
-                        <span class="text-gray-600 text-xs font-mono uppercase">Screenshot: Social Content</span>
-                    </div>
-                    <figcaption class="text-center text-xs text-gray-600 mt-2 font-mono">社群內容排程規劃</figcaption>
-                </figure>
             </div>
 
         </article>
 
         <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
-            <a href="project_12.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
                 &larr; Prev Project
             </a>
             <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
@@ -208,8 +209,6 @@
         </div>
 
     </main>
-
     <div id="footer-placeholder"></div>
-
 </body>
 </html>

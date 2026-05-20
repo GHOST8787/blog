@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / P9 | GHOST.ouo</title>
+    <link rel="canonical" href="https://ghost8787.github.io/blog/en/EXP/project_09.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_09.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_09.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/project_09.html">
+
+    <link rel="icon" type="image/png" href="../../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script src="../../i18n.js" defer></script>
+    <script type="module" src="../../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / P9</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                Claude Code Architecture, Part 2:<br>
+                <span class="text-gradient text-2xl md:text-4xl">Engineering Practice, Tool Governance, and the Verification Loop</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">Engineering</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Tool Design</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Workflow</span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.04.03</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-16 leading-relaxed">
+                Part 1 set up the macro boundaries and the context rules. This part zooms into execution: how to design tools an agent picks correctly, the actual job of subagents, the engineering meaning behind a few high-frequency commands, and the three evolutionary stages every developer goes through.
+            </p>
+
+            <section class="mb-16">
+                <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-3 border-b border-white/10 pb-4">
+                    <i class="fas fa-wrench text-accent-purple"></i> Tool Design: Make Claude Pick Right
+                </h3>
+
+                <p class="mb-6 text-gray-300">
+                    A tool built for an agent is structurally different from an API built for humans. Humans optimize for feature completeness. Agents optimize for <strong class="text-white">low misclassification rate</strong>.
+                </p>
+
+                <div class="bg-white/5 p-6 rounded-2xl border border-white/10 mb-8">
+                    <strong class="text-accent-purple block mb-4 text-lg">Case study: how the AskUserQuestion mechanism evolved</strong>
+                    <ul class="space-y-4 text-sm text-gray-400 list-none pl-0 m-0">
+                        <li class="flex items-start gap-4">
+                            <span class="bg-white/10 text-white px-2.5 py-1 rounded text-xs font-mono mt-0.5 shrink-0">V1</span>
+                            <div><strong class="text-white">Markdown convention:</strong> prompt the model to ask in a specific format <br><span class="text-red-400"><i class="fas fa-arrow-right text-xs mr-1"></i> Claude ignored it and answered anyway.</span></div>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <span class="bg-white/10 text-white px-2.5 py-1 rounded text-xs font-mono mt-0.5 shrink-0">V2</span>
+                            <div><strong class="text-white">Flag parameter:</strong> add an <code>--ask</code> flag to an existing tool <br><span class="text-red-400"><i class="fas fa-arrow-right text-xs mr-1"></i> The flag kept getting skipped.</span></div>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <span class="bg-accent-purple/20 text-accent-purple border border-accent-purple/30 px-2.5 py-1 rounded text-xs font-mono mt-0.5 shrink-0">V3</span>
+                            <div><strong class="text-white">Dedicated tool:</strong> wrap it as a standalone <code>AskUserQuestion</code> tool <br><span class="text-green-400"><i class="fas fa-arrow-right text-xs mr-1"></i> Stable. Calling it triggers a system interrupt.</span></div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-red-900/10 p-5 rounded-xl border border-red-900/30">
+                        <strong class="text-red-400 flex items-center gap-2 mb-2"><i class="fas fa-times-circle"></i> When not to add another tool</strong>
+                        <ul class="text-sm text-gray-400 list-disc pl-5 m-0 space-y-1">
+                            <li>The local shell already handles it reliably</li>
+                            <li>The model only needs static knowledge, no interaction</li>
+                            <li>A skill workflow constraint fits better</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-16">
+                <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-3 border-b border-white/10 pb-4">
+                    <i class="fas fa-sitemap text-accent-purple"></i> Subagents: Isolation Matters More Than Parallelism
+                </h3>
+
+                <p class="mb-6 text-gray-300">
+                    The real value of a subagent is <strong class="text-white">contamination isolation</strong>, not raw parallel compute. When scanning a large codebase, hand it off to a subagent. The main thread only takes back the summary. The global context stays clean.
+                </p>
+
+                <div class="bg-white/5 p-6 rounded-2xl border border-white/10">
+                    <strong class="text-white block mb-4">Configure subagents with explicit limits:</strong>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="bg-[#0A0A0A] p-4 rounded-xl border border-white/5">
+                            <code class="text-accent-purple font-bold block mb-1">tools</code>
+                            <span class="text-xs text-gray-400">Restrict what it can use. No global access.</span>
+                        </div>
+                        <div class="bg-[#0A0A0A] p-4 rounded-xl border border-white/5">
+                            <code class="text-accent-purple font-bold block mb-1">model</code>
+                            <span class="text-xs text-gray-400">Use Haiku for exploration to save cost.</span>
+                        </div>
+                        <div class="bg-[#0A0A0A] p-4 rounded-xl border border-white/5">
+                            <code class="text-accent-purple font-bold block mb-1">maxTurns</code>
+                            <span class="text-xs text-gray-400">Cap the step count so it stops looping.</span>
+                        </div>
+                        <div class="bg-[#0A0A0A] p-4 rounded-xl border border-white/5">
+                            <code class="text-accent-purple font-bold block mb-1">worktree</code>
+                            <span class="text-xs text-gray-400">Isolate the filesystem when files get touched.</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-16">
+                <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-3 border-b border-white/10 pb-4">
+                    <i class="fas fa-terminal text-accent-purple"></i> The Engineering Behind a Few High-Frequency Commands
+                </h3>
+
+                <p class="mb-6 text-gray-300">These commands all serve one purpose: <strong class="text-white">manage context actively. Do not wait for the system to handle it for you.</strong></p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-white/5 p-5 rounded-xl border border-white/10 hover:border-accent-purple/30 transition-colors">
+                        <code class="text-accent-purple font-bold text-base block mb-2">/insight</code>
+                        <p class="text-sm text-gray-400 m-0">Has Claude surface the things you keep repeating but never wrote into the contract. The best way to iterate on <code>CLAUDE.md</code>.</p>
+                    </div>
+                    <div class="bg-white/5 p-5 rounded-xl border border-white/10 hover:border-accent-purple/30 transition-colors">
+                        <code class="text-accent-purple font-bold text-base block mb-2">/rewind</code>
+                        <p class="text-sm text-gray-400 m-0">Reset back to a specific checkpoint and re-summarize. Use when the agent went sideways but the earlier consensus is worth keeping.</p>
+                    </div>
+                    <div class="bg-white/5 p-5 rounded-xl border border-white/10 hover:border-accent-purple/30 transition-colors">
+                        <code class="text-accent-purple font-bold text-base block mb-2">--fork</code>
+                        <p class="text-sm text-gray-400 m-0">Branch a parallel universe from the current context. Good for A/B architectural comparisons without polluting the main session.</p>
+                    </div>
+                    <div class="bg-white/5 p-5 rounded-xl border border-white/10 hover:border-accent-purple/30 transition-colors">
+                        <code class="text-accent-purple font-bold text-base block mb-2">Double-tap ESC</code>
+                        <p class="text-sm text-gray-400 m-0">Jump back to the last input and edit it. When Claude drifts off course, rewriting the last message is faster than starting a new session.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-10">
+                <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-3 border-b border-white/10 pb-4">
+                    <i class="fas fa-chart-line text-accent-purple"></i> Three Stages and One Verification Rule
+                </h3>
+
+                <div class="relative pl-6 ml-3 border-l-2 border-accent-purple/30 space-y-8 mb-10">
+                    <div class="relative">
+                        <div class="absolute -left-[31px] top-1.5 w-3 h-3 rounded-full bg-accent-purple border-2 border-[#050505]"></div>
+                        <strong class="text-white block text-lg mb-1">1. ChatBot stage</strong>
+                        <p class="text-sm text-gray-400 m-0">Treat it as a chat partner and rely on your own brain to patch missing context. Result: the context turns into a mess.</p>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute -left-[31px] top-1.5 w-3 h-3 rounded-full bg-accent-purple border-2 border-[#050505]"></div>
+                        <strong class="text-white block text-lg mb-1">2. Configuration stage</strong>
+                        <p class="text-sm text-gray-400 m-0">Start writing <code>CLAUDE.md</code> and plugging in external tools. Result: the rules grow long and the model selectively ignores them.</p>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute -left-[31px] top-1.5 w-3 h-3 rounded-full bg-accent-purple border-2 border-[#050505]"></div>
+                        <strong class="text-white block text-lg mb-1">3. Engineering stage</strong>
+                        <p class="text-sm text-gray-400 m-0">The question shifts from "how do I use this feature" to "how do I design a system where the agent operates and verifies itself under explicit constraints."</p>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-accent-purple/10 to-transparent p-8 rounded-2xl border-l-4 border-accent-purple shadow-xl">
+                    <p class="text-white font-bold text-xl mb-3 flex items-center gap-2">
+                        <i class="fas fa-exclamation-triangle text-accent-purple"></i> The Verification Loop: the Hard Rule
+                    </p>
+                    <p class="text-gray-300 leading-relaxed mb-0">
+                        "Claude says it's done" never equals done. If you cannot say exactly <strong class="text-white">"which script has to pass for this to count as complete,"</strong> the task is not ready to hand off to an agent for autonomous execution. The acceptance bar gets locked in at the prompt or skill layer. Not after.
+                    </p>
+                </div>
+            </section>
+
+            <hr class="border-white/10 my-16">
+
+            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 flex flex-col md:flex-row items-start md:items-center gap-6">
+                <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center shrink-0 border border-white/10">
+                    <i class="fas fa-book-open text-gray-400 text-xl"></i>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-1">Reference &amp; Credits</h4>
+                    <p class="text-sm text-gray-400 m-0 leading-relaxed">
+                        The architectural framing and engineering ideas across P8 and P9 draw heavily from open-source developer <strong>Tw93</strong>'s article:<br>
+                        <a href="https://tw93.fun/2026-03-12/claude.html" target="_blank" rel="noopener noreferrer" class="text-accent-purple hover:text-white transition-colors underline decoration-accent-purple/30 underline-offset-4 font-mono mt-1 inline-block">
+                            《你不知道的 Claude Code：架構、治理與工程實踐》 (What You Don't Know About Claude Code: Architecture, Governance, Engineering Practice)
+                        </a>
+                    </p>
+                </div>
+            </div>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="project_08.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Project
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Projects
+            </a>
+            <a href="project_10.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                Next Project &rarr;
+            </a>
+        </div>
+
+    </main>
+    <div id="footer-placeholder"></div>
+</body>
+</html>

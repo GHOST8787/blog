@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / P12 | GHOST.ouo</title>
+    <link rel="canonical" href="https://ghost8787.github.io/blog/en/EXP/project_12.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_12.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_12.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/project_12.html">
+
+    <link rel="icon" type="image/png" href="../../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script src="../../i18n.js" defer></script>
+    <script type="module" src="../../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / P12</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                Two Generations of a Personal YouTube Digest Tool:<br>
+                <span class="text-gradient text-2xl md:text-4xl">From n8n &amp; Excel to a Vision Pipeline</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">AI &amp; Automation</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Vision Pipeline</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Self-hosted</span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.05.18</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                Same requirement &mdash; turn a YouTube video into a Chinese digest I can actually keep &mdash; built twice with two completely different engineering approaches. This is a log of what changed between the two generations, what V1 left unsolved, and how V2 picked it up.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> The Problem: a 30-Minute Video, 5 Calls Worth Keeping
+            </h3>
+
+            <p>
+                I watch a lot of YouTube. Replaying is inefficient. A 30-minute video might contain 5 actual takeaways. What I needed was <strong class="text-white">a compressed digest I can archive directly</strong>:
+            </p>
+
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
+                <li>Chapter jumping, so I can land on the exact moment a discussion happens</li>
+                <li>A structured summary of the whole video in a few paragraphs</li>
+                <li>Standalone takeaways that read on their own without rewatching</li>
+                <li>An Excel record so I can review what I watched each month</li>
+            </ul>
+
+            <p>
+                Both generations solve this. The difference is the engineering, and how deep that engineering can take the output.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> V1: n8n + Python + GEMINI + Excel
+            </h3>
+
+            <p>
+                The first version stitched everything together with n8n. The structure was simple:
+            </p>
+
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre class="m-0"><code>manual URL drop &rarr; n8n webhook
+                &rarr; Python (yt-dlp + transcript)
+                &rarr; GEMINI generateContent
+                &rarr; Google Sheets append</code></pre>
+            </div>
+
+            <figure class="my-8">
+                <img src="../../PNG/project_12.1.png"
+                     alt="V1 output: a Google Sheet with one row per video"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    V1 output: one row per video in Google Sheets, with summary, bullet takeaways, model source, and timestamp.
+                </figcaption>
+            </figure>
+
+            <h4 class="text-xl font-bold text-white mt-10 mb-4">
+                V1 in Detail
+            </h4>
+
+            <div class="w-full overflow-x-auto my-6">
+                <table class="w-full text-left border-collapse min-w-[500px]">
+                    <thead>
+                        <tr class="text-white font-mono text-xs uppercase tracking-wider">
+                            <th class="py-3 pr-4 border-b border-white/20 w-1/3">Aspect</th>
+                            <th class="py-3 pl-4 border-b border-white/20 w-2/3">Implementation</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 font-bold text-white">Trigger</td>
+                            <td class="py-4 pl-4 text-gray-300">Manually drop a URL into the n8n webhook</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 font-bold text-white">Digest engine</td>
+                            <td class="py-4 pl-4 text-gray-300">GEMINI, text-only (reads transcript)</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 font-bold text-white">Output shape</td>
+                            <td class="py-4 pl-4 text-gray-300">One-line summary + 5&ndash;8 bullet takeaways, written as a single Google Sheets row</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 font-bold text-white">Interface</td>
+                            <td class="py-4 pl-4 text-gray-300">No dedicated UI. You read the Google Sheet.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 pr-4 font-bold text-white">Processing time</td>
+                            <td class="py-4 pl-4 text-gray-300">2&ndash;5 minutes per video, invisible until n8n finishes writing</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4 class="text-xl font-bold text-white mt-10 mb-4">
+                What V1 Solved, What It Did Not
+            </h4>
+
+            <p>
+                V1's value was <strong class="text-white">making the loop work</strong>. Going from handwritten notes to automated bullets saved a lot of downstream time. A few things stayed unsolved:
+            </p>
+
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
+                <li><strong class="text-white">All visual information was lost.</strong> Slides, whiteboards, screenshots, tables &mdash; the transcript only captures speech. For technical content, this matters the most.</li>
+                <li><strong class="text-white">No chapter jumping.</strong> To revisit a specific discussion later, the only option was ctrl+F on the transcript.</li>
+                <li><strong class="text-white">The summary layer was flat.</strong> One-line summary plus bullets works for fast scanning, but takeaways worth keeping deserve a more structured presentation.</li>
+                <li><strong class="text-white">Editing a prompt meant editing n8n.</strong> A visual workflow editor is convenient at the prototype stage. Version control, rollback, and code review are awkward.</li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> V2: Next.js + Firebase + Claude Vision + Local Worker
+            </h3>
+
+            <p>
+                V2 rebuilt the architecture from scratch. From "an n8n workflow" to "web app + queue + local worker":
+            </p>
+
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre class="m-0"><code>web sign-in + paste URL
+       &darr;
+[Vercel /api/videos/process] &rarr; Firestore status=queued
+       &uarr;&darr;
+[local worker daemon]                ← desktop runs 24h
+   - yt-dlp + Whisper       &rarr; transcript + meta
+   - Claude Call 1 (text)   &rarr; ChapterPlan + timestamps needing frames
+   - extract_frames.py      &rarr; one frame per chapter
+   - Firebase Storage upload
+   - Claude Call 2 (text+vision) &rarr; StructuredVideoFull
+       &darr;
+[Vercel /v/[id]] onSnapshot &rarr; renders the full report</code></pre>
+            </div>
+
+            <figure class="my-8">
+                <img src="../../PNG/project_12.2.png"
+                     alt="V2 interface: a video page with embedded YouTube, chapter jumping, processing metadata"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    V2 UI: embedded YouTube, chapter jumping, processing metadata (transcription model, digest model, cost, runtime).
+                </figcaption>
+            </figure>
+
+            <h4 class="text-xl font-bold text-white mt-10 mb-4">
+                Core Change: a 2-Call Vision Pipeline
+            </h4>
+
+            <p>
+                The key engineering call in V2 was <strong class="text-white">splitting the digest into two LLM calls</strong> instead of feeding the entire transcript to a model in one shot:
+            </p>
+
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
+                <li><strong class="text-white">Call 1 (text-only):</strong> read the transcript, plan the chapter structure &mdash; minute ranges, topic per chapter, which timestamps need a visual lookup (a slide, a chart, a referenced image). Output is a ChapterPlan JSON.</li>
+                <li><strong class="text-white">Middle step:</strong> based on the timestamps from Call 1, extract the corresponding frames from the raw video with ffmpeg. One representative frame per chapter.</li>
+                <li><strong class="text-white">Call 2 (text + vision):</strong> feed the transcript, the chapter skeleton, and the frame images into the model. Output is the final structured digest &mdash; per-chapter highlights, standalone takeaways, frame descriptions, confidence notes.</li>
+            </ul>
+
+            <p>
+                The win here: <strong class="text-white">vision tokens get paid for only where they earn their cost</strong>, instead of sampling a frame per second across the whole video. If Call 1 plans well, a 30-minute video needs about 5&ndash;8 frames total.
+            </p>
+
+            <figure class="my-8">
+                <img src="../../PNG/project_12.3.png"
+                     alt="V2 content: structured digest paragraphs followed by numbered takeaways"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    V2 output: structured digest + closing paragraph, followed by numbered takeaways.
+                </figcaption>
+            </figure>
+
+            <h4 class="text-xl font-bold text-white mt-10 mb-4">
+                Metadata V2 Surfaces
+            </h4>
+
+            <p>
+                The lower-right of the UI shows the processing record per video:
+            </p>
+
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
+                <li><strong class="text-white">Transcription:</strong> whisper-large-v3</li>
+                <li><strong class="text-white">Digest:</strong> claude-sonnet-4-6</li>
+                <li><strong class="text-white">Cost:</strong> roughly 0.10&ndash;0.20 USD per video</li>
+                <li><strong class="text-white">Runtime:</strong> around 3 minutes</li>
+            </ul>
+
+            <p>
+                V1 hid all of this. Once cost and runtime are visible per video, decisions about rerunning or switching models become clearer.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Mid-Build Pivot: Execution Location Is a Design Decision
+            </h3>
+
+            <p>
+                During V2's build, <strong class="text-white">"where the code runs"</strong> changed three times. This part is worth its own section, because it exposes a question that looks like "we'll figure it out later" and is not.
+            </p>
+
+            <div class="w-full overflow-x-auto my-6">
+                <table class="w-full text-left border-collapse min-w-[500px]">
+                    <thead>
+                        <tr class="text-white font-mono text-xs uppercase tracking-wider">
+                            <th class="py-3 pr-4 border-b border-white/20 w-1/4">Attempt</th>
+                            <th class="py-3 px-4 border-b border-white/20 w-1/3">Where it ran</th>
+                            <th class="py-3 pl-4 border-b border-white/20 w-5/12">Result</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 font-bold text-white">Try 1</td>
+                            <td class="py-4 px-4 text-gray-300">Vercel function running yt-dlp directly</td>
+                            <td class="py-4 pl-4 text-gray-300">Vercel runtime had no ffmpeg, Linux ARM binary mismatch. Failed to land.</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 font-bold text-white">Try 2</td>
+                            <td class="py-4 px-4 text-gray-300">GitHub Actions runner</td>
+                            <td class="py-4 pl-4 text-gray-300">All 3 e2e attempts failed. YouTube returned "Sign in to confirm you&rsquo;re not a bot" &mdash; the datacenter IP range was flagged.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 pr-4 font-bold text-white">Try 3</td>
+                            <td class="py-4 px-4 text-gray-300">Local worker daemon (home IP)</td>
+                            <td class="py-4 pl-4 text-gray-300">Passed. Desktop runs 24h as a Firestore listener. The cloud queue hands work down to the home IP for execution.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                The lesson compresses into one line:
+            </p>
+
+            <blockquote class="border-l-2 border-accent-purple pl-6 my-8 text-gray-300 italic">
+                For automation pipelines, "where the code runs" is a design decision tied to anti-bot policy. Some target sites restrict specific IP ranges. Pick the wrong hosting, and the architecture needs to be rebuilt.
+            </blockquote>
+
+            <p>
+                The final V2 shape is <strong class="text-white">cloud + local hybrid</strong>: auth, UI, and queue live on Vercel and Firebase. The actual download and processing stay on a home IP. This split was forced by YouTube's anti-bot rules, not designed in upfront.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Side-by-Side
+            </h3>
+
+            <div class="w-full overflow-x-auto my-6">
+                <table class="w-full text-left border-collapse min-w-[600px]">
+                    <thead>
+                        <tr class="text-white font-mono text-xs uppercase tracking-wider">
+                            <th class="py-3 pr-4 border-b border-white/20 w-1/4">Dimension</th>
+                            <th class="py-3 px-4 border-b border-white/20 w-3/8">V1</th>
+                            <th class="py-3 pl-4 border-b border-white/20 w-3/8">V2</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 font-bold text-white">Trigger</td>
+                            <td class="py-4 px-4 text-gray-300">Manual webhook drop</td>
+                            <td class="py-4 pl-4 text-gray-300">Web sign-in + paste URL</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 font-bold text-white">Digest model</td>
+                            <td class="py-4 px-4 text-gray-300">GEMINI (text-only)</td>
+                            <td class="py-4 pl-4 text-gray-300">Claude Sonnet 4.6 (vision)</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 font-bold text-white">Input dimensions</td>
+                            <td class="py-4 px-4 text-gray-300">transcript</td>
+                            <td class="py-4 pl-4 text-gray-300">transcript + chapter frames</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 font-bold text-white">Chapter jumping</td>
+                            <td class="py-4 px-4 text-gray-300">None</td>
+                            <td class="py-4 pl-4 text-gray-300">Yes, with embedded YouTube + timestamps</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 font-bold text-white">Output layer</td>
+                            <td class="py-4 px-4 text-gray-300">One-line summary + bullets</td>
+                            <td class="py-4 pl-4 text-gray-300">Structured digest + standalone takeaways + per-chapter frame descriptions</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 font-bold text-white">Interface</td>
+                            <td class="py-4 px-4 text-gray-300">Google Sheets</td>
+                            <td class="py-4 pl-4 text-gray-300">Next.js web app</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 font-bold text-white">Execution location</td>
+                            <td class="py-4 px-4 text-gray-300">n8n cloud + local Python</td>
+                            <td class="py-4 pl-4 text-gray-300">Vercel queue + local worker daemon</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 font-bold text-white">Cost visibility</td>
+                            <td class="py-4 px-4 text-gray-300">Hidden</td>
+                            <td class="py-4 pl-4 text-gray-300">Per-video cost + runtime shown in UI</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 pr-4 font-bold text-white">Excel export</td>
+                            <td class="py-4 px-4 text-gray-300">The output itself</td>
+                            <td class="py-4 pl-4 text-gray-300">One-click monthly export</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> What's Next
+            </h3>
+
+            <p>
+                V2's local worker is currently tied to one desktop. The next pivot is <strong class="text-white">packaging the worker as a distributable installer</strong>, so the home IP stops being tied to a single machine. That moves the stack one step closer to "shareable" from "personal tool."
+            </p>
+
+            <hr class="border-white/10 my-12">
+
+            <div class="mt-8 text-sm font-mono text-gray-500 border-l-2 border-accent-purple pl-4">
+                The real change from V1 to V2: treating "input dimensions, execution location, output layer" as three separate design decisions, each reconsidered. The model is one variable among the three.
+            </div>
+
+            <p class="text-sm text-gray-500 font-mono mt-12">
+                Stack: Next.js 16 ・ Tailwind v4 ・ Firebase Auth + Firestore + Storage ・ Vercel ・ Claude Sonnet 4.6 ・ Whisper Large v3 ・ yt-dlp ・ ffmpeg
+            </p>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                &larr; Prev Project
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Projects
+            </a>
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                Next Project &rarr;
+            </a>
+        </div>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+</body>
+</html>

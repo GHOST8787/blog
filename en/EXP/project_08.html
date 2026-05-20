@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / P8 | GHOST.ouo</title>
+    <link rel="canonical" href="https://ghost8787.github.io/blog/en/EXP/project_08.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_08.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_08.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/project_08.html">
+
+    <link rel="icon" type="image/png" href="../../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script src="../../i18n.js" defer></script>
+    <script type="module" src="../../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / P8</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                Claude Code Architecture, Part 1:<br>
+                <span class="text-gradient text-2xl md:text-4xl">System Layers, Context Boundaries, and Caching</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">AI &amp; Automation</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Context Engineering</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Prompt Caching</span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.03.12</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-16 leading-relaxed">
+                Written from six months of going in circles with Claude Code. At first it looks like a ChatBot. Then the context turns noisy, the toolbelt grows but the output gets worse, and the rules I wrote stop being followed. That is a system architecture problem. To get Claude Code to behave, I had to understand the underlying six-layer structure and where the context boundaries actually sit.
+            </p>
+
+            <section class="mb-16">
+                <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-3 border-b border-white/10 pb-4">
+                    <i class="fas fa-layer-group text-accent-purple"></i> Core Loop and the Six Layers
+                </h3>
+
+                <p class="mb-6 text-gray-300">
+                    Claude Code is a recurring agent loop:<br>
+                    <code class="text-accent-purple bg-accent-purple/10 px-2 py-1 rounded">collect context &rarr; act &rarr; verify &rarr; [done or back to collect]</code>
+                </p>
+
+                <p class="mb-6 text-gray-400 text-sm">When it stalls, the cause is almost always bad context or the lack of a verify / rollback step. Model intelligence is rarely the bottleneck. The cleanest way to reason about the system is to split it into six layers:</p>
+
+                <div class="w-full overflow-x-auto mb-6">
+                    <table class="w-full text-left border-collapse min-w-[600px]">
+                        <thead>
+                            <tr class="text-white font-mono text-xs uppercase tracking-wider">
+                                <th class="py-4 pr-4 border-b border-white/20 w-1/4">Layer</th>
+                                <th class="py-4 pl-4 border-b border-white/20 w-3/4">Role</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm">
+                            <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+                                <td class="py-4 pr-4 font-bold text-white font-mono">Context</td>
+                                <td class="py-4 pl-4 text-gray-300"><code>CLAUDE.md</code> / <code>rules</code> / <code>memory</code>: tells Claude "what this is."</td>
+                            </tr>
+                            <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+                                <td class="py-4 pr-4 font-bold text-white font-mono">Action</td>
+                                <td class="py-4 pl-4 text-gray-300"><code>Tools</code> / <code>MCP</code>: tells Claude "what it can do."</td>
+                            </tr>
+                            <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+                                <td class="py-4 pr-4 font-bold text-white font-mono">Methodology</td>
+                                <td class="py-4 pl-4 text-gray-300"><code>Skills</code>: on-demand playbooks. Tells Claude "how to do it."</td>
+                            </tr>
+                            <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+                                <td class="py-4 pr-4 font-bold text-white font-mono">Control</td>
+                                <td class="py-4 pl-4 text-gray-300"><code>Hooks</code>: enforce certain behaviors without relying on the model's judgment.</td>
+                            </tr>
+                            <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+                                <td class="py-4 pr-4 font-bold text-white font-mono">Isolation</td>
+                                <td class="py-4 pl-4 text-gray-300"><code>Subagents</code>: contained workers for bounded autonomy.</td>
+                            </tr>
+                            <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+                                <td class="py-4 pr-4 font-bold text-white font-mono">Verification</td>
+                                <td class="py-4 pl-4 text-gray-300"><code>Verifiers</code>: make output verifiable, reversible, auditable.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-sm text-gray-400">
+                    <i class="fas fa-info-circle text-accent-purple mr-1"></i> Strengthen any one layer in isolation and the whole thing tilts. A bloated CLAUDE.md poisons context. Too many tools wreck tool selection. Subagents everywhere cause state drift.
+                </p>
+            </section>
+
+            <section class="mb-16">
+                <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-3 border-b border-white/10 pb-4">
+                    <i class="fas fa-code-branch text-accent-purple"></i> Boundaries: MCP / Tools / Skills / Hooks
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div class="bg-white/5 p-5 rounded-xl border-l-2 border-accent-purple/50">
+                        <strong class="text-white block mb-2 font-mono text-sm"><i class="fas fa-file-contract text-accent-purple mr-2"></i>CLAUDE.md &amp; rules</strong>
+                        <p class="text-sm text-gray-400 mb-2">Project-level contract and path-scoped rules.</p>
+                        <p class="text-xs text-red-400 mb-0"><i class="fas fa-times-circle mr-1"></i> Common misuse: dumping all team knowledge into one root file.</p>
+                    </div>
+                    <div class="bg-white/5 p-5 rounded-xl border-l-2 border-accent-purple/50">
+                        <strong class="text-white block mb-2 font-mono text-sm"><i class="fas fa-plug text-accent-purple mr-2"></i>Tools &amp; MCP</strong>
+                        <p class="text-sm text-gray-400 mb-2">Give Claude access to external systems.</p>
+                        <p class="text-xs text-red-400 mb-0"><i class="fas fa-times-circle mr-1"></i> Common misuse: plugging in too many servers and choking the context.</p>
+                    </div>
+                    <div class="bg-white/5 p-5 rounded-xl border-l-2 border-accent-purple/50">
+                        <strong class="text-white block mb-2 font-mono text-sm"><i class="fas fa-brain text-accent-purple mr-2"></i>Skills</strong>
+                        <p class="text-sm text-gray-400 mb-2">On-demand workflows and method packages.</p>
+                        <p class="text-xs text-red-400 mb-0"><i class="fas fa-times-circle mr-1"></i> Common misuse: writing them like encyclopedias with no execution boundary.</p>
+                    </div>
+                    <div class="bg-white/5 p-5 rounded-xl border-l-2 border-accent-purple/50">
+                        <strong class="text-white block mb-2 font-mono text-sm"><i class="fas fa-shield-alt text-accent-purple mr-2"></i>Hooks &amp; Subagents</strong>
+                        <p class="text-sm text-gray-400 mb-2">Enforcement layer and isolated worker units.</p>
+                        <p class="text-xs text-red-400 mb-0"><i class="fas fa-times-circle mr-1"></i> Common misuse: replacing model judgment with hooks.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-16">
+                <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-3 border-b border-white/10 pb-4">
+                    <i class="fas fa-database text-accent-purple"></i> Context Engineering: the Real Constraint
+                </h3>
+
+                <p class="mb-4 text-gray-300">Most people treat context as a capacity problem. The actual issue is signal-to-noise. Of 200K tokens, only a fraction is useful. MCP server tool definitions are the biggest hidden killer.</p>
+
+                <div class="bg-white/5 p-5 rounded-xl border-l-4 border-white/10 font-mono text-sm text-gray-300 mb-8 overflow-x-auto">
+<pre class="m-0"><code>Layered loading strategy:
+Always resident   &rarr; CLAUDE.md (project contract / build commands / hard rules)
+Load by path      &rarr; rules (per-language / per-directory / per-filetype)
+Load on demand    &rarr; Skills (workflows / domain knowledge)
+Load in isolation &rarr; Subagents (heavy exploration / parallel research)
+Never in context  &rarr; Hooks (deterministic scripts / audit / blockers)</code></pre>
+                </div>
+
+                <div class="bg-gradient-to-r from-accent-purple/10 to-transparent p-6 rounded-r-xl border-l-4 border-accent-purple mb-6">
+                    <strong class="text-white block mb-2 text-lg">The Compaction Trap and <code>HANDOFF.md</code></strong>
+                    <p class="text-sm text-gray-300 leading-relaxed mb-4">
+                        Default compaction strips early tool output and file content first. Along with that, it strips the <strong class="text-accent-purple">architectural decisions and the reasoning behind constraints</strong>.
+                    </p>
+                    <ul class="list-none pl-0 space-y-2 text-sm text-gray-400 m-0">
+                        <li class="flex items-start gap-2"><i class="fas fa-check text-green-400 mt-1 shrink-0"></i><span>Add explicit <code>Compact Instructions</code> in <code>CLAUDE.md</code> (must preserve architectural decisions, modified files, etc.).</span></li>
+                        <li class="flex items-start gap-2"><i class="fas fa-check text-green-400 mt-1 shrink-0"></i><span><strong class="text-white">A stronger move:</strong> before switching out of a complex session, have Claude write a <code>HANDOFF.md</code> covering progress, paths that worked, dead ends, and the next step. The next session loads it and resumes cleanly.</span></li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="mb-10">
+                <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-3 border-b border-white/10 pb-4">
+                    <i class="fas fa-bolt text-accent-purple"></i> Prompt Caching: the Core of the Internals
+                </h3>
+
+                <p class="mb-4 text-gray-300">
+                    Claude Code's entire architecture is shaped around prompt caching. High hit rate means lower cost and looser rate limits. Caching works on prefix matching, so ordering matters more than people think:
+                </p>
+
+                <div class="flex items-center gap-2 font-mono text-sm text-accent-purple bg-white/5 p-4 rounded-lg mb-6 overflow-x-auto">
+                    1. System Prompt (static) &rarr; 2. Tool Definitions (static) &rarr; 3. Chat History (dynamic) &rarr; 4. User Input (last)
+                </div>
+
+                <strong class="text-white block mb-3">Common ways to wreck the cache:</strong>
+                <ul class="space-y-3 text-sm text-gray-400 list-none pl-0 m-0">
+                    <li class="flex items-start gap-3"><i class="fas fa-exclamation-triangle text-red-400 mt-0.5"></i> <span>Putting dynamic content (like timestamps) into the system prompt. Dynamic info belongs in user messages, wrapped in a <code>&lt;system-reminder&gt;</code> tag.</span></li>
+                    <li class="flex items-start gap-3"><i class="fas fa-exclamation-triangle text-red-400 mt-0.5"></i> <span>Adding or removing tools mid-session, or reordering tool definitions non-deterministically.</span></li>
+                    <li class="flex items-start gap-3"><i class="fas fa-exclamation-triangle text-red-400 mt-0.5"></i> <span><strong class="text-white">Switching models mid-session.</strong> Caches are model-bound. Going from Opus to Haiku forces a full rebuild and ends up costing more. Hand off the task through a subagent instead.</span></li>
+                </ul>
+            </section>
+
+            <hr class="border-white/10 my-16">
+
+            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 flex flex-col md:flex-row items-start md:items-center gap-6">
+                <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center shrink-0 border border-white/10">
+                    <i class="fas fa-book-open text-gray-400 text-xl"></i>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-1">Reference &amp; Credits</h4>
+                    <p class="text-sm text-gray-400 m-0 leading-relaxed">
+                        The architectural framing and engineering ideas across P8 and P9 draw heavily from open-source developer <strong>Tw93</strong>'s article:<br>
+                        <a href="https://tw93.fun/2026-03-12/claude.html" target="_blank" rel="noopener noreferrer" class="text-accent-purple hover:text-white transition-colors underline decoration-accent-purple/30 underline-offset-4 font-mono mt-1 inline-block">
+                            《你不知道的 Claude Code：架構、治理與工程實踐》 (What You Don't Know About Claude Code: Architecture, Governance, Engineering Practice)
+                        </a>
+                    </p>
+                </div>
+            </div>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="project_07.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Project
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Projects
+            </a>
+            <a href="project_09.html" class="text-accent-purple hover:text-white transition-colors text-sm font-bold tracking-wide">
+                Next: Engineering &amp; Tool Governance (Part 2) &rarr;
+            </a>
+        </div>
+
+    </main>
+    <div id="footer-placeholder"></div>
+</body>
+</html>
