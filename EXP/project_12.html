@@ -70,7 +70,7 @@
             <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
                 <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">诶嘿</div>
                 <p class="m-0">
-                    這個工具最初是給自己用的，現在 V2 已開放公測，掛在 <a href="https://yt-digest-tau.vercel.app/feed" target="_blank" rel="noopener" class="text-accent-purple hover:text-white underline underline-offset-4 decoration-accent-purple/40 hover:decoration-white transition-colors">yt-digest-tau.vercel.app/feed</a>，歡迎來用，遇到特殊狀況歡迎找我回報。丟一條 YouTube 連結進去，幾分鐘後拿到一份結構化的中文整理（章節跳轉、重點段落、可帶走的判斷、原文字幕、Excel 留底）。V1 用 n8n（一種以拖拉節點建立自動化流程的視覺化工具）串接 GEMINI 純文字摘要，輸出寫進 Google Sheets。V2 整套重做：網頁登入貼 URL、Claude Sonnet 4.6 讀字幕加影格畫面整理、產出可分享的網頁。
+                    這個工具最初是給自己用的，現在 V2 已開放公測，掛在 <a href="https://yt-digest-tau.vercel.app/feed" target="_blank" rel="noopener" class="text-accent-purple hover:text-white underline underline-offset-4 decoration-accent-purple/40 hover:decoration-white transition-colors">yt-digest 公測版</a>，歡迎來用，遇到特殊狀況歡迎找我回報。丟一條 YouTube 連結進去，幾分鐘後拿到一份結構化的中文整理（章節跳轉、重點段落、可帶走的判斷、原文字幕、Excel 留底）。V1 用 n8n（一種以拖拉節點建立自動化流程的視覺化工具）串接 GEMINI 純文字摘要，輸出寫進 Google Sheets。V2 整套重做：網頁登入貼 URL、Claude Sonnet 4.6 讀字幕加影格畫面整理、產出可分享的網頁。
                 </p>
             </div>
 
@@ -377,7 +377,22 @@
                 V1 到 V2 之間真正改變的是把「輸入維度、執行位置、輸出層級」三件事各自當設計決策來重新處理。模型只是其中一個變數。
             </div>
 
-            <p class="text-sm text-gray-500 font-mono mt-12">
+            <hr class="border-white/10 my-12">
+
+            <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Links
+            </h3>
+
+            <ul class="space-y-2 text-sm text-gray-400 list-none pl-0">
+                <li>
+                    <span class="text-accent-purple mr-2">●</span>
+                    <a href="https://yt-digest-tau.vercel.app/feed" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        yt-digest 公測版
+                    </a>
+                </li>
+            </ul>
+
+            <p class="text-sm text-gray-500 font-mono mt-4">
                 Stack：Next.js 16 ・ Tailwind v4 ・ Firebase Auth + Firestore + Storage ・ Vercel ・ Claude Sonnet 4.6 ・ Whisper Large v3 ・ yt-dlp ・ ffmpeg
             </p>
 
