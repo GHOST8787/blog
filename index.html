@@ -129,8 +129,277 @@
             </div> -->
 
 
+            <!-- GitHub 活動卡片 (錨點: GitHub) -->
+            <div id="github" role="region" aria-labelledby="github-heading" class="bento-item col-span-1 md:col-span-8 md:order-2 rounded-3xl p-8 scroll-mt-32">
+                <div class="flex items-center justify-between mb-6 flex-wrap gap-2">
+                    <div>
+                        <h2 id="github-heading" class="text-2xl font-bold text-white">GitHub Activity</h2>
+                        <p class="text-gray-400 text-xs mt-1">Live from <a href="https://github.com/GHOST8787" target="_blank" rel="noopener noreferrer" class="text-accent-purple hover:underline font-mono">github.com/GHOST8787</a></p>
+                    </div>
+                    <a href="https://github.com/GHOST8787" target="_blank" rel="noopener noreferrer" class="px-4 py-2 border border-white/10 text-gray-300 font-bold rounded-full text-xs tracking-wide hover:border-accent-purple hover:text-accent-purple transition-all cursor-pointer">
+                        <i class="fab fa-github mr-1"></i> Follow <i class="fas fa-arrow-right ml-1 text-[10px]"></i>
+                    </a>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+                    <div class="border border-white/10 rounded-2xl p-4 text-center">
+                        <div id="gh-week" class="text-2xl font-bold text-accent-purple font-mono">—</div>
+                        <div class="text-[10px] text-gray-500 uppercase tracking-wider mt-1.5">This Week</div>
+                        <div id="gh-week-label" class="text-[11px] text-gray-400 font-mono mt-1">—</div>
+                    </div>
+                    <div class="border border-white/10 rounded-2xl p-4 text-center">
+                        <div id="gh-month" class="text-2xl font-bold text-accent-purple font-mono">—</div>
+                        <div class="text-[10px] text-gray-500 uppercase tracking-wider mt-1.5">This Month</div>
+                        <div id="gh-month-label" class="text-[11px] text-gray-400 font-mono mt-1">—</div>
+                    </div>
+                    <div class="border border-white/10 rounded-2xl p-4 text-center">
+                        <div id="gh-year" class="text-2xl font-bold text-accent-purple font-mono">—</div>
+                        <div class="text-[10px] text-gray-500 uppercase tracking-wider mt-1.5">Past Year</div>
+                        <div id="gh-year-label" class="text-[11px] text-gray-400 font-mono mt-1">—</div>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <div id="gh-heatmap" style="min-width: 700px;" aria-label="GitHub 貢獻熱力圖（過去一年）"></div>
+                </div>
+                <div class="mt-3 flex items-center justify-between text-[10px] text-gray-500 flex-wrap gap-2">
+                    <span id="gh-total"><span class="font-mono text-gray-300">—</span> contributions in the last year</span>
+                    <span class="flex items-center gap-1.5">
+                        <span>Less</span>
+                        <span class="inline-block w-3 h-3 rounded" style="background:#1f1f2e"></span>
+                        <span class="inline-block w-3 h-3 rounded" style="background:#3d2e5c"></span>
+                        <span class="inline-block w-3 h-3 rounded" style="background:#6b4ba3"></span>
+                        <span class="inline-block w-3 h-3 rounded" style="background:#9d75d4"></span>
+                        <span class="inline-block w-3 h-3 rounded" style="background:#bf94ff"></span>
+                        <span>More</span>
+                    </span>
+                </div>
+                <div id="gh-stats" class="mt-4 pt-4 border-t border-white/5 text-[11px] text-gray-500 flex flex-wrap gap-x-5 gap-y-2 font-mono">
+                    <span class="text-gray-600">Computing activity stats...</span>
+                </div>
+                <script>
+                    (function () {
+                        var COLORS = ['#1f1f2e', '#3d2e5c', '#6b4ba3', '#9d75d4', '#bf94ff'];
+                        var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+                        fetch('https://github-contributions-api.jogruber.de/v4/GHOST8787?y=last')
+                            .then(function (r) { return r.ok ? r.json() : null; })
+                            .then(function (d) {
+                                if (!d || !d.contributions) return;
+                                renderHeatmap(d);
+                                updateTimeSliceTiles(d.contributions);
+                            })
+                            .catch(function () { /* 靜默失敗：熱力圖與 tile 保持 — */ });
+
+                        function updateTimeSliceTiles(contribs) {
+                            var today = new Date();
+                            today.setHours(0, 0, 0, 0);
+                            var sevenAgo = new Date(today);
+                            sevenAgo.setDate(today.getDate() - 6);
+                            var monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
+                            var year = 0, week = 0, month = 0;
+                            for (var i = 0; i < contribs.length; i++) {
+                                var c = contribs[i];
+                                var dt = new Date(c.date + 'T00:00:00');
+                                year += c.count;
+                                if (dt >= sevenAgo && dt <= today) week += c.count;
+                                if (dt >= monthStart && dt <= today) month += c.count;
+                            }
+                            var set = function (id, v) {
+                                var el = document.getElementById(id);
+                                if (el) el.textContent = v;
+                            };
+                            set('gh-week', week);
+                            set('gh-month', month);
+                            set('gh-year', year);
+
+                            var weekLabel;
+                            if (sevenAgo.getMonth() === today.getMonth()) {
+                                weekLabel = MONTHS[today.getMonth()] + ' ' + sevenAgo.getDate() + ' – ' + today.getDate();
+                            } else {
+                                weekLabel = MONTHS[sevenAgo.getMonth()] + ' ' + sevenAgo.getDate() + ' – ' + MONTHS[today.getMonth()] + ' ' + today.getDate();
+                            }
+                            var monthLabel = MONTHS[today.getMonth()] + ' ' + today.getFullYear();
+                            var firstDt = new Date(contribs[0].date + 'T00:00:00');
+                            var lastDt = new Date(contribs[contribs.length - 1].date + 'T00:00:00');
+                            var yearLabel = MONTHS[firstDt.getMonth()] + " '" + String(firstDt.getFullYear()).slice(-2)
+                                + ' – ' + MONTHS[lastDt.getMonth()] + " '" + String(lastDt.getFullYear()).slice(-2);
+                            set('gh-week-label', weekLabel);
+                            set('gh-month-label', monthLabel);
+                            set('gh-year-label', yearLabel);
+                        }
+
+                        function renderHeatmap(d) {
+                            var contribs = d.contributions;
+                            var cell = 11, gap = 3, topPad = 16;
+                            var first = new Date(contribs[0].date + 'T00:00:00');
+                            var pad = first.getDay();
+                            var slots = [];
+                            for (var i = 0; i < pad; i++) slots.push(null);
+                            for (var j = 0; j < contribs.length; j++) slots.push(contribs[j]);
+                            var weeks = Math.ceil(slots.length / 7);
+                            var w = weeks * (cell + gap);
+                            var h = topPad + 7 * (cell + gap);
+
+                            var parts = ['<svg viewBox="0 0 ' + w + ' ' + h + '" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">'];
+
+                            var seenMonth = {};
+                            var lastYearLabeled = null;
+                            for (var k = 0; k < contribs.length; k++) {
+                                var dt = new Date(contribs[k].date + 'T00:00:00');
+                                var m = dt.getMonth();
+                                var y = dt.getFullYear();
+                                var key = y + '-' + m;
+                                if (!seenMonth[key] && dt.getDate() <= 7) {
+                                    seenMonth[key] = true;
+                                    var weekIdx = Math.floor((k + pad) / 7);
+                                    var label = MONTHS[m];
+                                    if (y !== lastYearLabeled) {
+                                        label = MONTHS[m] + " '" + String(y).slice(-2);
+                                        lastYearLabeled = y;
+                                    }
+                                    parts.push('<text x="' + (weekIdx * (cell + gap)) + '" y="11" font-size="9" font-family="JetBrains Mono, monospace" fill="#6b7280">' + label + '</text>');
+                                }
+                            }
+
+                            for (var n = 0; n < slots.length; n++) {
+                                var c = slots[n];
+                                if (!c) continue;
+                                var week = Math.floor(n / 7);
+                                var day = n % 7;
+                                var x = week * (cell + gap);
+                                var y = topPad + day * (cell + gap);
+                                parts.push('<rect x="' + x + '" y="' + y + '" width="' + cell + '" height="' + cell + '" rx="2.5" ry="2.5" fill="' + COLORS[c.level] + '"><title>' + c.date + ': ' + c.count + ' contributions</title></rect>');
+                            }
+                            parts.push('</svg>');
+
+                            var container = document.getElementById('gh-heatmap');
+                            if (container) {
+                                container.innerHTML = parts.join('');
+                                var scroller = container.parentElement;
+                                if (scroller) {
+                                    var tryScroll = function () {
+                                        if (scroller.scrollWidth > scroller.clientWidth) {
+                                            scroller.scrollLeft = scroller.scrollWidth;
+                                        }
+                                    };
+                                    setTimeout(tryScroll, 100);
+                                    setTimeout(tryScroll, 500);
+                                    setTimeout(tryScroll, 1200);
+                                }
+                            }
+
+                            var totalEl = document.getElementById('gh-total');
+                            if (totalEl && d.total && d.total.lastYear != null) {
+                                totalEl.innerHTML = '<span class="font-mono text-gray-300">' + d.total.lastYear + '</span> contributions in the last year';
+                            }
+
+                            updateActivityStats(contribs);
+                        }
+
+                        function updateActivityStats(contribs) {
+                            var dayTotals = [0, 0, 0, 0, 0, 0, 0];
+                            var longestStreak = 0, currentStreak = 0, activeDays = 0;
+                            for (var i = 0; i < contribs.length; i++) {
+                                var c = contribs[i];
+                                var dt = new Date(c.date + 'T00:00:00');
+                                dayTotals[dt.getDay()] += c.count;
+                                if (c.count > 0) {
+                                    currentStreak++;
+                                    if (currentStreak > longestStreak) longestStreak = currentStreak;
+                                    activeDays++;
+                                } else {
+                                    currentStreak = 0;
+                                }
+                            }
+                            var maxIdx = 0;
+                            for (var j = 1; j < 7; j++) {
+                                if (dayTotals[j] > dayTotals[maxIdx]) maxIdx = j;
+                            }
+                            var dayNames = ['Sundays', 'Mondays', 'Tuesdays', 'Wednesdays', 'Thursdays', 'Fridays', 'Saturdays'];
+                            var statsEl = document.getElementById('gh-stats');
+                            if (statsEl) {
+                                statsEl.innerHTML =
+                                    '<span>Most active: <span class="text-gray-200">' + dayNames[maxIdx] + '</span></span>' +
+                                    '<span>Longest streak: <span class="text-gray-200">' + longestStreak + ' days</span></span>' +
+                                    '<span>Active: <span class="text-gray-200">' + activeDays + ' days</span></span>';
+                            }
+                        }
+                    })();
+                </script>
+            </div>
+
+            <!-- 最近專案卡片 (錨點: Recent) -->
+            <div id="recent" role="region" aria-labelledby="recent-heading" class="bento-item col-span-1 md:col-span-4 md:order-1 rounded-3xl p-8 scroll-mt-32">
+                <div class="flex items-center justify-between mb-6 flex-wrap gap-2">
+                    <div>
+                        <h2 id="recent-heading" class="text-2xl font-bold text-white">Recent Work</h2>
+                        <p class="text-gray-400 text-xs mt-1">最近推送的公開 repo · 從 <a href="https://github.com/GHOST8787?tab=repositories" target="_blank" rel="noopener noreferrer" class="text-accent-purple hover:underline font-mono">github.com/GHOST8787</a> 即時更新</p>
+                    </div>
+                </div>
+                <div id="recent-repos" class="flex flex-col gap-2">
+                    <div class="text-gray-500 text-sm text-center py-4 font-mono">Loading...</div>
+                </div>
+                <script>
+                    (function () {
+                        var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+                        var container = document.getElementById('recent-repos');
+                        var fallback = '<div class="text-gray-500 text-sm text-center py-4">無法載入。<a href="https://github.com/GHOST8787" target="_blank" rel="noopener noreferrer" class="text-accent-purple hover:underline">直接看 GitHub</a></div>';
+
+                        fetch('https://api.github.com/users/GHOST8787/repos?sort=pushed&direction=desc&per_page=15')
+                            .then(function (r) { return r.ok ? r.json() : null; })
+                            .then(function (repos) {
+                                if (!Array.isArray(repos)) { container.innerHTML = fallback; return; }
+                                var list = repos.filter(function (r) { return !r.fork; }).slice(0, 5);
+                                if (list.length === 0) {
+                                    container.innerHTML = '<div class="text-gray-500 text-sm text-center py-4">尚無公開 repo。</div>';
+                                    return;
+                                }
+                                container.innerHTML = '';
+                                var currentYear = new Date().getFullYear();
+                                list.forEach(function (repo) {
+                                    var dt = new Date(repo.pushed_at);
+                                    var dateStr = MONTHS[dt.getMonth()] + ' ' + dt.getDate();
+                                    if (dt.getFullYear() !== currentYear) {
+                                        dateStr += " '" + String(dt.getFullYear()).slice(-2);
+                                    }
+                                    var a = document.createElement('a');
+                                    a.href = repo.html_url;
+                                    a.target = '_blank';
+                                    a.rel = 'noopener noreferrer';
+                                    a.className = 'flex items-center gap-4 px-4 py-3 rounded-xl border border-white/5 hover:border-accent-purple/40 hover:bg-white/[0.02] transition-all group';
+
+                                    var dateSpan = document.createElement('span');
+                                    dateSpan.className = 'text-[11px] text-gray-500 font-mono whitespace-nowrap w-14 shrink-0';
+                                    dateSpan.textContent = dateStr;
+
+                                    var main = document.createElement('div');
+                                    main.className = 'flex-1 min-w-0';
+                                    var name = document.createElement('div');
+                                    name.className = 'text-white font-semibold text-sm group-hover:text-accent-purple transition-colors truncate';
+                                    name.textContent = repo.name;
+                                    main.appendChild(name);
+                                    if (repo.description) {
+                                        var desc = document.createElement('div');
+                                        desc.className = 'text-gray-500 text-xs mt-0.5 truncate';
+                                        desc.textContent = repo.description;
+                                        main.appendChild(desc);
+                                    }
+
+                                    var arrow = document.createElement('i');
+                                    arrow.className = 'fas fa-arrow-right text-gray-600 text-xs group-hover:text-accent-purple transition-all shrink-0';
+
+                                    a.appendChild(dateSpan);
+                                    a.appendChild(main);
+                                    a.appendChild(arrow);
+                                    container.appendChild(a);
+                                });
+                            })
+                            .catch(function () { container.innerHTML = fallback; });
+                    })();
+                </script>
+            </div>
+
             <!-- 聯繫方式卡片 (錨點: Contact) -->
-            <div id="contact" role="region" aria-labelledby="contact-heading" class="bento-item contact-card-bento col-span-1 md:col-span-12 rounded-3xl p-8 flex flex-col justify-between min-h-[200px] scroll-mt-32">
+            <div id="contact" role="region" aria-labelledby="contact-heading" class="bento-item contact-card-bento col-span-1 md:col-span-12 md:order-3 rounded-3xl p-8 flex flex-col justify-between min-h-[200px] scroll-mt-32">
                 <div>
                     <h2 id="contact-heading" class="text-2xl font-bold mb-2 text-white">Contact Me</h2>
                     <p class="text-gray-400 text-xs mb-6">科技始終來自於人性。</p>
