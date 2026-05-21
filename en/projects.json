@@ -4,13 +4,13 @@
   { "url": "EXP/project_03.html", "category": "dev" },
   { "url": "EXP/project_04.html", "category": "dev" },
   { "url": "EXP/project_05.html", "category": "dev" },
-  { "url": "EXP/project_06.html", "category": "dev" },
-  { "url": "EXP/project_07.html", "category": "dev" },
+  { "url": "EXP/project_06.html", "category": "dev", "cover": "../PNG/project_05.2.webp" },
+  { "url": "EXP/project_07.html", "category": "dev", "cover": "../PNG/project_06.2.webp" },
   { "url": "EXP/project_08.html", "category": "dev" },
   { "url": "EXP/project_09.html", "category": "dev" },
   { "url": "EXP/project_10.html", "category": "dev" },
   { "url": "EXP/project_11.html", "category": "dev" },
-  { "url": "EXP/project_12.html", "category": "dev" },
+  { "url": "EXP/project_12.html", "category": "dev", "cover": "../PNG/project_12.2.png" },
   { "url": "EXP/project_13.html", "category": "dev" },
-  { "url": "EXP/project_14.html", "category": "dev" }
+  { "url": "EXP/project_14.html", "category": "dev", "cover": "../PNG/device_tabs_v22_marquee.png" }
 ]

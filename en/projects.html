@@ -194,7 +194,7 @@
                 `;
                 container.appendChild(card);
 
-                await fetchAndFillCard(card, article.url);
+                await fetchAndFillCard(card, article.url, article.cover);
             }));
 
             if (typeof window.refreshAnimations === 'function') {
@@ -234,7 +234,7 @@
         }
     });
 
-    async function fetchAndFillCard(card, url) {
+    async function fetchAndFillCard(card, url, cover) {
         try {
             const response = await fetch(url);
             const htmlText = await response.text();
@@ -251,19 +251,23 @@
             const titleEl = doc.querySelector('header h1');
             if (titleEl) card.querySelector('h4').textContent = titleEl.innerText.trim();
 
-            const firstImg = doc.querySelector('article img') || doc.querySelector('figure img');
             const cardImg = card.querySelector('img');
-            if (firstImg) {
-                let imgSrc = firstImg.getAttribute('src');
-                if (imgSrc && imgSrc.startsWith('../../')) imgSrc = imgSrc.substring(3);
-                else if (imgSrc && imgSrc.startsWith('../')) imgSrc = imgSrc.substring(3);
-                cardImg.src = imgSrc;
+            if (cover) {
+                cardImg.src = cover;
             } else {
-                cardImg.remove();
-                const placeholder = card.querySelector('.aspect-video');
-                if (placeholder) {
-                    placeholder.classList.add('flex', 'items-center', 'justify-center');
-                    placeholder.innerHTML = '<span class="text-gray-600 text-xs font-mono uppercase tracking-wider">No Image</span>';
+                const firstImg = doc.querySelector('article img') || doc.querySelector('figure img');
+                if (firstImg) {
+                    let imgSrc = firstImg.getAttribute('src');
+                    if (imgSrc && imgSrc.startsWith('../../')) imgSrc = imgSrc.substring(3);
+                    else if (imgSrc && imgSrc.startsWith('../')) imgSrc = imgSrc.substring(3);
+                    cardImg.src = imgSrc;
+                } else {
+                    cardImg.remove();
+                    const placeholder = card.querySelector('.aspect-video');
+                    if (placeholder) {
+                        placeholder.classList.add('flex', 'items-center', 'justify-center');
+                        placeholder.innerHTML = '<span class="text-gray-600 text-xs font-mono uppercase tracking-wider">No Image</span>';
+                    }
                 }
             }
 
