@@ -70,6 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
         initMobileMenu();
         initScrollFlash();
         initSmartNav(); // 👈 新增：Article 智慧防呆跳轉
+        initActiveNav(); // 👈 新增：根據 URL 自動標出當前 nav 項目
     });
 
     // 載入 Footer
@@ -245,6 +246,55 @@ function initSmartNav() {
             // 如果不在這一頁，就讓它正常跳轉，不干涉
         });
     });
+}
+
+/**
+ * 7.5 Active Nav State：根據當前 URL / hash 標出 nav 上對應項目（淺紫膠囊）
+ */
+function initActiveNav() {
+    const pillClasses = ['bg-accent-purple/20', 'border', 'border-accent-purple/40', 'px-3', 'py-1', 'rounded-full'];
+    const whiteTextClass = 'text-white';
+
+    const apply = () => {
+        // 先清掉所有既有 active 樣式（避免 hashchange 殘留）
+        document.querySelectorAll('a[data-nav-key]').forEach(link => {
+            link.classList.remove(...pillClasses, whiteTextClass);
+            link.removeAttribute('aria-current');
+        });
+
+        const path = window.location.pathname;
+        const hash = window.location.hash;
+        let activeKey = null;
+
+        if (path.endsWith('projects.html')) {
+            activeKey = 'projects';
+        } else if (path.endsWith('articles.html')) {
+            activeKey = 'articles';
+        } else if (
+            path.endsWith('index.html') ||
+            path.endsWith('/blog/') ||
+            path.endsWith('/blog/en/') ||
+            path === '/'
+        ) {
+            // 首頁：根據 hash 判斷 about / contact
+            activeKey = (hash === '#contact') ? 'contact' : 'about';
+        }
+
+        if (!activeKey) return;
+
+        // Contact 維持紫字當 CTA，其他 active 用白字
+        const classesToAdd = (activeKey === 'contact') ? pillClasses : [...pillClasses, whiteTextClass];
+
+        // 桌機 + mobile overlay 兩個 nav 同步套用
+        document.querySelectorAll(`a[data-nav-key="${activeKey}"]`).forEach(link => {
+            link.classList.add(...classesToAdd);
+            link.setAttribute('aria-current', 'page');
+        });
+    };
+
+    apply();
+    // 換 hash（例如點 #contact 但留在 index.html）時也要更新
+    window.addEventListener('hashchange', apply);
 }
 
 /**
