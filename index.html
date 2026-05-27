@@ -198,7 +198,7 @@
                 <h2 id="featured-stats-heading" class="sr-only">Stats</h2>
                 <div class="grid grid-cols-2 gap-3 h-full content-center">
                     <div class="stagger-item border border-white/5 hover:border-accent-purple/40 rounded-2xl p-4 transition-colors">
-                        <div data-stat-counter data-target="10" class="text-3xl font-bold text-accent-purple font-mono">0</div>
+                        <div data-stat-counter data-stat="articles" data-target="10" class="text-3xl font-bold text-accent-purple font-mono">0</div>
                         <div class="text-[10px] text-gray-500 uppercase tracking-wider mt-2">Articles</div>
                         <div class="text-[11px] text-gray-400 mt-1">心態與思考</div>
                     </div>
@@ -293,7 +293,11 @@
                                 }
                             }
 
-                            // 3b) Latest stat: 今天 - 最新發文日期 (天)
+                            // 3b) Articles stat: 動態算 list.length（取代 HTML 寫死值）
+                            var artEl = document.querySelector('[data-stat-counter][data-stat="articles"]');
+                            if (artEl) artEl.setAttribute('data-target', String(list.length));
+
+                            // 3c) Latest stat: 今天 - 最新發文日期 (天)
                             var dates = list.map(function (it) { return it.date; }).filter(Boolean).sort();
                             if (dates.length > 0) {
                                 var latest = dates[dates.length - 1];
