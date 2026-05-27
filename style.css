@@ -415,3 +415,36 @@ a:focus-visible {
 .admin-btn.reject:hover{ background:rgba(255,100,100,.2); }
 .admin-btn.graduate{ background:rgba(191,148,255,.15); color:#BF94FF; }
 .admin-btn.graduate:hover{ background:rgba(191,148,255,.3); }
+
+/* === 首頁鉤子 section 子元素 stagger 動畫 (2026-05-27) === */
+/* 父層加 .stagger-parent，子層加 .stagger-item；父進入 viewport 時加 .in，子元素依序進場 */
+.stagger-parent .stagger-item {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.6s cubic-bezier(0.23, 1, 0.32, 1),
+                transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.stagger-parent.in .stagger-item { opacity: 1; transform: translateY(0); }
+.stagger-parent.in .stagger-item:nth-child(1) { transition-delay: 0.08s; }
+.stagger-parent.in .stagger-item:nth-child(2) { transition-delay: 0.16s; }
+.stagger-parent.in .stagger-item:nth-child(3) { transition-delay: 0.24s; }
+.stagger-parent.in .stagger-item:nth-child(4) { transition-delay: 0.32s; }
+.stagger-parent.in .stagger-item:nth-child(5) { transition-delay: 0.40s; }
+.stagger-parent.in .stagger-item:nth-child(6) { transition-delay: 0.48s; }
+
+/* Featured Project card hover lift（參考 wt-chen.com 與既有 project-card-vertical 一致） */
+.featured-project-card {
+    transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1),
+                box-shadow 0.5s cubic-bezier(0.23, 1, 0.32, 1),
+                border-color 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.featured-project-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 32px -8px rgba(191, 148, 255, 0.25);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .stagger-parent .stagger-item { opacity: 1; transform: none; transition: none; }
+    .featured-project-card { transition: none; }
+    .featured-project-card:hover { transform: none; box-shadow: none; }
+}
