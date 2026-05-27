@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume | GHOST.ouo</title>
+    <meta name="description" content="GHOST.ouo 履歷檢視頁，需密碼解鎖。">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/png" href="PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="PNG/pixelS2.png">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+    <script src="i18n.js" defer></script>
+    <script type="module" src="main.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="tailwind.config.js"></script>
+    <script src="resume-detail.js" defer></script>
+
+    <style>
+        /* 密碼鎖頭區塊 */
+        .lock-box{
+            max-width:440px; margin:0 auto;
+            background:rgba(255,255,255,.02);
+            border:1px solid rgba(191,148,255,.18);
+            border-radius:16px;
+            padding:36px 32px;
+            text-align:center;
+        }
+        .lock-icon{
+            width:64px; height:64px; margin:0 auto 18px;
+            border-radius:50%;
+            background:rgba(191,148,255,.1);
+            border:1px solid rgba(191,148,255,.3);
+            display:flex; align-items:center; justify-content:center;
+            color:#BF94FF; font-size:22px;
+        }
+        .pwd-input{
+            width:100%; background:#000; color:#fff;
+            border:1px solid rgba(255,255,255,.1);
+            border-radius:10px;
+            padding:12px 16px;
+            font-family:'JetBrains Mono',monospace;
+            font-size:14px;
+            text-align:center;
+            letter-spacing:.1em;
+        }
+        .pwd-input:focus{
+            outline:none;
+            border-color:#BF94FF;
+            box-shadow:0 0 0 3px rgba(191,148,255,.15);
+        }
+        .pwd-submit{
+            width:100%; margin-top:14px;
+            background:#BF94FF; color:#000;
+            font-weight:700;
+            padding:12px;
+            border-radius:999px;
+            transition:all .3s;
+        }
+        .pwd-submit:hover{
+            box-shadow:0 0 20px rgba(191,148,255,.5);
+        }
+        .pwd-submit:disabled{
+            opacity:.5; cursor:not-allowed;
+        }
+        .pwd-error{
+            color:#f87171; font-family:'JetBrains Mono',monospace;
+            font-size:12px; margin-top:12px;
+            min-height:16px;
+        }
+
+        /* 履歷內容區（解鎖後） */
+        .resume-view{
+            background:rgba(255,255,255,.02);
+            border:1px solid rgba(255,255,255,.06);
+            border-radius:16px;
+            padding:36px 32px;
+        }
+        .resume-meta-bar{
+            display:flex; align-items:center; justify-content:space-between;
+            padding-bottom:18px; margin-bottom:24px;
+            border-bottom:1px solid rgba(255,255,255,.06);
+            flex-wrap:wrap; gap:12px;
+        }
+        .resume-meta-left{
+            display:flex; align-items:center; gap:12px;
+        }
+        .resume-badge{
+            font-family:'Fredoka',sans-serif; font-size:11px; font-weight:600;
+            color:#BF94FF; background:rgba(191,148,255,.1);
+            padding:4px 12px; border-radius:999px;
+            letter-spacing:.05em;
+        }
+        .resume-date{
+            font-family:'JetBrains Mono',monospace; font-size:11px;
+            color:#666; letter-spacing:.05em;
+        }
+        .pdf-btn{
+            display:inline-flex; align-items:center; gap:8px;
+            background:rgba(191,148,255,.1);
+            border:1px solid rgba(191,148,255,.3);
+            color:#BF94FF;
+            padding:8px 16px;
+            border-radius:999px;
+            font-size:12px; font-weight:600;
+            transition:all .3s;
+        }
+        .pdf-btn:hover{
+            background:#BF94FF; color:#000;
+            box-shadow:0 0 20px rgba(191,148,255,.4);
+        }
+        .pdf-btn:disabled{
+            opacity:.4; cursor:not-allowed;
+        }
+        .resume-company{
+            font-size:1.8rem; font-weight:800;
+            color:#fff;
+            margin-bottom:24px;
+        }
+
+        /* 解密後內容（user 自訂 HTML）— 安全的基本排版 */
+        .resume-body{
+            color:#ccc; line-height:1.7;
+            font-size:.95rem;
+        }
+        .resume-body h1, .resume-body h2, .resume-body h3{
+            color:#fff; font-weight:700;
+            margin-top:1.6em; margin-bottom:.6em;
+        }
+        .resume-body h1{ font-size:1.6rem; }
+        .resume-body h2{ font-size:1.3rem; color:#BF94FF; }
+        .resume-body h3{ font-size:1.1rem; }
+        .resume-body p{ margin-bottom:.9em; }
+        .resume-body ul, .resume-body ol{
+            margin-left:1.4em; margin-bottom:1em;
+        }
+        .resume-body li{ margin-bottom:.4em; }
+        .resume-body a{
+            color:#BF94FF;
+            text-decoration:underline;
+            text-decoration-color:rgba(191,148,255,.4);
+        }
+        .resume-body a:hover{
+            text-decoration-color:#BF94FF;
+        }
+        .resume-body code{
+            font-family:'JetBrains Mono',monospace;
+            font-size:.85em;
+            background:rgba(255,255,255,.06);
+            padding:2px 6px; border-radius:4px;
+        }
+        .resume-body strong{ color:#fff; }
+        .resume-body hr{
+            border:none;
+            height:1px;
+            background:linear-gradient(90deg,transparent,rgba(191,148,255,.2),transparent);
+            margin:2em 0;
+        }
+
+        /* ---- 列印（另存為 PDF）：白底深紫，A4，段落不切斷，連結顯示 URL ---- */
+        @media print {
+            @page {
+                size: A4;
+                margin: 14mm 14mm 18mm 14mm;
+            }
+            .fixed,
+            #navbar-placeholder,
+            #footer-placeholder,
+            #lock-section,
+            .resume-meta-bar,
+            .pdf-btn,
+            main > div.mb-8,
+            #view-section > div.text-center {
+                display: none !important;
+            }
+            html, body {
+                background: white !important;
+                color: #1a1a1a !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            main {
+                max-width: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            .resume-view {
+                background: white !important;
+                border: none !important;
+                padding: 0 !important;
+                border-radius: 0 !important;
+            }
+            .resume-company {
+                color: #1a1a1a !important;
+                font-size: 18pt !important;
+                margin-bottom: 10pt !important;
+            }
+            .resume-body {
+                color: #2a2a2a !important;
+                font-size: 10pt !important;
+                line-height: 1.5 !important;
+            }
+            .resume-body .resume-header h1 { color: #1a1a1a !important; }
+            .resume-body .resume-header h1 span { color: #555 !important; }
+            .resume-body .resume-header p { color: #555 !important; }
+            .resume-body .resume-header p[style*="BF94FF"] { color: #6d28d9 !important; }
+            .resume-body h2 {
+                color: #6d28d9 !important;
+                font-size: 13pt !important;
+                margin-top: 14pt !important;
+                margin-bottom: 6pt !important;
+                page-break-after: avoid;
+            }
+            .resume-body h3 {
+                color: #1a1a1a !important;
+                font-size: 11pt !important;
+                margin-top: 10pt !important;
+                margin-bottom: 4pt !important;
+                page-break-after: avoid;
+            }
+            .resume-body strong { color: #1a1a1a !important; }
+            .resume-body p, .resume-body li { page-break-inside: avoid; }
+            .resume-body a {
+                color: #6d28d9 !important;
+                text-decoration: none !important;
+            }
+            .resume-body a[href^="http"]::after,
+            .resume-body a[href^="mailto"]::after {
+                content: " (" attr(href) ")";
+                font-size: 7pt;
+                color: #888;
+                font-family: 'JetBrains Mono', monospace;
+                word-break: break-all;
+            }
+            .resume-body code {
+                background: #f3f0ff !important;
+                color: #4c1d95 !important;
+                padding: 1px 4px !important;
+            }
+            .resume-body hr {
+                background: #ddd !important;
+                height: 1px !important;
+                margin: 12pt 0 !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-600/10 rounded-full blur-[120px] animate-pulse-slow" style="animation-delay: 2s;"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-3xl mx-auto px-6 sm:px-8 lg:px-10 pt-24 md:pt-32 pb-24">
+
+        <div class="mb-8">
+            <a href="resume.html" class="text-gray-500 hover:text-accent-purple transition-colors text-sm font-mono inline-flex items-center gap-2">
+                <i class="fas fa-arrow-left text-[10px]"></i> 返回履歷列表
+            </a>
+        </div>
+
+        <!-- 密碼閘 -->
+        <section id="lock-section">
+            <div class="lock-box">
+                <div class="lock-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h1 id="lock-company" class="text-2xl font-bold text-white mb-1">—</h1>
+                <p class="text-gray-500 text-xs font-mono mb-6" id="lock-meta">—</p>
+                <form id="lock-form" autocomplete="off">
+                    <input
+                        id="pwd-input"
+                        type="password"
+                        class="pwd-input"
+                        placeholder="輸入密碼"
+                        autofocus
+                        required
+                    >
+                    <button type="submit" id="pwd-submit" class="pwd-submit">解鎖</button>
+                </form>
+                <div id="pwd-error" class="pwd-error"></div>
+            </div>
+        </section>
+
+        <!-- 解密後內容 -->
+        <section id="view-section" class="hidden">
+            <div class="resume-view">
+                <div class="resume-meta-bar">
+                    <div class="resume-meta-left">
+                        <span id="view-badge" class="resume-badge">#000</span>
+                        <span id="view-date" class="resume-date">—</span>
+                    </div>
+                    <button id="pdf-download-btn" class="pdf-btn" disabled>
+                        <i class="fas fa-file-pdf"></i> 下載 PDF
+                    </button>
+                </div>
+                <h1 id="view-company" class="resume-company">—</h1>
+                <div id="view-body" class="resume-body"></div>
+            </div>
+            <div class="text-center mt-6">
+                <button id="relock-btn" class="text-gray-500 hover:text-white transition-colors text-xs font-mono">
+                    <i class="fas fa-lock mr-1"></i> 重新上鎖
+                </button>
+                <p class="text-gray-600 text-[10px] font-mono mt-2">10 分鐘無操作自動上鎖</p>
+            </div>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+</body>
+</html>
