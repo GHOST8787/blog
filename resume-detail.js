@@ -57,11 +57,12 @@ async function fetchJson(url) {
 // ---- localStorage 解鎖記憶（同瀏覽器 10 分鐘內保留解鎖狀態）----
 function unlockStorageKey(slug) { return 'resume:unlock:' + slug; }
 
-function saveUnlockState(slug, payload) {
+function saveUnlockState(slug, payload, encSalt) {
     try {
         localStorage.setItem(unlockStorageKey(slug), JSON.stringify({
             payload,
             expireAt: Date.now() + UNLOCK_TTL_MS,
+            salt: encSalt,  // enc.json 的 salt，當作版本指紋
         }));
     } catch (e) {
         console.warn('[resume-detail] localStorage save failed', e);
@@ -78,7 +79,7 @@ function loadUnlockState(slug) {
             localStorage.removeItem(unlockStorageKey(slug));
             return null;
         }
-        return obj.payload;
+        return { payload: obj.payload, salt: obj.salt };
     } catch (e) {
         return null;
     }
@@ -116,10 +117,20 @@ async function loadMeta() {
         $lockMeta.textContent = [num, dt].filter(Boolean).join(' · ');
         document.title = `${item.company || 'Resume'} | GHOST.ouo`;
 
-        // 同瀏覽器 10 分鐘內，跳過密碼直接顯示
+        // 同瀏覽器 10 分鐘內，且 enc.json 沒重 encrypt 過 → 跳過密碼直接顯示
         const cached = loadUnlockState(id);
         if (cached) {
-            showView(cached);
+            try {
+                const enc = await loadEnc();
+                if (cached.salt && cached.salt === enc.salt) {
+                    showView(cached.payload);
+                } else {
+                    // enc.json 已重 encrypt（新 salt），舊 cache 失效，強制重輸密碼
+                    clearUnlockState(id);
+                }
+            } catch (e) {
+                clearUnlockState(id);
+            }
         }
     } catch (err) {
         console.error('[resume-detail] meta load failed', err);
@@ -241,7 +252,7 @@ $lockForm.addEventListener('submit', async (e) => {
     setLoading(true);
     try {
         const payload = await tryDecrypt(pwd);
-        saveUnlockState(state.id, payload);
+        saveUnlockState(state.id, payload, state.enc && state.enc.salt);
         showView(payload);
     } catch (err) {
         console.error('[resume-detail] decrypt failed', err);
