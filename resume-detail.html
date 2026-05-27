@@ -160,7 +160,88 @@
             margin:2em 0;
         }
 
-        /* ---- 列印（另存為 PDF）：白底深紫，A4，段落不切斷，連結顯示 URL ---- */
+        /* ---- 學歷 / 經歷 timeline 樣式（圖示參考） ---- */
+        .resume-body .edu-timeline{
+            position:relative;
+            padding-left:24px;
+            margin:.5em 0 1.2em;
+        }
+        .resume-body .edu-timeline::before{
+            content:"";
+            position:absolute;
+            left:7px; top:8px; bottom:8px;
+            width:1px;
+            background:rgba(191,148,255,.25);
+        }
+        .resume-body .edu-item{
+            position:relative;
+            padding:0 0 1.4em 0;
+        }
+        .resume-body .edu-item:last-child{ padding-bottom:0; }
+        .resume-body .edu-item::before{
+            content:"";
+            position:absolute;
+            left:-22px; top:6px;
+            width:13px; height:13px;
+            border-radius:50%;
+            border:2px solid #BF94FF;
+            background:#0a0a0a;
+            box-sizing:border-box;
+        }
+        .resume-body .edu-head{
+            display:flex; align-items:baseline; justify-content:space-between;
+            gap:12px;
+            margin-bottom:2px;
+        }
+        .resume-body .edu-school{
+            font-size:1.05rem; font-weight:700; color:#fff;
+            line-height:1.3;
+        }
+        .resume-body .edu-years{
+            font-family:'JetBrains Mono',monospace;
+            font-size:.78rem;
+            color:#999;
+            letter-spacing:.05em;
+            white-space:nowrap;
+            flex-shrink:0;
+        }
+        .resume-body .edu-dept{
+            color:#999;
+            font-size:.85rem;
+            margin-bottom:10px;
+        }
+        .resume-body .edu-card{
+            background:rgba(191,148,255,.05);
+            border:1px solid rgba(191,148,255,.15);
+            border-radius:10px;
+            padding:14px 18px;
+            margin-top:8px;
+            font-size:.88rem;
+            color:#ccc;
+        }
+        .resume-body .edu-card .edu-card-title{
+            color:#fff; font-weight:600;
+            display:flex; align-items:center; gap:8px;
+            margin-bottom:6px;
+            font-size:.9rem;
+        }
+        .resume-body .edu-card .edu-card-title i{ color:#BF94FF; font-size:.85em; }
+        .resume-body .edu-card ul{
+            margin:.4em 0 0 1.2em;
+            font-size:.85rem;
+        }
+        .resume-body .edu-card li{ margin-bottom:.25em; }
+        .resume-body .edu-card .edu-card-meta{
+            font-family:'JetBrains Mono',monospace;
+            font-size:.72rem;
+            color:#999;
+            letter-spacing:.05em;
+            margin-top:8px;
+            padding-top:8px;
+            border-top:1px dashed rgba(255,255,255,.08);
+        }
+
+        /* ---- 列印（另存為 PDF）：白底深紫，A4，段落不切斷，連結保留可點 ---- */
         @media print {
             @page {
                 size: A4;
@@ -225,16 +306,29 @@
             .resume-body p, .resume-body li { page-break-inside: avoid; }
             .resume-body a {
                 color: #6d28d9 !important;
-                text-decoration: none !important;
+                text-decoration: underline !important;
+                text-decoration-color: rgba(109, 40, 217, 0.4) !important;
             }
-            .resume-body a[href^="http"]::after,
-            .resume-body a[href^="mailto"]::after {
-                content: " (" attr(href) ")";
-                font-size: 7pt;
-                color: #888;
-                font-family: 'JetBrains Mono', monospace;
-                word-break: break-all;
+            /* Chrome 列印生成 PDF 預設保留可點連結，不在文字旁列 URL */
+
+            /* timeline 在 print 模式：白底深色 */
+            .resume-body .edu-timeline::before { background: #ddd !important; }
+            .resume-body .edu-item::before { background: white !important; border-color: #6d28d9 !important; }
+            .resume-body .edu-school { color: #1a1a1a !important; font-size: 11pt !important; }
+            .resume-body .edu-years { color: #555 !important; }
+            .resume-body .edu-dept { color: #555 !important; }
+            .resume-body .edu-card {
+                background: #faf8ff !important;
+                border-color: #e0d4ff !important;
+                color: #333 !important;
             }
+            .resume-body .edu-card .edu-card-title { color: #1a1a1a !important; }
+            .resume-body .edu-card .edu-card-title i { color: #6d28d9 !important; }
+            .resume-body .edu-card .edu-card-meta {
+                color: #6d28d9 !important;
+                border-top-color: #ccc !important;
+            }
+
             .resume-body code {
                 background: #f3f0ff !important;
                 color: #4c1d95 !important;
