@@ -1,12 +1,72 @@
 [
-  { "url": "EXP/article_01.html" },
-  { "url": "EXP/article_02.html" },
-  { "url": "EXP/article_03.html" },
-  { "url": "EXP/article_04.html" },
-  { "url": "EXP/article_05.html" },
-  { "url": "EXP/article_06.html" },
-  { "url": "EXP/article_07.html" },
-  { "url": "EXP/article_08.html" },
-  { "url": "EXP/article_09.html" },
-  { "url": "EXP/article_10.html" }
+  {
+    "url": "EXP/article_01.html",
+    "title": "非常規伴侶動物的理性抉擇",
+    "subtitle": "BlogBlog 同樂會：推坑",
+    "date": "2026.01.31",
+    "category": "Lifestyle"
+  },
+  {
+    "url": "EXP/article_02.html",
+    "title": "社群動態的賽局分析：",
+    "subtitle": "信任演化、系統雜訊與一報還一報",
+    "date": "2026.02.08",
+    "category": "Thinking"
+  },
+  {
+    "url": "EXP/article_03.html",
+    "title": "逆流而上的奇蹟：",
+    "subtitle": "從熵與負熵看透宇宙、AI 與人際關係",
+    "date": "2026.02.08",
+    "category": "Thinking"
+  },
+  {
+    "url": "EXP/article_04.html",
+    "title": "為什麼只做「提示詞產生器」？",
+    "subtitle": "關於 AI 塔羅占卜的架構決策與產品哲學",
+    "date": "2026.02.19",
+    "category": "AI & Automation"
+  },
+  {
+    "url": "EXP/article_05.html",
+    "title": "AI 輔助開發的邊界測試：",
+    "subtitle": "開源專案重構與工程紀律反思",
+    "date": "2026.02.21",
+    "category": "Engineering"
+  },
+  {
+    "url": "EXP/article_06.html",
+    "title": "浴室裡的聽覺計時器",
+    "subtitle": "BlogBlog 同樂會：只有我這樣嗎？",
+    "date": "2026.02.24",
+    "category": "Lifestyle"
+  },
+  {
+    "url": "EXP/article_07.html",
+    "title": "如果生活像一個穩定運作的系統",
+    "subtitle": "BlogBlog 同樂會：理想的日常",
+    "date": "2026.03.12",
+    "category": "Lifestyle"
+  },
+  {
+    "url": "EXP/article_08.html",
+    "title": "匿名機制的結構性矛盾：",
+    "subtitle": "一次關於網路責任與身份的觀察筆記",
+    "date": "2026.03.13",
+    "category": "Thinking"
+  },
+  {
+    "url": "EXP/article_09.html",
+    "title": "莊家要的從來不是大贏：",
+    "subtitle": "《帶著 100 萬，我們揭開了賭場的秘密》觀後感",
+    "date": "2026.04.11",
+    "category": "Thinking"
+  },
+  {
+    "url": "EXP/article_10.html",
+    "title": "當你只對少數人情緒敏感：",
+    "subtitle": "從感知、警戒到關係權重失衡",
+    "date": "2026.05.22",
+    "category": "Thinking"
+  }
 ]

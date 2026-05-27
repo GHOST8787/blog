@@ -1,11 +1,65 @@
 [
-  { "url": "EXP/article_01.html" },
-  { "url": "EXP/article_02.html" },
-  { "url": "EXP/article_03.html" },
-  { "url": "EXP/article_04.html" },
-  { "url": "EXP/article_05.html" },
-  { "url": "EXP/article_06.html" },
-  { "url": "EXP/article_07.html" },
-  { "url": "EXP/article_08.html" },
-  { "url": "EXP/article_09.html" }
+  {
+    "url": "EXP/article_01.html",
+    "title": "The Rational Case for an Unconventional Pet",
+    "subtitle": "BlogBlog Roundtable: Hooking You In",
+    "date": "2026.01.31",
+    "category": "Lifestyle"
+  },
+  {
+    "url": "EXP/article_02.html",
+    "title": "Social Dynamics as a Game:",
+    "subtitle": "Trust Evolution, System Noise, and Tit for Tat",
+    "date": "2026.02.08",
+    "category": "Thinking"
+  },
+  {
+    "url": "EXP/article_03.html",
+    "title": "Swimming Against the Current:",
+    "subtitle": "Entropy, Negentropy, and Reading the Universe, AI, and Relationships",
+    "date": "2026.02.08",
+    "category": "Thinking"
+  },
+  {
+    "url": "EXP/article_04.html",
+    "title": "Why I Only Built a Prompt Generator:",
+    "subtitle": "Architecture Choices and Product Philosophy Behind an AI Tarot Tool",
+    "date": "2026.02.19",
+    "category": "AI & Automation"
+  },
+  {
+    "url": "EXP/article_05.html",
+    "title": "Stress-Testing the Edges of AI-Assisted Development:",
+    "subtitle": "Refactoring an Open-Source Project and Rethinking Engineering Discipline",
+    "date": "2026.02.21",
+    "category": "Engineering"
+  },
+  {
+    "url": "EXP/article_06.html",
+    "title": "The Bathroom Time Timer",
+    "subtitle": "BlogBlog Roundtable: Is It Just Me?",
+    "date": "2026.02.24",
+    "category": "Lifestyle"
+  },
+  {
+    "url": "EXP/article_07.html",
+    "title": "If Life Ran Like a Stable System",
+    "subtitle": "BlogBlog Roundtable: The Ideal Daily",
+    "date": "2026.03.12",
+    "category": "Lifestyle"
+  },
+  {
+    "url": "EXP/article_08.html",
+    "title": "The Structural Contradiction in Anonymity:",
+    "subtitle": "Observations on Online Identity and Accountability",
+    "date": "2026.03.13",
+    "category": "Thinking"
+  },
+  {
+    "url": "EXP/article_09.html",
+    "title": "The House Never Wanted Big Wins:",
+    "subtitle": "Reflections on \"With 1 Million, We Uncovered the Casino's Secrets\"",
+    "date": "2026.04.11",
+    "category": "Thinking"
+  }
 ]
