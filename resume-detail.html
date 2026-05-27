@@ -160,6 +160,31 @@
             margin:2em 0;
         }
 
+        /* ---- 上線專案 LIVE 標示 ---- */
+        .resume-body .live-badge{
+            display:inline-block;
+            margin-left:8px;
+            padding:1px 8px;
+            border-radius:999px;
+            background:rgba(34,197,94,.15);
+            border:1px solid rgba(34,197,94,.4);
+            color:#4ade80;
+            font-family:'JetBrains Mono',monospace;
+            font-size:.65rem;
+            font-weight:600;
+            letter-spacing:.05em;
+            vertical-align:middle;
+            transition:all .2s;
+        }
+        .resume-body .live-badge a{
+            color:inherit !important;
+            text-decoration:none !important;
+        }
+        .resume-body .live-badge:hover{
+            background:rgba(34,197,94,.25);
+            border-color:rgba(34,197,94,.6);
+        }
+
         /* ---- 學歷 / 經歷 timeline 樣式（圖示參考） ---- */
         .resume-body .edu-timeline{
             position:relative;
@@ -334,6 +359,12 @@
                 color: #4c1d95 !important;
                 padding: 1px 4px !important;
             }
+            .resume-body .live-badge {
+                background: #ecfdf5 !important;
+                border-color: #16a34a !important;
+                color: #15803d !important;
+            }
+            .resume-body .live-badge a { color: #15803d !important; }
             .resume-body hr {
                 background: #ddd !important;
                 height: 1px !important;
@@ -403,7 +434,7 @@
                 <button id="relock-btn" class="text-gray-500 hover:text-white transition-colors text-xs font-mono">
                     <i class="fas fa-lock mr-1"></i> 重新上鎖
                 </button>
-                <p class="text-gray-600 text-[10px] font-mono mt-2">10 分鐘無操作自動上鎖</p>
+                <p class="text-gray-600 text-[10px] font-mono mt-2">同瀏覽器 10 分鐘內重新進入不用再解鎖</p>
             </div>
         </section>
     </main>

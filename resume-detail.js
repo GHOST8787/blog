@@ -1,5 +1,5 @@
 const PBKDF2_ITERATIONS = 100000;
-const IDLE_TIMEOUT_MS = 10 * 60 * 1000; // 10 分鐘無操作自動上鎖
+const UNLOCK_TTL_MS = 10 * 60 * 1000; // 同瀏覽器 10 分鐘內重新進入不用再解鎖
 
 const $lockSection = document.getElementById('lock-section');
 const $viewSection = document.getElementById('view-section');
@@ -22,41 +22,9 @@ let state = {
     enc: null,
     pdfBlobUrl: null,
     unlocked: false,
-    idleTimer: null,
-    activityListenersAttached: false,
 };
 
-function onUserActivity() {
-    if (!state.unlocked) return;
-    resetIdleTimer();
-}
-
-function resetIdleTimer() {
-    if (state.idleTimer) clearTimeout(state.idleTimer);
-    state.idleTimer = setTimeout(() => {
-        console.info('[resume-detail] idle timeout — auto relock');
-        relock();
-    }, IDLE_TIMEOUT_MS);
-}
-
-function attachActivityListeners() {
-    if (state.activityListenersAttached) return;
-    ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'].forEach(ev => {
-        document.addEventListener(ev, onUserActivity, { passive: true });
-    });
-    state.activityListenersAttached = true;
-}
-
-function stopIdleTimer() {
-    if (state.idleTimer) {
-        clearTimeout(state.idleTimer);
-        state.idleTimer = null;
-    }
-}
-
-function pad3(n) {
-    return String(n).padStart(3, '0');
-}
+function pad3(n) { return String(n).padStart(3, '0'); }
 
 function formatDate(s) {
     if (!s) return '—';
@@ -72,9 +40,7 @@ function base64ToBytes(b64) {
     return out;
 }
 
-function setError(msg) {
-    $pwdError.textContent = msg || '';
-}
+function setError(msg) { $pwdError.textContent = msg || ''; }
 
 function setLoading(isLoading) {
     $pwdSubmit.disabled = isLoading;
@@ -86,6 +52,40 @@ async function fetchJson(url) {
     const res = await fetch(url, { cache: 'no-store' });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     return res.json();
+}
+
+// ---- localStorage 解鎖記憶（同瀏覽器 10 分鐘內保留解鎖狀態）----
+function unlockStorageKey(slug) { return 'resume:unlock:' + slug; }
+
+function saveUnlockState(slug, payload) {
+    try {
+        localStorage.setItem(unlockStorageKey(slug), JSON.stringify({
+            payload,
+            expireAt: Date.now() + UNLOCK_TTL_MS,
+        }));
+    } catch (e) {
+        console.warn('[resume-detail] localStorage save failed', e);
+    }
+}
+
+function loadUnlockState(slug) {
+    try {
+        const raw = localStorage.getItem(unlockStorageKey(slug));
+        if (!raw) return null;
+        const obj = JSON.parse(raw);
+        if (!obj || !obj.payload || !obj.expireAt) return null;
+        if (Date.now() > obj.expireAt) {
+            localStorage.removeItem(unlockStorageKey(slug));
+            return null;
+        }
+        return obj.payload;
+    } catch (e) {
+        return null;
+    }
+}
+
+function clearUnlockState(slug) {
+    try { localStorage.removeItem(unlockStorageKey(slug)); } catch (e) {}
 }
 
 async function loadMeta() {
@@ -115,6 +115,12 @@ async function loadMeta() {
         const dt = formatDate(item.date);
         $lockMeta.textContent = [num, dt].filter(Boolean).join(' · ');
         document.title = `${item.company || 'Resume'} | GHOST.ouo`;
+
+        // 同瀏覽器 10 分鐘內，跳過密碼直接顯示
+        const cached = loadUnlockState(id);
+        if (cached) {
+            showView(cached);
+        }
     } catch (err) {
         console.error('[resume-detail] meta load failed', err);
         $lockCompany.textContent = '載入失敗';
@@ -175,8 +181,6 @@ function showView(payload) {
     $lockSection.classList.add('hidden');
     $viewSection.classList.remove('hidden');
     state.unlocked = true;
-    attachActivityListeners();
-    resetIdleTimer();
 
     $viewCompany.textContent = state.meta.company || '(未命名)';
     $viewBadge.textContent = `#${pad3(state.meta.number || 0)}`;
@@ -212,12 +216,12 @@ function showView(payload) {
 }
 
 function relock() {
-    stopIdleTimer();
     state.unlocked = false;
     if (state.pdfBlobUrl) {
         URL.revokeObjectURL(state.pdfBlobUrl);
         state.pdfBlobUrl = null;
     }
+    clearUnlockState(state.id);
     $viewBody.innerHTML = '';
     $viewSection.classList.add('hidden');
     $lockSection.classList.remove('hidden');
@@ -237,6 +241,7 @@ $lockForm.addEventListener('submit', async (e) => {
     setLoading(true);
     try {
         const payload = await tryDecrypt(pwd);
+        saveUnlockState(state.id, payload);
         showView(payload);
     } catch (err) {
         console.error('[resume-detail] decrypt failed', err);
