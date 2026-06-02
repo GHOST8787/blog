@@ -75,11 +75,18 @@
             </p>
 
             <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
-                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">诶嘿</div>
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">前情提要</div>
                 <p class="m-0">
                     每個電子零件出廠時都附一份規格書（英文叫 datasheet），上面有品名、工作溫度、最大電壓、腳位數量等技術參數。工程師選零件、設計電路前要查這些參數。題目給 10 份這種 PDF，要求做一條自動化流程：丟 PDF 進去，AI 自動把規格參數抓出來填進 Excel，每份共 11 個欄位。老師事先準備好正確答案表（<code class="text-accent-purple">specbook.xlsx</code>），用來逐欄比對 AI 答對幾題、算出準確率。要求「跑通一遍 + 交報告」就及格。
                 </p>
             </div>
+
+            <figure class="my-8">
+                <img src="../PNG/project_13.1.png"
+                     alt="一份電子元件 datasheet 的封裝尺寸頁"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">一份電子元件 datasheet 的封裝尺寸頁——系統要從這種 PDF 自動抽出 11 個欄位</figcaption>
+            </figure>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 任務規格

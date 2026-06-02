@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / NP_09 | GHOST.ouo</title>
+
+    <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../style.css">
+
+    <script>
+        window.siteRoot = '../';
+    </script>
+    <script type="module" src="../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / NP_09 (draft)</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                NTUST MVC Lab 五份作業：<br>
+                <span class="text-gradient text-2xl md:text-4xl">從傳統機器學習一路走到 Transformer 與物件偵測</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    AI &amp; Automation
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Deep Learning
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Coursework
+                </span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.04 &mdash; 2026.05</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
+                國立臺灣科技大學 MVC Lab（多媒體與電腦視覺實驗室）2025 春季課程的五份作業合集。一學期下來，題目從傳統機器學習開始，依序經過卷積神經網路、自然語言處理、資訊檢索，最後收在物件偵測。這篇把五份作業各自的題目、用的模型、跑出的數字整理成一份索引。每一份都有可驗證的指標，並在 Kaggle 或 dev set 上超過課程基準線。
+            </p>
+
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">前情提要</div>
+                <p class="m-0">
+                    這五份作業剛好串成一條「深度學習常見任務」的縮影：HW1 用最基礎的機器學習做兩題 Kaggle 入門賽；HW2 進到影像，自己刻一個卷積神經網路認 CIFAR-10 的十類小圖；HW3 進到文字，做意圖辨識與槽位標註；HW4 做搜尋排序，先粗排再用 BERT 細排；HW5 做物件偵測，用 YOLO 在照片裡框出非洲野生動物。一條線走完，等於把分類、序列、檢索、偵測這幾種主流任務各摸過一次。
+                </p>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 五份作業總覽
+            </h3>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">HW</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">主題</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">框架 / 模型</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">關鍵指標</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">HW1</td>
+                            <td class="px-4 py-3">Kaggle：房價預測 + 鐵達尼生還</td>
+                            <td class="px-4 py-3">scikit-learn</td>
+                            <td class="px-4 py-3 font-mono">RMSE(log) 0.12615 / Acc 0.76555</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">HW2</td>
+                            <td class="px-4 py-3">CIFAR-10 CNN + 形態學操作</td>
+                            <td class="px-4 py-3">PyTorch（3 層 Conv+BN）</td>
+                            <td class="px-4 py-3 font-mono">Acc 0.8001 / F1 0.7997</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">HW3</td>
+                            <td class="px-4 py-3">意圖辨識 + 槽位標註</td>
+                            <td class="px-4 py-3">BiLSTM + GloVe 840B.300d</td>
+                            <td class="px-4 py-3 font-mono">Intent 0.822 / Slot F1 0.8021</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">HW4</td>
+                            <td class="px-4 py-3">BM25 + BERT 重排序（IR）</td>
+                            <td class="px-4 py-3">bert-base-uncased</td>
+                            <td class="px-4 py-3 font-mono">Dev MAP@1000 34.40 / Private 0.41402</td>
+                        </tr>
+                        <tr class="border-t border-white/10 bg-accent-purple/5">
+                            <td class="px-4 py-3 font-bold text-white">HW5</td>
+                            <td class="px-4 py-3">YOLO11n 非洲野生動物偵測</td>
+                            <td class="px-4 py-3">Ultralytics YOLO11n</td>
+                            <td class="px-4 py-3 font-mono font-bold text-accent-purple">mAP@0.5 0.9577 / 0.5:0.95 0.8018</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 逐份拆解
+            </h3>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">HW1 &mdash; 兩題 Kaggle 入門</h4>
+            <p>
+                用 scikit-learn 做兩個經典 Kaggle 競賽：房價預測（回歸）與鐵達尼生還預測（分類）。房價題以對數空間的 RMSE 評分，拿到 0.12615；鐵達尼題以準確率評分，拿到 0.76555。這份是整學期的暖身，把資料清理、特徵處理、交叉驗證這套基本流程跑順。
+            </p>
+            <figure class="my-8">
+                <img src="../PNG/NP_09.1.png"
+                     alt="HW1 房價取對數後的目標分布"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">HW1：房價取 log 後接近常態分布，迴歸目標較好學</figcaption>
+            </figure>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">HW2 &mdash; CIFAR-10 CNN 與形態學</h4>
+            <p>
+                自己搭一個三層卷積（Conv + BatchNorm）的網路，認 CIFAR-10 的十類 32×32 小圖，準確率 0.8001、F1 0.7997，超過課程基準線的 0.6397。另外做影像形態學操作（侵蝕、膨脹這類），並把中間各層的特徵圖視覺化輸出，看卷積層實際學到的紋理長什麼樣。
+            </p>
+            <figure class="my-8">
+                <img src="../PNG/NP_09.2.png"
+                     alt="HW2 CIFAR-10 CNN 訓練與驗證的 loss、accuracy 曲線"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">HW2：訓練 / 驗證的 loss 與 accuracy 曲線，收斂到 0.80</figcaption>
+            </figure>
+            <figure class="my-8">
+                <img src="../PNG/NP_09.3.png"
+                     alt="HW2 各卷積層對一張貓圖的特徵圖視覺化"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">HW2：Conv1 / Conv2 / Conv3 各層的特徵圖，看模型逐層抓到的紋理</figcaption>
+            </figure>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">HW3 &mdash; 意圖辨識 + 槽位標註</h4>
+            <p>
+                兩個同時訓練的任務：判斷一句話的整體意圖（意圖分類），以及標出句中每個詞的角色（槽位標註）。模型用雙向 LSTM 配 GloVe 840B 300 維詞向量。意圖準確率 0.822，槽位以實體層級的 F1 評分拿到 0.8021，詞層級準確率達 0.9659。
+            </p>
+            <figure class="my-8">
+                <img src="../PNG/NP_09.4.png"
+                     alt="HW3 意圖辨識的訓練與驗證準確率曲線"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">HW3：意圖辨識的 train / eval accuracy，eval 收斂在 0.82</figcaption>
+            </figure>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">HW4 &mdash; BM25 + BERT 兩階段排序</h4>
+            <p>
+                資訊檢索題，做的是「給一個查詢，把最相關的文件排到最前面」。流程分兩階段：先用傳統的 BM25 從大量文件粗排出前 1000 篇，再用 BERT 對這 1000 篇做細排。訓練格式是每筆「1 個正例 + 3 個負例」的四選一，用 bert-base-uncased 微調。
+            </p>
+            <div class="my-6 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">兩階段排序的效益</div>
+                <p class="m-0 mb-3">
+                    Dev set 的 MAP@1000 從 BM25 單獨的 25.68 提升到加上 BERT 的 34.40，相對提升 33.9%。粗排與細排合併時用網格搜尋掃 5000 組權重（步長 0.001）找到最佳加權值 3.399。
+                </p>
+                <p class="m-0">
+                    這份在測試集上的表現高於 dev set（Public 0.45446 / Private 0.41402，皆高於 dev 換算值），代表模型學到的排序能力延伸到了沒見過的查詢，沒有只記住開發集。
+                </p>
+            </div>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">HW5 &mdash; YOLO11n 物件偵測</h4>
+            <p>
+                用 Ultralytics 的 YOLO11n 在非洲野生動物資料集上微調，要在照片裡框出四類動物並標籤。整體 mAP@0.5 達 0.9577，較嚴格的 mAP@0.5:0.95 也守在 0.8018。四類的 per-class mAP@0.5 全部站上 0.94 以上：
+            </p>
+            <div class="overflow-x-auto my-6">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">類別</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">mAP@0.5</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">水牛 buffalo</td><td class="px-4 py-3 font-mono">0.959</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">大象 elephant</td><td class="px-4 py-3 font-mono">0.953</td></tr>
+                        <tr class="border-t border-white/10 bg-accent-purple/5"><td class="px-4 py-3 font-bold text-white">犀牛 rhino</td><td class="px-4 py-3 font-mono font-bold text-accent-purple">0.970</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">斑馬 zebra</td><td class="px-4 py-3 font-mono">0.949</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <figure class="my-8">
+                <img src="../PNG/NP_09.5.jpg"
+                     alt="HW5 YOLO11n 在驗證集照片上的實際偵測框與類別信心"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">HW5：模型在驗證集照片上的實際偵測結果（框 + 類別 + 信心值）</figcaption>
+            </figure>
+            <figure class="my-8">
+                <img src="../PNG/NP_09.6.png"
+                     alt="HW5 四類動物的 Precision-Recall 曲線與各類 AP"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">HW5：四類的 PR 曲線，buffalo 0.959 / elephant 0.954 / rhino 0.969 / zebra 0.949、整體 mAP@0.5 0.958</figcaption>
+            </figure>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 學術誠信聲明
+            </h3>
+
+            <p>
+                這個 repo 公開出來是個人學習紀錄，方便自己日後回看與分享學習路徑。庫內不收助教提供的 starter code 原始版本；HW4 的 baseline notebook 是我自己填好五個 TO-DO 的版本，並標明出處。課程提供的資料集（documents.csv、intent/slot json 等）一律不收，請循正規管道取得。在學的 MVC Lab 學生請自己寫過一次，歡迎參考結構與思路。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 技術環境
+            </h3>
+
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">語言</strong> &mdash; Python 3.10+（建議 3.10 / 3.11）</li>
+                <li><strong class="text-white">深度學習框架</strong> &mdash; PyTorch 2.x（HW2 / HW3 / HW4 / HW5 皆用到）</li>
+                <li><strong class="text-white">各週特有套件</strong> &mdash; scikit-learn（HW1）、seqeval（HW3）、HuggingFace Transformers（HW4）、ultralytics（HW5）</li>
+                <li><strong class="text-white">硬體</strong> &mdash; CUDA 顯卡建議但非必要（CPU 也跑得動，HW4 / HW5 訓練會慢很多）</li>
+                <li><strong class="text-white">未入庫</strong> &mdash; 模型權重、原始資料集、完整訓練輸出，只保留關鍵的訓練曲線、PR / 混淆矩陣、results.csv</li>
+            </ul>
+
+            <hr class="border-white/10 my-16">
+
+            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 flex flex-col md:flex-row items-start md:items-center gap-6">
+                <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center shrink-0 border border-white/10">
+                    <i class="fab fa-github text-gray-400 text-xl"></i>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-1">原始碼</h4>
+                    <p class="text-sm text-gray-400 m-0 leading-relaxed">
+                        五份作業的程式碼、訓練曲線與各自的 README 公開在 GitHub，採 MIT 授權。每份作業的問題定義、模型架構、超參數細節見各自子資料夾。<br>
+                        <a href="https://github.com/GHOST8787/ntust-mvclab-2026" target="_blank" rel="noopener" class="text-accent-purple hover:text-white transition-colors underline decoration-accent-purple/30 underline-offset-4 mt-1 inline-block">
+                            GHOST8787/ntust-mvclab-2026
+                        </a>
+                    </p>
+                </div>
+            </div>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                &larr; Prev Project
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Projects
+            </a>
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                Next Project &rarr;
+            </a>
+        </div>
+
+    </main>
+    <div id="footer-placeholder"></div>
+</body>
+</html>

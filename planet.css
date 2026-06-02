@@ -14,8 +14,9 @@
 
 #label-container {
     z-index: 2;
-    /* 👇 修正 3：這裡不能設 pointer-events: none，否則 OrbitControls 會抓不到滑鼠 */
-    /* 我們改在 HTML 結構中控制 */
+    /* OrbitControls 綁在 canvas，label 層設穿透讓拖曳事件到達 canvas */
+    /* 個別 .work-node 和 .filter-container 已有 pointer-events: auto */
+    pointer-events: none;
 }
 
 canvas {
@@ -207,8 +208,9 @@ canvas {
     box-shadow: 0 10px 30px -10px rgba(0,0,0,0.8);
 }
 
-/* 選單展開狀態 */
-.filter-container:hover .filter-menu {
+/* 選單展開狀態：桌面 hover + 手機 click */
+.filter-container:hover .filter-menu,
+.filter-container.open .filter-menu {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
@@ -268,127 +270,4 @@ canvas {
 
 .work-node.flash-active .star-icon {
     animation: star-flash-anim 0.6s ease-out forwards;
-}
-
-/* ---------------------------------------------------- */
-/* 內層核心節點樣式 */
-/* ---------------------------------------------------- */
-
-.core-node {
-    --core-color: #BF94FF;
-    position: relative;
-    z-index: 15;
-    pointer-events: auto;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    transition: opacity 0.4s ease;
-}
-
-.core-node.is-occluded {
-    opacity: 0.1;
-    pointer-events: none;
-}
-
-.core-node.filtered-out {
-    opacity: 0.05 !important;
-    pointer-events: none !important;
-    filter: grayscale(100%);
-}
-
-/* 核心光點 */
-.core-glow {
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    background: var(--core-color);
-    box-shadow:
-        0 0 12px var(--core-color),
-        0 0 30px var(--core-color),
-        0 0 60px color-mix(in srgb, var(--core-color) 40%, transparent);
-    animation: core-pulse 3s ease-in-out infinite;
-}
-
-/* 呼吸脈衝動畫 */
-@keyframes core-pulse {
-    0%, 100% {
-        transform: scale(1);
-        box-shadow:
-            0 0 12px var(--core-color),
-            0 0 30px var(--core-color),
-            0 0 60px color-mix(in srgb, var(--core-color) 40%, transparent);
-    }
-    50% {
-        transform: scale(1.25);
-        box-shadow:
-            0 0 18px var(--core-color),
-            0 0 45px var(--core-color),
-            0 0 80px color-mix(in srgb, var(--core-color) 50%, transparent);
-    }
-}
-
-/* 核心節點標籤 */
-.core-label {
-    margin-top: 8px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    color: var(--core-color);
-    text-shadow: 0 0 10px var(--core-color);
-    white-space: nowrap;
-    text-transform: uppercase;
-}
-
-/* hover 核心節點 */
-.core-node:hover .core-glow {
-    transform: scale(1.5);
-    box-shadow:
-        0 0 20px var(--core-color),
-        0 0 50px var(--core-color),
-        0 0 90px var(--core-color);
-    animation: none;
-}
-
-.core-node:hover .core-label {
-    color: #fff;
-    text-shadow: 0 0 15px var(--core-color);
-}
-
-/* ---------------------------------------------------- */
-/* 手機版優化 */
-/* ---------------------------------------------------- */
-
-@media (max-width: 767px) {
-    .node-card {
-        width: 220px;
-        padding: 0.9rem;
-        left: 50%;
-        transform: translateX(-50%) translateY(10px);
-    }
-
-    .work-node:hover .node-card {
-        transform: translateX(-50%) translateY(0) !important;
-    }
-
-    .node-label-name {
-        font-size: 11px;
-        padding: 3px 6px;
-    }
-
-    .core-glow {
-        width: 18px;
-        height: 18px;
-    }
-
-    .core-label {
-        font-size: 9px;
-    }
-
-    .star-icon {
-        width: 12px;
-        height: 12px;
-    }
 }

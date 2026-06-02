@@ -68,7 +68,7 @@
             </p>
 
             <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed mb-16">
-                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">诶嘿</div>
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">前情提要</div>
                 <p class="m-0 mb-3">
                     Claude Code 是 Anthropic 推出的命令列開發工具，安裝後在自己電腦的終端機跟 Claude 對話、讓它讀寫專案檔案、執行 shell 指令、跨多個檔案重構程式碼。可以視為「會用工具的 AI 工程師助理」。
                 </p>
@@ -76,6 +76,13 @@
                     本篇與下篇是系列文，紀錄使用半年後對其底層架構的整理。Context（上下文）指 AI 每次回應前要讀的所有資訊，包含使用者規則、檔案內容、工具定義。「上下文越來越亂」意指這些資訊累積過多、互相干擾，導致 AI 開始遺漏指令、回答品質下降。本系列旨在拆解此問題的成因與工程化解法。
                 </p>
             </div>
+
+            <figure class="my-8">
+                <img src="../PNG/project_08.1.webp"
+                     alt="Claude Code 的核心循環、六層架構、上下文預算與緩存機制"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">核心循環與六層架構：上下文預算分配（200K）、壓縮（緩存）機制與三層協同防護</figcaption>
+            </figure>
 
             <section class="mb-16">
                 <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-3 border-b border-white/10 pb-4">

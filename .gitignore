@@ -1,0 +1,5 @@
+
+# local preview helpers (do not deploy)
+.start-preview.ps1
+.stop-preview.ps1
+.playwright-mcp/

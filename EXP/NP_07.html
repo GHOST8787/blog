@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / NP_07 | GHOST.ouo</title>
+
+    <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../style.css">
+
+    <script>
+        window.siteRoot = '../';
+    </script>
+    <script type="module" src="../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / NP_07 (draft)</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                NTUST AI 期末作業：<br>
+                <span class="text-gradient text-2xl md:text-4xl">train 衝到 95.5% 之後，為什麼最終交的是零 overfit 的 91%</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    AI &amp; Automation
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Datasheet Extraction
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Schema Rule
+                </span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.05.10 &mdash; 2026.05.22</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
+                上一篇 <a href="project_13.html" class="text-accent-purple hover:text-white transition-colors underline decoration-accent-purple/30 underline-offset-4">P13 NTUST AI 期末雙軸實驗</a> 寫到 V2 的 76.4%。這篇接著寫：V2 交完之後我又跑了 V3 到 V48 共 46 個版本，train 一路被我推到 95.5%。推到後段我停下來做了一次 overfit 稽核，結論翻過來：V37 之後那批衝分數的規則，都是對「只有 10 份」的評分集 overfit。所以最終交出去的不是 95.5% 那版，而是一個零 overfit 的整合版，100 格基準下對 91 格（91%）。這篇把 46 個版本怎麼變、95.5% 怎麼來、又為什麼最後不採它完整寫出來。
+            </p>
+
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">先講清楚題目跟評分</div>
+                <p class="m-0 mb-3">
+                    題目：給 10 份電子零件 PDF，每份要抽 11 個欄位（零件型號、工作溫度、長寬高、腳位數量、電流、電壓等），再跟老師準備的標準答案 <code class="text-accent-purple">specbook.xlsx</code> 逐格比對，看答對幾格。
+                </p>
+                <p class="m-0 mb-3">
+                    <strong class="text-white">為什麼分母從 110 變 100：</strong>11 欄 × 10 份 = 110 格，但其中「零件型號」是題目<strong class="text-white">直接給的輸入</strong>（檔名就對應型號，不需要 AI 去抽），不該算進 AI 的成績。把這 10 格拿掉，真正要 AI 抽、要算分的是 <strong class="text-white">10 欄 × 10 份 = 100 格</strong>。最後交的報告就是用這個 100 格基準。
+                </p>
+                <p class="m-0">
+                    所以本文的數字這樣讀：中間每個版本的進度，沿用當時記錄的 110 格數字（含型號）當過程參考；<strong class="text-white">結論一律看 100 格</strong>。最終交出去的是一個「零 overfit」的整合版，<strong class="text-accent-purple">100 格對 91 格（91%）</strong>——不是中途衝最高的那一版。下面就是怎麼一路試到高點、又為什麼最後不採它的完整過程。
+                </p>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Overfit 是什麼，我怎麼判斷
+            </h3>
+
+            <p>
+                這篇文章每一個版本都會問一句「這版有沒有 overfit」，所以開頭先把 overfit 解釋清楚。
+            </p>
+
+            <div class="my-6 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">白話定義</div>
+                <p class="m-0">
+                    Overfit 的意思是「規則寫到只對眼前這 10 顆有效，給第 11 顆新 PDF 就失靈」。極端例子：在程式裡直接寫「對 BAV99W 這顆強制 V_RRM = 150」&mdash; 這條規則對 train set 答案會 +1，但對任何沒見過的 PDF 都沒用。這就是 overfit 的本質。
+                </p>
+            </div>
+
+            <p>
+                判斷 overfit 有兩條互補的標準。第一條是看規則本身寫了什麼：
+            </p>
+
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">看規則內容</strong> &mdash; 規則裡寫了特定零件型號（BAV99W、DFLS160 之類）或寫死標準答案的數字 = overfit。規則只用比例、模式、文字 pattern 來觸發 = generic。</li>
+                <li><strong class="text-white">看規則來源</strong> &mdash; 規則從工業標準封裝慣例、JEDEC 規範、Specbook 統計屬性推導 = generic。從「翻 train set 答案反推哪題該套」推導 = overfit。</li>
+                <li><strong class="text-white">看觸發條件</strong> &mdash; trigger condition 是「比例落在某範圍」「PDF 有某關鍵字」這種對任何 PDF 都可一致套用的判斷 = generic。trigger 寫「對這 7 顆套，對另 3 顆不套」= overfit。</li>
+            </ul>
+
+            <p>
+                有一個前提很關鍵：這次作業的評分集只有 10 份 datasheet，沒有額外的獨立測試集，拿來改規則的跟拿來算分的是同一批。當這兩批是同一批，任何「翻這 10 顆哪幾格錯、再回頭調規則門檻」的動作分數都會漲，但漲的是對這 10 份的 overfit。所以本文判斷每個版本，看的是「規則本身寫了什麼、門檻怎麼來的」這條。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> V3 &mdash; V7：在 V2 旁邊試別招
+            </h3>
+
+            <p>
+                V2 拿 76.4% 之後，先試了五招「不換大架構，只換某一個小零件」的版本，看哪一招能往上推。每一招都跑完全部 10 顆 PDF + 全部 11 欄位重新評分。
+            </p>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider w-20">版本</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">改了什麼（白話）</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider w-24">Train</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V2</td>
+                            <td class="px-4 py-3">GPT-4o 純文字 + pdfplumber 抽 PDF，當這篇的起點</td>
+                            <td class="px-4 py-3 font-mono">76.4%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V3</td>
+                            <td class="px-4 py-3">同一份 PDF 跑兩次 GPT-4o，用保守邏輯合併兩個答案</td>
+                            <td class="px-4 py-3 font-mono">75.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10 bg-accent-purple/5">
+                            <td class="px-4 py-3 font-bold text-white">V4</td>
+                            <td class="px-4 py-3"><strong class="text-accent-purple">第一次給 vision LLM 看 PDF 截圖</strong>（multimodal），不只看文字</td>
+                            <td class="px-4 py-3 font-mono font-bold text-accent-purple">79.1%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V5</td>
+                            <td class="px-4 py-3">prompt 加更嚴格的 JSON schema 約束</td>
+                            <td class="px-4 py-3 font-mono">75.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V6</td>
+                            <td class="px-4 py-3">Chain of Thought：要 LLM 一步一步講推理過程再給答案</td>
+                            <td class="px-4 py-3 font-mono">75.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V7</td>
+                            <td class="px-4 py-3">放寬評分容差規則（用 loose tolerance 看樣本上限）</td>
+                            <td class="px-4 py-3 font-mono">參考用</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                關鍵收穫：<strong class="text-white">V4 第一次給 vision LLM 看截圖就推了 +2.7%</strong>。pdfplumber 抽出來的純文字會丟失 PDF 表格的結構，vision 直接看圖反而看得到完整的封裝尺寸表。V3 / V5 / V6 三招都退步或持平，說明在純文字管道上繼續調 prompt 已經接近上限。後面所有版本都走 multimodal 路線。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> V8 &mdash; V11：multimodal 配上關鍵字篩頁，爬到 84.5%
+            </h3>
+
+            <p>
+                V8 開始把 multimodal 跟「先用關鍵字篩出 PDF 內最相關的頁面、只送這些頁給 vision LLM」結合。datasheet 通常 8-20 頁，但回答 11 個欄位真正需要的資訊集中在 2-3 頁（Package Outline、Electrical Characteristics）。把無關頁丟掉等於把 vision attention 集中到正確位置。
+            </p>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider w-20">版本</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">改了什麼</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider w-24">Train</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V8</td>
+                            <td class="px-4 py-3">multimodal + 三層 keyword 排序選頁（Package Outline / Electrical / Thermal）</td>
+                            <td class="px-4 py-3 font-mono">82.7%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V9</td>
+                            <td class="px-4 py-3">V8 + 多條 prompt 修正：焊盤反推 body 尺寸、E vs H_E 區分、V_F / I_R 欄取 Max、Min Op 用 Tj fallback</td>
+                            <td class="px-4 py-3 font-mono">83.6%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V10</td>
+                            <td class="px-4 py-3">V9 修副作用：D / E 符號對應勝過視覺長度（DPAK W&gt;L 是正常的）、截圖內同時有 Outline 表 + Land Pattern 圖時只用 Outline 表</td>
+                            <td class="px-4 py-3 font-mono">84.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V11</td>
+                            <td class="px-4 py-3">強化 Max 欄定位（取最右邊欄、禁取 Min / Nom） + 禁用變體符號（A1 / E1 / D2 / L1 / H_E 等）當 L / W / H</td>
+                            <td class="px-4 py-3 font-mono">84.5%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                V11 推到 84.5% 就推不動了。84.5% 等於 110 格答對 93 格，剩 17 個錯誤都集中在「機械尺寸 L / W / H」這三欄。後面整整一段時間都在跟這 17 個錯誤搏鬥。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> V12 &mdash; V19：純 prompt 試到撞牆
+            </h3>
+
+            <p>
+                17 個錯誤都在尺寸欄，第一直覺是「prompt 沒寫清楚 vision 怎麼看 Package Outline 表」。從 V12 到 V19 全部用調 prompt 的方式逼近，最後發現純 prompt engineering 的天花板就在 84.5%。
+            </p>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider w-20">版本</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">改了什麼</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider w-24">Train</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10 bg-accent-purple/5">
+                            <td class="px-4 py-3 font-bold text-white">V12</td>
+                            <td class="px-4 py-3"><strong class="text-accent-purple">in-context examples 進場</strong>：prompt 內放 TO-247 / DPAK / D2PAK 三種封裝的範例答案做引導 + 4 條反例</td>
+                            <td class="px-4 py-3 font-mono font-bold text-accent-purple">84.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V13</td>
+                            <td class="px-4 py-3">把反例加到 5-8 個，希望覆蓋更多常見錯誤</td>
+                            <td class="px-4 py-3 font-mono">81.8%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V14</td>
+                            <td class="px-4 py-3">multimodal critic：第二輪讓 LLM 看圖再驗證自己第一輪的答案</td>
+                            <td class="px-4 py-3 font-mono">84.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V15</td>
+                            <td class="px-4 py-3">strict critic：critic 用更嚴格的判斷標準</td>
+                            <td class="px-4 py-3 font-mono">84.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V16</td>
+                            <td class="px-4 py-3">hybrid critic：strict + lenient 兩路 critic 混合</td>
+                            <td class="px-4 py-3 font-mono">81.8%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V17</td>
+                            <td class="px-4 py-3">把 sampling temperature 從 0 拉到 0.5，給 LLM 一些隨機性看會不會跳出局部最佳</td>
+                            <td class="px-4 py-3 font-mono">84.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10 bg-accent-purple/5">
+                            <td class="px-4 py-3 font-bold text-white">V18</td>
+                            <td class="px-4 py-3"><strong class="text-accent-purple">換模型：</strong>從 GPT-4o 換成 Llama-4-Maverick</td>
+                            <td class="px-4 py-3 font-mono font-bold text-accent-purple">84.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V19</td>
+                            <td class="px-4 py-3">ensemble critic：對 V12（GPT-4o）跟 V18（Llama）不一致的 cells，再跑一次 GPT-4o multimodal critic 看圖判定</td>
+                            <td class="px-4 py-3 font-mono">83.6%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                V12、V14、V15、V17、V18 五個版本全部精確打到 84.5%。換 prompt、換 critic、換 sampling、換模型都沒突破。
+            </p>
+
+            <p>
+                有意思的細節：<strong class="text-white">V12（GPT-4o）跟 V18（Llama）都拿 84.5%，但答對的 cells 不一樣</strong>。V18 對某些小封裝（例如 CD4148WTP）的 L / W / H 三軸都答對，V12 在這顆三軸都答錯。換句話說兩個模型各有專長，沒有「哪個模型整體比較強」這種事。這個觀察是後面 multi-model voting 的起點。
+            </p>
+
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">這段為什麼這樣寫 prompt 還是過不去</div>
+                <p class="m-0">
+                    純 prompt engineering 的本質是「給 LLM 看一段文字描述、加幾個範例，希望它學會該怎麼看圖」。但 vision 模型對某些尺寸的判讀偏差是<strong class="text-white">模型架構層面的</strong>，不是「沒看到提示」&mdash; 你怎麼提示它，它對 1-2 mm 級的小封裝就是會偏。要解這個必須跳出 prompt 的層次，改在「答案生出來之後做什麼」這層動手。
+                </p>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> V20 &mdash; V28：multi-model voting，從 84.5% 跳到 88.2%
+            </h3>
+
+            <p>
+                既然 V12（GPT-4o）跟 V18（Llama）各有對的 cells，自然的想法是讓不同模型投票。V20 到 V28 試了八個版本，找出最有效的投票機制。
+            </p>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider w-20">版本</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">改了什麼</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider w-24">Train</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V20</td>
+                            <td class="px-4 py-3">截圖 zoom 從 3.5x 拉到 4.5x，希望 vision 看得更清楚</td>
+                            <td class="px-4 py-3 font-mono">83.6%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V21</td>
+                            <td class="px-4 py-3">針對尺寸欄位重新裁切 Package Outline 區塊送 LLM 二次抽</td>
+                            <td class="px-4 py-3 font-mono">84.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V22</td>
+                            <td class="px-4 py-3">換 PDF 抽取器：用 TOC（目錄）為基礎找 Package Outline 頁</td>
+                            <td class="px-4 py-3 font-mono">84.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10 bg-accent-purple/5">
+                            <td class="px-4 py-3 font-bold text-white">V23</td>
+                            <td class="px-4 py-3"><strong class="text-accent-purple">三模型投票：</strong>V12（GPT-4o）+ V18（Llama）+ V22（TOC GPT-4o）取多數答案</td>
+                            <td class="px-4 py-3 font-mono font-bold text-accent-purple">85.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V24</td>
+                            <td class="px-4 py-3">八模型投票：V10 / V11 / V12 / V14 / V15 / V17 / V18 / V22 全部投，取多數答案</td>
+                            <td class="px-4 py-3 font-mono">84.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V25</td>
+                            <td class="px-4 py-3">cluster-aware vote：先把版本分群再投</td>
+                            <td class="px-4 py-3 font-mono">84.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10 bg-accent-purple/5">
+                            <td class="px-4 py-3 font-bold text-white">V26</td>
+                            <td class="px-4 py-3"><strong class="text-accent-purple">三軸 Llama 一致 override：</strong>對 L / W / H 三欄，當 V18（Llama）跟其他模型都不同 → 採 V18 答案</td>
+                            <td class="px-4 py-3 font-mono font-bold text-accent-purple">88.2%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V27</td>
+                            <td class="px-4 py-3">narrow re-extract 當第 4 票：對 V12 / V18 / V22 不一致的 cell 用 cropped 圖 + 窄 prompt 重抽，跟原 3 票合成 4-way majority</td>
+                            <td class="px-4 py-3 font-mono">88.2%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V28</td>
+                            <td class="px-4 py-3">divergence override：對 V12 = V18 = V22 三票同意但 narrow 跟 baseline 誤差 &gt; 30% 的 L / W / H cell 採 narrow 答案</td>
+                            <td class="px-4 py-3 font-mono">87.3%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                兩個關鍵發現：
+            </p>
+
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li>
+                    <strong class="text-white">V24 八模型投票退步</strong> &mdash; 八個版本裡六個都是 GPT-4o 的變種（V12 / V14 / V15 / V17 / V21 / V22），它們的答錯位置高度重疊。把它們全塞進投票池等於用六個一致的錯誤蓋過 V18（Llama）兩票對的答案。多模型投票要算「獨立架構有幾個」，不是「跑了幾個版本」。
+                </li>
+                <li>
+                    <strong class="text-white">V26 三軸 Llama 一致 override 是 multi-model voting 階段的最大突破</strong> &mdash; +3 cells。觀察 CD4148WTP（SOD-523，body 1.65 × 0.9 mm）的 L / W / H 三軸，V12 跟 V22（都是 GPT-4o family）三軸都答錯，V18（Llama）三軸都答對。trigger 條件：「當 V18 跟其他模型在 L、W、H 三軸都不同時」用 V18 答案。這條規則不寫死任何零件型號，對任何 PDF 都套同樣判斷。
+                </li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> V29 &mdash; V36：prompt 改寫 + override 混搭，達 89.1%
+            </h3>
+
+            <p>
+                V26 推到 88.2% 之後，剩餘錯誤裡 1N4148W 的 I_F 欄位特別礙眼&mdash;標準答案是 0.15（I_O，平均整流電流），但 V12 一直抽到 0.3（I_F，瞬間順向電流）。V29 重寫 prompt 把 I_O 的優先級拉到 I_F 之前，但這個改動意外影響到別的欄位，扣回的分數比加的還多。V31 用「混搭」解決這個問題。
+            </p>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider w-20">版本</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">改了什麼</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider w-24">Train</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V29</td>
+                            <td class="px-4 py-3">prompt 改寫：I_O 優先於 I_F、Tj fallback 規則加入</td>
+                            <td class="px-4 py-3 font-mono">85.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V30</td>
+                            <td class="px-4 py-3">V29 prompt + V26 投票邏輯</td>
+                            <td class="px-4 py-3 font-mono">87.3%</td>
+                        </tr>
+                        <tr class="border-t border-white/10 bg-accent-purple/5">
+                            <td class="px-4 py-3 font-bold text-white">V31</td>
+                            <td class="px-4 py-3"><strong class="text-accent-purple">2-field-only override：</strong>V26 為主，但 I_O / I_F 跟 Min Operating Temperature 兩欄用 V29 答案</td>
+                            <td class="px-4 py-3 font-mono font-bold text-accent-purple">89.1%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V32</td>
+                            <td class="px-4 py-3">V31 + Tj regex 後處理</td>
+                            <td class="px-4 py-3 font-mono">89.1%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V33</td>
+                            <td class="px-4 py-3">V31 + LLM 重新查詢 Tj 欄位</td>
+                            <td class="px-4 py-3 font-mono">88.2%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V34</td>
+                            <td class="px-4 py-3">V31 + verify-all critic（讓 LLM 自己驗證所有欄位）</td>
+                            <td class="px-4 py-3 font-mono">89.1%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V35</td>
+                            <td class="px-4 py-3">4-way 投票加入 V29</td>
+                            <td class="px-4 py-3 font-mono">88.2%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V36</td>
+                            <td class="px-4 py-3">V31 + Llama critic（換 critic 模型）</td>
+                            <td class="px-4 py-3 font-mono">88.2%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                V31 的精神：<strong class="text-white">「只在某個欄位真正會受益的地方套用某條規則」</strong>。V29 prompt 對 I_O / I_F 是對的，但對 L / W / H 反而傷。V31 解法是「只對受益的兩欄套 V29、其他欄保留 V26」&mdash; 不是「整套 V29 prompt 取代」。
+            </p>
+
+            <p>
+                V32 到 V36 都試圖再往上推：regex 抓 Tj、LLM 重查 Tj、verify-all critic、Llama critic&mdash;全部沒過 V31。原因是 specbook 對「Tj 只有 single value」這種 case 的判讀規則複雜，<strong class="text-white">同樣是 Tj single value，不同零件對應到 specbook 的不同欄位</strong>（有的對應 Tj、有的對應 Tamb low、有的對應 Tstg low）。任何固定的 trigger 都會在某些零件答對、其他答錯，淨值不會正。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> V37 &mdash; V44：schema rule 接入，達 95.5%
+            </h3>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">V37：L = max(D, E) swap rule</h4>
+
+            <p>
+                觀察 specbook train 10 顆 PDF，全部 GT 都是 L &geq; W（封裝長度大於等於寬度）。
+            </p>
+
+            <p>
+                <strong class="text-white">規則</strong>：當 LLM 抽出來的 (L, W) 滿足 W &gt; L 時強制把兩個值對調。
+            </p>
+
+            <p>
+                救對 DFLS160 L / W swap、MSB30M W 修正，train +3 cells，從 88.2% 推到 91.8%。
+            </p>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">V38 &mdash; V40：L / W 候選詢問</h4>
+
+            <p>
+                觀察 BAS16、BAS21H 等零件：standard answer 採用 lead 變體（E1 包含腳位的全長、H_E lead-to-lead 跨距）當尺寸，跳過封裝 body 的 D / E。V38 / V39 / V40 都在試「讓 LLM 對 cropped image 跑窄查詢，找該軸所有 candidate 的 max」。
+            </p>
+
+            <div class="overflow-x-auto my-6">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider w-20">版本</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">改了什麼</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider w-24">Train</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V38</td>
+                            <td class="px-4 py-3">W H_E override：trigger 條件太寬，誤觸 1N4148W</td>
+                            <td class="px-4 py-3 font-mono">89.1%</td>
+                        </tr>
+                        <tr class="border-t border-white/10 bg-accent-purple/5">
+                            <td class="px-4 py-3 font-bold text-white">V39</td>
+                            <td class="px-4 py-3"><strong class="text-accent-purple">L_outer override：</strong>對 L 軸跑 LLM query 找 max candidate，ratio 1.05 &mdash; 1.5 trigger</td>
+                            <td class="px-4 py-3 font-mono font-bold text-accent-purple">92.7%</td>
+                        </tr>
+                        <tr class="border-t border-white/10 bg-accent-purple/5">
+                            <td class="px-4 py-3 font-bold text-white">V40</td>
+                            <td class="px-4 py-3"><strong class="text-accent-purple">L + W 雙軸 combined：</strong>V39 加上 W 軸 H_E override，ratio 1.4 &mdash; 1.8 嚴格排除 1N4148W</td>
+                            <td class="px-4 py-3 font-mono font-bold text-accent-purple">94.5%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                V40 的關鍵設計：<strong class="text-white">ratio 上限刻意鎖在 1.8</strong>。1N4148W 這顆零件的 H_E / E 比例是 2.09，超過 1.8 直接不 trigger，避免把它對的答案改錯。這個 ratio 邊界是從觀察「哪幾顆 part 該套、哪幾顆不該套」推導出來的物理慣例（lead 比 body 大太多代表是另一種封裝設計），不是寫死「對 1N4148W 不套」。
+            </p>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">V41 &mdash; V43：失敗的 Tj 規則嘗試</h4>
+
+            <p>
+                94.5% 之後只剩 BAV99W 的 Min Operating Temperature 一個欄位最礙眼。BAV99W 的 datasheet 只列 Tj 一個 single value、沒列 Tamb 跟 Tstg range。但 BAS16 跟 CD4148WTP 也是「只有 Tj single」&mdash;這三顆零件 specbook 對 Min Operating Temperature 各用了不同欄位（BAV99W 取 Tj single、BAS16 取 Tamb range low、CD4148WTP 取 Tstg range low）。
+            </p>
+
+            <div class="overflow-x-auto my-6">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider w-20">版本</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">改了什麼</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider w-24">Train</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V41</td>
+                            <td class="px-4 py-3">LLM 自己判斷 Tj single + 是否有 Tamb：LLM 把 BAS16 的「Ta=25 condition」誤判為 Tamb range，沒 trigger 救 BAV99W</td>
+                            <td class="px-4 py-3 font-mono">94.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V42</td>
+                            <td class="px-4 py-3">regex 抓 Tamb range：PyMuPDF column 抽不到 multi-line Tamb，整批判 no Tamb → BAS16 / CD4148WTP 誤觸 -2</td>
+                            <td class="px-4 py-3 font-mono">93.6%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V43</td>
+                            <td class="px-4 py-3">同 V40 但 H_E ratio 上限收到 1.8：LLM 給 BAV99W H_E=2.4 ratio 1.92 被排除</td>
+                            <td class="px-4 py-3 font-mono">94.5%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">V44：Tj single + grep "Tamb" literal，達 95.5%</h4>
+
+            <p>
+                V41 失敗在「LLM 自己判斷有沒有 Tamb」&mdash;LLM 太聰明，會把 "Ta=25" 這種 measurement condition 也算進 Tamb。V42 失敗在「純 regex 抓 Tamb range」&mdash;PyMuPDF 抽 multi-line 表格會漏字。V44 改成<strong class="text-white">兩個條件同時滿足</strong>才 trigger：
+            </p>
+
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">條件 1</strong> &mdash; LLM 判 Tj 是否 single value（語意判斷）</li>
+                <li><strong class="text-white">條件 2</strong> &mdash; Python regex grep PDF 文字內是否有字面上的 "Tamb" 或 "Ambient Temperature" 字串（字面判斷）</li>
+            </ul>
+
+            <p>
+                BAV99W datasheet 沒有 "Tamb" literal 字串、BAS16 跟 CD4148WTP 都有。雙條件交集精準區分。V44 從 94.5% 推到 95.5%，<strong class="text-white">110 格答對 105 格</strong>。
+            </p>
+
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">這段為什麼最難</div>
+                <p class="m-0">
+                    V44 是整篇文章最精緻的一條規則。同樣是「Tj single value」的三顆零件，specbook 用了三種不同欄位，唯一的 generic 區分點落在「PDF 文字內有沒有 Tamb 這四個字」這種乍看不像 ML feature 的東西。<strong class="text-white">寫一條規則的容易，找到正確的 trigger 邊界才難</strong>&mdash;這條經驗適用任何 schema 不一致的資料抽取任務。
+                </p>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> V45 &mdash; V48：最後微調
+            </h3>
+
+            <p>
+                V44 達 95.5% 之後剩五個 train cells 救不動。V45 到 V48 試了幾種微調方向看能不能再推一格，這條衝分數的線最後停在 V47（train 95.5%）。
+            </p>
+
+            <div class="overflow-x-auto my-6">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider w-20">版本</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">改了什麼</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider w-24">Train</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V45</td>
+                            <td class="px-4 py-3">對 W / H 比例異常的零件用 wide raster 重抽</td>
+                            <td class="px-4 py-3 font-mono">95.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V46</td>
+                            <td class="px-4 py-3">改用 Llama 對 W / H 異常零件重抽：對 BAV99W W 改錯 -1</td>
+                            <td class="px-4 py-3 font-mono">94.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10 bg-accent-purple/5">
+                            <td class="px-4 py-3 font-bold text-white">V47</td>
+                            <td class="px-4 py-3"><strong class="text-accent-purple">Llama pure-swap detection：</strong>只在 Llama 給的 D &asymp; baseline W AND Llama 給的 E &asymp; baseline L 時才 trigger swap</td>
+                            <td class="px-4 py-3 font-mono font-bold text-accent-purple">95.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V48</td>
+                            <td class="px-4 py-3">對 H_E 跑 multi-sample 取中位數</td>
+                            <td class="px-4 py-3 font-mono">93.6%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                V47 是 V44 的對偶版本&mdash;V37 的 swap rule 在某些封裝類型可能誤觸（前面 V37 段提過的「規則覆蓋率 vs 永遠對」取捨）。V47 加一層「只在 Llama 給的尺寸跟 baseline 完全純 swap pattern 時才 trigger」做更嚴格的二次驗證，把 swap rule 從「W &gt; L 就 swap」收緊成「W &gt; L 且 Llama 確認是純 swap 才 swap」。最終結果還是 train 95.5%、5 個救不動 cells 不變。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> V47（衝分峰值）的完整方法
+            </h3>
+
+            <p>
+                V47 = 從 V12 baseline 開始，疊加 6 條後處理規則。Pipeline 整體流程：
+            </p>
+
+            <div class="bg-white/5 p-5 rounded-xl border-l-4 border-accent-purple font-mono text-sm text-gray-300 mb-8 overflow-x-auto">
+<pre class="m-0"><code>PDF
+  &rarr; PyMuPDF 光柵化截圖（3.5x）+ Base64 編碼
+  &rarr; 三層 keyword 篩頁（Package Outline / Electrical / Thermal）
+  &rarr; GPT-4o vision baseline 抽 11 欄位
+  &rarr; 後處理規則疊加：
+      &middot; V23  三模型投票（V12 GPT-4o + V18 Llama + V22 TOC）
+      &middot; V26  三軸 Llama 一致 override
+      &middot; V31  I_O 優先 / Min Op 2-field override
+      &middot; V37  L = max(D, E) swap rule
+      &middot; V40  L / W outer LLM query（ratio 1.05-1.55 / 1.4-1.8）
+      &middot; V44  Tj single + grep "Tamb" literal 雙條件
+      &middot; V47  Llama pure-swap 二次驗證
+  &rarr; 最終 11 欄位 JSON</code></pre>
+            </div>
+
+            <figure class="my-8">
+                <img src="../PNG/NP_07.1.png"
+                     alt="datasheet 抽取系統示範介面：10 顆逐格對照標答"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">V47 衝分版示範介面：10 顆逐格對照標答，紅底是 5 個救不動的 cell；以 100 格計分 = 95/100（最終繳交的是另一個零 overfit 的整合版 91/100）</figcaption>
+            </figure>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider w-24">規則</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">Trigger 條件</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider w-24">救幾 cells</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V23</td>
+                            <td class="px-4 py-3">3 個模型答案取多數</td>
+                            <td class="px-4 py-3 font-mono">+1</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V26</td>
+                            <td class="px-4 py-3">L / W / H 三軸都 V18 vs others isolated → 用 V18</td>
+                            <td class="px-4 py-3 font-mono">+3</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V31</td>
+                            <td class="px-4 py-3">只對 I_F、Min Op 兩欄套 V29 prompt 答案</td>
+                            <td class="px-4 py-3 font-mono">+1</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V37</td>
+                            <td class="px-4 py-3">W &gt; L → swap</td>
+                            <td class="px-4 py-3 font-mono">+3</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V40</td>
+                            <td class="px-4 py-3">L 軸 ratio 1.05-1.55、W 軸 ratio 1.4-1.8 → LLM 查 candidate</td>
+                            <td class="px-4 py-3 font-mono">+3</td>
+                        </tr>
+                        <tr class="border-t border-white/10 bg-accent-purple/5">
+                            <td class="px-4 py-3 font-bold text-white">V44</td>
+                            <td class="px-4 py-3"><strong class="text-accent-purple">LLM 判 Tj single + regex grep &quot;Tamb&quot; literal 雙條件交集</strong></td>
+                            <td class="px-4 py-3 font-mono font-bold text-accent-purple">+1</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                <strong class="text-white">從 V12 baseline 84.5%（93 / 110）累積到 V47 95.5%（105 / 110），共 +12 cells</strong>。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 衝到 95.5% 之後我改變了判斷：V37 起其實是 overfit
+            </h3>
+
+            <p>
+                寫到這裡，前面 V37 到 V44 那幾條規則我都用「generic」在描述它們&mdash;比例門檻、文字 pattern、不寫死型號。交作業前我停下來重新稽核了一次，判斷翻過來了：這些規則對「這次的評分集」是 overfit。
+            </p>
+
+            <div class="my-6 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">關鍵在「評分集只有 10 份」</div>
+                <p class="m-0">
+                    這次作業沒有獨立測試集，算分的就是那 10 份 datasheet。V40 的 ratio 上限「刻意鎖在 1.8」是為了讓 1N4148W 不被改錯、V44 的「grep Tamb」是為了精準區分 BAV99W 跟 BAS16&mdash;這些門檻的數值，是我「看著那 10 顆裡哪幾格錯、再回頭調」調出來的。觸發條件形式上長得像 generic（比例、字串），但門檻的來源是評分集本身。換一批新的 datasheet，這些門檻不保證還是最佳。這就是對評分集 overfit。
+                </p>
+            </div>
+
+            <p>
+                按這個更嚴的標準重判，乾淨的天花板落在 <strong class="text-white">V23 三模型投票（約 85.5%）</strong>，加上不靠逐顆反推的通用規則大約到 <strong class="text-white">V31（89.1%）</strong>。V37 之後每一格的進步，都帶著「門檻是看著答案調出來的」這個性質。衝高分數跟保持 generic 在這裡是一組取捨，我選擇守住 generic。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 救不動的 5 個 cells：規則 / extraction 還沒抓到的 schema
+            </h3>
+
+            <p>
+                V47 之後 train 還剩 5 個 cells 沒救起來。逐顆檢查每個 cell 的狀態：
+            </p>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">零件</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">欄位</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">抽出值</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">標準答案</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">還沒抓到的 schema</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">BAV99W</td>
+                            <td class="px-4 py-3">V_RRM</td>
+                            <td class="px-4 py-3 font-mono">100</td>
+                            <td class="px-4 py-3 font-mono text-accent-purple">150</td>
+                            <td class="px-4 py-3">datasheet 內某處的 150V 標註，目前 extraction 沒掃到</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">BAV99W</td>
+                            <td class="px-4 py-3">W</td>
+                            <td class="px-4 py-3 font-mono">1.25</td>
+                            <td class="px-4 py-3 font-mono text-accent-purple">2.2</td>
+                            <td class="px-4 py-3">specbook 用的是 H_E 還是 lead-tip-to-tip，LLM 沒抓到正確 sample</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">BAV99W</td>
+                            <td class="px-4 py-3">H</td>
+                            <td class="px-4 py-3 font-mono">1.1</td>
+                            <td class="px-4 py-3 font-mono text-accent-purple">1</td>
+                            <td class="px-4 py-3">差 10% 容差邊緣，需更精細的 dimension reference</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">MBR15U150</td>
+                            <td class="px-4 py-3">W</td>
+                            <td class="px-4 py-3 font-mono">5.5</td>
+                            <td class="px-4 py-3 font-mono text-accent-purple">4.1</td>
+                            <td class="px-4 py-3">multi-product datasheet 內變體尺寸表，prompt 沒指引到正確變體</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">MBR15U150</td>
+                            <td class="px-4 py-3">H</td>
+                            <td class="px-4 py-3 font-mono">4.1</td>
+                            <td class="px-4 py-3 font-mono text-accent-purple">1.2</td>
+                            <td class="px-4 py-3">同上 multi-product 變體選擇問題</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                這 5 個 cells 都是「specbook 用了某個特定的判讀規則，目前 prompt / extraction 還沒抓到那個規則」。要把它們救起來有兩條路：
+            </p>
+
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">路 A &mdash; 寫 part-specific override</strong>：直接在 code 寫「對 BAV99W 強制 V_RRM = 150」這種規則。一格 +1，但這是 overfit train set 的定義&mdash;對任何未見的 PDF 都沒用。</li>
+                <li><strong class="text-white">路 B &mdash; 找到一條 generic 規則同時對這 5 顆都對</strong>：例如「對 multi-product datasheet 強制選某個變體」「對 BAV99W 系列 V_RRM 取某種附註」。但我嘗試過的 generic rule 都會在其他零件踩雷（trigger 太寬）或漏掉這顆（trigger 太窄）。</li>
+            </ul>
+
+            <p>
+                這 5 格的存在本身就是訊號：把分數推到 95.5% 必須靠「看著這 10 顆調門檻」，而那正是 overfit。剩餘 5 cells 對應的是「specbook 內仍有判讀規則沒被 generic pattern 涵蓋」&mdash;這是任何 generic schema extraction 系統都會遇到的 schema 層級限制。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 最終交出去的版本：零 overfit 的整合版
+            </h3>
+
+            <p>
+                把 V37 之後那些「看著答案調門檻」的衝分規則全部拿掉，最終繳交的是一個只用通用成分組起來的整合版：
+            </p>
+
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">三模型投票（V23）</strong> &mdash; GPT-4o 多模態 + Llama-4 vision + GPT-4o（TOC variant），逐欄取多數值</li>
+                <li><strong class="text-white">通用裁切尺寸表</strong> &mdash; 搜尋「Package Outline / Mechanical Dimensions」anchor 文字定位尺寸表，該區塊高解析光柵化再送 vision</li>
+                <li><strong class="text-white">通用物理規則</strong> &mdash; 長寬取含引腳最外緣、取 Max 欄、公差換算。不點名任何零件、不寫死任何數值</li>
+            </ul>
+
+            <div class="my-6 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">計分基準說明（兩個數字基準不同，不要直接相比）</div>
+                <p class="m-0">
+                    繳交報告改用 100 格基準：作業共 11 欄 &times; 10 件 = 110 格，其中 Part Number 是作業給定的輸入（執行前已知），不列入計分，扣掉後是 100 格。所以報告 headline 寫 100 格對 91 格（91%）。本文前面從 V2 76.4% 到 V47 95.5% 的歷程數字，是 110 格基準的 train 準確率（含 Part Number）。
+                </p>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 數字總結
+            </h3>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 my-8">
+                <div class="bg-white/5 border border-accent-purple/20 rounded-2xl p-5 text-center">
+                    <div class="text-3xl font-extrabold text-accent-purple mb-2">91 / 100</div>
+                    <div class="text-xs text-gray-500 font-mono uppercase">繳交版（零 overfit）</div>
+                </div>
+                <div class="bg-white/5 border border-white/10 rounded-2xl p-5 text-center">
+                    <div class="text-3xl font-extrabold text-gray-300 mb-2">95.5%</div>
+                    <div class="text-xs text-gray-500 font-mono uppercase">V47 衝分峰值（未繳交）</div>
+                </div>
+                <div class="bg-white/5 border border-white/10 rounded-2xl p-5 text-center">
+                    <div class="text-3xl font-extrabold text-gray-300 mb-2">46</div>
+                    <div class="text-xs text-gray-500 font-mono uppercase">V3 &mdash; V48 跑過版本</div>
+                </div>
+                <div class="bg-white/5 border border-white/10 rounded-2xl p-5 text-center">
+                    <div class="text-3xl font-extrabold text-gray-300 mb-2">10</div>
+                    <div class="text-xs text-gray-500 font-mono uppercase">評分集 datasheet 份數</div>
+                </div>
+            </div>
+
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">衝分峰值</strong> &mdash; V44 / V47，110 格 105 / 110 = 95.5%（含逐顆反推的門檻，判定對評分集 overfit，未繳交）</li>
+                <li><strong class="text-white">乾淨天花板</strong> &mdash; V23 三模型投票約 85.5%，加上不靠反推的通用規則約到 V31 89.1%</li>
+                <li><strong class="text-white">最終繳交</strong> &mdash; 零 overfit 整合版，100 格對 91 格（91%）</li>
+                <li><strong class="text-white">跑過 46 個版本</strong>，過程全保留在 <code class="text-accent-purple">output/_archive/</code></li>
+                <li><strong class="text-white">立場</strong> &mdash; 「不 overfit」是硬約束，凌駕單純衝高分數</li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 技術棧
+            </h3>
+
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">語言 / 套件</strong> &mdash; Python 3.11、PyMuPDF (fitz)、pdfplumber、openpyxl、openai SDK、python-dotenv</li>
+                <li><strong class="text-white">雲端推理</strong> &mdash; Azure AI Foundry V1 統一 API（OpenAI 相容 endpoint）&middot; GPT-4o 主模型、Llama-4-Maverick 副模型、Mistral-medium-2505 對照組</li>
+                <li><strong class="text-white">multimodal extractor</strong> &mdash; PyMuPDF Matrix(3.5x) 光柵化 → Base64 PNG</li>
+                <li><strong class="text-white">crop extractor</strong> &mdash; <code class="text-accent-purple">page.search_for(&quot;Package Outline&quot;)</code> + bbox expand → 5x crop</li>
+                <li><strong class="text-white">推理設定</strong> &mdash; <code class="text-accent-purple">temperature=0</code>、<code class="text-accent-purple">num_ctx=16384</code>、<code class="text-accent-purple">format=json</code></li>
+                <li><strong class="text-white">關鍵檔案</strong> &mdash; <code class="text-accent-purple">prompts.py</code> / <code class="text-accent-purple">pdf_extractor.py</code> / <code class="text-accent-purple">crop_extractor.py</code> / <code class="text-accent-purple">evaluate_all.py</code> / <code class="text-accent-purple">run_v47.py</code></li>
+                <li><strong class="text-white">跑時統計</strong> &mdash; 一次完整 train 評估 5 &mdash; 8 分鐘；V44 後處理 11 個 LLM call 約 90 秒；V47 後處理 1 個 Llama call 約 30 秒</li>
+            </ul>
+
+            <hr class="border-white/10 my-16">
+
+            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 flex flex-col md:flex-row items-start md:items-center gap-6">
+                <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center shrink-0 border border-white/10">
+                    <i class="fas fa-arrow-left text-gray-400 text-xl"></i>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-1">上一篇：P13 NTUST AI 期末雙軸實驗</h4>
+                    <p class="text-sm text-gray-400 m-0 leading-relaxed">
+                        P13 寫的是 V1（qwen2.5:7b + pdfplumber 60.9%）&rarr; V2（GPT-4o + pdfplumber 76.4%）的雙軸實驗：PDF 抽取工具 軸 &times; LLM 模型 軸。<br>
+                        <a href="project_13.html" class="text-accent-purple hover:text-white transition-colors underline decoration-accent-purple/30 underline-offset-4 mt-1 inline-block">
+                            前情提要 &rarr; P13 NTUST AI 期末雙軸實驗
+                        </a>
+                    </p>
+                </div>
+            </div>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                &larr; Prev Project
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Projects
+            </a>
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                Next Project &rarr;
+            </a>
+        </div>
+
+    </main>
+    <div id="footer-placeholder"></div>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / NA_07 | GHOST.ouo</title>
+
+    <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script type="module" src="../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../articles.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO ARTICLES
+            </a>
+            <span class="opacity-50">EXP / NA_07 (draft)</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                低能量社交的三種最小化介入腳本：<br>
+                <span class="text-gradient text-2xl md:text-4xl">出門前先載入這幾個 function</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">Lifestyle</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Social Tactics</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Mental Model</span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.04.27</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                從高頻率社交從業者的行為中提取三組可複用的腳本，對應低能量狀態下的三種典型社交困境。本篇含問題界定、執行方式與適用邊界。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 問題界定：為什麼低能量時社交特別累
+            </h3>
+
+            <p>
+                在需要出席、但自身處於低能量狀態（例如長期照護責任之下）的社交場合，核心需求是<strong class="text-white">以最小認知負荷完成必要互動</strong>，深度連結不是這個場合的目標，要避免能量不足而產生額外的社交損耗。
+            </p>
+            <p>
+                這種狀態下，最怕的是三種情境：對方持續輸出讓你無法離場、好不容易找到空檔卻不知道怎麼開口暫離、暫離後被追問去向。以下三組腳本，對應這三種困境。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 腳本一：結構化附和
+            </h3>
+
+            <p>
+                當對方正在表達觀點、且無法中止對話時適用。核心邏輯：<strong class="text-white">只做模式匹配，不做內容處理</strong>。
+            </p>
+
+            <pre class="my-6 p-6 rounded-2xl border border-white/10 bg-[#0F0F0F] overflow-x-auto"><code class="font-mono text-sm text-gray-300 leading-relaxed">function 回應對方(utterance, myView = null) {
+    if (utterance.includes("我覺得") || utterance.includes("我認為")) {
+        console.log("嗯嗯，我同意你");
+        if (myView) console.log("我也覺得", myView);
+    }
+}</code></pre>
+
+            <p class="text-gray-400">
+                要點：不組織反對意見、不假裝深度思考，僅執行最低成本的確認訊號。這個腳本的靈感來自業務工作者的日常&mdash;&mdash;他們經常面對大量客戶的意見輸出，不可能每句都認真回應，結構化附和是維持專業形象同時保存能量的實務技巧。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 腳本二：有期限的暫離
+            </h3>
+
+            <p>
+                適用於可以短暫離場的間隔。常用表述：「去抽根菸」、「回個訊息」、「上個廁所」。
+            </p>
+
+            <p class="text-gray-400">
+                關鍵設計：<strong class="text-white">附帶隱含的返回預期</strong> &mdash; 對方知道你還會回來，但此行為打斷了對方的對話節奏，為你爭取到一段不歸屬於任何人的時間。這個腳本的效力來自「期限」&mdash;&mdash;暫時離開，帶有返回預期。有期限的暫離會被解讀為一種可以被社會規範接受的行為中斷。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 腳本三：歸因於抽象吸引
+            </h3>
+
+            <p>
+                當腳本二的離場行為被察覺、或被追問「剛剛去哪」時的收尾語。
+            </p>
+
+            <p>
+                標準台詞：<strong class="text-white">「千錯萬錯都不是人類的錯，但我就是被吸引住了。」</strong>
+            </p>
+
+            <p class="text-gray-400">
+                邏輯拆解：不指責對方 &rarr; 不解釋細節 &rarr; 將責任歸屬給「被吸引」這一不可反駁的主觀狀態。對話在此自然終止。這個腳本最有趣的地方在於它的「不可追問性」&mdash;&mdash;你無法反駁一個人的主觀感受，也無法要求對方解釋「被吸引」的具體原因，於是對話只能結束。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 適用邊界：什麼時候不該用
+            </h3>
+
+            <p>
+                這三組腳本是低能量狀態下的 <strong class="text-white">fallback（後備方案）</strong>，能量恢復後不應常態使用。如果長期依賴這些腳本，可能會：
+            </p>
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
+                <li>讓對方感覺你「永遠在應付」</li>
+                <li>錯失真正重要的深度連結機會</li>
+                <li>讓自己在人際關係中逐漸邊緣化</li>
+            </ul>
+            <p>
+                腳本的目的是「撐過去」，不是「建立關係」。兩者之間的界線需要自己判斷。
+            </p>
+
+            <hr class="border-white/10 my-12">
+
+            <p class="text-sm text-gray-500 font-mono m-0">
+                Tags　｜　Social Tactics　・　Low Energy Mode　・　Mental Model
+            </p>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="article_09.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Article
+            </a>
+            <a href="../articles.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Articles
+            </a>
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                Next Article &rarr;
+            </a>
+        </div>
+
+    </main>
+    <div id="footer-placeholder"></div>
+</body>
+</html>

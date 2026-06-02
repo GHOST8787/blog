@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
+<title>Drafts — Local Preview</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  body { background: #050505; color: #e5e5e5; font-family: 'Plus Jakarta Sans', sans-serif; }
+  code, .mono { font-family: 'JetBrains Mono', monospace; }
+  .text-accent-purple { color: #BF94FF; }
+  .border-accent-purple { border-color: #BF94FF; }
+  .dot-pattern {
+    background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+</style>
+</head>
+<body class="min-h-screen relative">
+
+<div class="fixed inset-0 z-0 pointer-events-none">
+  <div class="absolute inset-0 dot-pattern opacity-50"></div>
+</div>
+
+<main class="relative z-10 max-w-6xl mx-auto px-6 py-16">
+
+  <header class="mb-12">
+    <div class="flex items-start justify-between gap-6 mb-4 flex-wrap">
+      <div>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-white mb-2">Drafts</h1>
+        <p class="text-sm text-gray-500 mono">本機預覽 — 列出未列入 articles.json / projects.json 的內容</p>
+      </div>
+      <span class="text-[10px] mono text-yellow-300 border border-yellow-300/30 bg-yellow-300/5 px-3 py-1 rounded uppercase tracking-wider self-start">
+        Local Only · Noindex
+      </span>
+    </div>
+    <div id="warning" class="hidden bg-red-500/10 border border-red-500/40 text-red-300 p-4 rounded-lg text-sm mt-4"></div>
+  </header>
+
+  <section class="mb-16">
+    <h2 class="text-xl font-bold text-white mb-5 flex items-center gap-3">
+      <span class="text-accent-purple">#</span> Articles 草稿
+      <span id="articles-count" class="text-xs mono text-gray-500"></span>
+      <span class="text-xs mono text-gray-600">（A_XX 正式編號 + NA_XX 新文待定編號）</span>
+    </h2>
+    <div id="articles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+  </section>
+
+  <section class="mb-16">
+    <h2 class="text-xl font-bold text-white mb-5 flex items-center gap-3">
+      <span class="text-accent-purple">#</span> Projects 草稿
+      <span id="projects-count" class="text-xs mono text-gray-500"></span>
+      <span class="text-xs mono text-gray-600">（P_XX 正式編號 + NP_XX 新案待定編號）</span>
+    </h2>
+    <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+  </section>
+
+  <footer class="mt-20 pt-8 border-t border-white/10 text-xs mono text-gray-600">
+    要把某篇推上線 → 跟 Claude 講「推 article_XX」或「推 project_XX」。<br>
+    新增 NA / NP 連號草稿 → 直接存到 <code class="text-gray-400">EXP/</code>，重整本頁即自動列出。<br>
+    非連號檔（如 article_NEW.html）→ 編輯檔末 <code class="text-gray-400">MANUAL</code> 白名單。
+  </footer>
+
+</main>
+
+<script>
+const MANUAL = {
+  articles: [],
+  projects: []
+};
+
+const AUTO_SCAN = {
+  articles: { prefix: 'NA', max: 50 },
+  projects: { prefix: 'NP', max: 50 }
+};
+
+async function fetchEntry(file, allowMissing) {
+  try {
+    const res = await fetch(file);
+    if (!res.ok) {
+      if (allowMissing) return null;
+      return { file, meta: { title: file.split('/').pop(), date: '', tag: '檔案不存在', ok: false } };
+    }
+    const text = await res.text();
+    const doc = new DOMParser().parseFromString(text, 'text/html');
+    const h1 = doc.querySelector('h1');
+    const title = h1 ? h1.textContent.trim().replace(/\s+/g, ' ') : (doc.title || file);
+    const dateEl = doc.querySelector('.fa-calendar');
+    let date = '';
+    if (dateEl) {
+      const span = dateEl.closest('span');
+      if (span) date = span.textContent.trim();
+    }
+    const tagEl = doc.querySelector('.text-accent-purple.rounded');
+    const tag = tagEl ? tagEl.textContent.trim() : '';
+    return { file, meta: { title, date, tag, ok: true } };
+  } catch (e) {
+    if (allowMissing) return null;
+    return { file, meta: { title: file.split('/').pop(), date: '', tag: '純文字 / 無法解析', ok: false } };
+  }
+}
+
+async function discoverSequence(prefix, max) {
+  const candidates = [];
+  for (let i = 1; i <= max; i++) {
+    candidates.push(`EXP/${prefix}_${String(i).padStart(2, '0')}.html`);
+  }
+  const results = await Promise.all(candidates.map(f => fetchEntry(f, true)));
+  return results.filter(r => r !== null);
+}
+
+async function buildEntries(manualList, scanConfig) {
+  const [manualEntries, autoEntries] = await Promise.all([
+    Promise.all(manualList.map(f => fetchEntry(f, false))),
+    discoverSequence(scanConfig.prefix, scanConfig.max),
+  ]);
+  return [...manualEntries, ...autoEntries];
+}
+
+function card(file, meta, conflict) {
+  return `
+    <a href="${file}" target="_blank" rel="noopener"
+       class="block bg-white/[0.03] hover:bg-white/[0.06] border ${conflict ? 'border-red-500/40' : 'border-white/10 hover:border-accent-purple/40'} rounded-xl p-5 transition-colors">
+      <div class="flex items-center justify-between text-xs mono text-gray-500 mb-3">
+        <span>${meta.date || '—'}</span>
+        ${conflict
+          ? '<span class="text-red-400">已在公開 JSON</span>'
+          : (meta.tag ? `<span class="text-accent-purple">${meta.tag}</span>` : '')}
+      </div>
+      <h3 class="text-white font-bold leading-snug mb-3 text-sm">${meta.title}</h3>
+      <code class="text-[10px] mono text-gray-600">${file}</code>
+    </a>
+  `;
+}
+
+async function renderSection(gridId, countId, entries, publicSet) {
+  const el = document.getElementById(gridId);
+  document.getElementById(countId).textContent = entries.length ? `${entries.length} 篇` : '';
+  if (!entries.length) {
+    el.innerHTML = '<p class="text-sm text-gray-600 col-span-full mono">（無）</p>';
+    return [];
+  }
+  const conflicts = [];
+  el.innerHTML = entries.map(({ file, meta }) => {
+    const isConflict = publicSet && publicSet.has(file);
+    if (isConflict) conflicts.push(file);
+    return card(file, meta, isConflict);
+  }).join('');
+  return conflicts;
+}
+
+async function init() {
+  let publicArticles = new Set(), publicProjects = new Set();
+  try {
+    const a = await fetch('articles.json').then(r => r.json());
+    publicArticles = new Set(a.map(x => x.url));
+  } catch {}
+  try {
+    const p = await fetch('projects.json').then(r => r.json());
+    publicProjects = new Set(p.map(x => x.url));
+  } catch {}
+
+  const [articleEntries, projectEntries] = await Promise.all([
+    buildEntries(MANUAL.articles, AUTO_SCAN.articles),
+    buildEntries(MANUAL.projects, AUTO_SCAN.projects),
+  ]);
+
+  const c1 = await renderSection('articles-grid', 'articles-count', articleEntries, publicArticles);
+  const c2 = await renderSection('projects-grid', 'projects-count', projectEntries, publicProjects);
+
+  const conflicts = [...c1, ...c2];
+  if (conflicts.length) {
+    const w = document.getElementById('warning');
+    w.classList.remove('hidden');
+    w.innerHTML = `<strong>警示：</strong>以下檔案被列為草稿但已存在於公開 JSON（articles.json / projects.json）：<br><code class="mono">${conflicts.join(', ')}</code>`;
+  }
+}
+
+init();
+</script>
+
+</body>
+</html>
