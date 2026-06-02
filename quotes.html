@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quotes | GHOST.ouo</title>
+    <meta name="description" content="GHOST.ouo 的名言日記 — 一句話，一個日子">
+    <link rel="icon" type="image/png" href="PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="PNG/pixelS2.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="main.js" defer></script>
+
+    <style>
+        .quote-item {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 左側時間軸線 */
+        .timeline-line {
+            position: absolute;
+            left: 7px;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: linear-gradient(to bottom, rgba(191, 148, 255, 0.3), transparent);
+        }
+
+        /* 時間軸圓點 */
+        .timeline-dot {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            border: 2px solid rgba(191, 148, 255, 0.5);
+            background: #050505;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+
+        .quote-row:hover .timeline-dot {
+            border-color: #BF94FF;
+            background: rgba(191, 148, 255, 0.2);
+            box-shadow: 0 0 12px rgba(191, 148, 255, 0.4);
+        }
+
+        .quote-text {
+            transition: color 0.3s ease;
+        }
+
+        .quote-row:hover .quote-text {
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-600/10 rounded-full blur-[120px] animate-pulse-slow" style="animation-delay: 2s;"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-3xl mx-auto px-8 md:px-12 pt-32 pb-24">
+
+        <div class="mb-12 relative z-20 pointer-events-none">
+            <h1 class="text-3xl md:text-4xl font-extrabold mb-2 leading-tight tracking-tight text-gradient text-left w-fit">
+                Quotes
+            </h1>
+            <p class="text-purple-400 font-mono text-xs uppercase tracking-wider">
+                One line, one day.
+            </p>
+        </div>
+
+        <!-- 名言列表 -->
+        <div id="quotes-container" class="relative pl-8">
+            <div class="timeline-line"></div>
+        </div>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        const container = document.getElementById('quotes-container');
+        if (!container) return;
+
+        try {
+            const res = await fetch('quotes.json');
+            if (!res.ok) throw new Error('無法載入名言');
+            const quotes = await res.json();
+
+            quotes.forEach((q, i) => {
+                const row = document.createElement('div');
+                row.className = 'quote-row flex items-start gap-5 mb-8 quote-item';
+                row.style.animationDelay = `${i * 0.1}s`;
+
+                const authorHtml = q.author
+                    ? `<span class="text-purple-400/60 font-mono text-[11px] ml-3">— ${q.author}</span>`
+                    : '';
+
+                row.innerHTML = `
+                    <div class="timeline-dot mt-1.5"></div>
+                    <div class="flex-1 min-w-0">
+                        <div class="text-[11px] font-mono text-gray-600 mb-1.5 tracking-wider">${q.date}</div>
+                        <p class="quote-text text-gray-300 text-[15px] leading-relaxed">
+                            ${q.text}${authorHtml}
+                        </p>
+                    </div>
+                `;
+
+                container.appendChild(row);
+            });
+
+        } catch (err) {
+            console.error('Quotes 載入失敗:', err);
+        }
+    });
+    </script>
+
+</body>
+</html>

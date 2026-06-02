@@ -4,9 +4,8 @@ import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer
 
 let scene, camera, renderer, labelRenderer, controls, sphere;
 const nodes = [];
-const coreNodes = [];
-const connectionLines = [];
 
+// 紀錄目前選中的標籤
 let activeTags = new Set();
 
 const tagColors = {
@@ -14,200 +13,198 @@ const tagColors = {
     "AI & Automation": "#60A5FA",
     "Thinking": "#34D399",
     "Lifestyle": "#F472B6",
-    "Open Source": "#FFD700",
     "DEFAULT": "#94A3B8",
     "SECRET": "#FFD700"
 };
 
-// --- 內層核心能力節點 (r=1.0) ---
-const coreData = [
-    { tag: "Engineering",     label: "Engineering",     pos: [ 0.95,  0.31, 0.0  ] },
-    { tag: "AI & Automation", label: "AI & Auto",       pos: [ 0.29,  0.95, 0.0  ] },
-    { tag: "Thinking",        label: "Thinking",        pos: [-0.77,  0.59, 0.0  ] },
-    { tag: "Lifestyle",       label: "Lifestyle",       pos: [-0.77, -0.59, 0.0  ] },
-    { tag: "Open Source",     label: "Open Source",     pos: [ 0.29, -0.95, 0.0  ] },
-];
-
+/**
+ * 重新整理後的項目清單
+ */
 const workData = [
-    // --- 1. Engineering ---
     {
-        pos: [1.6, 0.4, 0.5],
+        pos: [0.65, 1.39, -0.94],
         title: "個人品牌網站",
         tag: "Engineering",
-        desc: "從 0 到 1 獨立開發\nThree.js 3D 互動 + Firebase 即時DB\nWebP 優化後圖片體積 -93%",
+        desc: "獨立開發 3D 互動作品集\nThree.js + Firebase 即時資料庫\n圖片 WebP 壓縮體積 -93%",
         link: "index.html"
     },
     {
-        pos: [1.2, 1.1, -0.6],
+        pos: [0.53, 1.72, 0],
         title: "SaaS 社群排程系統",
         tag: "Engineering",
-        desc: "IG/Threads/FB 跨平台自動發文\nDocker 容器化 + Hetzner VPS 部署\nPrisma ORM + PostgreSQL",
+        desc: "IG/Threads/FB 跨平台自動發文\nDocker 容器化 + VPS 部署\nPrisma ORM + PostgreSQL",
         link: "EXP/project_02.html"
     },
     {
-        pos: [0.8, 0.8, -1.2],
+        pos: [-1.09, -0.42, -1.37],
         title: "企業動態網站",
         tag: "Engineering",
-        desc: "AI 輔助全端開發\n專案管理視覺化介面\n從需求到上線完整交付",
+        desc: "AI 輔助全端開發交付\n專案管理視覺化介面\n從需求訪談到正式上線",
         link: "EXP/project_01.html"
     },
     {
-        pos: [1.4, -0.6, 0.6],
+        pos: [0.94, -0.85, 1.28],
         title: "塔羅 AI 解讀器",
         tag: "Engineering",
-        desc: "Vanilla JS + LLM Prompt 設計\n互動式牌陣解析引擎\n無框架純前端架構",
+        desc: "Vanilla JS 無框架前端\nLLM Prompt 設計互動牌陣\n完整產品原型獨立交付",
         link: "EXP/project_03.html"
     },
     {
-        pos: [1.1, -1.2, -0.4],
+        pos: [-0.86, -1.51, -0.47],
         title: "WordPress 多站架設",
         tag: "Engineering",
         desc: "獨立架設 3+ 個網站\nSEO 優化與版面設計\n社團官網從 0 到上線",
         link: "https://hsvi111.wordpress.com/"
     },
-
-    // --- 2. AI & Automation ---
     {
-        pos: [-0.6, 1.6, 0.5],
+        pos: [1.17, -0.52, -1.27],
+        title: "開源貢獻｜LINE 分析器",
+        tag: "Engineering",
+        desc: "完整架構重構與技術文件\nAI 協作開發邊界實測報告\n發布於 GitHub 公開分享",
+        link: "EXP/article_05.html"
+    },
+    {
+        pos: [-0.5, 0.77, -1.55],
         title: "影片製程自動化",
         tag: "AI & Automation",
-        desc: "Apps Script 甘特圖自動排程\n取代人工追蹤，省下 80% 管理時間\n實際應用於影像公司",
+        desc: "Apps Script 甘特圖排程\n取代人工追蹤，省 80% 管理時間\n實際導入影像製作公司",
         link: "EXP/project_04.html"
     },
     {
-        pos: [-1.2, 1.0, 0.4],
+        pos: [0.61, 0.23, 1.68],
         title: "財務報表自動化",
         tag: "AI & Automation",
-        desc: "Google Sheets 多表聯動\n合約×付款×交付自動同步\n一鍵生成月度統計報表",
+        desc: "Google Sheets 多表聯動\n合約、付款、交付自動同步\n一鍵產出月度統計報表",
         link: "EXP/article_NY1.html"
     },
     {
-        pos: [-0.5, 1.5, -0.5],
+        pos: [-0.73, -1.2, 1.12],
         title: "社群數據管線",
         tag: "AI & Automation",
-        desc: "n8n 工作流：IG → Notion\n自動擷取、去重、同步\n零人工介入的數據清洗",
+        desc: "n8n 自動化：IG → Notion\n擷取、去重、同步零人工\n即時數據清洗與歸檔",
         link: "EXP/project_06.html"
     },
     {
-        pos: [-1.0, 0.3, -1.2],
-        title: "AI Agent 實驗",
+        pos: [-1.65, -0.71, 0.02],
+        title: "AI Agent 部署",
         tag: "AI & Automation",
-        desc: "AI Hedge Fund 開源專案部署\nMCP Agent 多工具協作測試\n成功部署至 Zeabur 雲端",
-        link: "???"
+        desc: "AI Hedge Fund 開源專案\nMCP Agent 多工具協作驗證\n成功部署至 Zeabur 雲端",
+        link: "EXP/project_08.html"
     },
     {
-        pos: [-0.8, 0.7, 1.2],
+        pos: [1.62, 0.71, -0.31],
         title: "Claude Code 工程體系",
         tag: "AI & Automation",
-        desc: "半年深度使用 230+ commits\n上下文工程 × 緩存策略\n提煉 8 大 AI 錯誤模式檢查表",
+        desc: "半年深度使用 230+ commits\n上下文工程與快取策略\n提煉 8 大 AI 錯誤模式檢查表",
         link: "EXP/project_07.html"
     },
     {
-        pos: [-1.4, 0.0, 0.6],
+        pos: [1.12, -1.39, -0.21],
         title: "開源專案重構",
         tag: "AI & Automation",
-        desc: "LINE 訊息分析器架構改造\nAI 輔助開發的品質邊界實測\n工程紀律 vs 速度的取捨",
+        desc: "LINE 訊息分析器架構改造\nAI 協作的品質邊界實測\n工程紀律 vs 開發速度取捨",
         link: "EXP/project_05.html"
     },
-
-    // --- 3. Thinking ---
     {
-        pos: [0.3, -1.6, -0.5],
+        pos: [-1.29, 1.17, 0.46],
         title: "賽局理論 × 社會互動",
         tag: "Thinking",
-        desc: "以囚徒困境分析信任演化\n系統思維拆解人際決策\n理論應用於團隊管理",
+        desc: "囚徒困境分析信任演化\n系統思維拆解人際決策\n理論框架應用於團隊管理",
         link: "EXP/article_02.html"
     },
     {
-        pos: [0.6, -1.0, 1.2],
+        pos: [-0.61, 1.65, -0.4],
         title: "MBTI 熱力學模型",
         tag: "Thinking",
-        desc: "跨領域框架：人格 × 物理學\n以熵增模型解構內外向差異\n獨創分析方法論",
+        desc: "跨領域框架：人格 × 物理學\n熵增模型解構內外向差異\n獨創分析方法論",
         link: "EXP/article_03.html"
     },
     {
-        pos: [0.0, -1.7, 0.3],
+        pos: [1.77, -0.13, 0.3],
         title: "數位倫理悖論探索",
         tag: "Thinking",
-        desc: "匿名性 vs 責任感的張力\n社會動力學角度切入\n提出結構化論述框架",
+        desc: "匿名性 vs 責任感的張力\n社會動力學角度切入分析\n結構化論述框架提案",
         link: "EXP/article_08.html"
     },
     {
-        pos: [-0.4, -1.3, -0.9],
+        pos: [-0.9, 0.79, 1.35],
         title: "AI 產品策略分析",
         tag: "Thinking",
-        desc: "封閉平台 vs 開放框架比較\nPrompt Engineering 深度應用\n技術賦權使用者的產品哲學",
+        desc: "封閉平台 vs 開放框架比較\nPrompt Engineering 深度應用\n技術賦權的產品哲學",
         link: "EXP/article_04.html"
     },
-
-    // --- 4. Lifestyle ---
     {
-        pos: [-1.4, -0.5, 0.8],
+        pos: [-1.55, 0.28, -0.88],
         title: "社群營運｜觸及 +235%",
         tag: "Lifestyle",
-        desc: "熱研社社長，接手 3 個月：\nIG 觸及成長 235%、互動 +105%\n辦理三校聯合社課 + 校外參訪",
+        desc: "熱研社社長，3 個月成效：\nIG 觸及 +235%、互動 +105%\n三校聯合社課 + 校外參訪",
         link: "EXP/project_09.html"
     },
     {
-        pos: [-1.2, -0.8, -0.7],
+        pos: [0.13, 1.45, 1.06],
         title: "跨部門專案管理",
         tag: "Lifestyle",
-        desc: "HSVI VTuber 初配信統籌\nNotion 跨部門排程系統\n同接 250 人、零延遲",
+        desc: "VTuber 初配信統籌執行\nNotion 跨部門排程系統\n同時在線 250 人零延遲",
         link: "https://portaly.cc/hsvi111"
     },
     {
-        pos: [-0.6, -1.4, 0.5],
+        pos: [1.13, 0.99, 0.99],
         title: "創業競賽｜新創之星銀獎",
         tag: "Lifestyle",
         desc: "Mi樂團隊核心成員\n桃園新創之星銀獎\nU-start 第一階段獲補助",
-        link: "https://www.instagram.com/minecraft.mi.maker/"
+        link: "EXP/article_09.html"
     },
     {
-        pos: [0.5, -1.3, 0.8],
+        pos: [0.2, -1.7, 0.54],
         title: "教學｜生物社講師",
         tag: "Lifestyle",
-        desc: "八斗高中 12 堂課程設計\n帶領戶外夜觀活動\n從 0 建立教學內容體系",
+        desc: "八斗高中 12 堂課程設計\n帶領戶外夜觀教學活動\n從 0 建立教學內容體系",
         link: "EXP/article_01.html"
     },
     {
-        pos: [-0.3, -0.9, 1.4],
+        pos: [-0.49, -0.4, 1.69],
         title: "海科館｜數據化管理",
         tag: "Lifestyle",
-        desc: "Excel 樞紐分析建立生物資料庫\n優化館內管理流程\n第一份正式行政工讀",
-        link: "???"
+        desc: "Excel 樞紐分析建生物資料庫\n優化館內清點與管理流程\n第一份正式行政工讀",
+        link: "EXP/project_11.html"
     },
     {
-        pos: [1.0, -0.5, -1.2],
+        pos: [0.03, -1.07, -1.45],
         title: "實習｜水產養殖研究",
         tag: "Lifestyle",
         desc: "澎湖種苗場珊瑚復育\n設計鬥魚實驗流程\n撰寫梭子蟹育成報告",
-        link: "???"
+        link: "EXP/article_10.html"
     },
     {
-        pos: [0.8, -1.5, 0.0],
-        title: "展覽總召｜一周校內外展",
-        tag: "Lifestyle",
-        desc: "統籌為期一周社團展覽\n跨社團合作 + 財務管理\n為社員爭取到接案機會",
-        link: "???"
-    },
-    {
-        pos: [1.3, 0.0, 1.0],
+        pos: [0.56, 0.27, -1.69],
         title: "系統改革｜社團體制",
         tag: "Lifestyle",
         desc: "推動學年制收費改革\n建立幹部實習生制度\nNotion SOP 系統化管理",
         link: "EXP/article_07.html"
     },
-
-    // --- 5. Open Source ---
     {
-        pos: [0.5, 1.5, 0.7],
-        title: "開源貢獻｜LINE 分析器",
-        tag: "Open Source",
-        desc: "完整架構重構與文件撰寫\nAI 協作開發邊界實測報告\n發布於 GitHub 公開分享",
-        link: "EXP/article_05.html"
+        pos: [-1.42, -0.57, -0.93],
+        title: "HSVI Studio｜內容產製管理",
+        tag: "Lifestyle",
+        desc: "跨校創作社群專案管理\n影片企劃與頻道經營\n遠端團隊協作 2 年",
+        link: "EXP/project_10.html"
+    },
+    {
+        pos: [0.72, 1.23, -1.15],
+        title: "夢想智賦｜GPT 自動化",
+        tag: "AI & Automation",
+        desc: "GPT for Sheets 實務導入\n政府補助研究自動化\n月報系統建立",
+        link: "EXP/project_12.html"
+    },
+    {
+        pos: [-0.28, -1.62, -0.72],
+        title: "影視公司｜營運系統建立",
+        tag: "Lifestyle",
+        desc: "內容營運與專案管理\n器材與人員調度系統\n影視製作 SOP",
+        link: "EXP/project_13.html"
     },
 
-    // --- SECRET ---
+    // --- SECRET 1: 錄音室 (北極點) ---
     {
         pos: [0.0, 1.8, 0.0],
         title: "未知的語音頻率",
@@ -216,6 +213,18 @@ const workData = [
         isSecret: true,
         targetUrl: "audio_room.html"
     },
+
+    // --- SECRET 2: 名言日記 (南極點附近) ---
+    {
+        pos: [-0.4, -1.7, 0.3],
+        title: "漂流的隻字片語",
+        tag: "SECRET",
+        desc: "有些話，值得被記住...\n點擊翻閱",
+        isSecret: true,
+        targetUrl: "quotes.html"
+    },
+
+    // --- SECRET 3: 感謝名單 (客製化打字機特效) ---
     {
         pos: [0.5, 1.6, 0.8],
         title: "感謝名單",
@@ -235,10 +244,7 @@ export function initPlanet() {
 
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(70, width / height, 0.1, 1000);
-
-    // 手機版拉遠鏡頭
-    const isMobile = window.innerWidth < 768;
-    camera.position.z = isMobile ? 6.5 : 5.0;
+    camera.position.z = 5.0;
 
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setPixelRatio(window.devicePixelRatio);
@@ -258,28 +264,33 @@ export function initPlanet() {
     );
     scene.add(sphere);
 
-    // --- 建立內層核心節點 ---
-    createCoreNodes();
-
-    // --- 生成外層經歷節點 ---
+    // 生成星星節點
     workData.forEach(data => {
         const color = tagColors[data.tag] || tagColors["DEFAULT"];
         const nodeDiv = document.createElement('div');
         nodeDiv.className = 'work-node';
         nodeDiv.style.setProperty('--node-color', color);
 
+        // 如果是打字機卡片，我們先把字體顏色設為金色，且用 monospace 字體
         const descClass = data.isTypewriter ? 'text-[#FFD700] font-mono' : 'text-gray-400';
+
+        // 生成 HTML 結構，注意這裡加了 .node-desc 類別以便抓取
+        const linkBtn = (data.link && data.link !== '#' && data.link !== '???')
+            ? `<a href="${data.link}" class="node-link" style="color: ${color}; border-color: ${color};" onclick="event.stopPropagation()">View Work <i class="fas fa-arrow-right text-[8px]"></i></a>`
+            : '';
 
         nodeDiv.innerHTML = `
             <div class="node-card">
                 <div class="text-[10px] font-mono mb-1" style="color: ${color}">${data.tag}</div>
                 <div class="font-bold text-white text-sm">${data.title}</div>
                 <div class="node-desc text-[11px] ${descClass} mt-2 leading-relaxed min-h-[40px] whitespace-pre-wrap">${data.desc}</div>
+                ${linkBtn}
             </div>
             <div class="star-icon"></div>
             <div class="node-label-name">${data.title}</div>
         `;
 
+        // --- 滑鼠懸停邏輯 (包含打字機特效) ---
         let typeInterval;
         const descEl = nodeDiv.querySelector('.node-desc');
         const originalText = data.desc;
@@ -289,14 +300,13 @@ export function initPlanet() {
             nodeDiv.parentElement.style.zIndex = "100";
             nodeDiv.style.zIndex = "1000";
 
-            // 高亮對應連線
-            highlightConnections(data.tag, true);
-
+            // 打字機核心邏輯
             if (data.isTypewriter && descEl) {
                 descEl.textContent = '';
                 descEl.classList.add('typing-cursor');
                 let i = 0;
                 clearInterval(typeInterval);
+
                 typeInterval = setInterval(() => {
                     if (i < originalText.length) {
                         descEl.textContent += originalText.charAt(i);
@@ -313,9 +323,6 @@ export function initPlanet() {
             controls.update();
             nodeDiv.style.zIndex = "10";
             nodeDiv.parentElement.style.zIndex = "2";
-
-            // 取消高亮
-            highlightConnections(data.tag, false);
 
             if (data.isTypewriter && descEl) {
                 clearInterval(typeInterval);
@@ -342,6 +349,7 @@ export function initPlanet() {
                 if(data.targetUrl) window.location.href = data.targetUrl;
             });
 
+            // 1分鐘後消失
             setTimeout(() => {
                 nodeDiv.style.transition = 'all 2s ease';
                 nodeDiv.style.opacity = '0';
@@ -352,20 +360,15 @@ export function initPlanet() {
         }
     });
 
-    // --- 建立核心到經歷連線 ---
-    createConnectionLines();
-
     createFilterUI();
 
-    controls = new OrbitControls(camera, labelRenderer.domElement);
+    controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.autoRotate = true;
     controls.autoRotateSpeed = 0.5;
     controls.enableZoom = true;
     controls.minDistance = 2.5;
     controls.maxDistance = 8.0;
-
-    // 觸控支援
     controls.enablePan = false;
     controls.touches = { ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_ROTATE };
 
@@ -378,103 +381,11 @@ export function initPlanet() {
         labelRenderer.setSize(newWidth, newHeight);
     });
 
+    // 隱藏 loading spinner
+    const loader = document.getElementById('planet-loader');
+    if (loader) loader.style.display = 'none';
+
     animate();
-}
-
-// --- 核心節點建立 ---
-function createCoreNodes() {
-    coreData.forEach(data => {
-        const color = tagColors[data.tag];
-        const nodeDiv = document.createElement('div');
-        nodeDiv.className = 'core-node';
-        nodeDiv.style.setProperty('--core-color', color);
-
-        nodeDiv.innerHTML = `
-            <div class="core-glow"></div>
-            <div class="core-label">${data.label}</div>
-        `;
-
-        // 點擊核心節點 = 篩選該分類
-        nodeDiv.addEventListener('click', () => {
-            toggleTagFilter(data.tag);
-        });
-
-        // hover 核心節點也高亮連線
-        nodeDiv.onmouseenter = () => {
-            controls.autoRotate = false;
-            highlightConnections(data.tag, true);
-        };
-        nodeDiv.onmouseleave = () => {
-            controls.autoRotate = true;
-            controls.update();
-            highlightConnections(data.tag, false);
-        };
-
-        const coreLabel = new CSS2DObject(nodeDiv);
-        coreLabel.position.set(...data.pos);
-        sphere.add(coreLabel);
-
-        coreNodes.push({
-            label: coreLabel,
-            element: nodeDiv,
-            tag: data.tag
-        });
-    });
-}
-
-// --- 連線系統 ---
-function createConnectionLines() {
-    coreData.forEach(coreItem => {
-        const color = new THREE.Color(tagColors[coreItem.tag]);
-        const corePos = new THREE.Vector3(...coreItem.pos);
-
-        workData.forEach(work => {
-            if (work.tag !== coreItem.tag) return;
-
-            const workPos = new THREE.Vector3(...work.pos);
-            const points = [corePos, workPos];
-            const geometry = new THREE.BufferGeometry().setFromPoints(points);
-            const material = new THREE.LineBasicMaterial({
-                color: color,
-                transparent: true,
-                opacity: 0.12
-            });
-            const line = new THREE.Line(geometry, material);
-            sphere.add(line);
-
-            connectionLines.push({
-                line: line,
-                material: material,
-                tag: coreItem.tag,
-                baseOpacity: 0.12,
-                targetOpacity: 0.12
-            });
-        });
-    });
-}
-
-// --- 連線高亮控制 ---
-function highlightConnections(tag, highlight) {
-    connectionLines.forEach(conn => {
-        if (conn.tag === tag) {
-            conn.targetOpacity = highlight ? 0.55 : conn.baseOpacity;
-        }
-    });
-}
-
-// --- 篩選器切換（核心節點點擊用）---
-function toggleTagFilter(tag) {
-    const filterOption = document.querySelector(`.filter-option[data-tag="${tag}"]`);
-    if (!filterOption) return;
-
-    if (activeTags.has(tag)) {
-        activeTags.delete(tag);
-        filterOption.classList.remove('active');
-    } else {
-        activeTags.add(tag);
-        filterOption.classList.add('active');
-    }
-    updateNodeVisibility();
 }
 
 function createFilterUI() {
@@ -504,6 +415,17 @@ function createFilterUI() {
 
     menuHTML += `</div>`;
     uiContainer.innerHTML = menuHTML;
+
+    // Filter 按鈕 click toggle（手機支援）
+    const filterBtn = uiContainer.querySelector('.filter-btn');
+    filterBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        uiContainer.classList.toggle('open');
+    });
+    document.addEventListener('click', () => {
+        uiContainer.classList.remove('open');
+    });
+    uiContainer.addEventListener('click', (e) => e.stopPropagation());
 
     const options = uiContainer.querySelectorAll('.filter-option');
     options.forEach(opt => {
@@ -537,19 +459,6 @@ function updateNodeVisibility() {
             node.element.classList.add('filtered-out');
         }
     });
-
-    // 核心節點也跟著篩選
-    coreNodes.forEach(core => {
-        const isActive = activeTags.has(core.tag);
-        core.element.classList.toggle('filtered-out', !isActive);
-    });
-
-    // 連線也跟著篩選
-    connectionLines.forEach(conn => {
-        const isActive = activeTags.has(conn.tag);
-        conn.baseOpacity = isActive ? 0.12 : 0.02;
-        conn.targetOpacity = conn.baseOpacity;
-    });
 }
 
 function animate() {
@@ -572,22 +481,6 @@ function animate() {
             } else {
                 node.element.classList.toggle('is-occluded', isOccluded);
             }
-        }
-    });
-
-    // 核心節點遮擋偵測
-    coreNodes.forEach(core => {
-        const worldPos = new THREE.Vector3();
-        core.label.getWorldPosition(worldPos);
-        const isOccluded = worldPos.distanceTo(camPos) > sphere.position.distanceTo(camPos) + 0.1;
-        core.element.classList.toggle('is-occluded', isOccluded);
-    });
-
-    // 連線 opacity 平滑過渡
-    connectionLines.forEach(conn => {
-        const diff = conn.targetOpacity - conn.material.opacity;
-        if (Math.abs(diff) > 0.001) {
-            conn.material.opacity += diff * 0.1;
         }
     });
 

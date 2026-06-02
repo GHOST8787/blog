@@ -73,11 +73,11 @@
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
             
             <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
-                本專案紀錄 AI 代理框架 (Clawdbot) 於雲端虛擬機器的建置流程。上篇聚焦於基礎設施的部署，涵蓋環境配置、服務常駐化 (Daemonize) 至控制面板的安全穿透存取。此部署策略旨在建立一個具備 24/7 穩定運行能力，且遠端可控的獨立 AI 服務節點。
+                本專案紀錄把一套開源 AI 代理框架（Clawdbot）裝到雲端虛擬機、變成 24 小時待命的個人 AI 助理的完整流程。這是上篇，聚焦基礎設施：環境配置、服務常駐化（Daemonize，讓程式在背景持續運行、關掉終端機也不會停）、到從本機安全存取控制面板。目標是建立一個穩定運行、遠端可控的獨立 AI 服務節點。
             </p>
 
             <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
-                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">诶嘿</div>
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">前情提要</div>
                 <p class="m-0 mb-3">
                     Clawdbot 是一套開源的 AI 代理人框架，把它部署在雲端伺服器（本專案用 Azure 提供的雲端虛擬機）後，就有一個 24 小時運作的個人 AI 助理。完整版本（下篇）能接管 Gmail 收信、Google 行事曆、Drive 等 Google 服務，例如「幫我看今天有什麼信」「明天行事曆怎麼安排」這類自然語言指令都能直接執行。
                 </p>

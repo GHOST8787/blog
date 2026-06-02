@@ -64,15 +64,22 @@
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
             
             <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
-                接續上一篇確立的宏觀系統邊界與上下文規則後，本篇將視角轉向微觀的執行層面。我們將探討工具設計的核心原則、Subagents 的正確用法、高頻指令的工程意義，以及每個開發者都會經歷的三個演化階段。
+                本篇是「Claude Code 架構解構」系列下篇，把視角轉向微觀的執行層面：工具設計的核心原則、Subagents 的正確用法、高頻指令的工程意義，以及每個開發者都會經歷的三個演化階段。上篇 <a href="project_08.html" class="text-accent-purple hover:text-white transition-colors underline decoration-accent-purple/30 underline-offset-4">P8</a> 先確立了宏觀的系統邊界與六層架構。
             </p>
 
             <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed mb-16">
-                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">诶嘿</div>
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">前情提要</div>
                 <p class="m-0">
                     Claude Code 是 Anthropic 推出的命令列 AI 開發工具。本篇是「Claude Code 架構解構」系列下篇，續接 <a href="project_08.html" class="text-accent-purple hover:text-white transition-colors underline decoration-accent-purple/30 underline-offset-4">P8 上篇</a> 的六層架構（Context / Action / Methodology / Control / Isolation / Verification）討論。Subagents 指可被主程序委派的子 AI 實例，擁有獨立上下文以避免污染主程序，本篇紀錄它的正確用法、工具設計準則、以及驗證閉環的工程化解法。
                 </p>
             </div>
+
+            <figure class="my-8">
+                <img src="../PNG/project_09.1.webp"
+                     alt="Claude Code 的好工具特徵、常見反模式、Subagent 治理與設定/執行層反模式"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">好工具的特徵、工具常見反模式、Subagent 治理，以及設定層 / 執行層反模式</figcaption>
+            </figure>
 
             <section class="mb-16">
                 <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-3 border-b border-white/10 pb-4">

@@ -71,7 +71,7 @@ A_大BUG不修會死 / B_痾應該要做一下 / C_花里胡俏的東西
 - 20260420B_確立 INTJ 寫作風格 5 條紅線（不踩一捧一、不推銷、只留可佐證、無反思 section、高冷不給壓力）
 - 20260420B_確立「不擅自重寫 confirmed 文章」規則（A01-A10 + P01-P09 受保護）
 - 20260420B_projects.html filter 從橫向藥丸改成 dropdown（仿 planet 樣式）
-- 20260420B_引入 Sheet DEMO 圖（PNG/project_09.1.png）+ Chrome Web Store 截圖（PNG/project_10.1.png）
+- 20260420B_引入 Sheet DEMO 圖（PNG/project_10.1.png）+ Chrome Web Store 截圖（PNG/project_11.1.png）
 - 20260419B_GHOST8787 帳號 repo 整理（README 中文化、description 修正）
 - 20260406B_Planet workData 全面更新（成果導向描述 + 4 分類對齊 + 座標打散）
 - 20260406B_Planet View Work 按鈕（卡片內連結到文章/專案/外部網址）
