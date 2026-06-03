@@ -7,7 +7,7 @@ import {
     getDatabase, ref, onValue, push, runTransaction, update, serverTimestamp, get
 } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
 import {
-    getAuth, GoogleAuthProvider, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged
+    getAuth, GoogleAuthProvider, signInWithCredential, signOut, onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -27,6 +27,7 @@ const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
 const ADMIN_UID = 'qIjxHkkrmhNjAe1On8JHxCnFIB42';
+const GOOGLE_CLIENT_ID = '619380552537-c3lnr7vsaoabdllgt7begcsk3ldhj98t.apps.googleusercontent.com';
 
 // === DOM refs ===
 const $approved = document.getElementById('wb-approved');
@@ -34,7 +35,7 @@ const $done = document.getElementById('wb-done');
 const $approvedCount = document.getElementById('approved-count');
 const $doneCount = document.getElementById('done-count');
 const $stats = document.getElementById('wb-stats');
-const $loginBtn = document.getElementById('wb-login-btn');
+const $loginPrompt = document.getElementById('wb-login-prompt');
 const $userBadge = document.getElementById('wb-user-badge');
 const $userEmail = document.getElementById('wb-user-email');
 const $adminLink = document.getElementById('wb-admin-link');
@@ -60,11 +61,12 @@ let currentUser = null;
 onAuthStateChanged(auth, (user) => {
     currentUser = user;
     if (user) {
-        $loginBtn.classList.add('hidden');
-        $loginBtn.classList.remove('flex');
+        $loginPrompt.classList.add('hidden');
+        $loginPrompt.classList.remove('flex');
         $userBadge.classList.remove('hidden');
         $userBadge.classList.add('flex');
         $userEmail.textContent = user.email || user.displayName || user.uid.slice(0, 8);
+        hideAuthModal();  // 登入成功時關掉「需要登入」提示 modal
         // Admin 連結只給站長看到
         if (user.uid === ADMIN_UID) {
             $adminLink.classList.remove('hidden');
@@ -72,8 +74,8 @@ onAuthStateChanged(auth, (user) => {
             $adminLink.classList.add('hidden');
         }
     } else {
-        $loginBtn.classList.remove('hidden');
-        $loginBtn.classList.add('flex');
+        $loginPrompt.classList.remove('hidden');
+        $loginPrompt.classList.add('flex');
         $userBadge.classList.add('hidden');
         $userBadge.classList.remove('flex');
         $adminLink.classList.add('hidden');
@@ -83,21 +85,37 @@ onAuthStateChanged(auth, (user) => {
     if (window.__wbDoneSnap) renderDone(window.__wbDoneSnap);
 });
 
-$loginBtn.addEventListener('click', () => {
-    // redirect flow：頁面會跳走，不需要 try-catch；錯誤跳回後從 getRedirectResult 拿
-    signInWithRedirect(auth, provider);
-});
 $logoutBtn.addEventListener('click', () => signOut(auth));
 
-// 跳回後檢查 redirect 結果（onAuthStateChanged 會處理 user 狀態，這裡只處理 error）
-getRedirectResult(auth).catch(err => {
-    console.error('[whiteboard] redirect login failed', err);
-    if (err && err.code) alert('登入失敗：' + err.message);
-});
+// === Google Identity Services（頁面內登入，不跳 firebaseapp.com，不依賴跨網域 cookie）===
+function onGoogleCredential(response) {
+    const cred = GoogleAuthProvider.credential(response.credential);
+    signInWithCredential(auth, cred).catch(err => {
+        console.error('[whiteboard] signInWithCredential failed', err);
+        alert('登入失敗：' + err.message);
+    });
+}
+
+function initGoogleSignIn() {
+    // GIS script 是 async 載入，沒載完就稍後重試
+    if (!(window.google && google.accounts && google.accounts.id)) {
+        setTimeout(initGoogleSignIn, 150);
+        return;
+    }
+    google.accounts.id.initialize({
+        client_id: GOOGLE_CLIENT_ID,
+        callback: onGoogleCredential,
+    });
+    const opts = { theme: 'filled_black', size: 'large', shape: 'pill', text: 'signin_with', locale: 'zh_TW' };
+    const barSlot = document.getElementById('wb-gis-btn');
+    const modalSlot = document.getElementById('wb-gis-btn-modal');
+    if (barSlot) google.accounts.id.renderButton(barSlot, opts);
+    if (modalSlot) google.accounts.id.renderButton(modalSlot, opts);
+}
+initGoogleSignIn();
 
 // === Auth modal（未登入要互動時跳）===
 const $authModal = document.getElementById('wb-auth-modal');
-const $authModalLogin = document.getElementById('wb-auth-modal-login');
 const $authModalCancel = document.getElementById('wb-auth-modal-cancel');
 
 function showAuthModal() {
@@ -108,10 +126,6 @@ function hideAuthModal() {
     $authModal.classList.remove('show');
     $authModal.setAttribute('aria-hidden', 'true');
 }
-$authModalLogin.addEventListener('click', () => {
-    hideAuthModal();
-    $loginBtn.click();
-});
 $authModalCancel.addEventListener('click', hideAuthModal);
 $authModal.addEventListener('click', (e) => { if (e.target === $authModal) hideAuthModal(); });
 
