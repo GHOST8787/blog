@@ -21,7 +21,8 @@ const firebaseConfig = {
 const ADMIN_UID = 'qIjxHkkrmhNjAe1On8JHxCnFIB42';
 const GOOGLE_CLIENT_ID = '619380552537-c3lnr7vsaoabdllgt7begcsk3ldhj98t.apps.googleusercontent.com';
 
-const app = initializeApp(firebaseConfig, 'whiteboard-admin');
+// 用跟公開頁 whiteboard.js 相同的 instance 名稱，讓兩頁共享登入態（不必每頁重登）
+const app = initializeApp(firebaseConfig, 'whiteboard');
 const auth = getAuth(app);
 const db = getDatabase(app);
 const provider = new GoogleAuthProvider();
