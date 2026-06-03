@@ -26,6 +26,7 @@
     <script type="module" src="main.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="tailwind.config.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async></script>
     <script type="module" src="whiteboard.js"></script>
 </head>
 
@@ -55,11 +56,12 @@
             </p>
         </header>
 
-        <!-- Login bar（Task 4 啟用 Auth 後生效）-->
-        <div id="wb-auth-bar" class="flex items-center justify-center gap-3 mb-12">
-            <button id="wb-login-btn" class="hidden flex items-center gap-2 px-5 py-2.5 bg-white/5 border border-white/10 rounded-full text-sm hover:border-accent-purple hover:text-accent-purple transition-all">
-                <i class="fab fa-google"></i> 用 Google 登入後即可投稿與按愛心
-            </button>
+        <!-- Login bar（Google Identity Services 頁面內登入）-->
+        <div id="wb-auth-bar" class="flex flex-col items-center justify-center gap-2 mb-12">
+            <div id="wb-login-prompt" class="hidden flex-col items-center gap-2">
+                <span class="text-gray-500 text-xs font-mono">登入後即可投稿與按愛心</span>
+                <div id="wb-gis-btn"></div>
+            </div>
             <div id="wb-user-badge" class="hidden flex items-center gap-2 px-4 py-2 bg-accent-purple/10 border border-accent-purple/20 rounded-full text-sm text-accent-purple">
                 <span id="wb-user-email" class="font-mono text-xs">—</span>
                 <a id="wb-admin-link" href="whiteboard-admin.html" class="hidden text-xs ml-2 text-gray-400 hover:text-white border-l border-white/10 pl-2">Admin</a>
@@ -156,10 +158,8 @@
                 按愛心、投稿想法都要先用 Google 登入。
                 <span class="block text-gray-500 text-xs mt-2 font-mono">只用來去重 + 防 spam，不會公開你的身份</span>
             </p>
-            <div class="flex flex-col gap-3">
-                <button id="wb-auth-modal-login" class="flex items-center justify-center gap-2 bg-accent-purple text-black font-bold py-3 rounded-full hover:shadow-[0_0_20px_rgba(191,148,255,.5)] transition-all">
-                    <i class="fab fa-google"></i> 用 Google 登入
-                </button>
+            <div class="flex flex-col items-center gap-3">
+                <div id="wb-gis-btn-modal" class="flex justify-center"></div>
                 <button id="wb-auth-modal-cancel" class="text-gray-500 text-sm hover:text-white transition-colors">下次再說</button>
             </div>
         </div>

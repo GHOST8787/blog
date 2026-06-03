@@ -1,7 +1,7 @@
 // blog/whiteboard-admin.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
 import {
-    getAuth, GoogleAuthProvider, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged
+    getAuth, GoogleAuthProvider, signInWithCredential, signOut, onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
 import {
     getDatabase, ref, onValue, push, update, remove, serverTimestamp, get
@@ -19,6 +19,7 @@ const firebaseConfig = {
 };
 
 const ADMIN_UID = 'qIjxHkkrmhNjAe1On8JHxCnFIB42';
+const GOOGLE_CLIENT_ID = '619380552537-c3lnr7vsaoabdllgt7begcsk3ldhj98t.apps.googleusercontent.com';
 
 const app = initializeApp(firebaseConfig, 'whiteboard-admin');
 const auth = getAuth(app);
@@ -28,7 +29,6 @@ const provider = new GoogleAuthProvider();
 // === DOM ===
 const $loginSec = document.getElementById('login-section');
 const $content = document.getElementById('admin-content');
-const $loginBtn = document.getElementById('login-btn');
 const $loginErr = document.getElementById('login-error');
 const $logoutBtn = document.getElementById('logout-btn');
 const $uid = document.getElementById('admin-uid');
@@ -50,24 +50,32 @@ function escapeHtml(s) {
     );
 }
 
-// === Auth flow ===
-$loginBtn.addEventListener('click', () => {
-    // redirect flow：頁面會直接跳走，不需要 try-catch；錯誤跳回後從 getRedirectResult 拿
-    $loginErr.textContent = '';
-    $loginBtn.disabled = true;
-    $loginBtn.textContent = '跳轉至 Google...';
-    signInWithRedirect(auth, provider);
-});
-
+// === Auth flow（Google Identity Services 頁面內登入）===
 $logoutBtn.addEventListener('click', () => signOut(auth));
 
-// 跳回後檢查 redirect 結果（onAuthStateChanged 會處理 user 狀態，這裡只處理 error）
-getRedirectResult(auth).catch(err => {
-    console.error('[admin] redirect login failed', err);
-    if (err && err.code) {
+function onGoogleCredential(response) {
+    $loginErr.textContent = '';
+    const cred = GoogleAuthProvider.credential(response.credential);
+    signInWithCredential(auth, cred).catch(err => {
+        console.error('[admin] signInWithCredential failed', err);
         $loginErr.textContent = err.message;
+    });
+}
+
+function initGoogleSignIn() {
+    // GIS script 是 async 載入，沒載完就稍後重試
+    if (!(window.google && google.accounts && google.accounts.id)) {
+        setTimeout(initGoogleSignIn, 150);
+        return;
     }
-});
+    google.accounts.id.initialize({
+        client_id: GOOGLE_CLIENT_ID,
+        callback: onGoogleCredential,
+    });
+    const slot = document.getElementById('admin-gis-btn');
+    if (slot) google.accounts.id.renderButton(slot, { theme: 'filled_black', size: 'large', shape: 'pill', text: 'signin_with', locale: 'zh_TW' });
+}
+initGoogleSignIn();
 
 onAuthStateChanged(auth, (user) => {
     if (user) {

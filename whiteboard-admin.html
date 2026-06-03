@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="tailwind.config.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async></script>
     <script type="module" src="whiteboard-admin.js"></script>
 </head>
 <body class="font-sans">
@@ -34,9 +35,7 @@
             <div class="bg-surface border border-white/10 rounded-xl p-6">
                 <h2 class="text-lg font-bold text-white mb-2">Admin 登入</h2>
                 <p class="text-gray-500 text-xs mb-4 font-mono">用站長個人 Google 帳號登入。其他 Google 帳號會被擋下來。</p>
-                <button id="login-btn" class="w-full flex items-center justify-center gap-3 bg-white/5 border border-white/10 text-white font-bold py-3 rounded-full hover:border-accent-purple hover:text-accent-purple transition-all">
-                    <i class="fab fa-google"></i> 用 Google 登入
-                </button>
+                <div id="admin-gis-btn" class="flex justify-center"></div>
                 <p id="login-error" class="text-red-400 text-xs font-mono mt-3"></p>
             </div>
         </section>
