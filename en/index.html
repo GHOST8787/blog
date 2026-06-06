@@ -35,6 +35,29 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="../tailwind.config.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+      /* ---- Certifications 3D Coverflow (public showcase) ---- */
+      .cert-cf-stage{ position:relative; height:300px; perspective:1300px; margin:0 auto; cursor:grab; touch-action:pan-y; }
+      .cert-cf-stage.grabbing{ cursor:grabbing; }
+      .cert-cf-track{ position:absolute; inset:0; transform-style:preserve-3d; }
+      .cert-cf-item{ position:absolute; top:50%; left:50%; width:210px; height:262px; margin-left:-105px; margin-top:-131px; transition:transform .85s cubic-bezier(0.25,0.8,0.25,1), opacity .85s, filter .85s; will-change:transform,opacity; }
+      .cert-card{ width:210px; height:262px; border-radius:18px; background:linear-gradient(160deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); border:1px solid rgba(191,148,255,.18); padding:22px 18px; display:flex; flex-direction:column; align-items:center; text-align:center; backdrop-filter:blur(6px); user-select:none; }
+      .cert-card .ic{ width:54px; height:54px; border-radius:14px; margin-bottom:14px; display:flex; align-items:center; justify-content:center; font-size:22px; color:#BF94FF; background:rgba(191,148,255,.12); border:1px solid rgba(191,148,255,.25); }
+      .cert-card .nm{ font-size:.95rem; font-weight:700; line-height:1.35; margin-bottom:7px; color:#fff; }
+      .cert-card .mt{ font-family:'JetBrains Mono',monospace; font-size:.68rem; color:#9a9a9a; letter-spacing:.03em; margin-bottom:auto; }
+      .cert-card .clink{ margin-top:12px; font-size:.7rem; font-weight:600; color:#BF94FF; text-decoration:none; display:inline-flex; align-items:center; gap:6px; border:1px solid rgba(191,148,255,.3); border-radius:999px; padding:5px 13px; transition:all .25s; }
+      .cert-card .clink:hover{ background:#BF94FF; color:#000; }
+      .cert-card .clink.disabled{ opacity:.4; pointer-events:none; border-style:dashed; }
+      @media (max-width:768px){
+        .cert-cf-stage{ height:178px; }
+        .cert-cf-item{ width:148px; height:168px; margin-left:-74px; margin-top:-84px; }
+        .cert-card{ width:148px; height:168px; padding:14px 10px; border-radius:14px; }
+        .cert-card .ic{ width:40px; height:40px; font-size:16px; margin-bottom:8px; border-radius:11px; }
+        .cert-card .nm{ font-size:.78rem; margin-bottom:4px; }
+        .cert-card .mt{ font-size:.58rem; }
+        .cert-card .clink{ font-size:.6rem; padding:3px 9px; margin-top:6px; }
+      }
+    </style>
 </head>
 
 <body class="font-sans selection:bg-accent-purple/30 selection:text-white">
@@ -102,6 +125,17 @@
             </div>
 
             <!-- Featured Projects (added 2026-05-27 - homepage hook 1/3) -->
+            <!-- Certifications 3D Coverflow (public showcase) -->
+            <div id="certifications" role="region" aria-labelledby="cert-heading" class="bento-item col-span-1 md:col-span-12 rounded-3xl p-8 scroll-mt-32">
+                <div class="mb-6">
+                    <h2 id="cert-heading" class="text-2xl font-bold text-white">Certifications</h2>
+                    <p class="text-gray-400 text-xs mt-1">Certifications &amp; badges</p>
+                </div>
+                <div class="cert-cf-stage" id="certCfStage">
+                    <div class="cert-cf-track" id="certCfTrack"></div>
+                </div>
+            </div>
+
             <div id="featured-projects" role="region" aria-labelledby="featured-projects-heading" class="bento-item stagger-parent col-span-1 md:col-span-12 rounded-3xl p-8 scroll-mt-32">
                 <div class="mb-6">
                     <h2 id="featured-projects-heading" class="text-2xl font-bold text-white">Featured Work</h2>
@@ -627,5 +661,59 @@
     </main>
 
     <div id="footer-placeholder"></div>
+
+    <script>
+    /* ---- Certifications 3D Coverflow (public showcase) ---- */
+    (function(){
+      const CERTS = [
+        { icon:'fa-brands fa-microsoft', name:'Azure AI Fundamentals', meta:'AI-900 · 2026.02', link:'https://drive.google.com/file/d/1_XMWV26jBspscuqhziRJ662_AdX0VdF2/view', linkText:'Transcript' },
+        { icon:'fa-solid fa-diagram-project', name:'n8n Automation L1', meta:'Level 1 · 2026.03.06', link:'', linkText:'' },
+        { icon:'fa-solid fa-diagram-project', name:'n8n Automation L2', meta:'Level 2 · 2026.03.07', link:'', linkText:'' },
+        { icon:'fa-brands fa-google', name:'Google Cloud Skills Boost', meta:'70+ badges', link:'https://www.skills.google/public_profiles/a6643929-f14d-4397-8620-9fb6bdc3e627', linkText:'Profile' },
+        { icon:'fa-solid fa-language', name:'TOEIC', meta:'650 · 2025.03', link:'', linkText:'' },
+        { icon:'fa-solid fa-car', name:'Driving License', meta:'Motorcycle · Car', link:'', linkText:'' },
+        { icon:'fa-solid fa-water', name:'Maritime / Diving', meta:'Boat · OW · AIDA 1', link:'', linkText:'' },
+      ];
+      function cardHTML(c){
+        const link = c.link
+          ? `<a class="clink" href="${c.link}" target="_blank" rel="noopener">${c.linkText} <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:.85em"></i></a>`
+          : `<span class="clink disabled">Earned</span>`;
+        return `<div class="cert-card"><div class="ic"><i class="${c.icon}"></i></div><div class="nm">${c.name}</div><div class="mt">${c.meta}</div>${link}</div>`;
+      }
+      const track = document.getElementById('certCfTrack');
+      const stage = document.getElementById('certCfStage');
+      if(!track || !stage) return;
+      const n = CERTS.length;
+      let active = 0, paused = false;
+      CERTS.forEach(c=>{ const el=document.createElement('div'); el.className='cert-cf-item'; el.innerHTML=cardHTML(c); track.appendChild(el); });
+      const items=[...track.children];
+      function layout(){ items.forEach((el,i)=>{ let off=i-active; if(off>n/2)off-=n; if(off<-n/2)off+=n; const abs=Math.abs(off); const s=Math.sign(off);
+        /* 桌機 5 張攤開；手機改單張置中＋左右各露半張預覽（窄屏放不下多張不重疊的卡）*/
+        const mobile = window.innerWidth <= 768;
+        const maxOff = mobile ? 1 : 2;
+        if(abs>maxOff){ el.style.opacity=0; el.style.pointerEvents='none'; el.style.transform='translateZ(-500px) scale(0.6)'; return; }
+        let tx, scale, bright, op, ry;
+        if(mobile){
+          const cw=items[0].offsetWidth||148;
+          if(abs===0){ tx=0; scale=1; bright=1; op=1; ry=0; }
+          else { tx=s*cw; scale=0.84; bright=0.45; op=0.5; ry=-s*8; }
+        } else {
+          scale=1.05-abs*0.06;
+          const txN=stage.clientWidth/2 - (items[0].offsetWidth||210)/2*0.93 - 4;
+          tx=(off/2)*txN; bright=1-abs*0.13; op=(abs===2?0.92:1); ry=-off*10;
+        }
+        el.style.transform=`translateX(${tx}px) translateZ(${-abs*55}px) rotateY(${ry}deg) scale(${scale})`;
+        el.style.opacity=op; el.style.zIndex=100-abs; el.style.filter=`brightness(${bright})`;
+        el.style.pointerEvents=abs===0?'auto':'none'; }); }
+      function go(d){ active=(active+d+n)%n; layout(); }
+      setInterval(()=>{ if(!paused) go(1); }, 5500);
+      stage.addEventListener('mouseenter',()=>paused=true);
+      stage.addEventListener('mouseleave',()=>paused=false);
+      let dx=null;
+      stage.addEventListener('pointerdown',e=>{ dx=e.clientX; stage.classList.add('grabbing'); });
+      window.addEventListener('pointerup',e=>{ if(dx===null)return; const d=e.clientX-dx; if(Math.abs(d)>40)go(d<0?1:-1); dx=null; stage.classList.remove('grabbing'); });
+      layout();
+    })();
+    </script>
 </body>
 </html>
