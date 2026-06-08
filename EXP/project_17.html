@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EXP / NP_07 | GHOST.ouo</title>
+    <title>EXP / P17 | GHOST.ouo</title>
+    <link rel="canonical" href="https://ghost8787.github.io/blog/EXP/project_17.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_17.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_17.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/project_17.html">
 
     <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
     <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
@@ -15,9 +19,8 @@
 
     <link rel="stylesheet" href="../style.css">
 
-    <script>
-        window.siteRoot = '../';
-    </script>
+    <script> window.siteRoot = '../'; </script>
+    <script src="../i18n.js" defer></script>
     <script type="module" src="../main.js" defer></script>
 </head>
 
@@ -37,7 +40,7 @@
                 <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
                 BACK TO PROJECTS
             </a>
-            <span class="opacity-50">EXP / NP_07 (draft)</span>
+            <span class="opacity-50">EXP / P17</span>
         </div>
 
         <header class="mb-12 border-b border-white/10 pb-12">
@@ -68,7 +71,7 @@
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
             <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
-                上一篇 <a href="project_13.html" class="text-accent-purple hover:text-white transition-colors underline decoration-accent-purple/30 underline-offset-4">P13 NTUST AI 期末雙軸實驗</a> 寫到 V2 的 76.4%。這篇接著寫：V2 交完之後我又跑了 V3 到 V48 共 46 個版本，train 一路被我推到 95.5%。推到後段我停下來做了一次 overfit 稽核，結論翻過來：V37 之後那批衝分數的規則，都是對「只有 10 份」的評分集 overfit。所以最終交出去的不是 95.5% 那版，而是一個零 overfit 的整合版，100 格基準下對 91 格（91%）。這篇把 46 個版本怎麼變、95.5% 怎麼來、又為什麼最後不採它完整寫出來。
+                上一篇 <a href="project_13.html" class="text-accent-purple hover:text-white transition-colors underline decoration-accent-purple/30 underline-offset-4">P13 NTUST AI 期末雙軸實驗</a> 寫到 V2 的 76.4%。這篇接著寫：V2 交完之後我又跑了 V3 到 V48 共 46 個版本，train 一路被我推到 95.5%。推到後段我停下來做了一次 overfit 稽核，結論翻過來：V37 之後那批衝分數的規則，都是對「只有 10 份」的評分集 overfit。所以最終交出去的是一個零 overfit 的整合版，100 格基準下對 91 格（91%）；train 衝到 95.5% 的那版我放掉了。這篇把 46 個版本怎麼變、95.5% 怎麼來、又為什麼最後不採它完整寫出來。
             </p>
 
             <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
@@ -80,7 +83,7 @@
                     <strong class="text-white">為什麼分母從 110 變 100：</strong>11 欄 × 10 份 = 110 格，但其中「零件型號」是題目<strong class="text-white">直接給的輸入</strong>（檔名就對應型號，不需要 AI 去抽），不該算進 AI 的成績。把這 10 格拿掉，真正要 AI 抽、要算分的是 <strong class="text-white">10 欄 × 10 份 = 100 格</strong>。最後交的報告就是用這個 100 格基準。
                 </p>
                 <p class="m-0">
-                    所以本文的數字這樣讀：中間每個版本的進度，沿用當時記錄的 110 格數字（含型號）當過程參考；<strong class="text-white">結論一律看 100 格</strong>。最終交出去的是一個「零 overfit」的整合版，<strong class="text-accent-purple">100 格對 91 格（91%）</strong>——不是中途衝最高的那一版。下面就是怎麼一路試到高點、又為什麼最後不採它的完整過程。
+                    所以本文的數字這樣讀：中間每個版本的進度，沿用當時記錄的 110 格數字（含型號）當過程參考；<strong class="text-white">結論一律看 100 格</strong>。最終交出去的是一個「零 overfit」的整合版，<strong class="text-accent-purple">100 格對 91 格（91%）</strong>——中途衝最高的那一版我放掉了。下面就是怎麼一路試到高點、又為什麼最後不採它的完整過程。
                 </p>
             </div>
 
@@ -288,7 +291,7 @@
             <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
                 <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">這段為什麼這樣寫 prompt 還是過不去</div>
                 <p class="m-0">
-                    純 prompt engineering 的本質是「給 LLM 看一段文字描述、加幾個範例，希望它學會該怎麼看圖」。但 vision 模型對某些尺寸的判讀偏差是<strong class="text-white">模型架構層面的</strong>，不是「沒看到提示」&mdash; 你怎麼提示它，它對 1-2 mm 級的小封裝就是會偏。要解這個必須跳出 prompt 的層次，改在「答案生出來之後做什麼」這層動手。
+                    純 prompt engineering 的本質是「給 LLM 看一段文字描述、加幾個範例，希望它學會該怎麼看圖」。但 vision 模型對某些尺寸的判讀偏差是<strong class="text-white">模型架構層面的</strong>，根源在架構本身&mdash; 你怎麼提示它，它對 1-2 mm 級的小封裝就是會偏。要解這個必須跳出 prompt 的層次，改在「答案生出來之後做什麼」這層動手。
                 </p>
             </div>
 
@@ -365,7 +368,7 @@
 
             <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
                 <li>
-                    <strong class="text-white">V24 八模型投票退步</strong> &mdash; 八個版本裡六個都是 GPT-4o 的變種（V12 / V14 / V15 / V17 / V21 / V22），它們的答錯位置高度重疊。把它們全塞進投票池等於用六個一致的錯誤蓋過 V18（Llama）兩票對的答案。多模型投票要算「獨立架構有幾個」，不是「跑了幾個版本」。
+                    <strong class="text-white">V24 八模型投票退步</strong> &mdash; 八個版本裡六個都是 GPT-4o 的變種（V12 / V14 / V15 / V17 / V21 / V22），它們的答錯位置高度重疊。把它們全塞進投票池等於用六個一致的錯誤蓋過 V18（Llama）兩票對的答案。多模型投票要算的是「獨立架構有幾個」，跑了幾個版本不算數。
                 </li>
                 <li>
                     <strong class="text-white">V26 三軸 Llama 一致 override 是 multi-model voting 階段的最大突破</strong> &mdash; +3 cells。觀察 CD4148WTP（SOD-523，body 1.65 × 0.9 mm）的 L / W / H 三軸，V12 跟 V22（都是 GPT-4o family）三軸都答錯，V18（Llama）三軸都答對。trigger 條件：「當 V18 跟其他模型在 L、W、H 三軸都不同時」用 V18 答案。這條規則不寫死任何零件型號，對任何 PDF 都套同樣判斷。
@@ -435,7 +438,7 @@
             </div>
 
             <p>
-                V31 的精神：<strong class="text-white">「只在某個欄位真正會受益的地方套用某條規則」</strong>。V29 prompt 對 I_O / I_F 是對的，但對 L / W / H 反而傷。V31 解法是「只對受益的兩欄套 V29、其他欄保留 V26」&mdash; 不是「整套 V29 prompt 取代」。
+                V31 的精神：<strong class="text-white">「只在某個欄位真正會受益的地方套用某條規則」</strong>。V29 prompt 對 I_O / I_F 是對的，但對 L / W / H 反而傷。V31 解法是「只對受益的兩欄套 V29、其他欄保留 V26」&mdash; 維持局部套用，整套 V29 prompt 取代的做法我放掉了。
             </p>
 
             <p>
@@ -496,7 +499,7 @@
             </div>
 
             <p>
-                V40 的關鍵設計：<strong class="text-white">ratio 上限刻意鎖在 1.8</strong>。1N4148W 這顆零件的 H_E / E 比例是 2.09，超過 1.8 直接不 trigger，避免把它對的答案改錯。這個 ratio 邊界是從觀察「哪幾顆 part 該套、哪幾顆不該套」推導出來的物理慣例（lead 比 body 大太多代表是另一種封裝設計），不是寫死「對 1N4148W 不套」。
+                V40 的關鍵設計：<strong class="text-white">ratio 上限刻意鎖在 1.8</strong>。1N4148W 這顆零件的 H_E / E 比例是 2.09，超過 1.8 直接不 trigger，避免把它對的答案改錯。這個 ratio 邊界是從觀察「哪幾顆 part 該套、哪幾顆不該套」推導出來的物理慣例（lead 比 body 大太多代表是另一種封裝設計），靠這條通則自動觸發，會涵蓋 1N4148W 這類零件。
             </p>
 
             <h4 class="text-lg font-bold text-white mt-10 mb-4">V41 &mdash; V43：失敗的 Tj 規則嘗試</h4>
@@ -627,7 +630,7 @@
             </div>
 
             <figure class="my-8">
-                <img src="../PNG/NP_07.1.png"
+                <img src="../PNG/project_17.1.png"
                      alt="datasheet 抽取系統示範介面：10 顆逐格對照標答"
                      loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
                 <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">V47 衝分版示範介面：10 顆逐格對照標答，紅底是 5 個救不動的 cell；以 100 格計分 = 95/100（最終繳交的是另一個零 overfit 的整合版 91/100）</figcaption>
@@ -682,7 +685,7 @@
             </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 衝到 95.5% 之後我改變了判斷：V37 起其實是 overfit
+                <span class="text-accent-purple">#</span> 衝到 95.5% 之後我重新檢查並確認一次：V37 起其實是 overfit
             </h3>
 
             <p>
@@ -773,7 +776,7 @@
             </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 最終交出去的版本：零 overfit 的整合版
+                <span class="text-accent-purple">#</span> 最終交出去：再三確認過零 overfit 的整合版
             </h3>
 
             <p>
@@ -838,33 +841,39 @@
                 <li><strong class="text-white">跑時統計</strong> &mdash; 一次完整 train 評估 5 &mdash; 8 分鐘；V44 後處理 11 個 LLM call 約 90 秒；V47 後處理 1 個 Llama call 約 30 秒</li>
             </ul>
 
-            <hr class="border-white/10 my-16">
+            <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Links
+            </h3>
 
-            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 flex flex-col md:flex-row items-start md:items-center gap-6">
-                <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center shrink-0 border border-white/10">
-                    <i class="fas fa-arrow-left text-gray-400 text-xl"></i>
-                </div>
-                <div>
-                    <h4 class="text-white font-bold mb-1">上一篇：P13 NTUST AI 期末雙軸實驗</h4>
-                    <p class="text-sm text-gray-400 m-0 leading-relaxed">
-                        P13 寫的是 V1（qwen2.5:7b + pdfplumber 60.9%）&rarr; V2（GPT-4o + pdfplumber 76.4%）的雙軸實驗：PDF 抽取工具 軸 &times; LLM 模型 軸。<br>
-                        <a href="project_13.html" class="text-accent-purple hover:text-white transition-colors underline decoration-accent-purple/30 underline-offset-4 mt-1 inline-block">
-                            前情提要 &rarr; P13 NTUST AI 期末雙軸實驗
-                        </a>
-                    </p>
-                </div>
-            </div>
+            <ul class="space-y-2 text-sm text-gray-400 list-none pl-0">
+                <li>
+                    <span class="text-accent-purple mr-2">●</span>
+                    <a href="project_13.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        前情提要 — P13 NTUST AI 期末雙軸實驗
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">●</span>
+                    <a href="https://github.com/GHOST8787/ntust-datasheet-extractor" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        GitHub — GHOST8787/ntust-datasheet-extractor
+                    </a>
+                </li>
+            </ul>
+
+            <p class="text-sm text-gray-500 font-mono mt-4">
+                MIT License
+            </p>
 
         </article>
 
         <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
-            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+            <a href="project_16.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
                 &larr; Prev Project
             </a>
             <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
                 View All Projects
             </a>
-            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+            <a href="project_18.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
                 Next Project &rarr;
             </a>
         </div>

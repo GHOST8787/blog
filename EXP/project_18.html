@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EXP / NP_08 | GHOST.ouo</title>
+    <title>EXP / P18 | GHOST.ouo</title>
+    <link rel="canonical" href="https://ghost8787.github.io/blog/EXP/project_18.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_18.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_18.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/project_18.html">
 
     <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
     <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
@@ -15,9 +19,8 @@
 
     <link rel="stylesheet" href="../style.css">
 
-    <script>
-        window.siteRoot = '../';
-    </script>
+    <script> window.siteRoot = '../'; </script>
+    <script src="../i18n.js" defer></script>
     <script type="module" src="../main.js" defer></script>
 </head>
 
@@ -37,14 +40,14 @@
                 <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
                 BACK TO PROJECTS
             </a>
-            <span class="opacity-50">EXP / NP_08 (draft)</span>
+            <span class="opacity-50">EXP / P18</span>
         </div>
 
         <header class="mb-12 border-b border-white/10 pb-12">
 
             <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
                 NTUST 資安架構專題：<br>
-                <span class="text-gradient text-2xl md:text-4xl">讓 AI 處理客訴，又看不到任何一個人的真實個資</span>
+                <span class="text-gradient text-2xl md:text-4xl">讓 AI 處理客戶來信，又看不到任何一個人的真實個資</span>
             </h1>
 
             <div class="flex flex-wrap gap-3 mb-6">
@@ -68,21 +71,21 @@
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
             <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
-                國立臺灣科技大學 AI 課程的資安架構專題。題目是做一條客訴自動處理流程：讀進客戶寄來的抱怨信，交給 AI 生成回覆草稿，再寄回給客戶。難點在於客訴信裡塞滿真實個資（姓名、電話、地址、信用卡號），而這些資料一旦進到雲端 AI 模型就等於外流。整個系統的核心，是讓 AI 全程只看得到代號，看不到任何一個人的真名與號碼。
+                國立臺灣科技大學 AI 課程的資安架構專題。題目是做一條客戶來信自動處理流程：讀進客戶寄來的信，交給 AI 生成回覆草稿，再寄回給客戶。難點在於來信裡塞滿真實個資（姓名、電話、地址、信用卡號），而這些資料一旦進到雲端 AI 模型就等於外流。整個系統的核心，是讓 AI 全程只看得到代號，看不到任何一個人的真名與號碼。
             </p>
 
             <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
                 <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">前情提要</div>
                 <p class="m-0">
-                    一封真實客訴長這樣：「我是王大明，手機 0912-345-678，上週在你們官網買的東西到現在還沒到。」要請 AI 幫忙寫回覆，就得把整封信丟給模型。問題是模型跑在雲端，這封信一送出去，王大明的姓名跟手機就離開了公司能控制的範圍。這個專題的做法是：寄出去之前，先把「王大明」換成 <code class="text-accent-purple">USER_48213</code>、把手機換成 <code class="text-accent-purple">PHONE_90577</code>，AI 看到的是代號版客訴，寫出來的也是代號版回覆，最後在公司這端把代號換回真名才寄給客戶。
+                    一封真實的客戶來信長這樣：「我是王大明，手機 0912-345-678，上週在你們官網買的東西到現在還沒到。」要請 AI 幫忙寫回覆，就得把整封信丟給模型。問題是模型跑在雲端，這封信一送出去，王大明的姓名跟手機就離開了公司能控制的範圍。這個專題的做法是：寄出去之前，先把「王大明」換成 <code class="text-accent-purple">USER_48213</code>、把手機換成 <code class="text-accent-purple">PHONE_90577</code>，AI 看到的是代號版來信，寫出來的也是代號版回覆，最後在公司這端把代號換回真名才寄給客戶。
                 </p>
             </div>
 
             <figure class="my-8">
-                <img src="../PNG/NP_08.1.png"
-                     alt="代號化前後對照：原始客訴、AI 看到的代號版、還原後寄出"
+                <img src="../PNG/project_18.1.png"
+                     alt="代號化前後對照：原始來信、AI 看到的代號版、還原後寄出"
                      loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
-                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">同一封客訴三階段：原始（紅＝個資，公司本地）→ AI 看到的（紫＝代號，雲端）→ 還原寄出（綠＝真名，核准後）。範例為合成假資料</figcaption>
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">同一封來信三階段：原始（紅＝個資，公司本地）→ AI 看到的（紫＝代號，雲端）→ 還原寄出（綠＝真名，核准後）。範例為合成假資料</figcaption>
             </figure>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
@@ -90,8 +93,8 @@
             </h3>
 
             <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
-                <li><strong class="text-white">輸入</strong> &mdash; 一份 500 筆的客訴資料表，每筆 7 個欄位（id、姓名、電話、地址、信用卡號、分類、客訴內文），其中內文是自由文字，個資會散落在句子裡。</li>
-                <li><strong class="text-white">處理</strong> &mdash; 對每一筆客訴去識別化 → 交 AI 生成回覆草稿 → 驗證代號完整 → 還原真實個資 → 進主管審核 → 核准後寄出。</li>
+                <li><strong class="text-white">輸入</strong> &mdash; 一份 500 筆的客戶來信資料表，每筆 7 個欄位（id、姓名、電話、地址、信用卡號、分類、來信內文），其中內文是自由文字，個資會散落在句子裡。</li>
+                <li><strong class="text-white">處理</strong> &mdash; 對每一筆來信去識別化 → 交 AI 生成回覆草稿 → 驗證代號完整 → 還原真實個資 → 進主管審核 → 核准後寄出。</li>
                 <li><strong class="text-white">輸出</strong> &mdash; 一份三工作表的 Excel 報表（處理結果、代號對照表、批次資訊），給主管逐筆核閱後決定哪些可以寄。</li>
                 <li><strong class="text-white">安全底線</strong> &mdash; AI 端全程只接觸代號；真實個資只存在公司本地的對照表與還原後報表，這兩者都排除在版本庫之外。</li>
             </ul>
@@ -104,12 +107,12 @@
                 <div class="bg-white/5 p-6 rounded-2xl border border-accent-purple/20">
                     <div class="text-xs font-mono text-accent-purple uppercase mb-3">階段 1 &amp; 2</div>
                     <h4 class="text-white font-bold mb-3">讀檔 + 去識別化</h4>
-                    <p class="text-sm text-gray-400 m-0">從 Excel 讀進客訴，把四個敏感欄位掃出來，逐一替換成代號，同時把「代號 → 真值」記進一張對照表。AI 拿到的只剩代號版內文。</p>
+                    <p class="text-sm text-gray-400 m-0">從 Excel 讀進來信，把四個敏感欄位掃出來，逐一替換成代號，同時把「代號 → 真值」記進一張對照表。AI 拿到的只剩代號版內文。</p>
                 </div>
                 <div class="bg-white/5 p-6 rounded-2xl border border-accent-purple/20">
                     <div class="text-xs font-mono text-accent-purple uppercase mb-3">階段 3 &amp; 4</div>
                     <h4 class="text-white font-bold mb-3">AI 生成 + 驗證還原</h4>
-                    <p class="text-sm text-gray-400 m-0">AI 讀代號版客訴、寫代號版回覆。系統檢查回覆裡的代號格式與來源是否合法，通過後才用對照表把代號換回真值，交給主管。</p>
+                    <p class="text-sm text-gray-400 m-0">AI 讀代號版來信、寫代號版回覆。系統檢查回覆裡的代號格式與來源是否合法，通過後才用對照表把代號換回真值，交給主管。</p>
                 </div>
             </div>
 
@@ -174,7 +177,7 @@
             </h3>
 
             <p>
-                代號的隔離單位是「批次」。系統把客訴依分類分批處理，每一批用一組獨立的鹽（salt）產代號。同一個值在不同批次會拿到不同代號，跨批次無法對齊比對；同一客戶在同一批次內維持同一個代號，方便主管在那批裡辨識同一個人。即使某一批的對照表外洩，也無法拿去解其他批次裡同一個人的身分。
+                代號的隔離單位是「批次」。系統把來信依分類分批處理，每一批用一組獨立的鹽（salt）產代號。同一個值在不同批次會拿到不同代號，跨批次無法對齊比對；同一客戶在同一批次內維持同一個代號，方便主管在那批裡辨識同一個人。即使某一批的對照表外洩，也無法拿去解其他批次裡同一個人的身分。
             </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
@@ -194,7 +197,7 @@
             </h3>
 
             <p>
-                第一層的欄位替換處理的是表格欄位裡的個資。客訴內文是自由文字，個資也可能藏在句子當中（例如客戶順手提到第三人的名字與電話）。<code class="text-accent-purple">pii_detector.py</code> 用一組 regex 當第二層防線，掃描去識別化之後仍殘留的疑似個資，標上 <code class="text-accent-purple">AUTO_</code> 前綴交人覆核。把偵測定位成第二層保險、把欄位替換當主要能力，是這個專案 2026 年 4 月強化階段定下的架構決策。
+                第一層的欄位替換處理的是表格欄位裡的個資。來信內文是自由文字，個資也可能藏在句子當中（例如客戶順手提到第三人的名字與電話）。<code class="text-accent-purple">pii_detector.py</code> 用一組 regex 當第二層防線，掃描去識別化之後仍殘留的疑似個資，標上 <code class="text-accent-purple">AUTO_</code> 前綴交人覆核。把偵測定位成第二層保險、把欄位替換當主要能力，是這個專案 2026 年 4 月強化階段定下的架構決策。
             </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
@@ -218,36 +221,36 @@
                 <li><strong class="text-white">模組結構</strong> &mdash; 13 個 src 模組（含 anon_db、classifier、pipeline、validator、pii_detector、mailer、data_loader、ai_client、report、send_approved 等）</li>
                 <li><strong class="text-white">測試</strong> &mdash; 28 個 pytest 測試</li>
                 <li><strong class="text-white">文件</strong> &mdash; PRD / SRS / SDD / TDD 規格書 + 設計報告</li>
-                <li><strong class="text-white">假資料</strong> &mdash; 500 筆 × 7 欄的合成客訴（真實個資不入庫）</li>
+                <li><strong class="text-white">假資料</strong> &mdash; 500 筆 × 7 欄的合成客戶來信（真實個資不入庫）</li>
             </ul>
 
-            <hr class="border-white/10 my-16">
+            <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Links
+            </h3>
 
-            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 flex flex-col md:flex-row items-start md:items-center gap-6">
-                <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center shrink-0 border border-white/10">
-                    <i class="fab fa-github text-gray-400 text-xl"></i>
-                </div>
-                <div>
-                    <h4 class="text-white font-bold mb-1">原始碼</h4>
-                    <p class="text-sm text-gray-400 m-0 leading-relaxed">
-                        完整原始碼、測試與規格文件公開在 GitHub。金鑰與還原後個資由 <code class="text-accent-purple">.gitignore</code> 排除，庫內只收合成假資料與 <code class="text-accent-purple">.env.example</code> 範本。<br>
-                        <a href="https://github.com/GHOST8787/ntust-secure-ai-assistant" target="_blank" rel="noopener" class="text-accent-purple hover:text-white transition-colors underline decoration-accent-purple/30 underline-offset-4 mt-1 inline-block">
-                            GHOST8787/ntust-secure-ai-assistant
-                        </a>
-                    </p>
-                </div>
-            </div>
+            <ul class="space-y-2 text-sm text-gray-400 list-none pl-0">
+                <li>
+                    <span class="text-accent-purple mr-2">●</span>
+                    <a href="https://github.com/GHOST8787/ntust-secure-ai-assistant" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        GitHub — GHOST8787/ntust-secure-ai-assistant
+                    </a>
+                </li>
+            </ul>
+
+            <p class="text-sm text-gray-500 font-mono mt-4">
+                MIT License
+            </p>
 
         </article>
 
         <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
-            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+            <a href="project_17.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
                 &larr; Prev Project
             </a>
             <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
                 View All Projects
             </a>
-            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+            <a href="project_19.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
                 Next Project &rarr;
             </a>
         </div>

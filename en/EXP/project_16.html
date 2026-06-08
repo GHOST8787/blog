@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / P16 | GHOST.ouo</title>
+    <link rel="canonical" href="https://ghost8787.github.io/blog/en/EXP/project_16.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_16.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_16.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/project_16.html">
+
+    <link rel="icon" type="image/png" href="../../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script src="../../i18n.js" defer></script>
+    <script type="module" src="../../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / P16</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                NTUST MVC Lab, Five Assignments:<br>
+                <span class="text-gradient text-2xl md:text-4xl">From Classical Machine Learning Through Transformers to Object Detection</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    AI &amp; Automation
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Deep Learning
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Coursework
+                </span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.04 &mdash; 2026.05</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
+                A collection of the five assignments from the National Taiwan University of Science and Technology MVC Lab (Multimedia and Computer Vision Lab) Spring 2025 course. Over one semester the topics start with classical machine learning, then move through convolutional neural networks, natural language processing, information retrieval, and close on object detection. This post organizes each assignment's topic, the model used, and the numbers it produced into one index. Every one has a verifiable metric and clears the course baseline on Kaggle or a dev set.
+            </p>
+
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">Heya</div>
+                <p class="m-0">
+                    These five assignments line up into a miniature of the common deep learning tasks: HW1 uses the most basic machine learning to do two beginner Kaggle competitions; HW2 moves into images, building a convolutional neural network by hand to recognize the ten classes of small CIFAR-10 pictures; HW3 moves into text, doing intent recognition and slot tagging; HW4 does search ranking, a coarse pass first and a BERT fine pass after; HW5 does object detection, using YOLO to box African wildlife in photos. Walking the line end to end touches classification, sequence, retrieval, and detection once each.
+                </p>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Overview of the Five Assignments
+            </h3>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">HW</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">Topic</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">Framework / Model</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">Key Metric</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">HW1</td>
+                            <td class="px-4 py-3">Kaggle: House Prices + Titanic Survival</td>
+                            <td class="px-4 py-3">scikit-learn</td>
+                            <td class="px-4 py-3 font-mono">RMSE(log) 0.12615 / Acc 0.76555</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">HW2</td>
+                            <td class="px-4 py-3">CIFAR-10 CNN + Morphology Operations</td>
+                            <td class="px-4 py-3">PyTorch (3-layer Conv+BN)</td>
+                            <td class="px-4 py-3 font-mono">Acc 0.8001 / F1 0.7997</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">HW3</td>
+                            <td class="px-4 py-3">Intent Recognition + Slot Tagging</td>
+                            <td class="px-4 py-3">BiLSTM + GloVe 840B.300d</td>
+                            <td class="px-4 py-3 font-mono">Intent 0.822 / Slot F1 0.8021</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">HW4</td>
+                            <td class="px-4 py-3">BM25 + BERT Reranking (IR)</td>
+                            <td class="px-4 py-3">bert-base-uncased</td>
+                            <td class="px-4 py-3 font-mono">Dev MAP@1000 34.40 / Private 0.41402</td>
+                        </tr>
+                        <tr class="border-t border-white/10 bg-accent-purple/5">
+                            <td class="px-4 py-3 font-bold text-white">HW5</td>
+                            <td class="px-4 py-3">YOLO11n African Wildlife Detection</td>
+                            <td class="px-4 py-3">Ultralytics YOLO11n</td>
+                            <td class="px-4 py-3 font-mono font-bold text-accent-purple">mAP@0.5 0.9577 / 0.5:0.95 0.8018</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Breakdown by Assignment
+            </h3>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">HW1 &mdash; Two Beginner Kaggle Competitions</h4>
+            <p>
+                Two classic Kaggle competitions with scikit-learn: house price prediction (regression) and Titanic survival prediction (classification). The house price task is scored by RMSE in log space, landing at 0.12615; the Titanic task is scored by accuracy, landing at 0.76555. This one is the semester warm-up, getting the basic flow of data cleaning, feature processing, and cross-validation running smoothly.
+            </p>
+            <figure class="my-8">
+                <img src="../../PNG/project_16.1.png"
+                     alt="HW1 target distribution of house prices after log transform"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">HW1: house prices after log transform approach a normal distribution, an easier regression target to learn</figcaption>
+            </figure>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">HW2 &mdash; CIFAR-10 CNN and Morphology</h4>
+            <p>
+                A three-layer convolutional network (Conv + BatchNorm) built by hand, recognizing the ten classes of 32×32 CIFAR-10 images, accuracy 0.8001 and F1 0.7997, clearing the course baseline of 0.6397. It also does image morphology operations (erosion, dilation, and the like), and visualizes the feature maps of each intermediate layer to see the textures the convolutional layers actually learn.
+            </p>
+            <figure class="my-8">
+                <img src="../../PNG/project_16.2.png"
+                     alt="HW2 CIFAR-10 CNN training and validation loss and accuracy curves"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">HW2: train / validation loss and accuracy curves, converging to 0.80</figcaption>
+            </figure>
+            <figure class="my-8">
+                <img src="../../PNG/project_16.3.png"
+                     alt="HW2 feature map visualization of each convolutional layer on a cat image"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">HW2: feature maps of Conv1 / Conv2 / Conv3, showing the textures the model picks up layer by layer</figcaption>
+            </figure>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">HW3 &mdash; Intent Recognition + Slot Tagging</h4>
+            <p>
+                Two tasks trained together: judging the overall intent of a sentence (intent classification), and tagging the role of each word in the sentence (slot tagging). The model uses a bidirectional LSTM with GloVe 840B 300-dimensional word vectors. Intent accuracy is 0.822, slot tagging scored by entity-level F1 reaches 0.8021, and token-level accuracy reaches 0.9659.
+            </p>
+            <figure class="my-8">
+                <img src="../../PNG/project_16.4.png"
+                     alt="HW3 intent recognition training and validation accuracy curves"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">HW3: intent recognition train / eval accuracy, eval converging at 0.82</figcaption>
+            </figure>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">HW4 &mdash; BM25 + BERT Two-Stage Ranking</h4>
+            <p>
+                An information retrieval task: given a query, rank the most relevant documents to the front. The flow splits into two stages: first a traditional BM25 coarse pass to pull the top 1000 documents from a large pool, then BERT for a fine pass over those 1000. The training format is "1 positive + 3 negatives" per item, a four-way choice, fine-tuned with bert-base-uncased.
+            </p>
+            <div class="my-6 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">The Gain From Two-Stage Ranking</div>
+                <p class="m-0 mb-3">
+                    The dev set MAP@1000 rises from 25.68 with BM25 alone to 34.40 with BERT added, a relative gain of 33.9%. When merging the coarse and fine passes, a grid search over 5000 weight combinations (step 0.001) finds the best weighting value of 3.399.
+                </p>
+                <p class="m-0">
+                    This one performs higher on the test set than on the dev set (Public 0.45446 / Private 0.41402, both above the dev equivalent), which means the ranking ability the model learned carries over to unseen queries, with no memorization of the dev set alone.
+                </p>
+            </div>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">HW5 &mdash; YOLO11n Object Detection</h4>
+            <p>
+                Fine-tuning Ultralytics YOLO11n on the African wildlife dataset, boxing and labeling four animal classes in photos. Overall mAP@0.5 reaches 0.9577, and the stricter mAP@0.5:0.95 holds at 0.8018. The per-class mAP@0.5 for all four classes stands above 0.94:
+            </p>
+            <div class="overflow-x-auto my-6">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">Class</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">mAP@0.5</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">buffalo</td><td class="px-4 py-3 font-mono">0.959</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">elephant</td><td class="px-4 py-3 font-mono">0.953</td></tr>
+                        <tr class="border-t border-white/10 bg-accent-purple/5"><td class="px-4 py-3 font-bold text-white">rhino</td><td class="px-4 py-3 font-mono font-bold text-accent-purple">0.970</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">zebra</td><td class="px-4 py-3 font-mono">0.949</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <figure class="my-8">
+                <img src="../../PNG/project_16.5.jpg"
+                     alt="HW5 YOLO11n actual detection boxes and class confidence on validation set photos"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">HW5: actual detection results on validation set photos (boxes + class + confidence)</figcaption>
+            </figure>
+            <figure class="my-8">
+                <img src="../../PNG/project_16.6.png"
+                     alt="HW5 Precision-Recall curves and per-class AP for the four animal classes"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">HW5: PR curves for the four classes, buffalo 0.959 / elephant 0.954 / rhino 0.969 / zebra 0.949, overall mAP@0.5 0.958</figcaption>
+            </figure>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Academic Integrity Statement
+            </h3>
+
+            <p>
+                This repo is published as a personal learning record, to make it easy to look back later and to share the learning path. The repo holds none of the original starter code provided by the TAs; the HW4 baseline notebook is my own version with the five TO-DOs filled in, with the source noted. The datasets provided by the course (documents.csv, intent/slot json, and so on) are all left out, so obtain them through proper channels. MVC Lab students still taking the course should write it once themselves; the structure and approach are open for reference.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Technical Environment
+            </h3>
+
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">Language</strong> &mdash; Python 3.10+ (3.10 / 3.11 recommended)</li>
+                <li><strong class="text-white">Deep learning framework</strong> &mdash; PyTorch 2.x (used in HW2 / HW3 / HW4 / HW5)</li>
+                <li><strong class="text-white">Per-week specific packages</strong> &mdash; scikit-learn (HW1), seqeval (HW3), HuggingFace Transformers (HW4), ultralytics (HW5)</li>
+                <li><strong class="text-white">Hardware</strong> &mdash; a CUDA GPU is recommended but optional (CPU runs too, HW4 / HW5 training will be much slower)</li>
+                <li><strong class="text-white">Not in the repo</strong> &mdash; model weights, original datasets, full training outputs; only the key training curves, PR / confusion matrices, and results.csv are kept</li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Links
+            </h3>
+
+            <ul class="space-y-2 text-sm text-gray-400 list-none pl-0">
+                <li>
+                    <span class="text-accent-purple mr-2">●</span>
+                    <a href="https://github.com/GHOST8787/ntust-mvclab-2026" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        GitHub — GHOST8787/ntust-mvclab-2026
+                    </a>
+                </li>
+            </ul>
+
+            <p class="text-sm text-gray-500 font-mono mt-4">
+                MIT License
+            </p>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="project_15.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Project
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Projects
+            </a>
+            <a href="project_17.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                Next Project &rarr;
+            </a>
+        </div>
+
+    </main>
+    <div id="footer-placeholder"></div>
+</body>
+</html>

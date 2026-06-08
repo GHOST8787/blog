@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / P17 | GHOST.ouo</title>
+    <link rel="canonical" href="https://ghost8787.github.io/blog/en/EXP/project_17.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_17.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_17.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/project_17.html">
+
+    <link rel="icon" type="image/png" href="../../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script src="../../i18n.js" defer></script>
+    <script type="module" src="../../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / P17</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                NTUST AI Final Assignment:<br>
+                <span class="text-gradient text-2xl md:text-4xl">After pushing train to 95.5%, why I submitted the zero-overfit 91%</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    AI &amp; Automation
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Datasheet Extraction
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Schema Rule
+                </span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.05.10 &mdash; 2026.05.22</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
+                The previous post, <a href="project_13.html" class="text-accent-purple hover:text-white transition-colors underline decoration-accent-purple/30 underline-offset-4">P13 NTUST AI Final Two-Axis Experiment</a>, ended at V2's 76.4%. This one picks up from there: after submitting V2 I ran V3 through V48, 46 versions in total, and pushed train all the way to 95.5%. Late in that run I stopped and ran an overfit audit, and the conclusion flipped: the score-chasing rules from V37 onward all overfit a scoring set of "only 10 datasheets". So the final submission was a zero-overfit integrated version, 91 cells out of 100 (91%) on the 100-cell basis. I let go of the version that pushed train to 95.5%. This post writes out the full story of how the 46 versions changed, how 95.5% came about, and why I left it on the table.
+            </p>
+
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">First, the task and the scoring</div>
+                <p class="m-0 mb-3">
+                    The task: given 10 electronic component PDFs, extract 11 fields from each (part number, operating temperature, length/width/height, pin count, current, voltage, etc.), then compare cell by cell against the teacher's answer key <code class="text-accent-purple">specbook.xlsx</code> to count how many cells are correct.
+                </p>
+                <p class="m-0 mb-3">
+                    <strong class="text-white">Why the denominator goes from 110 to 100:</strong> 11 columns &times; 10 datasheets = 110 cells, but among them the "part number" is <strong class="text-white">given directly as input</strong> by the task (the filename maps to the part number, so the AI does not extract it), and it should not count toward the AI's score. Remove those 10 cells, and what the AI actually has to extract and be scored on is <strong class="text-white">10 columns &times; 10 datasheets = 100 cells</strong>. The submitted report uses this 100-cell basis.
+                </p>
+                <p class="m-0">
+                    So read the numbers in this post this way: the progress of each intermediate version uses the 110-cell figures recorded at the time (including the part number) as a process reference; <strong class="text-white">the conclusion always reads the 100-cell figure</strong>. The final submission was a "zero-overfit" integrated version, <strong class="text-accent-purple">91 cells out of 100 (91%)</strong> &mdash; the version that peaked highest along the way I left behind. Below is the full process of how I worked up to that high point and why I did not adopt it in the end.
+                </p>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> What overfit is, and how I judge it
+            </h3>
+
+            <p>
+                Every version in this post asks "does this version overfit", so let me explain overfit clearly up front.
+            </p>
+
+            <div class="my-6 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">Plain definition</div>
+                <p class="m-0">
+                    Overfit means "a rule that only works for the 10 parts in front of you, and fails on an 11th new PDF". An extreme example: writing in the code "for part BAV99W, force V_RRM = 150" &mdash; this rule earns +1 against the train-set answer, but it does nothing for any unseen PDF. That is the essence of overfit.
+                </p>
+            </div>
+
+            <p>
+                There are two complementary standards for judging overfit. The first looks at what the rule itself is written to do:
+            </p>
+
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">Look at the rule content</strong> &mdash; a rule that names a specific part number (BAV99W, DFLS160, and the like) or hardcodes a number from the answer key = overfit. A rule that triggers only on ratios, patterns, or text patterns = generic.</li>
+                <li><strong class="text-white">Look at the rule source</strong> &mdash; a rule derived from industrial packaging convention, the JEDEC spec, or statistical properties of the specbook = generic. A rule derived from "checking the train-set answers to back out which question to apply it to" = overfit.</li>
+                <li><strong class="text-white">Look at the trigger condition</strong> &mdash; a trigger condition like "the ratio falls in some range" or "the PDF has some keyword", which applies consistently to any PDF, = generic. A trigger that says "apply to these 7 parts, do not apply to the other 3" = overfit.</li>
+            </ul>
+
+            <p>
+                One premise is key: this assignment's scoring set has only 10 datasheets, with no separate independent test set, so the batch used to tune rules is the same as the batch used to score. When those two batches are the same, any action of "checking which cells of these 10 parts are wrong and tuning the rule threshold back" raises the score, but what rises is overfit to those 10 datasheets. So in this post, the way I judge each version is the standard "what the rule itself is written to do, and where the threshold comes from".
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> V3 &mdash; V7: trying other moves next to V2
+            </h3>
+
+            <p>
+                After V2 took 76.4%, I first tried five versions of "keep the big architecture, swap one small component" to see which move could push it up. Each move ran the full 10 PDFs + all 11 fields and was rescored.
+            </p>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider w-20">Version</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">What changed (plain)</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider w-24">Train</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V2</td>
+                            <td class="px-4 py-3">GPT-4o text-only + pdfplumber PDF extraction, the starting point for this post</td>
+                            <td class="px-4 py-3 font-mono">76.4%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V3</td>
+                            <td class="px-4 py-3">Run GPT-4o twice on the same PDF, merge the two answers with conservative logic</td>
+                            <td class="px-4 py-3 font-mono">75.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10 bg-accent-purple/5">
+                            <td class="px-4 py-3 font-bold text-white">V4</td>
+                            <td class="px-4 py-3"><strong class="text-accent-purple">First time giving the vision LLM PDF screenshots</strong> (multimodal), going beyond text</td>
+                            <td class="px-4 py-3 font-mono font-bold text-accent-purple">79.1%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V5</td>
+                            <td class="px-4 py-3">Add a stricter JSON schema constraint to the prompt</td>
+                            <td class="px-4 py-3 font-mono">75.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V6</td>
+                            <td class="px-4 py-3">Chain of Thought: ask the LLM to walk through its reasoning step by step before giving the answer</td>
+                            <td class="px-4 py-3 font-mono">75.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V7</td>
+                            <td class="px-4 py-3">Loosen the scoring tolerance rule (use loose tolerance to gauge the sample ceiling)</td>
+                            <td class="px-4 py-3 font-mono">reference</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                Key takeaway: <strong class="text-white">V4, the first time giving the vision LLM screenshots, pushed +2.7%</strong>. The plain text pdfplumber extracts loses the structure of PDF tables, and vision looking directly at the image sees the full package dimension table. V3 / V5 / V6, all three moves, regressed or held flat, which says that on the text-only pipeline, tuning the prompt further is already near the ceiling. Every version after this goes the multimodal route.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> V8 &mdash; V11: multimodal with keyword page filtering, climbing to 84.5%
+            </h3>
+
+            <p>
+                V8 starts combining multimodal with "use keywords first to filter out the most relevant pages in the PDF, and only send those pages to the vision LLM". A datasheet is usually 8-20 pages, but the information actually needed to answer the 11 fields concentrates in 2-3 pages (Package Outline, Electrical Characteristics). Dropping the irrelevant pages concentrates vision attention on the right place.
+            </p>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider w-20">Version</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">What changed</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider w-24">Train</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V8</td>
+                            <td class="px-4 py-3">multimodal + three-tier keyword ranking for page selection (Package Outline / Electrical / Thermal)</td>
+                            <td class="px-4 py-3 font-mono">82.7%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V9</td>
+                            <td class="px-4 py-3">V8 + several prompt fixes: back out body size from the land pad, distinguish E vs H_E, take Max for V_F / I_R, use Tj fallback for Min Op</td>
+                            <td class="px-4 py-3 font-mono">83.6%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V10</td>
+                            <td class="px-4 py-3">Fix V9 side effects: D / E symbol mapping wins over visual length (DPAK W&gt;L is normal), and when a screenshot has both an Outline table and a Land Pattern figure, use only the Outline table</td>
+                            <td class="px-4 py-3 font-mono">84.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V11</td>
+                            <td class="px-4 py-3">Strengthen Max-column locating (take the rightmost column, forbid Min / Nom) + forbid variant symbols (A1 / E1 / D2 / L1 / H_E, etc.) as L / W / H</td>
+                            <td class="px-4 py-3 font-mono">84.5%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                V11 pushed to 84.5% and stalled there. 84.5% equals 93 of 110 cells correct, and the remaining 17 errors all concentrate in the three "mechanical dimension L / W / H" columns. A long stretch afterward was wrestling with these 17 errors.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> V12 &mdash; V19: pure prompt to the wall
+            </h3>
+
+            <p>
+                With all 17 errors in dimension columns, the first instinct is "the prompt does not spell out clearly enough how vision should read the Package Outline table". From V12 to V19 I worked the problem entirely by tuning the prompt, and finally found the ceiling of pure prompt engineering sits at 84.5%.
+            </p>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider w-20">Version</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">What changed</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider w-24">Train</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10 bg-accent-purple/5">
+                            <td class="px-4 py-3 font-bold text-white">V12</td>
+                            <td class="px-4 py-3"><strong class="text-accent-purple">in-context examples enter</strong>: put example answers for three packages (TO-247 / DPAK / D2PAK) in the prompt as guidance + 4 counterexamples</td>
+                            <td class="px-4 py-3 font-mono font-bold text-accent-purple">84.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V13</td>
+                            <td class="px-4 py-3">Raise counterexamples to 5-8, hoping to cover more common errors</td>
+                            <td class="px-4 py-3 font-mono">81.8%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V14</td>
+                            <td class="px-4 py-3">multimodal critic: a second round where the LLM looks at the image again and verifies its own first-round answer</td>
+                            <td class="px-4 py-3 font-mono">84.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V15</td>
+                            <td class="px-4 py-3">strict critic: the critic uses a stricter judgment standard</td>
+                            <td class="px-4 py-3 font-mono">84.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V16</td>
+                            <td class="px-4 py-3">hybrid critic: a mix of strict + lenient two-path critics</td>
+                            <td class="px-4 py-3 font-mono">81.8%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V17</td>
+                            <td class="px-4 py-3">Raise sampling temperature from 0 to 0.5, giving the LLM some randomness to see if it jumps out of a local optimum</td>
+                            <td class="px-4 py-3 font-mono">84.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10 bg-accent-purple/5">
+                            <td class="px-4 py-3 font-bold text-white">V18</td>
+                            <td class="px-4 py-3"><strong class="text-accent-purple">Swap model:</strong> from GPT-4o to Llama-4-Maverick</td>
+                            <td class="px-4 py-3 font-mono font-bold text-accent-purple">84.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V19</td>
+                            <td class="px-4 py-3">ensemble critic: for the cells where V12 (GPT-4o) and V18 (Llama) disagree, run a GPT-4o multimodal critic once more to decide from the image</td>
+                            <td class="px-4 py-3 font-mono">83.6%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                V12, V14, V15, V17, V18, five versions all landed exactly on 84.5%. Swapping prompt, swapping critic, swapping sampling, swapping model none of them broke through.
+            </p>
+
+            <p>
+                An interesting detail: <strong class="text-white">V12 (GPT-4o) and V18 (Llama) both took 84.5%, but the cells they got right differ</strong>. V18 got the L / W / H of some small packages (for example CD4148WTP) right on all three axes, while V12 got all three axes wrong. In other words, the two models each have their strengths, and there is no such thing as "one model is overall stronger". This observation is the starting point for the later multi-model voting.
+            </p>
+
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">Why this section could not get past it even with this prompting</div>
+                <p class="m-0">
+                    The essence of pure prompt engineering is "show the LLM a paragraph of text description, add a few examples, and hope it learns how to read the image". But the vision model's reading bias on certain dimensions is <strong class="text-white">at the model architecture level</strong>, rooted in the architecture itself &mdash; however you prompt it, it skews on small packages at the 1-2 mm scale. Solving this means stepping out of the prompt level and working at the layer of "what to do after the answer is generated".
+                </p>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> V20 &mdash; V28: multi-model voting, from 84.5% to 88.2%
+            </h3>
+
+            <p>
+                Since V12 (GPT-4o) and V18 (Llama) each have their own correct cells, the natural idea is to let different models vote. V20 to V28 tried eight versions to find the most effective voting mechanism.
+            </p>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider w-20">Version</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">What changed</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider w-24">Train</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V20</td>
+                            <td class="px-4 py-3">Raise screenshot zoom from 3.5x to 4.5x, hoping vision sees more clearly</td>
+                            <td class="px-4 py-3 font-mono">83.6%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V21</td>
+                            <td class="px-4 py-3">Re-crop the Package Outline block for the dimension columns and send it to the LLM for a second extraction</td>
+                            <td class="px-4 py-3 font-mono">84.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V22</td>
+                            <td class="px-4 py-3">Swap PDF extractor: use the TOC (table of contents) as a base to find the Package Outline page</td>
+                            <td class="px-4 py-3 font-mono">84.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10 bg-accent-purple/5">
+                            <td class="px-4 py-3 font-bold text-white">V23</td>
+                            <td class="px-4 py-3"><strong class="text-accent-purple">Three-model voting:</strong> V12 (GPT-4o) + V18 (Llama) + V22 (TOC GPT-4o), take the majority answer</td>
+                            <td class="px-4 py-3 font-mono font-bold text-accent-purple">85.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V24</td>
+                            <td class="px-4 py-3">Eight-model voting: V10 / V11 / V12 / V14 / V15 / V17 / V18 / V22 all vote, take the majority answer</td>
+                            <td class="px-4 py-3 font-mono">84.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V25</td>
+                            <td class="px-4 py-3">cluster-aware vote: cluster the versions first, then vote</td>
+                            <td class="px-4 py-3 font-mono">84.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10 bg-accent-purple/5">
+                            <td class="px-4 py-3 font-bold text-white">V26</td>
+                            <td class="px-4 py-3"><strong class="text-accent-purple">Three-axis Llama-consistent override:</strong> for the L / W / H columns, when V18 (Llama) differs from every other model &rarr; take V18's answer</td>
+                            <td class="px-4 py-3 font-mono font-bold text-accent-purple">88.2%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V27</td>
+                            <td class="px-4 py-3">narrow re-extract as the 4th vote: for cells where V12 / V18 / V22 disagree, re-extract with a cropped image + narrow prompt, and combine with the original 3 votes into a 4-way majority</td>
+                            <td class="px-4 py-3 font-mono">88.2%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V28</td>
+                            <td class="px-4 py-3">divergence override: for L / W / H cells where V12 = V18 = V22 all three agree but narrow vs baseline error &gt; 30%, take the narrow answer</td>
+                            <td class="px-4 py-3 font-mono">87.3%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                Two key findings:
+            </p>
+
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li>
+                    <strong class="text-white">V24 eight-model voting regressed</strong> &mdash; six of the eight versions are GPT-4o variants (V12 / V14 / V15 / V17 / V21 / V22), and their wrong positions overlap heavily. Stuffing them all into the voting pool means six consistent errors override V18's (Llama) two correct votes. What multi-model voting counts is "how many independent architectures there are", and how many versions you ran does not count.
+                </li>
+                <li>
+                    <strong class="text-white">V26 three-axis Llama-consistent override is the biggest breakthrough of the multi-model voting stage</strong> &mdash; +3 cells. Looking at CD4148WTP (SOD-523, body 1.65 &times; 0.9 mm), V12 and V22 (both GPT-4o family) got all three L / W / H axes wrong, and V18 (Llama) got all three right. Trigger condition: "when V18 differs from the other models on all three L, W, H axes" use V18's answer. This rule hardcodes no part number and applies the same judgment to any PDF.
+                </li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> V29 &mdash; V36: prompt rewrite + override mix, reaching 89.1%
+            </h3>
+
+            <p>
+                After V26 pushed to 88.2%, among the remaining errors the I_F column of 1N4148W stood out &mdash; the answer key is 0.15 (I_O, average rectified current), but V12 kept extracting 0.3 (I_F, peak forward current). V29 rewrote the prompt to raise I_O's priority ahead of I_F, but this change unexpectedly affected other fields, and it deducted more than it added. V31 solves this with a "mix".
+            </p>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider w-20">Version</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">What changed</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider w-24">Train</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V29</td>
+                            <td class="px-4 py-3">prompt rewrite: I_O takes priority over I_F, Tj fallback rule added</td>
+                            <td class="px-4 py-3 font-mono">85.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V30</td>
+                            <td class="px-4 py-3">V29 prompt + V26 voting logic</td>
+                            <td class="px-4 py-3 font-mono">87.3%</td>
+                        </tr>
+                        <tr class="border-t border-white/10 bg-accent-purple/5">
+                            <td class="px-4 py-3 font-bold text-white">V31</td>
+                            <td class="px-4 py-3"><strong class="text-accent-purple">2-field-only override:</strong> V26 as the base, but use V29's answer for the two columns I_O / I_F and Min Operating Temperature</td>
+                            <td class="px-4 py-3 font-mono font-bold text-accent-purple">89.1%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V32</td>
+                            <td class="px-4 py-3">V31 + Tj regex post-processing</td>
+                            <td class="px-4 py-3 font-mono">89.1%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V33</td>
+                            <td class="px-4 py-3">V31 + LLM re-query the Tj column</td>
+                            <td class="px-4 py-3 font-mono">88.2%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V34</td>
+                            <td class="px-4 py-3">V31 + verify-all critic (let the LLM verify all fields itself)</td>
+                            <td class="px-4 py-3 font-mono">89.1%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V35</td>
+                            <td class="px-4 py-3">4-way voting adds V29</td>
+                            <td class="px-4 py-3 font-mono">88.2%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V36</td>
+                            <td class="px-4 py-3">V31 + Llama critic (swap the critic model)</td>
+                            <td class="px-4 py-3 font-mono">88.2%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                The spirit of V31: <strong class="text-white">"apply a given rule only where a given field truly benefits"</strong>. The V29 prompt is right for I_O / I_F, but it hurts L / W / H. The V31 solution is "apply V29 only to the two columns that benefit, keep V26 for the rest" &mdash; I kept it local and let go of replacing the whole prompt with V29.
+            </p>
+
+            <p>
+                V32 to V36 all tried to push higher: regex for Tj, LLM re-query Tj, verify-all critic, Llama critic &mdash; none of them got past V31. The reason is that the specbook's reading rule for the "Tj has only a single value" case is complex, where <strong class="text-white">the same Tj single value maps to a different specbook column for different parts</strong> (some map to Tj, some to Tamb low, some to Tstg low). Any fixed trigger gets some parts right and others wrong, and the net value will not be positive.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> V37 &mdash; V44: schema rules enter, reaching 95.5%
+            </h3>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">V37: L = max(D, E) swap rule</h4>
+
+            <p>
+                Observing the specbook train 10 PDFs, every ground truth is L &geq; W (package length is greater than or equal to width).
+            </p>
+
+            <p>
+                <strong class="text-white">Rule</strong>: when the (L, W) the LLM extracts satisfies W &gt; L, force-swap the two values.
+            </p>
+
+            <p>
+                This rescued DFLS160's L / W swap and the MSB30M W correction, train +3 cells, pushing from 88.2% to 91.8%.
+            </p>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">V38 &mdash; V40: L / W candidate query</h4>
+
+            <p>
+                Observing parts like BAS16 and BAS21H: the standard answer takes the lead variant (E1, the full length including the pins, and H_E, the lead-to-lead span) as the dimension, skipping the package body's D / E. V38 / V39 / V40 all try "let the LLM run a narrow query on the cropped image to find the max of all candidates on that axis".
+            </p>
+
+            <div class="overflow-x-auto my-6">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider w-20">Version</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">What changed</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider w-24">Train</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V38</td>
+                            <td class="px-4 py-3">W H_E override: the trigger condition is too wide, mis-firing on 1N4148W</td>
+                            <td class="px-4 py-3 font-mono">89.1%</td>
+                        </tr>
+                        <tr class="border-t border-white/10 bg-accent-purple/5">
+                            <td class="px-4 py-3 font-bold text-white">V39</td>
+                            <td class="px-4 py-3"><strong class="text-accent-purple">L_outer override:</strong> run an LLM query on the L axis to find the max candidate, ratio 1.05 &mdash; 1.5 trigger</td>
+                            <td class="px-4 py-3 font-mono font-bold text-accent-purple">92.7%</td>
+                        </tr>
+                        <tr class="border-t border-white/10 bg-accent-purple/5">
+                            <td class="px-4 py-3 font-bold text-white">V40</td>
+                            <td class="px-4 py-3"><strong class="text-accent-purple">L + W dual-axis combined:</strong> V39 plus a W-axis H_E override, ratio 1.4 &mdash; 1.8 strictly excludes 1N4148W</td>
+                            <td class="px-4 py-3 font-mono font-bold text-accent-purple">94.5%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                The key design of V40: <strong class="text-white">the ratio upper bound is deliberately locked at 1.8</strong>. Part 1N4148W has an H_E / E ratio of 2.09, which exceeds 1.8 and so does not trigger, avoiding turning its correct answer wrong. This ratio boundary is a physical convention derived from observing "which parts should apply, which should not" (a lead much larger than the body means another package design), and triggering automatically on this general principle covers parts like 1N4148W.
+            </p>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">V41 &mdash; V43: failed Tj rule attempts</h4>
+
+            <p>
+                After 94.5%, the only remaining eyesore is BAV99W's single Min Operating Temperature field. BAV99W's datasheet lists only a single Tj value, with no Tamb or Tstg range. But BAS16 and CD4148WTP are also "Tj single only" &mdash; for these three parts the specbook uses a different column for Min Operating Temperature (BAV99W takes the Tj single, BAS16 takes the Tamb range low, CD4148WTP takes the Tstg range low).
+            </p>
+
+            <div class="overflow-x-auto my-6">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider w-20">Version</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">What changed</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider w-24">Train</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V41</td>
+                            <td class="px-4 py-3">LLM judges Tj single + whether a Tamb exists itself: the LLM misjudged BAS16's "Ta=25 condition" as a Tamb range, so it did not trigger to rescue BAV99W</td>
+                            <td class="px-4 py-3 font-mono">94.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V42</td>
+                            <td class="px-4 py-3">regex for the Tamb range: PyMuPDF column cannot extract the multi-line Tamb, judges no Tamb across the batch &rarr; BAS16 / CD4148WTP mis-fire -2</td>
+                            <td class="px-4 py-3 font-mono">93.6%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V43</td>
+                            <td class="px-4 py-3">Same as V40 but H_E ratio upper bound tightened to 1.8: the LLM gives BAV99W H_E=2.4, ratio 1.92, which gets excluded</td>
+                            <td class="px-4 py-3 font-mono">94.5%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">V44: Tj single + grep "Tamb" literal, reaching 95.5%</h4>
+
+            <p>
+                V41 failed at "the LLM judging whether a Tamb exists itself" &mdash; the LLM is too clever and counts "Ta=25", a measurement condition, into Tamb. V42 failed at "pure regex for the Tamb range" &mdash; PyMuPDF extracting a multi-line table drops characters. V44 changed it so that <strong class="text-white">two conditions must hold at the same time</strong> to trigger:
+            </p>
+
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">Condition 1</strong> &mdash; the LLM judges whether Tj is a single value (semantic judgment)</li>
+                <li><strong class="text-white">Condition 2</strong> &mdash; Python regex greps whether the PDF text literally contains the string "Tamb" or "Ambient Temperature" (literal judgment)</li>
+            </ul>
+
+            <p>
+                BAV99W's datasheet has no "Tamb" literal string, while BAS16 and CD4148WTP both do. The intersection of the two conditions distinguishes them precisely. V44 pushed from 94.5% to 95.5%, <strong class="text-white">105 of 110 cells correct</strong>.
+            </p>
+
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">Why this section is the hardest</div>
+                <p class="m-0">
+                    V44 is the most refined rule in the whole post. For the same three parts that are "Tj single value", the specbook uses three different columns, and the only generic distinguishing point falls on "whether the PDF text contains the four characters Tamb", something that at first glance does not look like an ML feature. <strong class="text-white">Writing one rule is easy; finding the correct trigger boundary is the hard part</strong> &mdash; this lesson applies to any data extraction task with an inconsistent schema.
+                </p>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> V45 &mdash; V48: final tuning
+            </h3>
+
+            <p>
+                After V44 reached 95.5%, five train cells remained unrescuable. V45 to V48 tried several tuning directions to see whether one more cell could be pushed, and this score-chasing line finally stopped at V47 (train 95.5%).
+            </p>
+
+            <div class="overflow-x-auto my-6">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider w-20">Version</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">What changed</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider w-24">Train</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V45</td>
+                            <td class="px-4 py-3">Re-extract with wide raster for parts with anomalous W / H ratios</td>
+                            <td class="px-4 py-3 font-mono">95.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V46</td>
+                            <td class="px-4 py-3">Use Llama to re-extract parts with anomalous W / H: it changed BAV99W's W wrong -1</td>
+                            <td class="px-4 py-3 font-mono">94.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10 bg-accent-purple/5">
+                            <td class="px-4 py-3 font-bold text-white">V47</td>
+                            <td class="px-4 py-3"><strong class="text-accent-purple">Llama pure-swap detection:</strong> trigger swap only when Llama's D &asymp; baseline W AND Llama's E &asymp; baseline L</td>
+                            <td class="px-4 py-3 font-mono font-bold text-accent-purple">95.5%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V48</td>
+                            <td class="px-4 py-3">Run multi-sample on H_E and take the median</td>
+                            <td class="px-4 py-3 font-mono">93.6%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                V47 is the dual of V44 &mdash; V37's swap rule can mis-fire on certain package types (the "rule coverage vs always correct" tradeoff mentioned in the V37 section). V47 adds a layer of "trigger only when Llama's dimensions are a fully pure swap pattern against the baseline" as a stricter second verification, tightening the swap rule from "swap if W &gt; L" to "swap only if W &gt; L and Llama confirms a pure swap". The final result is still train 95.5%, with the 5 unrescuable cells unchanged.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> The full method of V47 (the score peak)
+            </h3>
+
+            <p>
+                V47 = starting from the V12 baseline, stacking 6 post-processing rules. The overall pipeline:
+            </p>
+
+            <div class="bg-white/5 p-5 rounded-xl border-l-4 border-accent-purple font-mono text-sm text-gray-300 mb-8 overflow-x-auto">
+<pre class="m-0"><code>PDF
+  &rarr; PyMuPDF rasterized screenshot (3.5x) + Base64 encoding
+  &rarr; Three-tier keyword page filter (Package Outline / Electrical / Thermal)
+  &rarr; GPT-4o vision baseline extracts 11 fields
+  &rarr; Post-processing rules stacked:
+      &middot; V23  Three-model voting (V12 GPT-4o + V18 Llama + V22 TOC)
+      &middot; V26  Three-axis Llama-consistent override
+      &middot; V31  I_O priority / Min Op 2-field override
+      &middot; V37  L = max(D, E) swap rule
+      &middot; V40  L / W outer LLM query (ratio 1.05-1.55 / 1.4-1.8)
+      &middot; V44  Tj single + grep "Tamb" literal dual condition
+      &middot; V47  Llama pure-swap second verification
+  &rarr; Final 11-field JSON</code></pre>
+            </div>
+
+            <figure class="my-8">
+                <img src="../../PNG/project_17.1.png"
+                     alt="datasheet extraction system demo interface: 10 parts compared cell by cell against the answer key"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">V47 score-peak demo interface: 10 parts compared cell by cell against the answer key, red cells are the 5 unrescuable ones; scored on the 100-cell basis = 95/100 (the final submission was a separate zero-overfit integrated version 91/100)</figcaption>
+            </figure>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider w-24">Rule</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">Trigger condition</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider w-24">Cells rescued</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V23</td>
+                            <td class="px-4 py-3">Take the majority of 3 model answers</td>
+                            <td class="px-4 py-3 font-mono">+1</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V26</td>
+                            <td class="px-4 py-3">L / W / H all three axes V18 vs others isolated &rarr; use V18</td>
+                            <td class="px-4 py-3 font-mono">+3</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V31</td>
+                            <td class="px-4 py-3">Apply the V29 prompt answer only to the two columns I_F, Min Op</td>
+                            <td class="px-4 py-3 font-mono">+1</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V37</td>
+                            <td class="px-4 py-3">W &gt; L &rarr; swap</td>
+                            <td class="px-4 py-3 font-mono">+3</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">V40</td>
+                            <td class="px-4 py-3">L axis ratio 1.05-1.55, W axis ratio 1.4-1.8 &rarr; LLM query candidate</td>
+                            <td class="px-4 py-3 font-mono">+3</td>
+                        </tr>
+                        <tr class="border-t border-white/10 bg-accent-purple/5">
+                            <td class="px-4 py-3 font-bold text-white">V44</td>
+                            <td class="px-4 py-3"><strong class="text-accent-purple">LLM judges Tj single + regex grep &quot;Tamb&quot; literal, intersection of two conditions</strong></td>
+                            <td class="px-4 py-3 font-mono font-bold text-accent-purple">+1</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                <strong class="text-white">From the V12 baseline 84.5% (93 / 110) accumulated to V47 95.5% (105 / 110), a total of +12 cells</strong>.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> After pushing to 95.5%, I re-checked and confirmed: from V37 on it is actually overfit
+            </h3>
+
+            <p>
+                Up to this point I described those rules from V37 to V44 as "generic" &mdash; ratio thresholds, text patterns, no hardcoded part numbers. Before submitting the assignment I stopped and re-audited once, and the judgment flipped: these rules overfit "this particular scoring set".
+            </p>
+
+            <div class="my-6 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">The key is "the scoring set has only 10 datasheets"</div>
+                <p class="m-0">
+                    This assignment has no independent test set, and what gets scored is those 10 datasheets. V40's ratio upper bound "deliberately locked at 1.8" exists so 1N4148W does not get changed wrong, and V44's "grep Tamb" exists to precisely distinguish BAV99W from BAS16 &mdash; these threshold values were tuned by me "looking at which cells among those 10 parts are wrong and adjusting back". The trigger conditions look generic in form (ratios, strings), but the source of the thresholds is the scoring set itself. Swap in a fresh batch of datasheets and these thresholds are not guaranteed to remain optimal. That is overfit to the scoring set.
+                </p>
+            </div>
+
+            <p>
+                Rejudging by this stricter standard, the clean ceiling sits at <strong class="text-white">V23 three-model voting (around 85.5%)</strong>, plus generic rules that do not rely on per-part back-reasoning, about up to <strong class="text-white">V31 (89.1%)</strong>. Every cell of improvement after V37 carries the property "the threshold was tuned by looking at the answers". Chasing a high score and staying generic is one tradeoff here, and I chose to hold the generic line.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> The 5 unrescuable cells: schema the rules / extraction have not caught yet
+            </h3>
+
+            <p>
+                After V47, train still has 5 cells unrescued. Checking each cell's state part by part:
+            </p>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">Part</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">Field</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">Extracted value</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">Answer key</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">Schema not caught yet</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">BAV99W</td>
+                            <td class="px-4 py-3">V_RRM</td>
+                            <td class="px-4 py-3 font-mono">100</td>
+                            <td class="px-4 py-3 font-mono text-accent-purple">150</td>
+                            <td class="px-4 py-3">A 150V annotation somewhere in the datasheet that the current extraction did not scan</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">BAV99W</td>
+                            <td class="px-4 py-3">W</td>
+                            <td class="px-4 py-3 font-mono">1.25</td>
+                            <td class="px-4 py-3 font-mono text-accent-purple">2.2</td>
+                            <td class="px-4 py-3">Whether the specbook uses H_E or lead-tip-to-tip, the LLM did not catch the correct sample</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">BAV99W</td>
+                            <td class="px-4 py-3">H</td>
+                            <td class="px-4 py-3 font-mono">1.1</td>
+                            <td class="px-4 py-3 font-mono text-accent-purple">1</td>
+                            <td class="px-4 py-3">On the edge of the 10% tolerance, needs a finer dimension reference</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">MBR15U150</td>
+                            <td class="px-4 py-3">W</td>
+                            <td class="px-4 py-3 font-mono">5.5</td>
+                            <td class="px-4 py-3 font-mono text-accent-purple">4.1</td>
+                            <td class="px-4 py-3">Variant dimension table inside a multi-product datasheet, the prompt did not point to the correct variant</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">MBR15U150</td>
+                            <td class="px-4 py-3">H</td>
+                            <td class="px-4 py-3 font-mono">4.1</td>
+                            <td class="px-4 py-3 font-mono text-accent-purple">1.2</td>
+                            <td class="px-4 py-3">Same multi-product variant selection problem as above</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                These 5 cells are all "the specbook used some specific reading rule, and the current prompt / extraction has not caught that rule yet". There are two paths to rescue them:
+            </p>
+
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">Path A &mdash; write a part-specific override</strong>: write a rule directly in the code like "for BAV99W force V_RRM = 150". One cell +1, but this is the definition of overfitting the train set &mdash; useless for any unseen PDF.</li>
+                <li><strong class="text-white">Path B &mdash; find a generic rule that is correct for all 5 parts at once</strong>: for example "for a multi-product datasheet force selecting a certain variant" or "for the BAV99W series take V_RRM from a certain note". But every generic rule I tried either trips on other parts (trigger too wide) or misses this part (trigger too narrow).</li>
+            </ul>
+
+            <p>
+                The existence of these 5 cells is itself a signal: pushing the score to 95.5% has to rely on "tuning thresholds by looking at these 10 parts", and that is exactly overfit. The remaining 5 cells correspond to "the specbook still has reading rules not covered by any generic pattern" &mdash; a schema-level limitation that any generic schema extraction system runs into.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Final submission: the integrated version I confirmed zero-overfit three times over
+            </h3>
+
+            <p>
+                Removing all the score-chasing rules from V37 onward that "tune thresholds by looking at the answers", the final submission is an integrated version built only from generic components:
+            </p>
+
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">Three-model voting (V23)</strong> &mdash; GPT-4o multimodal + Llama-4 vision + GPT-4o (TOC variant), take the majority value column by column</li>
+                <li><strong class="text-white">Generic cropped dimension table</strong> &mdash; locate the dimension table by searching for the "Package Outline / Mechanical Dimensions" anchor text, then high-resolution rasterize that block and send it to vision</li>
+                <li><strong class="text-white">Generic physical rules</strong> &mdash; take length/width to the outermost edge including the pins, take the Max column, convert tolerances. Name no part, hardcode no value</li>
+            </ul>
+
+            <div class="my-6 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">Scoring basis note (the two numbers use different bases, do not compare directly)</div>
+                <p class="m-0">
+                    The submitted report switched to the 100-cell basis: the assignment has 11 columns &times; 10 items = 110 cells, of which the Part Number is the input given by the assignment (known before running) and is not counted; subtract it and there are 100 cells. So the report headline reads 91 cells out of 100 (91%). The earlier numbers in this post from V2 76.4% to V47 95.5% are train accuracy on the 110-cell basis (including the Part Number).
+                </p>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Numbers summary
+            </h3>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 my-8">
+                <div class="bg-white/5 border border-accent-purple/20 rounded-2xl p-5 text-center">
+                    <div class="text-3xl font-extrabold text-accent-purple mb-2">91 / 100</div>
+                    <div class="text-xs text-gray-500 font-mono uppercase">Submitted version (zero overfit)</div>
+                </div>
+                <div class="bg-white/5 border border-white/10 rounded-2xl p-5 text-center">
+                    <div class="text-3xl font-extrabold text-gray-300 mb-2">95.5%</div>
+                    <div class="text-xs text-gray-500 font-mono uppercase">V47 score peak (not submitted)</div>
+                </div>
+                <div class="bg-white/5 border border-white/10 rounded-2xl p-5 text-center">
+                    <div class="text-3xl font-extrabold text-gray-300 mb-2">46</div>
+                    <div class="text-xs text-gray-500 font-mono uppercase">V3 &mdash; V48 versions run</div>
+                </div>
+                <div class="bg-white/5 border border-white/10 rounded-2xl p-5 text-center">
+                    <div class="text-3xl font-extrabold text-gray-300 mb-2">10</div>
+                    <div class="text-xs text-gray-500 font-mono uppercase">Scoring-set datasheets</div>
+                </div>
+            </div>
+
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">Score peak</strong> &mdash; V44 / V47, 105 / 110 on the 110-cell basis = 95.5% (with thresholds back-reasoned per part, judged overfit to the scoring set, not submitted)</li>
+                <li><strong class="text-white">Clean ceiling</strong> &mdash; V23 three-model voting around 85.5%, plus generic rules without back-reasoning, about up to V31 89.1%</li>
+                <li><strong class="text-white">Final submission</strong> &mdash; zero-overfit integrated version, 91 cells out of 100 (91%)</li>
+                <li><strong class="text-white">Ran 46 versions</strong>, the whole process preserved in <code class="text-accent-purple">output/_archive/</code></li>
+                <li><strong class="text-white">Stance</strong> &mdash; "no overfit" is a hard constraint that overrides simply chasing a high score</li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Tech stack
+            </h3>
+
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">Language / packages</strong> &mdash; Python 3.11, PyMuPDF (fitz), pdfplumber, openpyxl, openai SDK, python-dotenv</li>
+                <li><strong class="text-white">Cloud inference</strong> &mdash; Azure AI Foundry V1 unified API (OpenAI-compatible endpoint) &middot; GPT-4o main model, Llama-4-Maverick secondary model, Mistral-medium-2505 control group</li>
+                <li><strong class="text-white">multimodal extractor</strong> &mdash; PyMuPDF Matrix(3.5x) rasterization &rarr; Base64 PNG</li>
+                <li><strong class="text-white">crop extractor</strong> &mdash; <code class="text-accent-purple">page.search_for(&quot;Package Outline&quot;)</code> + bbox expand &rarr; 5x crop</li>
+                <li><strong class="text-white">Inference settings</strong> &mdash; <code class="text-accent-purple">temperature=0</code>, <code class="text-accent-purple">num_ctx=16384</code>, <code class="text-accent-purple">format=json</code></li>
+                <li><strong class="text-white">Key files</strong> &mdash; <code class="text-accent-purple">prompts.py</code> / <code class="text-accent-purple">pdf_extractor.py</code> / <code class="text-accent-purple">crop_extractor.py</code> / <code class="text-accent-purple">evaluate_all.py</code> / <code class="text-accent-purple">run_v47.py</code></li>
+                <li><strong class="text-white">Runtime stats</strong> &mdash; one full train evaluation 5 &mdash; 8 minutes; V44 post-processing 11 LLM calls about 90 seconds; V47 post-processing 1 Llama call about 30 seconds</li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Links
+            </h3>
+
+            <ul class="space-y-2 text-sm text-gray-400 list-none pl-0">
+                <li>
+                    <span class="text-accent-purple mr-2">●</span>
+                    <a href="project_13.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        Previous — P13 NTUST AI Final Two-Axis Experiment
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">●</span>
+                    <a href="https://github.com/GHOST8787/ntust-datasheet-extractor" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        GitHub — GHOST8787/ntust-datasheet-extractor
+                    </a>
+                </li>
+            </ul>
+
+            <p class="text-sm text-gray-500 font-mono mt-4">
+                MIT License
+            </p>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="project_16.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Project
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Projects
+            </a>
+            <a href="project_18.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                Next Project &rarr;
+            </a>
+        </div>
+
+    </main>
+    <div id="footer-placeholder"></div>
+</body>
+</html>

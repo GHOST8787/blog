@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / P19 | GHOST.ouo</title>
+    <link rel="canonical" href="https://ghost8787.github.io/blog/en/EXP/project_19.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_19.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_19.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/project_19.html">
+
+    <link rel="icon" type="image/png" href="../../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script src="../../i18n.js" defer></script>
+    <script type="module" src="../../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / P19</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                Skills Track Progress Checker:<br>
+                <span class="text-gradient text-2xl md:text-4xl">A Chrome extension that lays out completion of 59 courses across three tracks on one page</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    Engineering
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Chrome Extension
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Open Source
+                </span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.06</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
+                The "Google Digital Talent Exploration Program" requires finishing three tracks: AI workplace literacy, digital marketing, and Google Cloud, 59 courses in total, scattered across the various learning-path pages on skills.google. The platform shows a completion check on each page on its own, and the whole program has no single cross-track summary table. To find out "which courses are still missing," I had to click into each page and count. This Chrome extension reads completion status silently on the course pages, cross-references the program's master list, and lays out which courses each of the three tracks still lacks in the toolbar popup. The only permission is storage, read-only, no clicking on the page, and no data sent out.
+            </p>
+
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">Background</div>
+                <p class="m-0">
+                    This program's courses sit on two Google sites: most are on skills.google (formerly Cloud Skills Boost), and a few marketing certifications are on Skillshop. The same course often appears repeatedly under different track paths, for example "Generative AI: Understanding the Basics" is required in all three tracks. When tracking manually, deciding "have I taken this one, and which track does it count toward" is easy to miscount. Handing completion status off to the browser saves the manual reconciliation.
+                </p>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> The Problem It Solves
+            </h3>
+
+            <p>
+                skills.google is a single-page application. Each course's completion status renders only when you browse to that page, and it is spread across several path pages. The platform gives you "a check per course," with no "how much is left across the whole program" view. To compute progress yourself, you have to copy down the three tracks' lists, click each page open, and check course by course, a tedious process that misses things easily. This extension automates it: you browse as usual, it remembers each course's completion in the background, and the moment you open the popup you get a per-track summary table.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> How It Works
+            </h3>
+
+            <p>
+                The whole extension splits into three pieces: the page side reads status, the local side stores progress, and the popup computes the summary.
+            </p>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">1. Content script reads completion status silently</h4>
+            <p>
+                The content script injected into skills.google and cloudskillsboost.google pages scans the <code class="text-accent-purple">ql-activity-card</code> cards on the page, reads their <code class="text-accent-purple">completed</code> attribute to decide whether the course is done, then uses the numeric <code class="text-accent-purple">course_templates/{id}</code> id from the URL as the key. Matching recognizes this id only and ignores the <code class="text-accent-purple">/paths/{X}/</code> prefix, so the same course lines up no matter which track's path it sits under. The whole thing reads the DOM purely, draws nothing on the page, and clicks no buttons for you.
+            </p>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">2. Accumulated into chrome.storage.local</h4>
+            <p>
+                Each status read merges into <code class="text-accent-purple">chrome.storage.local</code>, with the completion flag set sticky-true: once a course is recorded as complete, browsing later to a page that does not render its status will not flip it back to incomplete. Before writing, it compares against the old value and only commits to disk on a real change, so the cost of staying resident in the background is very low.
+            </p>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">3. Popup computes three-track progress from the master list</h4>
+            <p>
+                The toolbar popup intersects the program's master list with the stored progress and assigns each course to one of three states: complete (✓), incomplete but the page has been browsed (✗), or not yet captured (—, prompting you to browse the matching path page). Skillshop courses are undetectable on skills.google and get flagged separately as needing manual confirmation. The popup groups by track, marks "completed / detectable count" for each group, and adds a "scan everything in one click" button that opens all the relevant path pages in the background, waits for the content script to finish scanning, then closes them and refreshes the summary.
+            </p>
+
+            <figure class="my-8">
+                <img src="../../PNG/project_19.1.webp"
+                     alt="The Skills Track Progress Checker toolbar popup: courses listed per track as completed or incomplete"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">The toolbar popup opens straight to the per-track summary: ✓ complete, ✗ incomplete, — not captured, with one-click scan or hide-completed</figcaption>
+            </figure>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> The Master List and Three Tracks
+            </h3>
+
+            <p>
+                The master list is the program's officially required courses, 59 in total across the three tracks (including cross-track duplicates). After removing duplicates, 45 can be detected automatically, another 5 Skillshop certifications sit outside skills.google and need manual confirmation, and the program has one final capstone course that runs through the official LINE and is also undetectable.
+            </p>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">Track</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">Courses</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">Detection</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">AI Workplace Literacy Track</td>
+                            <td class="px-4 py-3 font-mono">33</td>
+                            <td class="px-4 py-3">All auto-detected</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">Digital Marketing Track</td>
+                            <td class="px-4 py-3 font-mono">15</td>
+                            <td class="px-4 py-3">10 auto-detected, first 5 Skillshop manual</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">Google Cloud Track</td>
+                            <td class="px-4 py-3 font-mono">11</td>
+                            <td class="px-4 py-3">All auto-detected</td>
+                        </tr>
+                        <tr class="border-t border-white/10 bg-accent-purple/5">
+                            <td class="px-4 py-3 font-bold text-white">Total after dedup</td>
+                            <td class="px-4 py-3 font-mono font-bold text-accent-purple">45 detectable</td>
+                            <td class="px-4 py-3">＋ 5 Skillshop manual ＋ capstone via LINE</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> A Few Engineering Decisions
+            </h3>
+
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">2-second polling over a MutationObserver</strong> &mdash; <span>the page's cards load asynchronously, and skills.google has resident animation, so a debounced MutationObserver gets starved by the continuous DOM churn and never fires. Switching to a fixed scan every 2 seconds, paired with "no write on no change," makes the cost negligible and the behavior stable.</span></li>
+                <li><strong class="text-white">Sticky-true completion flag</strong> &mdash; <span>the status a course renders on different pages is not always consistent, and when browsing to a page with no attached status, a completed check has to hold and cannot get washed out by an empty state.</span></li>
+                <li><strong class="text-white">Skillshop classified separately</strong> &mdash; <span>the marketing track's first 5 certifications live on another site and are technically out of reach, so the summary flags them "needs manual confirmation" to avoid the impression that a course was skipped.</span></li>
+                <li><strong class="text-white">Hide completed</strong> &mdash; <span>checking one checkbox leaves only the courses still to do. The count is computed first and then hidden, so the "completed / total" figure stays unaffected, and the preference is also stored in storage.</span></li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Privacy Boundary
+            </h3>
+
+            <p>
+                The manifest needs one permission: <code class="text-accent-purple">storage</code>, used to store progress locally. The content script's injection scope is locked to the two domains skills.google and cloudskillsboost.google, and other pages are out of reach. The whole extension only reads pages and writes completion status into your own browser, with no outbound connections, no collection, and no upload.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Technical Environment and Limits
+            </h3>
+
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">Platform</strong> &mdash; <span>Chrome Manifest V3, content script ＋ action popup, no background service worker.</span></li>
+                <li><strong class="text-white">Data</strong> &mdash; <span>progress is stored only in <code class="text-accent-purple">chrome.storage.local</code>, does not sync across devices, and gets cleared along with clearing browsing data.</span></li>
+                <li><strong class="text-white">Detection scope</strong> &mdash; <span>it only recognizes courses marked with <code class="text-accent-purple">course_templates/{id}</code> on skills.google; Skillshop certifications and the LINE-based capstone have to be confirmed by yourself.</span></li>
+                <li><strong class="text-white">Master list currency</strong> &mdash; <span>the list was collected on 2026-06-05 from the program page and skills.google; if the program changes course content, <code class="text-accent-purple">master-list.js</code> needs to be updated in sync.</span></li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Links
+            </h3>
+
+            <ul class="space-y-2 text-sm text-gray-400 list-none pl-0">
+                <li>
+                    <span class="text-accent-purple mr-2">●</span>
+                    <a href="https://github.com/GHOST8787/skills-progress-checker" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        GitHub — GHOST8787/skills-progress-checker
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">●</span>
+                    <a href="project_14.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        Related — Device Tabs Opener
+                    </a>
+                </li>
+            </ul>
+
+            <p class="text-sm text-gray-500 font-mono mt-4">
+                MIT License
+            </p>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="project_18.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Project
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Projects
+            </a>
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                Next Project &rarr;
+            </a>
+        </div>
+
+    </main>
+    <div id="footer-placeholder"></div>
+</body>
+</html>
