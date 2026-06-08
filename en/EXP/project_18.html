@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / P18 | GHOST.ouo</title>
+    <link rel="canonical" href="https://ghost8787.github.io/blog/en/EXP/project_18.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_18.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_18.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/project_18.html">
+
+    <link rel="icon" type="image/png" href="../../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script src="../../i18n.js" defer></script>
+    <script type="module" src="../../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / P18</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                NTUST Information-Security Architecture Project:<br>
+                <span class="text-gradient text-2xl md:text-4xl">Letting AI Handle Customer Emails Without Seeing One Person's Real Personal Data</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    AI &amp; Automation
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    PII De-identification
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Security
+                </span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.04 &mdash; 2026.06</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
+                An information-security architecture project from the AI course at National Taiwan University of Science and Technology. The brief: build an automated pipeline for customer emails that reads an incoming message, hands it to AI to draft a reply, and sends it back to the customer. The hard part is that incoming emails are packed with real personal data (name, phone, address, credit card number), and once that data reaches a cloud AI model it counts as a leak. The core of the whole system: AI only ever sees codes, and never sees any single person's real name and numbers.
+            </p>
+
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">Context</div>
+                <p class="m-0">
+                    A real customer email looks like this: "I'm Wang Da-ming, mobile 0912-345-678, the thing I bought on your site last week still hasn't arrived." To ask AI to help write a reply, you have to feed the whole email to the model. The problem: the model runs in the cloud, and the moment this email is sent out, Wang Da-ming's name and mobile leave the range the company can control. The approach in this project: before sending, swap "Wang Da-ming" for <code class="text-accent-purple">USER_48213</code> and the mobile for <code class="text-accent-purple">PHONE_90577</code>. AI sees the coded email and writes a coded reply, and at the company's end the codes get swapped back to the real names before the message goes to the customer.
+                </p>
+            </div>
+
+            <figure class="my-8">
+                <img src="../../PNG/project_18.1.png"
+                     alt="Codification before and after: original email, the coded version AI sees, restored before sending"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">The same email at three stages: original (red = personal data, company local) → what AI sees (purple = codes, cloud) → restored and sent (green = real names, after approval). The example uses synthetic fake data</figcaption>
+            </figure>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Task Spec
+            </h3>
+
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">Input</strong> &mdash; a 500-row table of customer emails, each row with 7 columns (id, name, phone, address, credit card number, category, email body), where the body is free text and personal data is scattered across the sentences.</li>
+                <li><strong class="text-white">Processing</strong> &mdash; for each email: de-identify → hand to AI for a reply draft → verify the codes are intact → restore the real personal data → enter supervisor review → send after approval.</li>
+                <li><strong class="text-white">Output</strong> &mdash; an Excel report with three worksheets (processing results, code lookup table, batch info), for the supervisor to review row by row and decide which ones can be sent.</li>
+                <li><strong class="text-white">Security floor</strong> &mdash; the AI side only ever touches codes; real personal data lives only in the company's local lookup table and the restored report, both of which are kept out of the version control repo.</li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Core Flow: A Four-Stage Pipeline
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
+                <div class="bg-white/5 p-6 rounded-2xl border border-accent-purple/20">
+                    <div class="text-xs font-mono text-accent-purple uppercase mb-3">Stages 1 &amp; 2</div>
+                    <h4 class="text-white font-bold mb-3">Read + De-identify</h4>
+                    <p class="text-sm text-gray-400 m-0">Read the emails from Excel, scan out the four sensitive columns, replace each with a code, and record "code → real value" in a lookup table. AI receives only the coded body.</p>
+                </div>
+                <div class="bg-white/5 p-6 rounded-2xl border border-accent-purple/20">
+                    <div class="text-xs font-mono text-accent-purple uppercase mb-3">Stages 3 &amp; 4</div>
+                    <h4 class="text-white font-bold mb-3">AI Generation + Verify and Restore</h4>
+                    <p class="text-sm text-gray-400 m-0">AI reads the coded email and writes a coded reply. The system checks whether the code format and origin in the reply are valid, and only then uses the lookup table to swap codes back to real values and hand off to the supervisor.</p>
+                </div>
+            </div>
+
+            <p>Each of the four sensitive columns has a fixed code prefix, so the supervisor knows at a glance what type of data has been masked:</p>
+
+            <div class="overflow-x-auto my-6">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">Column</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">Code Prefix</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">Example</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">Name</td><td class="px-4 py-3 font-mono text-accent-purple">USER_</td><td class="px-4 py-3 font-mono">USER_48213</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">Phone</td><td class="px-4 py-3 font-mono text-accent-purple">PHONE_</td><td class="px-4 py-3 font-mono">PHONE_90577</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">Address</td><td class="px-4 py-3 font-mono text-accent-purple">ADDR_</td><td class="px-4 py-3 font-mono">ADDR_31408</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">Credit card number</td><td class="px-4 py-3 font-mono text-accent-purple">CARD_</td><td class="px-4 py-3 font-mono">CARD_76652</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Two Code Strategies: Legacy and HMAC
+            </h3>
+
+            <p>
+                The system offers two ways to generate codes. Legacy mode uses "prefix + five digits" as the code, readable and easy to match during a demo. HMAC mode hashes the real value through HMAC-SHA256 and takes a hexadecimal string, to guard against dictionary reversal.
+            </p>
+
+            <div class="overflow-x-auto my-6">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider w-28">Strategy</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">Design</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">Legacy</td>
+                            <td class="px-4 py-3"><code class="text-accent-purple">PREFIX_#####</code>, a five-digit random integer. High readability, suited to demos and supervisor cross-checking.</td>
+                        </tr>
+                        <tr class="border-t border-white/10 bg-accent-purple/5">
+                            <td class="px-4 py-3 font-bold text-white">HMAC</td>
+                            <td class="px-4 py-3"><code class="text-accent-purple">PREFIX_XXXXXX</code>, six hex digits taken from HMAC-SHA256(key, real value ‖ batch salt), a 16⁶ space. The key is at least 32 characters, and different salts isolate one batch from another.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">Why HMAC + Batch Salt</div>
+                <p class="m-0">
+                    A purely random code blocks "guessing the real value from the code," and leaves open the correlation analysis that comes from "the same value producing the same code every time." HMAC binds the key into the hash, so without the key an outsider cannot reverse it; the batch salt gives the same record a different code across batches, so cross-batch alignment fails. The key and the restored personal data both sit in the local <code class="text-accent-purple">.env</code> and <code class="text-accent-purple">reports/</code>, held outside the version control repo by <code class="text-accent-purple">.gitignore</code>.
+                </p>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Cross-Batch Isolation
+            </h3>
+
+            <p>
+                The isolation unit for codes is the "batch." The system processes emails in batches by category, and each batch generates codes with its own independent salt. The same value gets a different code in a different batch, so cross-batch alignment fails; the same customer keeps the same code within one batch, which makes it easy for the supervisor to identify the same person inside that batch. Even if one batch's lookup table leaks, it cannot decode the same person's identity in other batches.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Verification Loop and Manual Queue
+            </h3>
+
+            <p>
+                The reply AI generates passes through a code verification step. The verifier first runs a strict format check (the rule is <code class="text-accent-purple">^[A-Z]+_[0-9]{5}$</code>, in plain words "uppercase letters + underscore + five digits," for example <code class="text-accent-purple">USER_48213</code>), catching codes that break the format; it then compares against the lookup table, catching any code that is absent from the table and of unknown origin.
+            </p>
+
+            <p>
+                When verification fails, the pipeline sends the same row back to AI to regenerate, up to three times. A row that still fails after three tries gets marked <code class="text-accent-purple">MANUAL_REVIEW</code> and pushed into the manual queue (FR-23) for a person to look at. This retry logic lives in the pipeline and uses rules to decide whether to retry, while AI handles only the generation of the reply content itself.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> A Second Line of Defense for Residual Personal Data
+            </h3>
+
+            <p>
+                The first layer's column replacement handles the personal data in table columns. The email body is free text, and personal data can hide inside sentences too (for example a customer casually mentioning a third party's name and phone). <code class="text-accent-purple">pii_detector.py</code> uses a set of regexes as a second line of defense, scanning for suspected personal data still left after de-identification, tagging it with an <code class="text-accent-purple">AUTO_</code> prefix for human review. Positioning detection as a second-layer safeguard and column replacement as the main capability was an architecture decision set during this project's April 2026 hardening phase.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Engineering Hardening Added Before the Demo
+            </h3>
+
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">Email defaults to dry-run</strong> &mdash; <code class="text-accent-purple">mailer.py</code> defaults to not actually sending; you add <code class="text-accent-purple">--real</code> to send for real. The SMTP connection adds <code class="text-accent-purple">timeout=10</code> to keep the demo from hanging on an unreachable mail host.</li>
+                <li><strong class="text-white">Encoding tolerance on read</strong> &mdash; <code class="text-accent-purple">data_loader.py</code> tries utf-8 / utf-8-sig / big5 / cp950 in order, handling the Chinese Excel encoding differences common in Taiwan.</li>
+                <li><strong class="text-white">Two-stage approval</strong> &mdash; the AI draft enters the report and waits for supervisor approval; <code class="text-accent-purple">send_approved.py</code> only reads rows marked APPROVED in the report to send, splitting "generate" and "send" into two steps that each need a human nod.</li>
+                <li><strong class="text-white">Real / simulated toggle</strong> &mdash; <code class="text-accent-purple">ai_client.py</code> uses a switch to flip between the real API and simulated output, so the full pipeline can run for testing even with no key; the system prompt explicitly states codes must not be guessed.</li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Tech Stack
+            </h3>
+
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">Language / main packages</strong> &mdash; Python, pandas, openpyxl, (optional) OpenAI SDK, python-dotenv</li>
+                <li><strong class="text-white">De-identification</strong> &mdash; HMAC-SHA256 dual-strategy codes (Legacy / HMAC) + batch salt isolation</li>
+                <li><strong class="text-white">Module structure</strong> &mdash; 13 src modules (including anon_db, classifier, pipeline, validator, pii_detector, mailer, data_loader, ai_client, report, send_approved, and others)</li>
+                <li><strong class="text-white">Tests</strong> &mdash; 28 pytest tests</li>
+                <li><strong class="text-white">Docs</strong> &mdash; PRD / SRS / SDD / TDD spec documents + design report</li>
+                <li><strong class="text-white">Fake data</strong> &mdash; 500 rows × 7 columns of synthetic customer emails (real personal data never enters the repo)</li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Links
+            </h3>
+
+            <ul class="space-y-2 text-sm text-gray-400 list-none pl-0">
+                <li>
+                    <span class="text-accent-purple mr-2">●</span>
+                    <a href="https://github.com/GHOST8787/ntust-secure-ai-assistant" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        GitHub — GHOST8787/ntust-secure-ai-assistant
+                    </a>
+                </li>
+            </ul>
+
+            <p class="text-sm text-gray-500 font-mono mt-4">
+                MIT License
+            </p>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="project_17.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Project
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Projects
+            </a>
+            <a href="project_19.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                Next Project &rarr;
+            </a>
+        </div>
+
+    </main>
+    <div id="footer-placeholder"></div>
+</body>
+</html>

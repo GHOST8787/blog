@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / P19 | GHOST.ouo</title>
+    <link rel="canonical" href="https://ghost8787.github.io/blog/EXP/project_19.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_19.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_19.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/project_19.html">
+
+    <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script src="../i18n.js" defer></script>
+    <script type="module" src="../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / P19</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                Skills 學程進度檢查：<br>
+                <span class="text-gradient text-2xl md:text-4xl">把三學程 59 門課的完成度一頁攤開的 Chrome 擴充</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    Engineering
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Chrome Extension
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Open Source
+                </span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.06</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
+                「Google 數位人才探索計畫」要修完三個學程：AI 職場通識、數位行銷、Google Cloud，加起來 59 門課，散在 skills.google 的各條學習路徑頁裡。平台只在每一頁各自顯示完成勾，整個計畫缺一張跨學程的總表，想知道「還差哪幾門」就得一頁頁點進去數。這個 Chrome 擴充在課程頁靜默讀完成狀態，對照計畫的母清單，在工具列彈窗把三學程各缺哪幾門攤開。權限只有 storage，純讀取，不點擊頁面，也不送出任何資料。
+            </p>
+
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">前情提要</div>
+                <p class="m-0">
+                    這個計畫的課程掛在 Google 兩個站上：大部分在 skills.google（原 Cloud Skills Boost），少數行銷認證在 Skillshop。同一門課常重複出現在不同學程的路徑底下，例如「生成式 AI：瞭解基礎概念」三個學程都要修。手動追蹤時，光是判斷「這門我修過了沒、它算在哪個學程」就很容易數錯。把完成狀態交給瀏覽器讀，省掉人工對帳。
+                </p>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 它要解決的問題
+            </h3>
+
+            <p>
+                skills.google 是單頁式應用，每門課的完成狀態只在你逛到那一頁時才渲染出來，而且分散在好幾條路徑頁底下。平台給的是「單門課的勾」，沒有「整個計畫還剩多少」這層視角。要自己算進度，得把三學程的清單抄下來、一頁頁點開、逐門核對，過程繁瑣又容易漏。這個擴充把這件事自動化：你照常瀏覽，它在背景記住每門課的完成與否，彈窗一開就是一張分學程的總表。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 怎麼運作
+            </h3>
+
+            <p>
+                整個擴充分三塊：頁面端讀狀態、本機存進度、彈窗算總表。
+            </p>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">一、content script 靜默讀完成狀態</h4>
+            <p>
+                注入到 skills.google 與 cloudskillsboost.google 頁面的 content script，掃描頁面上的 <code class="text-accent-purple">ql-activity-card</code> 卡片，讀它的 <code class="text-accent-purple">completed</code> 屬性判斷該門課完成沒，再用網址裡的 <code class="text-accent-purple">course_templates/{id}</code> 數字 id 當鍵。配對只認這個 id、忽略 <code class="text-accent-purple">/paths/{X}/</code> 前綴，所以同一門課不管掛在哪個學程的路徑底下都對得起來。整段純讀 DOM，不在頁面畫任何東西，也不替你點任何按鈕。
+            </p>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">二、累積存進 chrome.storage.local</h4>
+            <p>
+                每次讀到的狀態併進 <code class="text-accent-purple">chrome.storage.local</code>，完成標記採 sticky-true：一旦某門課被記成完成，之後就算逛到沒渲染出狀態的頁面也不會被蓋回未完成。寫入前先比對舊值，只有真的變動才落盤，所以背景常駐的成本很低。
+            </p>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">三、彈窗用母清單算三學程進度</h4>
+            <p>
+                工具列彈窗拿計畫的母清單和存下來的進度做交集，每門課歸到三態之一：完成（✓）、未完成但已逛過該頁（✗）、還沒抓到（—，提示你去逛對應路徑頁）。Skillshop 的課在 skills.google 偵測不到，單獨標成需手動確認。彈窗按學程分組，每組標出「已完成 / 可偵測門數」，再附一個「一鍵掃描全部」按鈕，會在背景把所有相關路徑頁開起來、等 content script 掃完再關掉，最後刷新總表。
+            </p>
+
+            <figure class="my-8">
+                <img src="../PNG/project_19.1.webp"
+                     alt="Skills 學程進度檢查的工具列彈窗：分學程列出已完成與未完成的課程"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">工具列彈窗一開就是分學程總表：✓ 完成、✗ 未完成、— 未抓到，可一鍵掃描或隱藏已完成</figcaption>
+            </figure>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 母清單與三學程
+            </h3>
+
+            <p>
+                母清單是計畫官方要求的課程，三學程合計 59 門課（含跨學程重複的）。去掉重複後可自動偵測 45 門，另有 5 門 Skillshop 認證在 skills.google 之外、需手動確認，計畫最後還有一門總整課程走官方 LINE 也偵測不到。
+            </p>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">學程</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">課程數</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">偵測方式</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">AI 職場通識學程</td>
+                            <td class="px-4 py-3 font-mono">33</td>
+                            <td class="px-4 py-3">全部自動偵測</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">數位行銷學程</td>
+                            <td class="px-4 py-3 font-mono">15</td>
+                            <td class="px-4 py-3">10 門自動偵測，前 5 門 Skillshop 手動確認</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">Google Cloud 學程</td>
+                            <td class="px-4 py-3 font-mono">11</td>
+                            <td class="px-4 py-3">全部自動偵測</td>
+                        </tr>
+                        <tr class="border-t border-white/10 bg-accent-purple/5">
+                            <td class="px-4 py-3 font-bold text-white">去重後總計</td>
+                            <td class="px-4 py-3 font-mono font-bold text-accent-purple">可偵測 45</td>
+                            <td class="px-4 py-3">＋ Skillshop 5 門手動 ＋ 總整課程走 LINE</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 工程上的幾個決定
+            </h3>
+
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">用 2 秒輪詢取代 MutationObserver</strong> &mdash; <span>頁面的卡片是非同步載入的，而 skills.google 有常駐動畫，配 debounce 的 MutationObserver 會被持續的 DOM 變動餓死、永遠不觸發。改成固定每 2 秒掃一次，搭配「沒變動就不寫入」，成本可忽略又穩定。</span></li>
+                <li><strong class="text-white">完成標記 sticky-true</strong> &mdash; <span>同一門課在不同頁面渲染出的狀態不一定一致，逛到沒掛狀態的頁面時，已完成的勾必須守住，不能被空狀態洗掉。</span></li>
+                <li><strong class="text-white">Skillshop 單獨歸類</strong> &mdash; <span>行銷學程前 5 門認證在另一個站，技術上抓不到，總表直接標「需手動確認」，免得讓人誤以為漏修。</span></li>
+                <li><strong class="text-white">隱藏已完成</strong> &mdash; <span>勾一個核取方塊就只留還沒做的課，計數先算完才隱藏，所以「已完成 / 總門數」的數字不受影響，偏好也記在 storage 裡。</span></li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 隱私邊界
+            </h3>
+
+            <p>
+                manifest 只要一個權限：<code class="text-accent-purple">storage</code>，用來把進度存在本機。content script 的注入範圍鎖在 skills.google 與 cloudskillsboost.google 兩個網域，其他頁面碰不到。整個擴充全程只讀頁面、把完成狀態寫進你自己的瀏覽器，沒有任何對外連線，不蒐集、不上傳。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 技術環境與限制
+            </h3>
+
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">平台</strong> &mdash; <span>Chrome Manifest V3，content script ＋ action popup，無背景 service worker。</span></li>
+                <li><strong class="text-white">資料</strong> &mdash; <span>進度只存 <code class="text-accent-purple">chrome.storage.local</code>，換裝置不同步、清除瀏覽資料會一併清掉。</span></li>
+                <li><strong class="text-white">偵測範圍</strong> &mdash; <span>只認得 skills.google 上以 <code class="text-accent-purple">course_templates/{id}</code> 標示的課；Skillshop 認證與走 LINE 的總整課程要自己確認。</span></li>
+                <li><strong class="text-white">母清單時效</strong> &mdash; <span>清單於 2026-06-05 從計畫頁與 skills.google 收集，計畫若改課程內容需同步更新 <code class="text-accent-purple">master-list.js</code>。</span></li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Links
+            </h3>
+
+            <ul class="space-y-2 text-sm text-gray-400 list-none pl-0">
+                <li>
+                    <span class="text-accent-purple mr-2">●</span>
+                    <a href="https://github.com/GHOST8787/skills-progress-checker" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        GitHub — GHOST8787/skills-progress-checker
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">●</span>
+                    <a href="project_14.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        相關專案 — Device Tabs Opener
+                    </a>
+                </li>
+            </ul>
+
+            <p class="text-sm text-gray-500 font-mono mt-4">
+                MIT License
+            </p>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="project_18.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Project
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Projects
+            </a>
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                Next Project &rarr;
+            </a>
+        </div>
+
+    </main>
+    <div id="footer-placeholder"></div>
+</body>
+</html>
