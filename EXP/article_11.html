@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / A11 | GHOST.ouo</title>
+
+    <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script type="module" src="../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../articles.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO ARTICLES
+            </a>
+            <span class="opacity-50">EXP / A11</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                一個論壇用問卷跟你告別，<br>
+                <span class="text-gradient text-2xl md:text-4xl">暫停的方式，比暫停本身更值得談</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">Thinking</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Platform</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Communication</span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.06.12</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                我平常會看一個匿名的社群論壇。某天點進去，整個論壇不見了&mdash;&mdash;看板、討論串全部進不去，首頁被換成一張頁面：一句「沈澱、喘息中」，底下八個問題、一個留言框，最後一行小字連回它的主站。使用者無法再瀏覽原本的內容，所有入口都被導向同一份問卷式的頁面。讓我在意的，是它選擇收掉自己的這個方式。
+            </p>
+
+            <p class="mb-6">它留下的八個問題，原話大概是這樣：</p>
+
+            <div class="p-6 rounded-2xl border border-white/10 bg-[#0A0A0A] mb-8">
+                <ol class="list-decimal pl-5 space-y-3 text-gray-400 m-0 font-light text-base leading-relaxed">
+                    <li>你是什麼時候發現這個平台不見的？那一刻，你的第一個念頭是什麼？</li>
+                    <li>一個地方「一直都在」，你覺得是預設值，還是成本？</li>
+                    <li>一個沒有廣告、不用實名、沒有演算法推播的地方，你覺得它靠什麼活著？</li>
+                    <li>它收的錢少到不像話。你覺得是很傻、很佛、不會賺，還是不能賺？</li>
+                    <li>大家平常也都會用別的平台。它們的「穩定」，跟它的「穩定」，是同一種東西嗎？</li>
+                    <li>如果開這個地方的人有名有姓、有臉、天天現身跟大家搏感情，你還會像現在這樣說話嗎？</li>
+                    <li>這次的事，你是自己發現的，還是從別人那裡聽說的？</li>
+                    <li>如果想對這個地方說一句話（對此處，不是對任何「人」），就留在這裡。</li>
+                </ol>
+            </div>
+
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                下面一條一條談，文末附一段技術觀察&mdash;&mdash;我把這張頁面的原始碼翻出來，看它到底怎麼把一個好好的論壇換成這個樣子。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 一直都在，不等於要被供著
+            </h3>
+            <div class="border-l-2 border-accent-purple/30 pl-5 py-2 my-6">
+                <p class="text-gray-300 m-0">第二題：一個地方「一直都在」，你覺得是預設值，還是成本？</p>
+            </div>
+            <p>
+                一個東西一直都在的時候，沒有人會去想它為什麼在；等它不在了，有需要的人會去找下一個。東西大多帶有替代性，而替代品的價值，是在被需要的當下才被選擇，不需要使用者預先承諾去維持。所以回頭問使用者「我一直都在，你覺得是預設值還是成本」，這道題本身就有點微妙。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 一個平台能不能靠興趣活下去
+            </h3>
+            <div class="border-l-2 border-accent-purple/30 pl-5 py-2 my-6">
+                <p class="text-gray-300 m-0">第四題：它收的錢少到不像話，你覺得是很傻、很佛、不會賺，還是不能賺？</p>
+            </div>
+            <p>
+                這問題讓我想到 Wootalk，一個匿名隨機配對的聊天網站。
+            </p>
+            <p>
+                它的運作方式是這樣：創辦人說過，這是他閒暇時做的，本來只想弄一個「24 小時都找得到人聊天」的地方，到今天都沒有商業化。它完全免費、不用註冊，頁面上沒有廣告，也沒有把使用者的對話數據拿去賣；伺服器從比較貴的雲端搬到便宜很多的主機，把成本壓下去，就這樣一直開著。它活下去的方式，是繼續開著、繼續有人用。
+            </p>
+            <p>
+                這說明一件事：一個幾乎不收費的地方，照樣能年復一年地開下去。一個平台要不要賺、賺不賺得到，屬於經營者的選擇與本事。回到那道題的設計&mdash;&mdash;有商機的時候，經營者通常不會把它交給使用者一起想；沒有商機的時候，把它描述成一種犧牲或奉獻，會把討論從經營策略，帶往情感認同的方向。把一個經營者自己的選擇，包裝成一道讓使用者來掂量的題目，是這道題真正的問題。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 暫停的方式，與使用者的選擇權
+            </h3>
+            <p>
+                這次的做法，是把整個論壇功能換成一張新頁面，影響的範圍比單純發布公告大得多。
+            </p>
+            <p>
+                在論壇裡發一篇文，跟把整個公共空間換成一份問卷，是兩件事。發一篇文，使用者自己決定要不要點進來、要不要回；把整個門面換掉，每一個來的人都先撞上這八個問題，才找得到其他出口。原本能回話的地方，變成一個只能單向投遞的信箱；原本發文的地方，變成它想問的八個問題。使用者被放到一個比較被動的位置，這也是我對這種溝通方式有疑問的起點。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 問題的引導性，與被留下的資料
+            </h3>
+            <p>
+                八個問題的句型幾乎一致：是預設值還是成本、很傻很佛不會賺還是不能賺、它的「穩定」跟別處的「穩定」是不是同一種。這種句型看起來開放，選項本身已經把立場放了進去&mdash;&mdash;問你是預設值還是成本的當下，「這個地方值得被珍惜」這個前提，已經先替你決定好了。
+            </p>
+            <p>
+                我個人對開放的匿名空間沒有意見。如果只是擺一個空白的格子、沒有任何引導，誰想說什麼就說什麼，我認為完全沒問題。需要分開來看的是引導式的問法：題目先替你把方向圈好，你只能在它畫的框裡走；你寫下的東西，又收進它的後台留底。一個把使用者圈進預設立場、再把回答留起來的設計，跟一個單純開放的空間，是兩種不同的東西。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 論壇的公共性：公版與個版
+            </h3>
+
+            <figure class="my-10 mx-auto max-w-s">
+                <img src="../PNG/article_11.1.webp"
+                     alt="論壇的公共性：個版（部落格）與公版（論壇）的對照圖解"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    個版是你家的客廳；公版一旦長出一群人，就帶上了公共性
+                </figcaption>
+            </figure>
+
+            <p>
+                退一步看這個地方的定位。部落格是個版，是你家的客廳：牆上掛什麼、訪客留言區擺幾個問題，全憑你高興，沒有人能說你錯。論壇是另一回事。論壇是公版，一旦它開放給大眾、長出一群固定來的人，它就帶上了公共性。
+            </p>
+            <p>
+                這個分法不是我自己編的。傳播學裡有個經典概念叫「公共領域」（public sphere，哲學家 Habermas 提出）：一個讓人放下身分、平等討論的公共空間，它的重量來自參與的人。社會學家 Oldenburg 講的「第三空間」（third place），說的也是這個&mdash;&mdash;家與職場之外、讓人有歸屬感的聚會地，咖啡館、酒吧、論壇都算；這種地方的主角是來的人，開店的人比較像場地的看守。後來研究線上社群的學者還發現，待得夠久的成員，會對社群長出一種「心理所有權」，把它當成「我們的」地方，自發去維護它。
+            </p>
+            <p>
+                把這幾件事疊起來，話就清楚了：一個東西一旦被定義成論壇，它就預設了以使用者、以這群人的利益為先。把整個公共空間，換成一份以經營者處境為核心的問卷，是拿公版的位置，做個版的事。如果一開始就講明這是個人部落格、是經營者的個版，那以上全都不成立。個版跟公版，是兩種不同的承諾。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 經營者的情緒，與索取的方向
+            </h3>
+            <p>
+                做出一個這樣的地方，需要力氣，這點我沒有要爭，我也樂意用付費去支持它。需要分開來看的是另一件事：經營者自己的情緒，為什麼要整個平台的人一起承接。把論壇換成一張告別頁，讓每個路過的人先面對經營者的處境，對部分使用者來說，會帶來一種額外的情緒負擔&mdash;&mdash;我姑且把它叫做「情緒房租」：你來用這個空間，順帶被收一筆沒打算付的情緒。
+            </p>
+            <p>
+                再往源頭看，價值有它自然流動的方向：別人主動來問你、需要你，你再開口。把一份問卷擺到所有人面前、等大家逐題回應，順序剛好是倒過來的。真要跟大家要東西，明著要就好&mdash;&mdash;把「使用者付費」講出來，想支持的人會付，這條路乾淨、對等。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 對等的做法，其實更省力
+            </h3>
+            <p>
+                同樣一件事，有不收情緒租的做法，而且力氣更小。在論壇裡發一篇公告：這地方要暫停一陣子，原因是這些，想留話的留在下面。它本來就匿名，想回的人自然會回，想走的人正常走，每個人手上都還握著「要不要參與」這個選擇。
+            </p>
+            <p>
+                要收掉就說收掉，要更新就說更新，要問意見就開一份大家可以選擇填或不填的問卷。把決定講清楚，把選擇權留在對方手上，如此而已。
+            </p>
+
+            <hr class="border-white/10 my-12">
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 技術觀察：整個論壇如何被換成一張頁
+            </h3>
+            <p>
+                除了溝通方式，技術上的實作也值得看。我把這張頁面的原始碼翻出來，幾項特徵剛好印證了上面的觀察。
+            </p>
+
+            <h4 class="text-lg font-bold text-gray-100 mt-10 mb-3">一、全站攔截（catch-all routing）</h4>
+            <p>
+                我試了五個原論壇一定會有的網址&mdash;&mdash;首頁、看板、最新討論、某篇文章、某個人的個人頁&mdash;&mdash;回來的內容大小到位元組都一樣，都是 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">9956 bytes</code>。不管打哪個網址，伺服器都回同一張頁面。原本的資料沒有消失，被一道吃掉所有路徑的規則統一導向這張頁。
+            </p>
+
+            <h4 class="text-lg font-bold text-gray-100 mt-10 mb-3">二、邊緣運算部署</h4>
+            <p>
+                頁尾掛著 Cloudflare 的偵測程式，每個請求即時回源。配上「所有網址回同一頁，另有一個專收留言的 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">/api/leave</code>」，它最接近一支跑在 Cloudflare 邊緣節點上的程式（Workers 或 Pages Functions 那一類）。我用 GET 去敲 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">/api/leave</code>，回 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">405 Method Not Allowed</code>：這個窗口只收 POST 進去的留言，讀不出東西來。
+            </p>
+
+            <h4 class="text-lg font-bold text-gray-100 mt-10 mb-3">三、Honeypot 反垃圾機制</h4>
+            <p>
+                表單裡的「公司」欄位被 CSS 推到畫面外，真人看不到。自動灌廣告的程式會把它填上，後端就用這格有沒有被填，來辨識並過濾機器人。這招叫 honeypot，蜜罐。截圖裡那句「公司（請留空）」，是寫給機器人看的誘餌標籤。
+            </p>
+
+            <h4 class="text-lg font-bold text-gray-100 mt-10 mb-3">四、完整的設計規格</h4>
+            <p>
+                CSS 註解裡留著一整套設計規格的痕跡：色票對應它自家的品牌紅、做了無障礙對比、輸入框字級至少 16px「避免 iOS 聚焦自動縮放」、按鈕點擊區至少 48px。還有這幾句，原封不動抄在這裡：「視覺方向 §5：深夜裡還亮著的一盞小燈」「六題之間的間距要大到讓每一題可以單獨被凝視」「頁尾主站一行：一扇安靜的側門」。連每道問題之間要留多大空白、好讓你逐題凝視，都被編號、寫進一份設計文件。
+            </p>
+
+            <p class="mt-10">
+                這四項疊在一起，是一份完整規劃過的設計成果&mdash;&mdash;從全站攔截、機器人過濾，到每一處凝視間距，都被仔細處理過。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 說回我自己
+            </h3>
+            <p>
+                最後說回自己。我也做這些東西&mdash;&mdash;寫網站、把它開放出來，你正在看的這一頁就是其中一個。做它的理由很簡單：想藉著它，遇到一群志同道合的人。
+            </p>
+            <p>
+                對這些東西的興趣，本身就是理由；不該因為自己的際遇，去抱怨任何人。
+            </p>
+            <p>
+                遇得到那群人是一種幸福，那就知足；遇不到，就把能力繼續往外推，一直往前看。做這些東西的動力，從頭到尾長在自己身上&mdash;&mdash;這是看完那八個問題之後，我個人的想法總結。
+            </p>
+
+            <div class="p-6 rounded-2xl border border-white/10 bg-[#0A0A0A] mt-12">
+                <h4 class="text-white font-bold mb-3 flex items-center gap-2 text-sm">
+                    <i class="fas fa-book-open text-accent-purple"></i> Note
+                </h4>
+                <p class="text-sm text-gray-400 leading-relaxed m-0">
+                    起點是一個我平常就在看的匿名社群頁面。文中對技術手法的描述，可由該頁面公開的原始碼逐項對照（catch-all、Cloudflare、honeypot、設計規格註解皆出自原始碼）。不點名平台、不針對經營者個人，只討論這種做法本身。
+                </p>
+            </div>
+
+            <p class="text-sm text-gray-500 font-mono m-0 mt-8">
+                Tags　｜　Platform　・　Communication　・　Thinking
+            </p>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="article_10.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Article
+            </a>
+            <a href="../articles.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Articles
+            </a>
+            <a href="#" class="text-gray-500 text-sm font-mono opacity-50 cursor-not-allowed" aria-disabled="true">
+                Next Article &rarr;
+            </a>
+        </div>
+
+    </main>
+    <div id="footer-placeholder"></div>
+</body>
+</html>
