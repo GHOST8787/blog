@@ -98,7 +98,7 @@
             <div class="my-6 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
                 <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">白話定義</div>
                 <p class="m-0">
-                    Overfit 的意思是「規則寫到只對眼前這 10 顆有效，給第 11 顆新 PDF 就失靈」。極端例子：在程式裡直接寫「對 BAV99W 這顆強制 V_RRM = 150」&mdash; 這條規則對 train set 答案會 +1，但對任何沒見過的 PDF 都沒用。這就是 overfit 的本質。
+                    Overfit 的意思是「規則寫到只對眼前這 10 顆有效，給第 11 顆新 PDF 就失靈」。極端例子：在程式裡直接寫「對 BAV99W 這顆強制 V_RRM = 150」。這條規則對 train set 答案會 +1，但對任何沒見過的 PDF 都沒用。這就是 overfit 的本質。
                 </p>
             </div>
 
@@ -285,13 +285,13 @@
             </p>
 
             <p>
-                有意思的細節：<strong class="text-white">V12（GPT-4o）跟 V18（Llama）都拿 84.5%，但答對的 cells 不一樣</strong>。V18 對某些小封裝（例如 CD4148WTP）的 L / W / H 三軸都答對，V12 在這顆三軸都答錯。換句話說兩個模型各有專長，沒有「哪個模型整體比較強」這種事。這個觀察是後面 multi-model voting 的起點。
+                有意思的細節：<strong class="text-white">V12（GPT-4o）跟 V18（Llama）都拿 84.5%，但答對的 cells 不一樣</strong>。V18 對某些小封裝（例如 CD4148WTP）的 L / W / H 三軸都答對，V12 在這顆三軸都答錯。兩個模型各有專長，沒有「哪個模型整體比較強」這種事。這個觀察是後面 multi-model voting 的起點。
             </p>
 
             <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
                 <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">這段為什麼這樣寫 prompt 還是過不去</div>
                 <p class="m-0">
-                    純 prompt engineering 的本質是「給 LLM 看一段文字描述、加幾個範例，希望它學會該怎麼看圖」。但 vision 模型對某些尺寸的判讀偏差是<strong class="text-white">模型架構層面的</strong>，根源在架構本身&mdash; 你怎麼提示它，它對 1-2 mm 級的小封裝就是會偏。要解這個必須跳出 prompt 的層次，改在「答案生出來之後做什麼」這層動手。
+                    純 prompt engineering 的本質是「給 LLM 看一段文字描述、加幾個範例，希望它學會該怎麼看圖」。但 vision 模型對某些尺寸的判讀偏差是<strong class="text-white">模型架構層面的</strong>，根源在架構本身。你怎麼提示它，它對 1-2 mm 級的小封裝就是會偏。要解這個必須跳出 prompt 的層次，改在「答案生出來之後做什麼」這層動手。
                 </p>
             </div>
 
@@ -380,7 +380,7 @@
             </h3>
 
             <p>
-                V26 推到 88.2% 之後，剩餘錯誤裡 1N4148W 的 I_F 欄位特別礙眼&mdash;標準答案是 0.15（I_O，平均整流電流），但 V12 一直抽到 0.3（I_F，瞬間順向電流）。V29 重寫 prompt 把 I_O 的優先級拉到 I_F 之前，但這個改動意外影響到別的欄位，扣回的分數比加的還多。V31 用「混搭」解決這個問題。
+                V26 推到 88.2% 之後，剩餘錯誤裡 1N4148W 的 I_F 欄位特別礙眼：標準答案是 0.15（I_O，平均整流電流），但 V12 一直抽到 0.3（I_F，瞬間順向電流）。V29 重寫 prompt 把 I_O 的優先級拉到 I_F 之前，但這個改動意外影響到別的欄位，扣回的分數比加的還多。V31 用「混搭」解決這個問題。
             </p>
 
             <div class="overflow-x-auto my-8">
@@ -438,11 +438,11 @@
             </div>
 
             <p>
-                V31 的精神：<strong class="text-white">「只在某個欄位真正會受益的地方套用某條規則」</strong>。V29 prompt 對 I_O / I_F 是對的，但對 L / W / H 反而傷。V31 解法是「只對受益的兩欄套 V29、其他欄保留 V26」&mdash; 維持局部套用，整套 V29 prompt 取代的做法我放掉了。
+                V31 的精神：<strong class="text-white">「只在某個欄位真正會受益的地方套用某條規則」</strong>。V29 prompt 對 I_O / I_F 是對的，但對 L / W / H 反而傷。V31 解法是「只對受益的兩欄套 V29、其他欄保留 V26」。維持局部套用，整套 V29 prompt 取代的做法我放掉了。
             </p>
 
             <p>
-                V32 到 V36 都試圖再往上推：regex 抓 Tj、LLM 重查 Tj、verify-all critic、Llama critic&mdash;全部沒過 V31。原因是 specbook 對「Tj 只有 single value」這種 case 的判讀規則複雜，<strong class="text-white">同樣是 Tj single value，不同零件對應到 specbook 的不同欄位</strong>（有的對應 Tj、有的對應 Tamb low、有的對應 Tstg low）。任何固定的 trigger 都會在某些零件答對、其他答錯，淨值不會正。
+                V32 到 V36 都試圖再往上推：regex 抓 Tj、LLM 重查 Tj、verify-all critic、Llama critic，全部沒過 V31。原因是 specbook 對「Tj 只有 single value」這種 case 的判讀規則複雜，<strong class="text-white">同樣是 Tj single value，不同零件對應到 specbook 的不同欄位</strong>（有的對應 Tj、有的對應 Tamb low、有的對應 Tstg low）。任何固定的 trigger 都會在某些零件答對、其他答錯，淨值不會正。
             </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
@@ -505,7 +505,7 @@
             <h4 class="text-lg font-bold text-white mt-10 mb-4">V41 &mdash; V43：失敗的 Tj 規則嘗試</h4>
 
             <p>
-                94.5% 之後只剩 BAV99W 的 Min Operating Temperature 一個欄位最礙眼。BAV99W 的 datasheet 只列 Tj 一個 single value、沒列 Tamb 跟 Tstg range。但 BAS16 跟 CD4148WTP 也是「只有 Tj single」&mdash;這三顆零件 specbook 對 Min Operating Temperature 各用了不同欄位（BAV99W 取 Tj single、BAS16 取 Tamb range low、CD4148WTP 取 Tstg range low）。
+                94.5% 之後只剩 BAV99W 的 Min Operating Temperature 一個欄位最礙眼。BAV99W 的 datasheet 只列 Tj 一個 single value、沒列 Tamb 跟 Tstg range。但 BAS16 跟 CD4148WTP 也是「只有 Tj single」。這三顆零件 specbook 對 Min Operating Temperature 各用了不同欄位（BAV99W 取 Tj single、BAS16 取 Tamb range low、CD4148WTP 取 Tstg range low）。
             </p>
 
             <div class="overflow-x-auto my-6">
@@ -540,7 +540,7 @@
             <h4 class="text-lg font-bold text-white mt-10 mb-4">V44：Tj single + grep "Tamb" literal，達 95.5%</h4>
 
             <p>
-                V41 失敗在「LLM 自己判斷有沒有 Tamb」&mdash;LLM 太聰明，會把 "Ta=25" 這種 measurement condition 也算進 Tamb。V42 失敗在「純 regex 抓 Tamb range」&mdash;PyMuPDF 抽 multi-line 表格會漏字。V44 改成<strong class="text-white">兩個條件同時滿足</strong>才 trigger：
+                V41 失敗在「LLM 自己判斷有沒有 Tamb」：LLM 太聰明，會把 "Ta=25" 這種 measurement condition 也算進 Tamb。V42 失敗在「純 regex 抓 Tamb range」：PyMuPDF 抽 multi-line 表格會漏字。V44 改成<strong class="text-white">兩個條件同時滿足</strong>才 trigger：
             </p>
 
             <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
@@ -555,7 +555,7 @@
             <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
                 <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">這段為什麼最難</div>
                 <p class="m-0">
-                    V44 是整篇文章最精緻的一條規則。同樣是「Tj single value」的三顆零件，specbook 用了三種不同欄位，唯一的 generic 區分點落在「PDF 文字內有沒有 Tamb 這四個字」這種乍看不像 ML feature 的東西。<strong class="text-white">寫一條規則的容易，找到正確的 trigger 邊界才難</strong>&mdash;這條經驗適用任何 schema 不一致的資料抽取任務。
+                    V44 是整篇文章最精緻的一條規則。同樣是「Tj single value」的三顆零件，specbook 用了三種不同欄位，唯一的 generic 區分點落在「PDF 文字內有沒有 Tamb 這四個字」這種乍看不像 ML feature 的東西。<strong class="text-white">寫一條規則的容易，找到正確的 trigger 邊界才難</strong>。這條經驗適用任何 schema 不一致的資料抽取任務。
                 </p>
             </div>
 
@@ -602,7 +602,7 @@
             </div>
 
             <p>
-                V47 是 V44 的對偶版本&mdash;V37 的 swap rule 在某些封裝類型可能誤觸（前面 V37 段提過的「規則覆蓋率 vs 永遠對」取捨）。V47 加一層「只在 Llama 給的尺寸跟 baseline 完全純 swap pattern 時才 trigger」做更嚴格的二次驗證，把 swap rule 從「W &gt; L 就 swap」收緊成「W &gt; L 且 Llama 確認是純 swap 才 swap」。最終結果還是 train 95.5%、5 個救不動 cells 不變。
+                V47 是 V44 的對偶版本。V37 的 swap rule 在某些封裝類型可能誤觸（前面 V37 段提過的「規則覆蓋率 vs 永遠對」取捨）。V47 加一層「只在 Llama 給的尺寸跟 baseline 完全純 swap pattern 時才 trigger」做更嚴格的二次驗證，把 swap rule 從「W &gt; L 就 swap」收緊成「W &gt; L 且 Llama 確認是純 swap 才 swap」。最終結果還是 train 95.5%、5 個救不動 cells 不變。
             </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
@@ -695,7 +695,7 @@
             <div class="my-6 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
                 <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">關鍵在「評分集只有 10 份」</div>
                 <p class="m-0">
-                    這次作業沒有獨立測試集，算分的就是那 10 份 datasheet。V40 的 ratio 上限「刻意鎖在 1.8」是為了讓 1N4148W 不被改錯、V44 的「grep Tamb」是為了精準區分 BAV99W 跟 BAS16&mdash;這些門檻的數值，是我「看著那 10 顆裡哪幾格錯、再回頭調」調出來的。觸發條件形式上長得像 generic（比例、字串），但門檻的來源是評分集本身。換一批新的 datasheet，這些門檻不保證還是最佳。這就是對評分集 overfit。
+                    這次作業沒有獨立測試集，算分的就是那 10 份 datasheet。V40 的 ratio 上限「刻意鎖在 1.8」是為了讓 1N4148W 不被改錯、V44 的「grep Tamb」是為了精準區分 BAV99W 跟 BAS16。這些門檻的數值，是我「看著那 10 顆裡哪幾格錯、再回頭調」調出來的。觸發條件形式上長得像 generic（比例、字串），但門檻的來源是評分集本身。換一批新的 datasheet，這些門檻不保證還是最佳。這就是對評分集 overfit。
                 </p>
             </div>
 
@@ -767,12 +767,12 @@
             </p>
 
             <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
-                <li><strong class="text-white">路 A &mdash; 寫 part-specific override</strong>：直接在 code 寫「對 BAV99W 強制 V_RRM = 150」這種規則。一格 +1，但這是 overfit train set 的定義&mdash;對任何未見的 PDF 都沒用。</li>
+                <li><strong class="text-white">路 A &mdash; 寫 part-specific override</strong>：直接在 code 寫「對 BAV99W 強制 V_RRM = 150」這種規則。一格 +1，但這是 overfit train set 的定義，對任何未見的 PDF 都沒用。</li>
                 <li><strong class="text-white">路 B &mdash; 找到一條 generic 規則同時對這 5 顆都對</strong>：例如「對 multi-product datasheet 強制選某個變體」「對 BAV99W 系列 V_RRM 取某種附註」。但我嘗試過的 generic rule 都會在其他零件踩雷（trigger 太寬）或漏掉這顆（trigger 太窄）。</li>
             </ul>
 
             <p>
-                這 5 格的存在本身就是訊號：把分數推到 95.5% 必須靠「看著這 10 顆調門檻」，而那正是 overfit。剩餘 5 cells 對應的是「specbook 內仍有判讀規則沒被 generic pattern 涵蓋」&mdash;這是任何 generic schema extraction 系統都會遇到的 schema 層級限制。
+                這 5 格的存在本身就是訊號：把分數推到 95.5% 必須靠「看著這 10 顆調門檻」，而那正是 overfit。剩餘 5 cells 對應的是「specbook 內仍有判讀規則沒被 generic pattern 涵蓋」。這是任何 generic schema extraction 系統都會遇到的 schema 層級限制。
             </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">

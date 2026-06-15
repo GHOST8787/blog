@@ -64,7 +64,7 @@
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
             <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
-                同一個需求 &mdash; 把 YouTube 影片轉成可以帶走的中文整理 &mdash; 用兩種完全不同的工程方法各做了一次。這篇紀錄兩個世代的架構差異，以及 V1 留下了什麼問題、V2 是用什麼方法接手。
+                同一個需求，把 YouTube 影片轉成可以帶走的中文整理，用兩種完全不同的工程方法各做了一次。這篇紀錄兩個世代的架構差異，以及 V1 留下了什麼問題、V2 是用什麼方法接手。
             </p>
 
             <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
@@ -210,7 +210,7 @@
             </h4>
 
             <p>
-                V2 最關鍵的工程決策是<strong class="text-white">把整理拆成兩次 LLM 呼叫</strong>，而不是把整支 transcript 一次丟給模型：
+                V2 最關鍵的工程決策是<strong class="text-white">把整理拆成兩次 LLM 呼叫</strong>，取代把整支 transcript 一次丟給模型的做法：
             </p>
 
             <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
@@ -220,7 +220,7 @@
             </ul>
 
             <p>
-                這樣做的好處是<strong class="text-white">只在「需要看畫面」的地方付 vision token 的錢</strong>，而不是整支影片每秒抽一張。Call 1 規劃得準的話，每支 30 分鐘的影片大約抽 5&ndash;8 張 frame 就夠。
+                這樣做的好處是<strong class="text-white">只在「需要看畫面」的地方付 vision token 的錢</strong>，省下整支影片每秒抽一張的開銷。Call 1 規劃得準的話，每支 30 分鐘的影片大約抽 5&ndash;8 張 frame 就夠。
             </p>
 
             <figure class="my-8">
@@ -297,7 +297,7 @@
             </blockquote>
 
             <p>
-                V2 最後的形態是<strong class="text-white">雲端 + 本機混合</strong>：認證、UI、queue 全在 Vercel + Firebase；實際下載與處理留在家用 IP 上。這個分工是被 YouTube 的反爬規則逼出來的，不是一開始就規劃好的。
+                V2 最後的形態是<strong class="text-white">雲端 + 本機混合</strong>：認證、UI、queue 全在 Vercel + Firebase；實際下載與處理留在家用 IP 上。這個分工是被 YouTube 的反爬規則逼出來的，事後才定下來的。
             </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
