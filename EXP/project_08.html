@@ -94,7 +94,7 @@
                     <code class="text-accent-purple bg-accent-purple/10 px-2 py-1 rounded">收集上下文 → 採取行動 → 驗證結果 → [完成 or 回到收集]</code>
                 </p>
 
-                <p class="mb-6 text-gray-400 text-sm">卡住的地方幾乎都來自錯誤的上下文，或缺乏驗證與撤回機制——模型聰明程度通常不是瓶頸。理解系統，最好的方式是將其拆分為六層：</p>
+                <p class="mb-6 text-gray-400 text-sm">卡住的地方幾乎都來自錯誤的上下文，或缺乏驗證與撤回機制。理解系統，最好的方式是將其拆分為六層：</p>
 
                 <div class="w-full overflow-x-auto mb-6">
                     <table class="w-full text-left border-collapse min-w-[600px]">
@@ -150,7 +150,7 @@
                     </div>
                     <div class="bg-white/5 p-5 rounded-xl border-l-2 border-accent-purple/50">
                         <strong class="text-white block mb-2 font-mono text-sm"><i class="fas fa-plug text-accent-purple mr-2"></i>Tools & MCP</strong>
-                        <p class="text-sm text-gray-400 mb-2">賦予 Claude 存取外部系統的能力。</p>
+                        <p class="text-sm text-gray-400 mb-2">讓 Claude 能存取外部系統。</p>
                         <p class="text-xs text-red-400 mb-0"><i class="fas fa-times-circle mr-1"></i> 典型誤用：接太多 Server 擠爆上下文。</p>
                     </div>
                     <div class="bg-white/5 p-5 rounded-xl border-l-2 border-accent-purple/50">
@@ -189,7 +189,7 @@
                     </p>
                     <ul class="list-none pl-0 space-y-2 text-sm text-gray-400 m-0">
                         <li class="flex items-start gap-2"><i class="fas fa-check text-green-400 mt-1 shrink-0"></i><span>在 <code>CLAUDE.md</code> 明確寫入 <code>Compact Instructions</code>（規定壓縮時必須保留架構決策、修改檔案等）。</span></li>
-                        <li class="flex items-start gap-2"><i class="fas fa-check text-green-400 mt-1 shrink-0"></i><span><strong class="text-white">更主動的方案：</strong>切換複雜會話前，讓 Claude 寫一份 <code>HANDOFF.md</code>（記錄進展、走通的路、死路與下一步）。新實例只需讀取此檔案即可無縫接軌。</span></li>
+                        <li class="flex items-start gap-2"><i class="fas fa-check text-green-400 mt-1 shrink-0"></i><span><strong class="text-white">更主動的方案：</strong>切換複雜會話前，讓 Claude 寫一份 <code>HANDOFF.md</code>（記錄進展、走通的路、死路與下一步）。新實例只需讀取此檔案就能接軌。</span></li>
                     </ul>
                 </div>
             </section>
