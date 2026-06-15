@@ -186,25 +186,24 @@
                 Beyond the way it communicates, the technical implementation is worth a look too. I pulled up the page&rsquo;s source code, and a few traits happen to confirm the observations above.
             </p>
 
-            <h4 class="text-lg font-bold text-gray-100 mt-10 mb-3">1. Catch-All Routing</h4>
-            <p>
-                I tried five URLs any original forum is bound to have&mdash;the homepage, a board, the latest threads, a specific post, and someone&rsquo;s profile page&mdash;and the responses came back identical down to the byte, all <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">9956 bytes</code>. Whatever URL you hit, the server returns the same page. The original data has not vanished; a single rule that swallows every path routes them all to this one page.
-            </p>
-
-            <h4 class="text-lg font-bold text-gray-100 mt-10 mb-3">2. Edge Deployment</h4>
-            <p>
-                The footer carries Cloudflare&rsquo;s detection script, with every request handled in real time at the edge. Combined with &ldquo;every URL returns the same page, plus a dedicated <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">/api/leave</code> for comments,&rdquo; this most closely resembles code running on a Cloudflare edge node (the Workers or Pages Functions sort). I knocked on <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">/api/leave</code> with a GET and got back <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">405 Method Not Allowed</code>: this window only accepts comments coming in via POST, and reads nothing back out.
-            </p>
-
-            <h4 class="text-lg font-bold text-gray-100 mt-10 mb-3">3. Honeypot Anti-Spam</h4>
-            <p>
-                A &ldquo;Company&rdquo; field in the form is pushed off-screen by CSS, invisible to real people. Bots that auto-fill ads will fill it in, and the backend uses whether this field is filled to identify and filter them out. The trick is called a honeypot. That line in the screenshot, &ldquo;Company (please leave blank),&rdquo; is a decoy label written for the bots.
-            </p>
-
-            <h4 class="text-lg font-bold text-gray-100 mt-10 mb-3">4. A Complete Design Spec</h4>
-            <p>
-                The CSS comments preserve traces of a full design spec: a color palette matched to its own brand red, accessibility contrast, an input font size of at least 16px &ldquo;to avoid iOS focus auto-zoom,&rdquo; tap targets of at least 48px. And these lines, copied here verbatim: &ldquo;Visual direction §5: a small lamp still lit in the dead of night,&rdquo; &ldquo;the spacing between the six questions should be wide enough for each to be gazed at on its own,&rdquo; &ldquo;the main-site line in the footer: a quiet side door.&rdquo; Even how much blank space to leave between each question, so you would gaze at them one by one, was numbered and written into a design document.
-            </p>
+            <div class="space-y-5 mt-8">
+                <div class="bg-white/5 p-5 rounded-xl border-l-4 border-accent-purple/50">
+                    <strong class="text-white flex items-center gap-2 mb-2"><i class="fas fa-route text-accent-purple shrink-0"></i> 1. Catch-All Routing</strong>
+                    <p class="text-sm text-gray-400 m-0 leading-relaxed">I tried five URLs any original forum is bound to have&mdash;the homepage, a board, the latest threads, a specific post, and someone&rsquo;s profile page&mdash;and the responses came back identical down to the byte, all <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">9956 bytes</code>. Whatever URL you hit, the server returns the same page. The original data has not vanished; a single rule that swallows every path routes them all to this one page.</p>
+                </div>
+                <div class="bg-white/5 p-5 rounded-xl border-l-4 border-accent-purple/50">
+                    <strong class="text-white flex items-center gap-2 mb-2"><i class="fas fa-cloud text-accent-purple shrink-0"></i> 2. Edge Deployment</strong>
+                    <p class="text-sm text-gray-400 m-0 leading-relaxed">The footer carries Cloudflare&rsquo;s detection script, with every request handled in real time at the edge. Combined with &ldquo;every URL returns the same page, plus a dedicated <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">/api/leave</code> for comments,&rdquo; this most closely resembles code running on a Cloudflare edge node (the Workers or Pages Functions sort). I knocked on <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">/api/leave</code> with a GET and got back <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">405 Method Not Allowed</code>: this window only accepts comments coming in via POST, and reads nothing back out.</p>
+                </div>
+                <div class="bg-white/5 p-5 rounded-xl border-l-4 border-accent-purple/50">
+                    <strong class="text-white flex items-center gap-2 mb-2"><i class="fas fa-shield-halved text-accent-purple shrink-0"></i> 3. Honeypot Anti-Spam</strong>
+                    <p class="text-sm text-gray-400 m-0 leading-relaxed">A &ldquo;Company&rdquo; field in the form is pushed off-screen by CSS, invisible to real people. Bots that auto-fill ads will fill it in, and the backend uses whether this field is filled to identify and filter them out. The trick is called a honeypot. That line in the screenshot, &ldquo;Company (please leave blank),&rdquo; is a decoy label written for the bots.</p>
+                </div>
+                <div class="bg-white/5 p-5 rounded-xl border-l-4 border-accent-purple/50">
+                    <strong class="text-white flex items-center gap-2 mb-2"><i class="fas fa-compass-drafting text-accent-purple shrink-0"></i> 4. A Complete Design Spec</strong>
+                    <p class="text-sm text-gray-400 m-0 leading-relaxed">The CSS comments preserve traces of a full design spec: a color palette matched to its own brand red, accessibility contrast, an input font size of at least 16px &ldquo;to avoid iOS focus auto-zoom,&rdquo; tap targets of at least 48px. And these lines, copied here verbatim: &ldquo;Visual direction §5: a small lamp still lit in the dead of night,&rdquo; &ldquo;the spacing between the six questions should be wide enough for each to be gazed at on its own,&rdquo; &ldquo;the main-site line in the footer: a quiet side door.&rdquo; Even how much blank space to leave between each question, so you would gaze at them one by one, was numbered and written into a design document.</p>
+                </div>
+            </div>
 
             <p class="mt-10">
                 Stacked together, these four make up a fully planned design&mdash;from the catch-all routing and bot filtering to the spacing of every gaze, each detail handled with care.

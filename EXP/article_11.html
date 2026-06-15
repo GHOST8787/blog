@@ -59,7 +59,7 @@
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
             <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
-                我平常會看一個匿名的社群論壇。某天點進去，整個論壇不見了&mdash;&mdash;看板、討論串全部進不去，首頁被換成一張頁面：一句「沈澱、喘息中」，底下八個問題、一個留言框，最後一行小字連回它的主站。使用者無法再瀏覽原本的內容，所有入口都被導向同一份問卷式的頁面。讓我在意的，是它選擇收掉自己的這個方式。
+                我平常會看一個匿名的社群論壇。某天點進去，整個論壇不見了&mdash;&mdash;看板、討論串全部進不去，首頁被換成一張頁：一句「沈澱、喘息中」，底下八個問題、一個留言框，最後一行小字連回主站。原本的內容全部讀不到，每個入口都被導去同一份問卷。讓我在意的，是它收掉自己的這個方式。
             </p>
 
             <p class="mb-6">它留下的八個問題，原話大概是這樣：</p>
@@ -88,7 +88,7 @@
                 <p class="text-gray-300 m-0">第二題：一個地方「一直都在」，你覺得是預設值，還是成本？</p>
             </div>
             <p>
-                一個東西一直都在的時候，沒有人會去想它為什麼在；等它不在了，有需要的人會去找下一個。東西大多帶有替代性，而替代品的價值，是在被需要的當下才被選擇，不需要使用者預先承諾去維持。所以回頭問使用者「我一直都在，你覺得是預設值還是成本」，這道題本身就有點微妙。
+                一個東西一直都在的時候，沒人會去想它為什麼在；等它不在了，有需要的人自然會去找下一個。多數東西都有替代性。替代品的價值，在被需要的當下才被選擇，不需要使用者預先承諾去維持。所以回頭問使用者「我一直都在，你覺得是預設值還是成本」，這道題本身就有點微妙。
             </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
@@ -101,7 +101,7 @@
                 這問題讓我想到 Wootalk，一個匿名隨機配對的聊天網站。
             </p>
             <p>
-                它的運作方式是這樣：創辦人說過，這是他閒暇時做的，本來只想弄一個「24 小時都找得到人聊天」的地方，到今天都沒有商業化。它完全免費、不用註冊，頁面上沒有廣告，也沒有把使用者的對話數據拿去賣；伺服器從比較貴的雲端搬到便宜很多的主機，把成本壓下去，就這樣一直開著。它活下去的方式，是繼續開著、繼續有人用。
+                它的來歷大概是這樣：創辦人說過，這是他閒暇做的，本來只想弄一個「24 小時都找得到人聊天」的地方，到今天都沒商業化。免費、免註冊、沒有廣告，也沒把使用者的對話拿去賣；伺服器從較貴的雲端搬去便宜很多的主機，成本壓下來，就這樣一直開著。它活下去的方式很簡單：繼續開著，繼續有人用。
             </p>
             <p>
                 這說明一件事：一個幾乎不收費的地方，照樣能年復一年地開下去。一個平台要不要賺、賺不賺得到，屬於經營者的選擇與本事。回到那道題的設計&mdash;&mdash;有商機的時候，經營者通常不會把它交給使用者一起想；沒有商機的時候，把它描述成一種犧牲或奉獻，會把討論從經營策略，帶往情感認同的方向。把一個經營者自己的選擇，包裝成一道讓使用者來掂量的題目，是這道題真正的問題。
@@ -179,25 +179,24 @@
                 除了溝通方式，技術上的實作也值得看。我把這張頁面的原始碼翻出來，幾項特徵剛好印證了上面的觀察。
             </p>
 
-            <h4 class="text-lg font-bold text-gray-100 mt-10 mb-3">一、全站攔截（catch-all routing）</h4>
-            <p>
-                我試了五個原論壇一定會有的網址&mdash;&mdash;首頁、看板、最新討論、某篇文章、某個人的個人頁&mdash;&mdash;回來的內容大小到位元組都一樣，都是 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">9956 bytes</code>。不管打哪個網址，伺服器都回同一張頁面。原本的資料沒有消失，被一道吃掉所有路徑的規則統一導向這張頁。
-            </p>
-
-            <h4 class="text-lg font-bold text-gray-100 mt-10 mb-3">二、邊緣運算部署</h4>
-            <p>
-                頁尾掛著 Cloudflare 的偵測程式，每個請求即時回源。配上「所有網址回同一頁，另有一個專收留言的 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">/api/leave</code>」，它最接近一支跑在 Cloudflare 邊緣節點上的程式（Workers 或 Pages Functions 那一類）。我用 GET 去敲 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">/api/leave</code>，回 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">405 Method Not Allowed</code>：這個窗口只收 POST 進去的留言，讀不出東西來。
-            </p>
-
-            <h4 class="text-lg font-bold text-gray-100 mt-10 mb-3">三、Honeypot 反垃圾機制</h4>
-            <p>
-                表單裡的「公司」欄位被 CSS 推到畫面外，真人看不到。自動灌廣告的程式會把它填上，後端就用這格有沒有被填，來辨識並過濾機器人。這招叫 honeypot，蜜罐。截圖裡那句「公司（請留空）」，是寫給機器人看的誘餌標籤。
-            </p>
-
-            <h4 class="text-lg font-bold text-gray-100 mt-10 mb-3">四、完整的設計規格</h4>
-            <p>
-                CSS 註解裡留著一整套設計規格的痕跡：色票對應它自家的品牌紅、做了無障礙對比、輸入框字級至少 16px「避免 iOS 聚焦自動縮放」、按鈕點擊區至少 48px。還有這幾句，原封不動抄在這裡：「視覺方向 §5：深夜裡還亮著的一盞小燈」「六題之間的間距要大到讓每一題可以單獨被凝視」「頁尾主站一行：一扇安靜的側門」。連每道問題之間要留多大空白、好讓你逐題凝視，都被編號、寫進一份設計文件。
-            </p>
+            <div class="space-y-5 mt-8">
+                <div class="bg-white/5 p-5 rounded-xl border-l-4 border-accent-purple/50">
+                    <strong class="text-white flex items-center gap-2 mb-2"><i class="fas fa-route text-accent-purple shrink-0"></i> 一、全站攔截（catch-all routing）</strong>
+                    <p class="text-sm text-gray-400 m-0 leading-relaxed">我試了五個原論壇一定會有的網址&mdash;&mdash;首頁、看板、最新討論、某篇文章、某個人的個人頁&mdash;&mdash;回來的內容大小到位元組都一樣，都是 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">9956 bytes</code>。不管打哪個網址，伺服器都回同一張頁面。原本的資料沒有消失，被一道吃掉所有路徑的規則統一導向這張頁。</p>
+                </div>
+                <div class="bg-white/5 p-5 rounded-xl border-l-4 border-accent-purple/50">
+                    <strong class="text-white flex items-center gap-2 mb-2"><i class="fas fa-cloud text-accent-purple shrink-0"></i> 二、邊緣運算部署</strong>
+                    <p class="text-sm text-gray-400 m-0 leading-relaxed">頁尾掛著 Cloudflare 的偵測程式，每個請求即時回源。配上「所有網址回同一頁，另有一個專收留言的 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">/api/leave</code>」，它最接近一支跑在 Cloudflare 邊緣節點上的程式（Workers 或 Pages Functions 那一類）。我用 GET 去敲 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">/api/leave</code>，回 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">405 Method Not Allowed</code>：這個窗口只收 POST 進去的留言，讀不出東西來。</p>
+                </div>
+                <div class="bg-white/5 p-5 rounded-xl border-l-4 border-accent-purple/50">
+                    <strong class="text-white flex items-center gap-2 mb-2"><i class="fas fa-shield-halved text-accent-purple shrink-0"></i> 三、Honeypot 反垃圾機制</strong>
+                    <p class="text-sm text-gray-400 m-0 leading-relaxed">表單裡的「公司」欄位被 CSS 推到畫面外，真人看不到。自動灌廣告的程式會把它填上，後端就用這格有沒有被填，來辨識並過濾機器人。這招叫 honeypot，蜜罐。截圖裡那句「公司（請留空）」，是寫給機器人看的誘餌標籤。</p>
+                </div>
+                <div class="bg-white/5 p-5 rounded-xl border-l-4 border-accent-purple/50">
+                    <strong class="text-white flex items-center gap-2 mb-2"><i class="fas fa-compass-drafting text-accent-purple shrink-0"></i> 四、完整的設計規格</strong>
+                    <p class="text-sm text-gray-400 m-0 leading-relaxed">CSS 註解裡留著一整套設計規格的痕跡：色票對應它自家的品牌紅、做了無障礙對比、輸入框字級至少 16px「避免 iOS 聚焦自動縮放」、按鈕點擊區至少 48px。還有這幾句，原封不動抄在這裡：「視覺方向 §5：深夜裡還亮著的一盞小燈」「六題之間的間距要大到讓每一題可以單獨被凝視」「頁尾主站一行：一扇安靜的側門」。連每道問題之間要留多大空白、好讓你逐題凝視，都被編號、寫進一份設計文件。</p>
+                </div>
+            </div>
 
             <p class="mt-10">
                 這四項疊在一起，是一份完整規劃過的設計成果&mdash;&mdash;從全站攔截、機器人過濾，到每一處凝視間距，都被仔細處理過。
