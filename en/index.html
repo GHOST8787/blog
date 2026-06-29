@@ -238,12 +238,12 @@
                         <div class="text-[11px] text-gray-400 mt-1">Mindset &amp; thinking</div>
                     </div>
                     <div class="stagger-item border border-white/5 hover:border-accent-purple/40 rounded-2xl p-4 transition-colors">
-                        <div data-stat-counter data-target="14" class="text-3xl font-bold text-accent-purple font-mono">0</div>
+                        <div data-stat-counter data-stat="projects" data-target="14" class="text-3xl font-bold text-accent-purple font-mono">0</div>
                         <div class="text-[10px] text-gray-500 uppercase tracking-wider mt-2">Projects</div>
                         <div class="text-[11px] text-gray-400 mt-1">Tech &amp; development</div>
                     </div>
                     <div class="stagger-item border border-white/5 hover:border-accent-purple/40 rounded-2xl p-4 transition-colors">
-                        <div data-stat-counter data-target="3" class="text-3xl font-bold text-accent-purple font-mono">0</div>
+                        <div data-stat-counter data-stat="active" data-target="3" class="text-3xl font-bold text-accent-purple font-mono">0</div>
                         <div class="text-[10px] text-gray-500 uppercase tracking-wider mt-2">Active</div>
                         <div class="text-[11px] text-gray-400 mt-1">Active this month</div>
                     </div>
@@ -344,7 +344,28 @@
                             if (c) c.innerHTML = '<div class="text-gray-500 text-sm text-center py-4">Failed to load. <a href="articles.html" class="text-accent-purple hover:underline">See articles page</a></div>';
                         });
 
-                    articlesReady.finally(function () {
+                    // 3d) Fetch projects.json — 動態算 Projects 篇數
+                    var projectsReady = fetch(rootPath + 'projects.json')
+                        .then(function (r) { return r.ok ? r.json() : []; })
+                        .then(function (list) {
+                            if (!Array.isArray(list)) return;
+                            var projEl = document.querySelector('[data-stat-counter][data-stat="projects"]');
+                            if (projEl) projEl.setAttribute('data-target', String(list.length));
+                        })
+                        .catch(function () {});
+
+                    // 3e) Fetch stats.json —「本月持續開發」手動維護的數字（同目錄 en/stats.json）
+                    var statsReady = fetch(rootPath + 'stats.json')
+                        .then(function (r) { return r.ok ? r.json() : null; })
+                        .then(function (s) {
+                            if (!s || typeof s.activeThisMonth !== 'number') return;
+                            var actEl = document.querySelector('[data-stat-counter][data-stat="active"]');
+                            if (actEl) actEl.setAttribute('data-target', String(s.activeThisMonth));
+                        })
+                        .catch(function () {});
+
+                    // 4) Counter observer — 等 articles + projects + stats 都抽完才觸發，確保 data-target 已更新
+                    Promise.all([articlesReady, projectsReady, statsReady]).finally(function () {
                         var counterObs = new IntersectionObserver(function (entries) {
                             entries.forEach(function (e) {
                                 if (e.isIntersecting) {
@@ -685,7 +706,7 @@
       const stage = document.getElementById('certCfStage');
       if(!track || !stage) return;
       const n = CERTS.length;
-      let active = 0, paused = false;
+      let active = 0, paused = false, dragging = false;
       CERTS.forEach(c=>{ const el=document.createElement('div'); el.className='cert-cf-item'; el.innerHTML=cardHTML(c); track.appendChild(el); });
       const items=[...track.children];
       function layout(){ items.forEach((el,i)=>{ let off=i-active; if(off>n/2)off-=n; if(off<-n/2)off+=n; const abs=Math.abs(off); const s=Math.sign(off);
@@ -707,12 +728,15 @@
         el.style.opacity=op; el.style.zIndex=100-abs; el.style.filter=`brightness(${bright})`;
         el.style.pointerEvents=abs===0?'auto':'none'; }); }
       function go(d){ active=(active+d+n)%n; layout(); }
-      setInterval(()=>{ if(!paused) go(1); }, 5500);
+      setInterval(()=>{ if(!paused && !dragging) go(1); }, 5500);
       stage.addEventListener('mouseenter',()=>paused=true);
       stage.addEventListener('mouseleave',()=>paused=false);
       let dx=null;
-      stage.addEventListener('pointerdown',e=>{ dx=e.clientX; stage.classList.add('grabbing'); });
-      window.addEventListener('pointerup',e=>{ if(dx===null)return; const d=e.clientX-dx; if(Math.abs(d)>40)go(d<0?1:-1); dx=null; stage.classList.remove('grabbing'); });
+      stage.addEventListener('pointerdown',e=>{ dx=e.clientX; dragging=true; stage.classList.add('grabbing'); });
+      window.addEventListener('pointermove',e=>{ if(!dragging)return; const d=e.clientX-dx; track.style.transform='translateX('+(d*0.5)+'px)'; });
+      function endCertDrag(e){ if(!dragging)return; dragging=false; const up=(e&&typeof e.clientX==='number')?e.clientX:dx; const d=up-dx; track.style.transform=''; if(Math.abs(d)>40)go(d<0?1:-1); dx=null; stage.classList.remove('grabbing'); }
+      window.addEventListener('pointerup',endCertDrag);
+      window.addEventListener('pointercancel',endCertDrag);
       layout();
     })();
     </script>
