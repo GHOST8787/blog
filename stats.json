@@ -1,0 +1,5 @@
+{
+  "_note": "首頁 Active 那格『本月持續開發』的數字，手動維護。要更新就改 activeThisMonth。前端 index.html 會讀這個值。",
+  "activeThisMonth": 18,
+  "updatedAt": "2026-06-29"
+}
