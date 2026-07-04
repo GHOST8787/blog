@@ -97,16 +97,16 @@
             </div>
 
             <p>
-                研究者分析了螢幕錄影後發現原因：多出來的時間花在<strong class="text-white">撰寫提示詞、審查 AI 輸出、以及等待 AI 生成</strong>。最值得注意的是：這些開發者在實驗結束後，<strong class="text-white">仍然相信自己快了 20%</strong>。主觀感受和客觀數據之間，存在將近 40 個百分點的落差。
+                研究者分析了螢幕錄影後發現原因：多出來的時間花在<strong class="text-white">撰寫提示詞、審查 AI 輸出、以及等待 AI 生成</strong>。最反直覺的一點在後面。這些開發者做完實驗，<strong class="text-white">仍然相信自己快了 20%</strong>，主觀感受和客觀數據之間，差了將近 40 個百分點。
             </p>
 
             <p>
-                這跟我自己的經驗吻合。我之前重構一個開源專案的時候，讓 AI 自由發揮的結果是：功能過度擴張、渲染層解耦失敗、控制流被破壞——修了 A 壞了 B 的無窮迴圈。最後我強制收回全局修改權限，改成只讓 AI 執行明確受限的子任務，速度反而穩定下來。<strong class="text-white">感覺快和實際快是兩件事。</strong>
+                這跟我自己的經驗吻合。我之前重構一個開源專案的時候，讓 AI 自由發揮的結果是：功能過度擴張、渲染層解耦失敗、控制流被破壞，變成修了 A 壞了 B 的無窮迴圈。最後我強制收回全局修改權限，改成只讓 AI 執行明確受限的子任務，速度反而穩定下來。<strong class="text-white">體感的快，在實測裡會被審查與等待的時間抵銷。</strong>
             </p>
 
             <div class="bg-white/5 p-5 rounded-xl border border-white/10 my-8 text-sm text-gray-400">
                 <p class="m-0">
-                    <strong class="text-white">補充：</strong>MIT Sloan 聯合 Microsoft 與 Accenture 的研究指出，AI 對初級工程師的產出提升約 27–39%，但對資深工程師僅 8–13%。你越熟悉自己的領域，AI 能給的邊際效益越低。這符合直覺——<strong class="text-white">AI 擅長填補知識差距，但無法替代已經存在的深度經驗。</strong>
+                    <strong class="text-white">補充：</strong>MIT Sloan 聯合 Microsoft 與 Accenture 的研究指出，AI 對初級工程師的產出提升約 27–39%，但對資深工程師僅 8–13%。你越熟悉自己的領域，AI 能給的邊際效益越低。這符合直覺。<strong class="text-white">AI 填補知識差距的效果明顯；面對已經存在的深度經驗，它的邊際貢獻很低。</strong>
                 </p>
                 <p class="text-xs text-gray-600 mt-3 mb-0 font-mono">
                     來源：<a href="https://mitsloan.mit.edu/ideas-made-to-matter/how-generative-ai-affects-highly-skilled-workers" target="_blank" class="text-accent-purple/70 hover:text-accent-purple transition-colors">MIT Sloan Management Review (2026.01)</a>
@@ -118,7 +118,7 @@
             </h3>
 
             <p>
-                AI 回答問題的速度極快，給出的解釋通常也結構清晰。但我在使用過程中注意到一個模式：用 AI 快速理解一個概念之後，遇到需要實際應用的場景時，那個理解經常是空的。
+                AI 回答問題的速度極快，解釋通常也結構清晰。但我注意到一個模式：用 AI 快速理解一個概念之後，真正要應用的時候，那個理解經常是空的。
             </p>
 
             <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 shadow-xl my-8">
@@ -136,7 +136,7 @@
             </div>
 
             <p>
-                這在學術上叫「理解幻覺 (Illusion of Understanding)」。AI 的濃縮版答案跳過了建構心智模型的過程——你接收到的是結論，不是推導。短期內看起來像懂了，但那個知識沒有根，遇到變化就站不住。
+                這在學術上叫「理解幻覺 (Illusion of Understanding)」。AI 的濃縮版答案直接給你結論，跳過了建構心智模型的過程。短期內看起來像懂了，但那個知識沒有根，遇到變化就站不住。
             </p>
             <p>
                 <strong class="text-white">AI 真正危險的地方在於：它讓你覺得自己懂了。</strong>直到你真的需要用到那個知識，空洞才會浮現。我目前的做法是：用 AI 建立初步輪廓，然後自己去驗證和重建一次。多一步，但那一步是真實的。
@@ -147,13 +147,13 @@
             </h3>
 
             <p>
-                每個 LLM 都有它被期待成為的樣子。大廠的模型是為了輔助自家產品生態而設計的，不是為了你的特定場景量身打造。
+                每個 LLM 都有它被期待成為的樣子。大廠的模型是為了輔助自家產品生態而設計的，針對你的特定場景做的優化很有限。
             </p>
             <p>
-                這對獨立開發者和小團隊來說是一個結構性限制：<strong class="text-white">你辛苦累積的核心競爭力——對使用者的理解、領域裡說不清楚但很重要的判斷力——在通用模型裡根本不存在。</strong>你的 know-how 是你和競爭者之間的差距，但那恰恰是 AI 給不了你的。它能幫你更快地寫出程式碼，但無法告訴你該寫什麼。
+                這對獨立開發者和小團隊來說是一個結構性限制：<strong class="text-white">你辛苦累積的核心競爭力——對使用者的理解、領域裡說不清楚但很重要的判斷力——在通用模型裡根本不存在。</strong>你的 know-how 是你和競爭者之間的差距，而通用模型裡沒有這塊。它能加速你把程式碼寫出來；至於該寫什麼，得你自己決定。
             </p>
             <p>
-                我自己在做 side project 的時候，AI 在「怎麼做」這一層確實有用。但「做什麼」和「為什麼做」，這兩個對產品最關鍵的問題，AI 的回答經常是漂亮但空洞的泛論。最終的決策判斷，還是得靠你自己對領域的理解。
+                我自己在做 side project 的時候，AI 在「怎麼做」這一層確實有用。至於「做什麼」和「為什麼做」這兩個對產品最關鍵的問題，AI 給的多半是泛論。最終的決策判斷，來自你對領域的理解。
             </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
@@ -171,7 +171,7 @@
             </ul>
 
             <p>
-                這些問題不是微調參數就能解決的，它們涉及模型架構層面的限制。<strong class="text-white">目前文生影片產出的是「氛圍」，不是「內容」。</strong>如果你的目的是快速製造視覺素材填充版面，它可以用。但如果你期待它取代影片製作的核心流程，目前還差得遠。
+                這些問題涉及模型架構層面的限制，微調參數解決不了。<strong class="text-white">目前文生影片產出的是「氛圍」層級的東西：畫面對了，內容承載不了。</strong>拿來快速製造視覺素材填充版面，堪用；要它取代影片製作的核心流程，目前還差得遠。
             </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
@@ -188,7 +188,7 @@
                         <i class="fas fa-search text-accent-purple"></i> 快速建立輪廓
                     </h4>
                     <p class="text-sm text-gray-400 leading-relaxed mt-2 mb-0">
-                        碰到不熟的概念或技術時，用 AI 快速取得結構化的初步理解。但這只是起點，不是終點——後面還是要自己驗證。
+                        碰到不熟的概念或技術時，用 AI 快速取得結構化的初步理解。這是起點，後面還是要自己驗證。
                     </p>
                 </div>
                 <div class="bg-white/5 p-6 rounded-xl border border-white/10 hover:border-accent-purple/30 transition-colors">
@@ -218,7 +218,7 @@
             </div>
 
             <p>
-                共通點是：<strong class="text-white">AI 是加速器，不是替代品。</strong>它能壓縮「從零到六十分」的時間，但「從六十到九十分」的最後一段路，仍然需要你自己走。
+                共通點是：<strong class="text-white">AI 的角色是加速器。</strong>它能壓縮「從零到六十分」的時間；「從六十到九十分」那段路，進度條要自己推。
             </p>
 
             <hr class="border-white/10 my-12">

@@ -77,23 +77,11 @@
             </p>
 
             <div class="bg-white/5 p-6 rounded-2xl border border-white/10 mb-10 shadow-lg">
-                <ul class="space-y-4 text-gray-300 font-light m-0 pl-0 list-none">
-                    <li class="flex items-start gap-3">
-                        <i class="fas fa-microscope text-accent-purple mt-1"></i>
-                        <div><strong class="text-white">驗證 VibeCoding 生態：</strong>評估純自然語言輔助開發於實際軟體工程中的生產力轉換率與架構穩定性。</div>
-                    </li>
-                    <li class="flex items-start gap-3">
-                        <i class="fas fa-robot text-accent-purple mt-1"></i>
-                        <div><strong class="text-white">代理協作邊界測試：</strong>實機演練與自主型 AI Agent（如 Antigravity）的協作模式，並釐清權限控制與系統收斂的臨界點。</div>
-                    </li>
-                    <li class="flex items-start gap-3">
-                        <i class="fas fa-code-branch text-accent-purple mt-1"></i>
-                        <div><strong class="text-white">開源架構重構：</strong>解析長期擱置的架構瓶頸，為社群提供更具邏輯性與擴展性的底層邏輯。</div>
-                    </li>
-                    <li class="flex items-start gap-3">
-                        <i class="fas fa-chart-pie text-accent-purple mt-1"></i>
-                        <div><strong class="text-white">數據 Pipeline 實戰：</strong>完整走過非結構化數據擷取、清洗 (Data Cleaning)、狀態管理到視覺化渲染的系統流程。</div>
-                    </li>
+                <ul class="list-disc pl-5 space-y-3 text-gray-300 font-light my-0 marker:text-gray-500">
+                    <li class="pl-2"><strong class="text-white">驗證 VibeCoding 生態：</strong>評估純自然語言輔助開發於實際軟體工程中的生產力轉換率與架構穩定性。</li>
+                    <li class="pl-2"><strong class="text-white">代理協作邊界測試：</strong>實機演練與自主型 AI Agent（如 Antigravity）的協作模式，並釐清權限控制與系統收斂的臨界點。</li>
+                    <li class="pl-2"><strong class="text-white">開源架構重構：</strong>解析長期擱置的架構瓶頸，為社群提供更具邏輯性與擴展性的底層邏輯。</li>
+                    <li class="pl-2"><strong class="text-white">數據 Pipeline 實戰：</strong>完整走過非結構化數據擷取、清洗 (Data Cleaning)、狀態管理到視覺化渲染的系統流程。</li>
                 </ul>
             </div>
 
@@ -115,7 +103,7 @@
             </ul>
 
             <p>
-                依賴單一且脆弱的分隔符號（如空格）處理高維度文本，註定導致系統在極端條件下崩潰。最終解決方案為重構底層解析層，引入嚴密的 Tab 區隔機制，並建立針對邊界條件的壓力測試環境。
+                依賴單一且脆弱的分隔符號（如空格）處理高維度文本，註定在極端條件下出錯：當訊息內容本身就帶空格（一句「我 等等 過去」，或時間欄的「2025.08.04 星期一」），用空格切欄會把同一欄拆成好幾段，整列的時間、發話者、內容全部錯位，後面每一筆都跟著解析失敗。最終解決方案為重構底層解析層，引入嚴密的 Tab 區隔機制，並建立針對邊界條件的壓力測試環境。
             </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">

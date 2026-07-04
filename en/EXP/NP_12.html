@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / NP_12 | GHOST.ouo</title>
+    <link rel="canonical" href="https://ghost8787.github.io/blog/en/EXP/NP_12.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/NP_12.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/NP_12.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/NP_12.html">
+
+    <link rel="icon" type="image/png" href="../../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script src="../../i18n.js" defer></script>
+    <script type="module" src="../../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / NP_12 (draft)</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                Vetting AI Video Summaries:<br>
+                <span class="text-gradient text-2xl md:text-4xl">Transcript Cross-Checking and Overfit-Proof Validation</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">AI &amp; Automation</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Verification</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Prompt Engineering</span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.06.25</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
+                yt-digest turns a single YouTube link into a structured Chinese summary. When handling interviews over an hour long, the one thing most worth watching is whether the model writes things the speaker never said as if they were real. This piece records the three moves I made this round to vet the output, tightening with general rules, validating by cross-checking the transcript line by line, and confirming with cross-genre samples that the fix has no overfit, along with a concurrency bug I cleaned up on the way that would charge twice.
+            </p>
+
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">Context</div>
+                <p class="m-0">
+                    The two generations of this tool and its overall architecture are written up in <a href="project_12.html" class="text-accent-purple hover:text-white underline underline-offset-4 decoration-accent-purple/40 hover:decoration-white transition-colors">Two Generations of a YouTube Digest Tool</a>. This piece covers one thing only: when AI finishes reading an hour of content for you, how you make sure every sentence it summarizes holds up.
+                </p>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> The Problem: Swallow an Hour-Long Interview in One Go and the Model Slips in Three Places
+            </h3>
+
+            <p>
+                The test material is three long criminal-psychology interviews (60 to 75 minutes each). Feeding an entire subtitle track to the model at once, the summary runs into trouble in three places most often:
+            </p>
+
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
+                <li><strong class="text-white">Binding different topics into one chapter.</strong> For example, "the case of Japan's Boy A" and "criminal genes (the warrior gene, XYY)" are two separate topics; the model, taking the easy way, crams them into one chapter, which reads as implying causation.</li>
+                <li><strong class="text-white">Padding a chapter out of closing small talk.</strong> Chit-chat at the program's end, like "the host wants to invite them back, anecdotes from their alma mater", gets carved into a formal chapter, taking up a slot meant for substance.</li>
+                <li><strong class="text-white">Numbers and names distorting in conversion.</strong> Speech-to-text outputs Simplified Chinese first, then converts to Traditional, and proper nouns get swapped for homophone typos at this step easily.</li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Move One: Write Rules as General Principles, the First Guard Against Overfit
+            </h3>
+
+            <p>
+                The prompt used for summarizing hands the model a set of <strong class="text-white">general principles</strong>, in plain terms:
+            </p>
+
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 text-sm text-gray-300 font-light leading-relaxed space-y-3">
+                <p class="m-0"><span class="text-accent-purple font-mono mr-2">Rule 1</span>Words absent from the transcript are forbidden to invent.</p>
+                <p class="m-0"><span class="text-accent-purple font-mono mr-2">Rule 2</span>Mark doubtful names and numbers with <code class="text-accent-purple">[?]</code>, left for human confirmation.</p>
+                <p class="m-0"><span class="text-accent-purple font-mono mr-2">Rule 3</span>A relationship the speaker explicitly denies (for example, "these two things do not line up") keeps that denial in the summary.</p>
+                <p class="m-0"><span class="text-accent-purple font-mono mr-2">Rule 4</span>When generalizing, prefer fewer over padded, and leave uncertain causal links blank.</p>
+            </div>
+
+            <p>
+                Among these four, <strong class="text-white">no line writes "what the correct answer for this video is"</strong>. All of them are general rules for "what counts as honest". When the model moves to a video it has never seen, it relies on the same set of principles to keep itself in check. This is the basis of the overfit validation later: rules that hide a specific video's answers break the moment the video changes; rules that hold only general principles stand a chance at being universal.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Move Two: Cross-Check the Transcript Line by Line, the Evidence That Nothing Was Invented
+            </h3>
+
+            <p>
+                However well the rules are written, the output still goes back against the source. The method pulls every number and every quotation in the summary back to the original subtitles to find its origin. Take EP182 as an example, a few lines that match up:
+            </p>
+
+            <div class="w-full overflow-x-auto my-6">
+                <table class="w-full text-left border-collapse min-w-[560px]">
+                    <thead>
+                        <tr class="text-white font-mono text-xs uppercase tracking-wider">
+                            <th class="py-3 pr-4 border-b border-white/20 w-5/12">What the summary wrote</th>
+                            <th class="py-3 px-4 border-b border-white/20 w-2/12">Timestamp</th>
+                            <th class="py-3 pl-4 border-b border-white/20 w-5/12">Original transcript line</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 text-gray-300">Crimes of passion make up "nearly half" of all homicide cases</td>
+                            <td class="py-4 px-4 text-accent-purple font-mono">01:41</td>
+                            <td class="py-4 pl-4 text-gray-400">"Crimes of passion, within all homicide cases, are actually nearing half"</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 text-gray-300">Killing for money: NT$1.6M in gambling debt, hiring a hitman, fraudulently claiming insurance</td>
+                            <td class="py-4 px-4 text-accent-purple font-mono">&mdash;</td>
+                            <td class="py-4 pl-4 text-gray-400">"I did not kill anyone; someone else did... I gave Mr. Li a sum of money" (figures and details verifiable on replay)</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 pr-4 text-gray-300">"Crime is more like: a weak point that happens to get stepped on by society's sore spot"</td>
+                            <td class="py-4 px-4 text-accent-purple font-mono">20:37</td>
+                            <td class="py-4 pl-4 text-gray-400">"Crime is more like, if you have certain weak points that happen to get stepped on by society's sore spot, then crime breaks out"</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                Every quotation carries the original timestamp, and clicking it jumps straight to the corresponding second on YouTube. The reader can check it themselves.
+            </p>
+
+            <p>
+                This cross-check serves a more important purpose: <strong class="text-white">it honestly flags where human confirmation is still needed</strong>. In the same batch, National Chung Cheng University came out transliterated and marked "Chung Cheng [?] University", and the sociologist Durkheim was marked "&#22294;&#29246;&#24178;[?]" &mdash; these <code class="text-accent-purple">[?]</code> marks are the model saying "I guessed this name from the sound, please check it". There was also a homophone typo: "&#37293;&#25463;" (the 2014 Taipei Metro attack) was output by speech-to-text first as Simplified "&#37073;&#26480;", converted to the homophone "&#37293;&#20667;", caught during the transcript cross-check, and changed back to "&#37293;&#25463;". The value of validation lies in laying these spots out into a list that can be checked and fixed.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Move Three: Swap in a Completely Different Kind of Video, the Real Overfit Test
+            </h3>
+
+            <p>
+                Overfit, in plain terms, means <strong class="text-white">your rules work only on the few videos you tuned them on and fail the moment you switch</strong>. If I tuned the rules over and over on these three crime interviews until the output looked clean, that would likely just write these three episodes' answers into the rules indirectly, looking general while reciting answers.
+            </p>
+
+            <p>
+                The test runs the same rules on a video as different in content as it gets. I picked an English VTuber's casual gossip, its topic, tone, and language all far from academic crime interviews. The result held: the summary invented no content, doubtful foreign names got marked <code class="text-accent-purple">[?]</code> per the rule, and the guesses stayed inside the question marks.
+            </p>
+
+            <blockquote class="border-l-2 border-accent-purple pl-6 my-8 text-gray-300 italic">
+                The same set of general rules holds up across two extremes of content, the "long criminal-psychology interview" and the "English VTuber gossip". What it tightens is the common flaw of "the model loving to write guesses as fact", independent of any one video's content. This is the evidence that the rules have no overfit.
+            </blockquote>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Move Four: A Concurrency Bug That Charges Twice
+            </h3>
+
+            <p>
+                Beyond vetting, this round also cleaned up a money pit hidden in the background scheduler. The daemon that processes videos sweeps the queue every 5 minutes, picking up queued videos to run. The trouble: rerunning three long videos at once, the whole batch can run past 5 minutes; the next sweep then starts and picks up <strong class="text-white">the same video that has yet to finish and still reads as queued</strong>, so the same video gets processed twice and pays twice for download and AI.
+            </p>
+
+            <p>
+                The fix is a reentrancy lock: while the previous round is still running, this sweep skips straight away.
+            </p>
+
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre class="m-0"><code>let isProcessingQueue = false;
+
+async function processQueuedVideos() {
+  if (isProcessingQueue) {
+    log("Previous round still running, skipping this sweep");
+    return;
+  }
+  isProcessingQueue = true;
+  try {
+    await processQueuedVideosInner();   // the real processing logic
+  } finally {
+    isProcessingQueue = false;
+  }
+}</code></pre>
+            </div>
+
+            <p>
+                The cost is one flag. What it saves is a repeated download per long video plus the cost of two LLM calls. This bug first surfaced when "rerunning three at once" had one long video trigger it, wasting one processing fee before it was caught.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Result: EP182 Chapter Reorganization, Before and After
+            </h3>
+
+            <p>
+                Applying the rules back to EP182 and rerunning once, the summary's chapter organization grew clearly cleaner. Below is the chapter comparison of the same video, old version against new:
+            </p>
+
+            <div class="w-full overflow-x-auto my-6">
+                <table class="w-full text-left border-collapse min-w-[640px]">
+                    <thead>
+                        <tr class="text-white font-mono text-xs uppercase tracking-wider">
+                            <th class="py-3 pr-4 border-b border-white/20 w-1/12">Ch</th>
+                            <th class="py-3 px-4 border-b border-white/20 w-5/12">Old</th>
+                            <th class="py-3 pl-4 border-b border-white/20 w-6/12">New</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 pr-4 font-mono text-gray-500">1</td>
+                            <td class="py-3 px-4 text-gray-300">Criminal motives: passion, revenge, money</td>
+                            <td class="py-3 pl-4 text-gray-300">Three major types of criminal motive: passion, revenge, money</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 pr-4 font-mono text-gray-500">2</td>
+                            <td class="py-3 px-4 text-gray-300">Random crime and copycats: an analysis of the Cheng Chieh case</td>
+                            <td class="py-3 pl-4 text-gray-300">Random crime and the <strong class="text-white">copycat effect</strong>: the Cheng Chieh case as an example</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 pr-4 font-mono text-gray-500">3</td>
+                            <td class="py-3 px-4 text-gray-300">Pathological roots: <strong class="text-white">the Japan Boy A case and criminal genes</strong></td>
+                            <td class="py-3 pl-4 text-gray-300"><strong class="text-white">Criminal genes and innate tendencies</strong>: the warrior gene, XYY, killing for pleasure</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 pr-4 font-mono text-gray-500">4</td>
+                            <td class="py-3 px-4 text-gray-300">Cognitive distortion: hostility, neuroticism, and rationalization</td>
+                            <td class="py-3 pl-4 text-gray-300">Psychological traits that lead to crime: neuroticism, hostility, distorted cognition</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 pr-4 font-mono text-gray-500">5</td>
+                            <td class="py-3 px-4 text-gray-300">Restorative justice and the social cost of crime</td>
+                            <td class="py-3 pl-4 text-gray-300"><strong class="text-white">How crime is cultivated</strong>: small attempts accumulating, positive reinforcement, and a calculating mindset</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 pr-4 font-mono text-gray-500">6</td>
+                            <td class="py-3 px-4 text-gray-300">Rational calculation and the debate over human nature, good or evil</td>
+                            <td class="py-3 pl-4 text-gray-300">Restorative justice and the victim's perspective</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4 font-mono text-gray-500">7</td>
+                            <td class="py-3 px-4 text-gray-300"><strong class="text-white">Closing remarks and thoughts on the conversation</strong> (small talk)</td>
+                            <td class="py-3 pl-4 text-gray-300">Is human nature good or evil: the balance between self and others</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                Two real differences show. First, <strong class="text-white">"Japan's Boy A" and "criminal genes" came apart</strong>: the old version bound them in one chapter, while the new one places Boy A under the "copycat effect" and gives genes their own chapter, reading as two topics that each stand on their own. Second, <strong class="text-white">the ending shifts from small talk to a substantive point</strong>: the old version's final chapter was "closing remarks and thoughts on the conversation", and the new one changes it to a discussion of "whether human nature is good or evil", returning a slot to content.
+            </p>
+
+            <p>
+                An honest note here. Both versions hold up at the factual level, the old version also wrote "killing for money" correctly and kept the qualifier "XYY does not equal inevitable crime". <strong class="text-white">The focus of this round's improvement is the organization and the vetting process</strong>, turning "the AI made nothing up" from a self-claim into a list that can be replayed and verified line by line.
+            </p>
+
+            <hr class="border-white/10 my-12">
+
+            <div class="mt-8 text-sm font-mono text-gray-500 border-l-2 border-accent-purple pl-4">
+                The point of validation is to know where the output holds up and where to mark a question mark. General rules, transcript cross-checking, and cross-genre samples, the three together, make "this summary stays faithful to the source" a fact that can be checked.
+            </div>
+
+            <hr class="border-white/10 my-12">
+
+            <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Links
+            </h3>
+
+            <ul class="space-y-2 text-sm text-gray-400 list-none pl-0">
+                <li>
+                    <span class="text-accent-purple mr-2">&#9679;</span>
+                    <a href="project_12.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        Two Generations of a YouTube Digest Tool (architecture overview)
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">&#9679;</span>
+                    <a href="https://yt-digest-tau.vercel.app/feed" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        yt-digest public beta
+                    </a>
+                </li>
+            </ul>
+
+            <p class="text-sm text-gray-500 font-mono mt-4">
+                Stack: Next.js 16 &middot; Firebase &middot; Vercel &middot; local worker daemon &middot; Claude Sonnet 4.6 &middot; Whisper Large v3
+            </p>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                &larr; Prev Project
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Projects
+            </a>
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                Next Project &rarr;
+            </a>
+        </div>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+</body>
+</html>

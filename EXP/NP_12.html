@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / NP_12 | GHOST.ouo</title>
+    <link rel="canonical" href="https://ghost8787.github.io/blog/EXP/NP_12.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/NP_12.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/NP_12.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/NP_12.html">
+
+    <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script src="../i18n.js" defer></script>
+    <script type="module" src="../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / NP_12 (draft)</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                替 AI 影片摘要把關：<br>
+                <span class="text-gradient text-2xl md:text-4xl">逐字稿對照與防 overfit 驗證</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">AI &amp; Automation</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Verification</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Prompt Engineering</span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.06.25</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
+                yt-digest 把一條 YouTube 連結變成一份結構化的中文整理。處理一小時以上的訪談時，最需要盯的一件事是：模型會不會把講者沒講過的東西，寫得像真的一樣。這篇紀錄這一輪替輸出把關的三個動作——用通用規則收緊、用逐字稿逐句對照驗證、用跨類型樣本確認修法沒有 overfit——以及順手修掉的一個會重複收費的併發 bug。
+            </p>
+
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">前情提要</div>
+                <p class="m-0">
+                    這個工具的兩個世代與整體架構，寫在 <a href="project_12.html" class="text-accent-purple hover:text-white underline underline-offset-4 decoration-accent-purple/40 hover:decoration-white transition-colors">YouTube 整理工具的兩個世代</a>。這篇只談一件事：當 AI 幫你讀完一小時的內容，你要怎麼確定它整理出來的每一句話都站得住。
+                </p>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 問題：一小時訪談一次吞，模型容易在三個地方滑掉
+            </h3>
+
+            <p>
+                測試素材是三集犯罪心理學的長訪談（單集 60 到 75 分鐘）。把一整支字幕一次餵給模型，整理出來的結果在三個地方最容易出狀況：
+            </p>
+
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
+                <li><strong class="text-white">把不同主題綁進同一章。</strong>例如「日本少年A 的案例」和「犯罪基因（戰士基因、XYY）」是兩個獨立主題，模型圖省事會把它們塞進同一章，讀起來像在暗示因果。</li>
+                <li><strong class="text-white">結尾用寒暄湊一章。</strong>節目尾聲的「主持人想再邀、母校趣事」這種閒聊，會被獨立成一個正式章節，佔掉一格實質內容的位置。</li>
+                <li><strong class="text-white">數字與人名在轉換時失真。</strong>語音轉文字先輸出簡體，再轉繁體，專有名詞容易在這一步被換成同音的錯字。</li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 動作一：規則寫成通用原則，這是防 overfit 的第一道
+            </h3>
+
+            <p>
+                整理用的提示詞裡，給模型的是一組<strong class="text-white">通用原則</strong>，白話講就是：
+            </p>
+
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 text-sm text-gray-300 font-light leading-relaxed space-y-3">
+                <p class="m-0"><span class="text-accent-purple font-mono mr-2">規則 1</span>逐字稿沒出現的詞，禁止自創。</p>
+                <p class="m-0"><span class="text-accent-purple font-mono mr-2">規則 2</span>人名、數字存疑就標 <code class="text-accent-purple">[?]</code>，留給人工確認。</p>
+                <p class="m-0"><span class="text-accent-purple font-mono mr-2">規則 3</span>講者明確否定的關係（例如「這兩件事對不上」），整理時要保留那個否定。</p>
+                <p class="m-0"><span class="text-accent-purple font-mono mr-2">規則 4</span>歸納寧少勿湊，沒把握的因果連結就留白。</p>
+            </div>
+
+            <p>
+                這四條裡面，<strong class="text-white">沒有任何一句寫「這支影片的正確答案是什麼」</strong>。全部都是「怎麼做才算誠實」的通則。模型換一支沒看過的影片時，靠的是同一套原則去自我約束。這一點是後面防 overfit 驗證的基礎：規則藏了特定影片的答案，換片就破功；規則只放通則，才有機會通用。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 動作二：逐字稿逐句對照，這是「沒在編」的證據
+            </h3>
+
+            <p>
+                規則寫得再好，仍要拿輸出去對原文。做法是把整理裡的每一個數字、每一句引述，拉回原始字幕找出處。以 EP182 為例，幾條對得上的內容：
+            </p>
+
+            <div class="w-full overflow-x-auto my-6">
+                <table class="w-full text-left border-collapse min-w-[560px]">
+                    <thead>
+                        <tr class="text-white font-mono text-xs uppercase tracking-wider">
+                            <th class="py-3 pr-4 border-b border-white/20 w-5/12">整理寫的</th>
+                            <th class="py-3 px-4 border-b border-white/20 w-2/12">時間戳</th>
+                            <th class="py-3 pl-4 border-b border-white/20 w-5/12">逐字稿原句</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 text-gray-300">情殺佔整體殺人案件「快要破半」</td>
+                            <td class="py-4 px-4 text-accent-purple font-mono">01:41</td>
+                            <td class="py-4 pl-4 text-gray-400">「情殺其實在整體的殺人案件裡面來講，快要破半了」</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 text-gray-300">財殺案：欠 160 萬賭債、買兇、詐領保險金</td>
+                            <td class="py-4 px-4 text-accent-purple font-mono">—</td>
+                            <td class="py-4 pl-4 text-gray-400">「我沒有殺人，是另外一個人殺的……我是給了李先生一筆錢」（數字與情節可回放查證）</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 pr-4 text-gray-300">「犯罪比較像是：弱點剛好被社會的痛腳踩到」</td>
+                            <td class="py-4 px-4 text-accent-purple font-mono">20:37</td>
+                            <td class="py-4 pl-4 text-gray-400">「犯罪比較像是一個，如果你有某一些弱點，剛好被社會的痛腳踩到，那犯罪其實就發出來了」</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                每一句引述都掛著原文時間戳，點下去直接跳到 YouTube 對應的秒數。讀的人可以自己核。
+            </p>
+
+            <p>
+                這套對照還有一個更重要的作用：<strong class="text-white">它會誠實地標出哪裡還需要人工確認</strong>。同一批整理裡，中正大學被音譯後標成「中正[?]大學」、社會學家 Durkheim 被標成「圖爾幹[?]」——這些 <code class="text-accent-purple">[?]</code> 就是模型在說「這個名字我從聲音猜的，請你查」。還有一個同音錯字：「鄭捷」（2014 北捷案）被語音轉文字先輸出成簡體「郑杰」、繁化成同音的「鄭傑」，對照逐字稿時抓出來，已改回「鄭捷」。驗證的價值，就在於把這種地方攤開來，變成一份可以查、可以修的清單。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 動作三：換一支完全不同類型的影片，這才是真正的 overfit 測試
+            </h3>
+
+            <p>
+                Overfit 用白話講，就是<strong class="text-white">你的規則只在你調過的那幾支影片上有效，換一支就失靈</strong>。如果我只拿這三集犯罪訪談反覆調規則、調到輸出漂亮，很可能只是把這三集的答案間接寫進了規則，看起來通用、其實是在背答案。
+            </p>
+
+            <p>
+                測法是找一支<strong class="text-white">內容差到極點</strong>的影片來跑同一套規則。我挑的是一支英文 VTuber 的閒聊八卦——主題、語氣、語言都跟學術犯罪訪談差很遠。結果一樣：整理沒有自創內容，存疑的外文人名照規則標上 <code class="text-accent-purple">[?]</code>，把猜測留在問號裡。
+            </p>
+
+            <blockquote class="border-l-2 border-accent-purple pl-6 my-8 text-gray-300 italic">
+                同一套通用規則，在「犯罪心理學長訪談」和「英文 VTuber 八卦」這兩種極端內容上都站得住。它收緊的是「模型愛把猜測寫成事實」這個通病，跟某一支影片的內容無關。這就是規則沒有 overfit 的證據。
+            </blockquote>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 動作四：一個會重複收費的併發 bug
+            </h3>
+
+            <p>
+                把關之外，這一輪也修掉一個藏在背景排程裡的錢坑。處理影片的常駐程式每 5 分鐘巡一次佇列，把排隊中的影片撿起來跑。問題在於：一次重跑三支長片，整批可能跑超過 5 分鐘；這時下一次巡邏又啟動，把<strong class="text-white">同一支還沒處理完、狀態還是排隊中的影片</strong>再撿一次，於是同一支影片被處理兩次，付了兩次下載與 AI 的錢。
+            </p>
+
+            <p>
+                修法是一道重入鎖：上一輪還在跑，這次巡邏就直接跳過。
+            </p>
+
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre class="m-0"><code>let isProcessingQueue = false;
+
+async function processQueuedVideos() {
+  if (isProcessingQueue) {
+    log("上一輪還在跑，跳過這次巡邏");
+    return;
+  }
+  isProcessingQueue = true;
+  try {
+    await processQueuedVideosInner();   // 真正的處理邏輯
+  } finally {
+    isProcessingQueue = false;
+  }
+}</code></pre>
+            </div>
+
+            <p>
+                成本是一行旗標。省下來的是每支長片重複的一次下載、加上兩次 LLM 呼叫的費用。這個 bug 最早就是在「一次重跑三支」時被一支長片觸發、白花了一次處理費才抓到的。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 成果：EP182 整理前後的章節重組
+            </h3>
+
+            <p>
+                把規則套回 EP182 重跑一次，整理的章節組織明顯變清楚。下面是同一支影片、舊版與新版的章節對照：
+            </p>
+
+            <div class="w-full overflow-x-auto my-6">
+                <table class="w-full text-left border-collapse min-w-[640px]">
+                    <thead>
+                        <tr class="text-white font-mono text-xs uppercase tracking-wider">
+                            <th class="py-3 pr-4 border-b border-white/20 w-1/12">章</th>
+                            <th class="py-3 px-4 border-b border-white/20 w-5/12">舊版</th>
+                            <th class="py-3 pl-4 border-b border-white/20 w-6/12">新版</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 pr-4 font-mono text-gray-500">1</td>
+                            <td class="py-3 px-4 text-gray-300">犯罪動機：情殺、仇殺、財殺</td>
+                            <td class="py-3 pl-4 text-gray-300">犯罪動機的三大類型：情殺、仇殺、財殺</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 pr-4 font-mono text-gray-500">2</td>
+                            <td class="py-3 px-4 text-gray-300">無差別犯罪與模仿犯：鄭捷案分析</td>
+                            <td class="py-3 pl-4 text-gray-300">無差別犯罪與<strong class="text-white">模仿效應</strong>：以鄭捷案為例</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 pr-4 font-mono text-gray-500">3</td>
+                            <td class="py-3 px-4 text-gray-300">病理根源：<strong class="text-white">日本少年A 案例與犯罪基因</strong>探討</td>
+                            <td class="py-3 pl-4 text-gray-300"><strong class="text-white">犯罪基因與先天傾向</strong>：戰士基因、XYY、快樂殺人</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 pr-4 font-mono text-gray-500">4</td>
+                            <td class="py-3 px-4 text-gray-300">認知扭曲：敵意、神經質與合理化</td>
+                            <td class="py-3 pl-4 text-gray-300">導向犯罪的心理特質：神經質、敵意、扭曲的認知</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 pr-4 font-mono text-gray-500">5</td>
+                            <td class="py-3 px-4 text-gray-300">修復式司法與犯罪的社會代價</td>
+                            <td class="py-3 pl-4 text-gray-300"><strong class="text-white">犯罪如何養成</strong>：小嘗試累積、正增強與精算心態</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 pr-4 font-mono text-gray-500">6</td>
+                            <td class="py-3 px-4 text-gray-300">理性精算與人性本善本惡之辯</td>
+                            <td class="py-3 pl-4 text-gray-300">修復式司法與被害者視角</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4 font-mono text-gray-500">7</td>
+                            <td class="py-3 px-4 text-gray-300"><strong class="text-white">結語與對談感想</strong>（寒暄）</td>
+                            <td class="py-3 pl-4 text-gray-300">人性本善還是本惡：自我與他人之間的平衡</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                兩個真正的差別看得出來。其一，<strong class="text-white">「日本少年A」和「犯罪基因」拆開了</strong>：舊版綁在同一章，新版把少年A 歸到「模仿效應」、把基因獨立成章，讀起來像兩個各自成立的主題。其二，<strong class="text-white">結尾從寒暄換成實質論點</strong>：舊版最後一章是「結語與對談感想」，新版改成「人性本善還是本惡」的討論，把一格位置還給內容。
+            </p>
+
+            <p>
+                這裡要誠實補一句。兩個版本在事實層面其實都站得住——舊版也正確寫了「財殺」、也保留了「XYY 並不等於必然犯罪」這個否定。<strong class="text-white">這一輪改善的重點在組織方式與把關流程</strong>，把「AI 沒亂編」從一句自我宣稱，變成一份可以逐句回放查證的清單。
+            </p>
+
+            <hr class="border-white/10 my-12">
+
+            <div class="mt-8 text-sm font-mono text-gray-500 border-l-2 border-accent-purple pl-4">
+                驗證的目的，是知道輸出哪裡站得住、哪裡要標問號。通用規則、逐字稿對照、跨類型樣本，三件事合起來，讓「這份整理忠於原文」成為查得到的事實。
+            </div>
+
+            <hr class="border-white/10 my-12">
+
+            <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Links
+            </h3>
+
+            <ul class="space-y-2 text-sm text-gray-400 list-none pl-0">
+                <li>
+                    <span class="text-accent-purple mr-2">●</span>
+                    <a href="project_12.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        YouTube 整理工具的兩個世代（架構總覽）
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">●</span>
+                    <a href="https://yt-digest-tau.vercel.app/feed" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        yt-digest 公測版
+                    </a>
+                </li>
+            </ul>
+
+            <p class="text-sm text-gray-500 font-mono mt-4">
+                Stack：Next.js 16 ・ Firebase ・ Vercel ・ 本機 worker daemon ・ Claude Sonnet 4.6 ・ Whisper Large v3
+            </p>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                &larr; Prev Project
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Projects
+            </a>
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                Next Project &rarr;
+            </a>
+        </div>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+</body>
+</html>

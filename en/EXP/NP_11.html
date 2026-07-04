@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / NP_11 | GHOST.ouo</title>
+
+    <link rel="icon" type="image/png" href="../../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../EXP/swipe_style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script src="../../i18n.js" defer></script>
+    <script type="module" src="../../main.js" defer></script>
+    <script src="../../EXP/swipe_app.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / NP_11 (draft)</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                Turning a Survey into Cards You Swipe One at a Time<br>
+                <span class="text-gradient text-2xl md:text-4xl">Finish Swiping and a Mirror Appears: You vs Everyone</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    Engineering
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Vanilla JS
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Interaction Design
+                </span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.06.25</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
+                Plenty of people want to close a survey the moment they see one. The common explanation is "filling out surveys takes time", yet what truly puts people off tends to be three things stacked together: being interrupted by a topic that has nothing to do with them, questions long enough to have no visible end, and silence after they finish. This front-end module sets out to handle the latter two, making the act of answering shorter and lighter, and giving the respondent a reason at the end to come back and look at themselves.
+            </p>
+
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">Context</div>
+                <p class="m-0">
+                    This is an interactive web module: six question cards, answered by swiping (mouse drag or finger swipe, with left and right arrow keys supported too). A progress bar sits at the top; after six cards a result page appears, offering a light "type" first, then listing your choice against the share who agreed on each question, with the ones where you went against the majority flagged. The group data below is illustrative placeholder data, and a production version can wire up to live back-end stats.
+                </p>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Why People Resent Filling Out Surveys
+            </h3>
+
+            <p>
+                Treating "it takes too long" as the main cause misses a more critical layer. The cause named again and again in survey research is the respondent's sense that the other side will do nothing with the feedback at all. Once a person settles on "filling this out changes nothing", the motivation to answer disappears, and what remains is closing the form. The feedback gap explains the steady decline in participation better than question length or sending frequency does.
+            </p>
+            <p>
+                Question count, in turn, decides answer quality. As questions pile up, people slide from "reading each one carefully" toward "skimming fast and picking one offhand". A return can look data-rich while its back half is all perfunctory straight-line answering. Put those two together and you get the most common survey failure: it goes out, it comes back, and what comes back is noise.
+            </p>
+
+            <div class="my-8 p-8 bg-white/5 rounded-2xl border border-white/10 font-light">
+                <ul class="list-none space-y-5">
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-circle-question text-accent-purple mt-1.5 shrink-0"></i>
+                        <span>
+                            <strong class="text-white">The topic has nothing to do with me:</strong><br>
+                            What people get asked to fill out is often a set of questions with no overlap with their own life, lacking any motivation to answer from the first second.
+                        </span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-list-ol text-accent-purple mt-1.5 shrink-0"></i>
+                        <span>
+                            <strong class="text-white">The questions are too long:</strong><br>
+                            A whole page of questions laid out at once makes people want to give up just from scrolling down; for those who push through, the back portion has already collapsed in quality.
+                        </span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-ghost text-accent-purple mt-1.5 shrink-0"></i>
+                        <span>
+                            <strong class="text-white">Silence after finishing:</strong><br>
+                            The respondent gets no feedback at all and naturally reaches the conclusion "filling it out was pointless". This is the deepest layer of resentment.
+                        </span>
+                    </li>
+                </ul>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> A Mutual-Fill Culture Props Up the Count and Trades Away Quality
+            </h3>
+
+            <p>
+                In academia, pressure on response counts has bred a whole "mutual-fill" ecosystem: you fill out mine, I fill out yours, with neither side interested in the other's topic. This transactional obligation props up the response number at the cost of answer quality. When a respondent cannot make sense of the questions and only wants to repay the favor as fast as possible, they fill it in at random, and the study loses validity and population representativeness as a result. The more successful a mutual-fill platform becomes, the closer the data it delivers gets to noise, which is its structural contradiction. A return of two hundred responses may have half that simply cannot be used.
+            </p>
+            <p>
+                So the source of the resentment is quite concrete: interruption by an unfamiliar topic, overlong questions, and silence after finishing, three landmines stepped on at once. Getting people to answer in earnest means dismantling those three in reverse. This module handles the "process" and "feedback" pieces first; precise targeting of the topic is a question on another level.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Design Response One: Cut the Friction of Answering to a Minimum
+            </h3>
+
+            <p>
+                The first direction makes the act of "filling" itself lighter, through three concrete moves.
+            </p>
+
+            <div class="my-8 p-8 bg-white/5 rounded-2xl border border-white/10 font-light">
+                <ul class="list-none space-y-5">
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-layer-group text-accent-purple mt-1.5 shrink-0"></i>
+                        <span>
+                            <strong class="text-white">One at a time, easing the sea-of-questions feel:</strong><br>
+                            Questions stack as cards, with only the top one shown at a time and the rest shrunk underneath. What you see is always just the question in front of you, and the length of the whole survey stays hidden.
+                        </span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-hand-pointer text-accent-purple mt-1.5 shrink-0"></i>
+                        <span>
+                            <strong class="text-white">Swiping in place of tapping:</strong><br>
+                            Right to agree, left to disagree, as natural as flipping cards on a phone. A drag counts only past a set distance and springs back short of it; while dragging, the card tilts and a color-coded label surfaces, giving instant feedback. Keyboard and buttons remain as backups.
+                        </span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-bars-progress text-accent-purple mt-1.5 shrink-0"></i>
+                        <span>
+                            <strong class="text-white">Progress bar:</strong><br>
+                            A progress bar at the top triggers the instinct to "finish what was started". Each card swiped moves the bar forward a notch, turning answering into something with a visible finish line.
+                        </span>
+                    </li>
+                </ul>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Interactive Module: Swipe Survey
+            </h3>
+
+            <!-- ===== Swipe survey interactive module (logic in ../../EXP/swipe_app.js, styles in ../../EXP/swipe_style.css; question content falls back to the shared Chinese assets) ===== -->
+            <div id="sw-module" class="bg-[#0A0A0A] border border-white/10 rounded-3xl shadow-2xl p-6 md:p-10 my-12 relative z-20">
+
+                <!-- progress bar -->
+                <div class="flex justify-between items-baseline mb-3">
+                    <span class="text-accent-purple font-mono text-sm"><i class="fas fa-layer-group"></i> SWIPE_SURVEY</span>
+                    <span id="sw-progress-text" class="text-xs font-mono text-gray-500">Q 1 / 6</span>
+                </div>
+                <div class="sw-progress-track"><div class="sw-progress-fill" id="sw-progress-fill"></div></div>
+
+                <!-- card stack stage (cards injected by JS) -->
+                <div class="sw-stage" id="sw-stage"></div>
+
+                <!-- hint + fallback buttons -->
+                <div class="sw-hint" id="sw-hint">
+                    Swipe right to <span class="text-gray-200">agree</span>, left to <span class="text-gray-200">disagree</span> · or use the &larr; &rarr; keys
+                </div>
+                <div class="sw-pills" id="sw-pills">
+                    <button class="sw-pill no" id="sw-no">&larr; Disagree</button>
+                    <button class="sw-pill yes" id="sw-yes">Agree &rarr;</button>
+                </div>
+
+                <!-- result page (mirror): shown only after finishing -->
+                <div class="sw-result" id="sw-result">
+                    <div class="sw-type-label">Your result</div>
+                    <div class="sw-type-name" id="sw-type-name">&mdash;</div>
+                    <div class="sw-type-desc" id="sw-type-desc"></div>
+                    <div class="sw-mirror-title">You vs everyone: your choice on each question against the share who agreed</div>
+                    <div id="sw-mirror-rows"></div>
+                    <button class="sw-restart" id="sw-restart">Play again</button>
+                    <div class="sw-made">Front-end demo · group data is illustrative placeholder data</div>
+                </div>
+
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Design Response Two: Give the Respondent a Mirror
+            </h3>
+
+            <p>
+                Once the process is lighter, the feedback gap is the piece that remains. The most effective fix is reciprocity: give the other side a little something first, and they treat answering in earnest as a return gift. Monetary incentives (prize draws, cash rewards) are one option, though they cost a lot and suit only some situations. The genuinely underrated one is giving the result back to the respondent.
+            </p>
+            <p>
+                A ready example is Harvard's Project Implicit association test: once you finish, it tells you "where your result falls in the overall population distribution". The move costs almost nothing, yet it gives the respondent a real reason to answer, that I get a mirror reflecting myself. The survey shifts from "hand over your data" to "I got something too".
+            </p>
+            <p>
+                This module's result page is the minimal implementation of that idea. After six cards, the screen offers a light type first as a closing hook, then sets "your choice" against "the share who agreed" question by question. The ones where you went against the majority are marked amber, letting the respondent see at a glance where they differ from others. Reciprocity and feedback both hold on this single page.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Where It Fits and What Comes Next
+            </h3>
+
+            <p>
+                Swipe cards suit light, attitude-leaning questions that "agree/disagree" can express. Settings that need rigorous measurement, seven-point Likert scales, matrix questions, research surveys that need precise gradations, still belong on a regular form, since swiping breaks measurement precision. Used in the right place, this module lowers the psychological barrier to answering, and leaves research rigor to regular tools to guard.
+            </p>
+            <p>
+                Right now the group data on the result page is hard-coded placeholder data, used only to show what the mirror looks like. The next step is wiring up a back end: write a record each time someone finishes, and change the result page's "share who agreed" into a real live query. That step turns this demo into something that can actually validate a need, and it is where this mirror starts to mean something.
+            </p>
+
+            <hr class="border-white/10 my-12">
+
+            <div class="mt-8 text-sm font-mono text-gray-500 border-l-2 border-accent-purple pl-4">
+                The root of survey resentment is mostly three things stacked: interruption by an unfamiliar topic, overlong questions, and no feedback after finishing. Turning answering into swipe cards lowers the friction of the process, and the mirror at the end gives the respondent a reason to look at themselves. Once a one-way extraction becomes a two-way exchange, the people willing to answer in earnest come back.
+            </div>
+
+            <div class="mt-10 p-6 rounded-2xl border border-white/10 bg-[#0A0A0A]">
+                <h4 class="text-white font-bold mb-3 flex items-center gap-2 text-sm">
+                    <i class="fas fa-book text-accent-purple"></i> References
+                </h4>
+                <ul class="text-xs text-gray-500 leading-relaxed space-y-2 m-0 list-none pl-0">
+                    <li>Project Implicit, <a href="https://implicit.harvard.edu/" target="_blank" rel="noopener" class="text-gray-400 hover:text-white underline underline-offset-2 decoration-white/20">Implicit Association Test</a> (Harvard University). After the test it shows where your result falls in the distribution of the overall anonymous data, a public example of "giving the result back to the respondent".</li>
+                    <li>CMSWire, <a href="https://www.cmswire.com/customer-experience/your-customers-arent-quiettheyve-given-up-on-your-surveys/" target="_blank" rel="noopener" class="text-gray-400 hover:text-white underline underline-offset-2 decoration-white/20">Your Customers Aren&rsquo;t Quiet&mdash;They&rsquo;ve Given Up on Your Surveys</a>. It points out that people who stop answering surveys usually still hold opinions, and the deciding factor is doubt that their opinion will bring real change.</li>
+                </ul>
+            </div>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                &larr; Prev Project
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Projects
+            </a>
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                Next Project &rarr;
+            </a>
+        </div>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+</body>
+</html>

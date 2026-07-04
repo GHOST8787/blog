@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / NA_09 | GHOST.ouo</title>
+
+    <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script type="module" src="../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../articles.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO ARTICLES
+            </a>
+            <span class="opacity-50">EXP / NA_09 (draft)</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                人比 AI 更值得信任嗎，<br>
+                <span class="text-gradient text-2xl md:text-4xl">從一份 91% 的作業往下推</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">Thinking</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">AI</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Trust</span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.06.05</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                這篇用兩個視角並排記錄一條提問鏈。每個問題分成兩塊：一塊是我怎麼推到這個問題、觀察到什麼，一塊是 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">AI</code> 當時回答的事實內容。五個問題從一份 datasheet 作業開始：我的正確率到 91%，同學最高 95%，在不過擬合的前提下沒有人拿得到全對。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 一：信任人和信任 AI 的風險相同嗎？
+            </h3>
+            <div class="mb-6">
+                <span class="text-[11px] font-mono uppercase tracking-[0.2em] text-gray-500 mb-3 block">我怎麼想到這題</span>
+                <p class="m-0">
+                    91% 和 95% 都不是滿分，人會錯，AI 也會錯。在錯誤率接近的條件下，信任人和信任 AI 的風險是否相同，成為第一個問題。
+                </p>
+            </div>
+            <div class="border-l-2 border-accent-purple/30 pl-5 py-1 mb-10">
+                <span class="text-[11px] font-mono uppercase tracking-[0.2em] text-accent-purple mb-3 block">AI 的回答</span>
+                <ul class="list-disc pl-5 space-y-2 text-gray-400 m-0 font-light">
+                    <li>可信度高的場景：資料分析、語言翻譯、程式碼生成、醫療影像初步篩查，錯誤相對容易驗證。</li>
+                    <li>要小心的場景：履歷篩選、信用評分、再犯風險預測，AI 會複製訓練資料中的偏見。</li>
+                    <li>封閉式、任務單一的模型輸出可驗證，可信度高；生成式 AI 是機率預測器，會產生幻覺。</li>
+                    <li>沒有附來源的事實（數字、日期、法律、醫療斷言）不應直接採信。</li>
+                    <li>信任應建立在反覆校準上，由使用者的驗證能力決定。</li>
+                    <li>輸入的內容可能被用作訓練資料，私密資訊不應提供給它。</li>
+                </ul>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 二：AI 和人有多少相似性？
+            </h3>
+            <div class="mb-6">
+                <span class="text-[11px] font-mono uppercase tracking-[0.2em] text-gray-500 mb-3 block">我怎麼想到這題</span>
+                <p class="m-0">
+                    信任有條件成立之後，下一個問題是 AI 和人的相似程度。相似度夠高的話，平常用在人身上的那套信任標準，理論上能套用到 AI 上。
+                </p>
+            </div>
+            <div class="border-l-2 border-accent-purple/30 pl-5 py-1 mb-10">
+                <span class="text-[11px] font-mono uppercase tracking-[0.2em] text-accent-purple mb-3 block">AI 的回答</span>
+                <ul class="list-disc pl-5 space-y-2 text-gray-400 m-0 font-light">
+                    <li>AI 沒有意識、欲望、道德感，定位是工具。</li>
+                    <li>人類用訓練資料、應用場景、法律規範塑造 AI。</li>
+                    <li>AI 反向改變人類：增加對外部記憶的依賴、使重複性技能貶值、使判斷與創造力升值、改變人際互動形態。</li>
+                    <li>責任歸屬不對稱：AI 不為自身行為負責，責任落在開發者、部署者、使用者。</li>
+                    <li>人類需要保持監督者的角色。</li>
+                </ul>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 三：人傾向把信任放在哪裡？
+            </h3>
+            <div class="mb-6">
+                <span class="text-[11px] font-mono uppercase tracking-[0.2em] text-gray-500 mb-3 block">我怎麼想到這題</span>
+                <p class="m-0">
+                    一個可觀察的事實：錯誤率接近時，人把責任交給一個不可控的人，對可控、可追溯的 AI 給較低的信任。AI 每一步有紀錄、可回溯到具體環節，人的決策過程多數無法完整還原。這個落差構成第三個問題。
+                </p>
+            </div>
+            <div class="border-l-2 border-accent-purple/30 pl-5 py-1 mb-10">
+                <span class="text-[11px] font-mono uppercase tracking-[0.2em] text-accent-purple mb-3 block">AI 的回答</span>
+                <ul class="list-disc pl-5 space-y-2 text-gray-400 m-0 font-light">
+                    <li>人類信任分三類：可預測的慣性（基於反覆驗證的機率）、意圖的一致（對方目標與你一致）、可追溯的責任鏈（出錯有人被追究、系統會被改善）。</li>
+                    <li>人類最信任的是一種「經過驗證的脆弱秩序」：在有限範圍內已證明可靠，且留有修正錯誤的機制。</li>
+                    <li>AI 同時缺這三項：會更新與幻覺、沒有內在意圖、出錯時責任分散。</li>
+                    <li>更精確的問題是能否設計一套系統，讓人信任「使用 AI 的過程」。</li>
+                </ul>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 四：這波 AI 熱潮會泡沫化嗎？
+            </h3>
+            <div class="mb-6">
+                <span class="text-[11px] font-mono uppercase tracking-[0.2em] text-gray-500 mb-3 block">我怎麼想到這題</span>
+                <p class="m-0">
+                    釐清人在信什麼之後，把問題拉回現實：這種半信半疑的狀態，能否撐起當前的熱潮。我向 AI 要了三個會泡沫化、三個不會泡沫化的原因，再自己分類。
+                </p>
+            </div>
+            <div class="border-l-2 border-accent-purple/30 pl-5 py-1 mb-10">
+                <span class="text-[11px] font-mono uppercase tracking-[0.2em] text-accent-purple mb-3 block">AI 的回答</span>
+                <p class="text-gray-300 text-sm font-semibold m-0 mb-2">會泡沫化的三個原因</p>
+                <ul class="list-disc pl-5 space-y-2 text-gray-400 m-0 font-light mb-4">
+                    <li>承諾與現實落差：AGI 短期難達，卡在因果推理、能耗、幻覺等瓶頸。</li>
+                    <li>缺乏盈利模式與殺手級應用，估值靠未來想像支撐。</li>
+                    <li>信任崩塌引發監管與責任風暴，可能凍結產業。</li>
+                </ul>
+                <p class="text-gray-300 text-sm font-semibold m-0 mb-2">不會泡沫化的三個原因</p>
+                <ul class="list-disc pl-5 space-y-2 text-gray-400 m-0 font-light mb-4">
+                    <li>底層技術已嵌入製造、物流、醫療、金融，實際提升效率。</li>
+                    <li>勞動力流程已圍繞 AI 重塑，轉變不可逆。</li>
+                    <li>國家安全與軍備競賽形成與商業循環脫鉤的硬需求。</li>
+                </ul>
+                <ul class="list-disc pl-5 space-y-2 text-gray-400 m-0 font-light">
+                    <li>核心區別：追逐 AGI、取代人類的高估值概念會破，嵌入產業的狹義 AI 工具留存。以 2000 年網路泡沫類比，泡沫破裂後底層技術留存並擴大。</li>
+                </ul>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 五：現在的 AI 仍在寫死程式的範疇嗎？
+            </h3>
+            <div class="mb-6">
+                <span class="text-[11px] font-mono uppercase tracking-[0.2em] text-gray-500 mb-3 block">我怎麼想到這題</span>
+                <p class="m-0">
+                    企業實際採用的 AI，例如 n8n 這類自動化，負責固定、可定義的流程，採用的前提是它處理確定的區域。社會對人的信任建立在「人會成長」這個假設上。對照之下，人也是被經歷和資料長成現在的狀態，這構成最後一個問題：人和 AI 是否處在同一個範疇。
+                </p>
+            </div>
+            <div class="border-l-2 border-accent-purple/30 pl-5 py-1 mb-4">
+                <span class="text-[11px] font-mono uppercase tracking-[0.2em] text-accent-purple mb-3 block">AI 的回答</span>
+                <ul class="list-disc pl-5 space-y-2 text-gray-400 m-0 font-light">
+                    <li>算不算「AI」取決於定義：以理解與意識為準，它不算；以「完成原本需要人類智慧的任務」為準，它算。</li>
+                    <li>狹義 AI 沒有理解、只有模式：辨識貓是學到像素排列與「貓」這個標籤的相關性，換一張卡通貓可能照樣判定。</li>
+                    <li>更精確的描述用語：統計學習系統、函數近似器、模式比對器。</li>
+                    <li>它在實用上有用、會取代部分人類勞動；以「人類等級的智慧」為準則達不到。</li>
+                </ul>
+            </div>
+
+            <hr class="border-white/10 my-12">
+
+            <p>
+                五個問題依序排列後，可以看到兩條平行的線：一條是我從一份作業往下推的觀察，一條是 AI 對每個問題的回答。兩條線交會在同一個點&mdash;&mdash;「人比 AI 更值得信任」這個前提，在錯誤率、可追溯性、由資料構成這幾項事實下並不穩固。
+            </p>
+
+            <div class="p-6 rounded-2xl border border-white/10 bg-[#0A0A0A] mt-12">
+                <h4 class="text-white font-bold mb-3 flex items-center gap-2 text-sm">
+                    <i class="fas fa-book-open text-accent-purple"></i> Note
+                </h4>
+                <p class="text-sm text-gray-400 leading-relaxed m-0">
+                    起點是一份正確率 91% 的 datasheet 作業。五個問題依當時實際發問的順序排列，每一題並排我的提問推導與 AI 回答的事實內容。
+                </p>
+            </div>
+
+            <p class="text-sm text-gray-500 font-mono m-0 mt-8">
+                Tags　｜　AI　・　Trust　・　Thinking Chain
+            </p>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="article_10.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Article
+            </a>
+            <a href="../articles.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Articles
+            </a>
+            <a href="#" class="text-gray-500 text-sm font-mono opacity-50 cursor-not-allowed" aria-disabled="true">
+                Next Article &rarr;
+            </a>
+        </div>
+
+    </main>
+    <div id="footer-placeholder"></div>
+</body>
+</html>
