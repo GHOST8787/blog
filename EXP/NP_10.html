@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / NP_10 | GHOST.ouo</title>
+
+    <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script type="module" src="../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / NP_10 (draft)</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                為 AI 搭一套擋幻覺的記憶系統<br>
+                <span class="text-gradient text-2xl md:text-4xl">三道關卡，對照 GitHub 上一樣的回報</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    AI &amp; Automation
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Memory System
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Claude Code
+                </span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.06.25</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                生成式 AI 工具常見的可靠性問題，是把未經查證的內容當成事實輸出：生成不存在的數值、宣稱讀過並未開啟的檔案。要把這類工具用於實際工作，需要在模型之外補上一層結構來攔截這種輸出。這篇記錄為日常使用的 Claude Code 建立的一套記憶與防護機制，並對照 2026 年 6 月 GitHub 上一批同類問題的回報。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 它最常出包的三種狀況
+            </h3>
+
+            <p>
+                先講三個實際遇到的情況。
+            </p>
+            <p>
+                <strong class="text-white">一、資料還沒到，先給一個編的數字。</strong>我請它同時跑幾個背景搜尋，工具都還沒回傳，它就先丟出一個數字當結論。那個數字事後在任何一個搜尋的輸出裡都找不到，是在資料到齊之前自己補上去的。
+            </p>
+            <p>
+                <strong class="text-white">二、沒去找，就說「找不到」。</strong>我要它確認一個之前存好的記憶檔還在不在，它沒有真的執行搜尋，直接回「不存在」。那個檔案就在原本的位置。
+            </p>
+            <p>
+                <strong class="text-white">三、同一個被否決的做法，再提一次。</strong>一個先前已經否決掉的方案，它在沒翻記憶的情況下又重新提了出來。這種「沒查記憶就重講舊方案」的同款錯誤，累積下來有 19 次。
+            </p>
+            <p>
+                三件事的共同點是語氣都很篤定，內容卻站不住，而且讀起來順、看起來正常，事後要一眼抓到很難。麻煩的地方就在這裡：它錯得很有自信。
+            </p>
+            <p>
+                我一開始想靠寫規則擋。純文字規則的約束力有限，規則累積到上百條，同類錯誤照樣重複。規則只是「說明」，做不做仍由模型自己決定，中間缺了一個一定會擋下來的環節。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 我的做法：在它出錯的那一刻擋下來
+            </h3>
+
+            <p>
+                這套機制分三層，各自對應一種具體的失效形態。
+            </p>
+
+            <div class="my-8 p-8 bg-white/5 rounded-2xl border border-white/10 font-light">
+                <ul class="list-none space-y-5">
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-database text-accent-purple mt-1.5 shrink-0"></i>
+                        <span>
+                            <strong class="text-white">第一層，記憶：</strong><br>
+                            檔案式記憶，跨對話保存專案進度與既有決策，降低重複詢問與資訊遺失。每則事實獨立成檔，並附帶來源。
+                        </span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-shield-halved text-accent-purple mt-1.5 shrink-0"></i>
+                        <span>
+                            <strong class="text-white">第二層，強制檢查（閘）：</strong><br>
+                            將規則轉為動手前實際攔截的檢查：未查記憶不得修改、修改前須先輸出診斷、宣稱「找不到」或「不存在」前須先執行搜尋。其中「未查記憶即重提已否決方案」累積 19 次同類錯誤、「指令格式錯誤」累積 240 次，作為設置對應檢查的依據。
+                        </span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-heart-pulse text-accent-purple mt-1.5 shrink-0"></i>
+                        <span>
+                            <strong class="text-white">第三層，心跳：</strong><br>
+                            檢查背景自動化是否還活著。有一次負責寫記憶的背景程式默默停掉，資料整段沒被寫進去，過了好一陣子才發現。因此加上心跳檢查：排程沒有如期執行時主動回報，不要等到事後才知道。
+                        </span>
+                    </li>
+                </ul>
+            </div>
+
+            <p>
+                三層分別對應資訊遺失、重複錯誤、靜默失效。實際的攔截點是四個條件：沒先查記憶、沒先輸出診斷、宣稱「找不到」之前沒先搜尋、心跳沒按時回報。任何一個條件成立，就在那一刻擋下來。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 不只是我：GitHub 上一樣的狀況
+            </h3>
+
+            <p>
+                2026 年 6 月，GitHub 的 Claude Code 專案出現一批集中回報，對象為 Opus 4.8。其中一則記錄模型在平行任務完成前就提交了捏造的數值，事後確認該數值不存在於任何工具輸出。官方對整體幻覺率的說明為各基準答錯率最低，達成方式是對不確定的問題選擇不作答；前述平行情境屬於此機制未涵蓋的部分。
+            </p>
+
+            <div class="bg-white/5 border-l-2 border-accent-purple/50 p-5 rounded-xl my-8">
+                <p class="text-sm text-gray-400 m-0">其中一則回報是一位開發者的整理：使用檔案式記憶兩個月後歸納出的 5 種失敗模式。以下將該清單逐項對照本機制，其中 4 項已被涵蓋。</p>
+            </div>
+
+            <div class="my-8 p-8 bg-white/5 rounded-2xl border border-white/10 font-light">
+                <ul class="list-none space-y-5">
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-file-lines text-accent-purple mt-1.5 shrink-0"></i>
+                        <span>
+                            <strong class="text-white">規則僅為說明，需有強制環節才能攔截。</strong><br>
+                            對應第二層的強制檢查。
+                        </span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-triangle-exclamation text-amber-400 mt-1.5 shrink-0"></i>
+                        <span>
+                            <strong class="text-white">未標來源的模型輸出，會被當成事實沿用。</strong><br>
+                            本次補上的部分：規定記憶中任何外部事實須附來源連結，附不出來則不寫入。
+                        </span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-layer-group text-accent-purple mt-1.5 shrink-0"></i>
+                        <span>
+                            <strong class="text-white">歷史紀錄與當前待辦狀態，須分開存放。</strong><br>
+                            對應做法：一套檔案保存歷史，另一套僅記錄當前待辦。
+                        </span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-heart-pulse text-accent-purple mt-1.5 shrink-0"></i>
+                        <span>
+                            <strong class="text-white">缺少心跳的自動化，會靜默失效。</strong><br>
+                            對應第三層，近期補上。
+                        </span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-copy text-accent-purple mt-1.5 shrink-0"></i>
+                        <span>
+                            <strong class="text-white">兩個同名檔案，會產生內容漂移。</strong><br>
+                            對應做法：狀態以進度日期為準，檔案修改時間僅供參考。
+                        </span>
+                    </li>
+                </ul>
+            </div>
+
+            <p>
+                5 項中有 4 項由既有機制涵蓋；第 2 項（未標來源的輸出被當成事實）為本次補上的部分。此項屬於檔案式記憶較難以機制硬性攔截的一類，主要依靠「寫入外部事實時一律附上來源」這條規則。
+            </p>
+
+            <hr class="border-white/10 my-12">
+
+            <div class="mt-8 text-sm font-mono text-gray-500 border-l-2 border-accent-purple pl-4">
+                幻覺的控制主要來自模型外部的結構。模型自身行為是否改變，不在使用者的可控範圍內；可控的部分，是在錯誤輸出產生的當下是否存在一個攔截點。一位獨立使用者在兩個月後歸納的失敗清單，與本機制的設計高度重疊，可作為這個方向的一個外部對照。
+            </div>
+
+            <div class="mt-10 p-6 rounded-2xl border border-white/10 bg-[#0A0A0A]">
+                <h4 class="text-white font-bold mb-3 flex items-center gap-2 text-sm">
+                    <i class="fas fa-book text-accent-purple"></i> 參考
+                </h4>
+                <ul class="text-xs text-gray-500 leading-relaxed space-y-2 m-0 list-none pl-0">
+                    <li>anthropics/claude-code Issue #63884. <a href="https://github.com/anthropics/claude-code/issues/63884" target="_blank" rel="noopener" class="text-gray-400 hover:text-white underline underline-offset-2 decoration-white/20">Opus 4.8 starts hallucinating results before parallel tasks finish</a>（2026.05.30 回報）。</li>
+                    <li>anthropics/claude-code Issue #68546. <a href="https://github.com/anthropics/claude-code/issues/68546" target="_blank" rel="noopener" class="text-gray-400 hover:text-white underline underline-offset-2 decoration-white/20">Field report: 5 failure modes from 2 months of file-based Claude Code memory</a>（2026.06.15 回報）。</li>
+                    <li>Simon Willison (2026). <a href="https://simonwillison.net/2026/May/28/claude-opus-4-8/" target="_blank" rel="noopener" class="text-gray-400 hover:text-white underline underline-offset-2 decoration-white/20">Claude Opus 4.8</a>。各基準答錯率最低，達成方式是對不確定的問題選擇不作答。</li>
+                </ul>
+            </div>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                &larr; Prev Project
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Projects
+            </a>
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                Next Project &rarr;
+            </a>
+        </div>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+</body>
+</html>
