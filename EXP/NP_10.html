@@ -14,9 +14,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="swipe_style.css">
 
     <script> window.siteRoot = '../'; </script>
     <script type="module" src="../main.js" defer></script>
+    <script src="swipe_app.js" defer></script>
 </head>
 
 <body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
@@ -33,7 +35,7 @@
         <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
             <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
                 <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
-                BACK TO PROJECTS
+                返回專案列表
             </a>
             <span class="opacity-50">EXP / NP_10 (draft)</span>
         </div>
@@ -41,19 +43,19 @@
         <header class="mb-12 border-b border-white/10 pb-12">
 
             <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
-                為 AI 搭一套擋幻覺的記憶系統<br>
-                <span class="text-gradient text-2xl md:text-4xl">三道關卡，對照 GitHub 上一樣的回報</span>
+                把問卷改成一張一張用滑的<br>
+                <span class="text-gradient text-2xl md:text-4xl">滑完跳出一面鏡子，照你 vs 大家</span>
             </h1>
 
             <div class="flex flex-wrap gap-3 mb-6">
                 <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
-                    AI &amp; Automation
+                    Engineering
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Memory System
+                    Vanilla JS
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Claude Code
+                    Interaction Design
                 </span>
             </div>
 
@@ -65,131 +67,173 @@
 
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
-            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
-                生成式 AI 工具常見的可靠性問題，是把未經查證的內容當成事實輸出：生成不存在的數值、宣稱讀過並未開啟的檔案。要把這類工具用於實際工作，需要在模型之外補上一層結構來攔截這種輸出。這篇記錄為日常使用的 Claude Code 建立的一套記憶與防護機制，並對照 2026 年 6 月 GitHub 上一批同類問題的回報。
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
+                很多人一看到問卷就想關掉。常見的解釋是「填問卷很花時間」，真正讓人反感的，通常是三件事疊加：被一個與自己無關的主題打擾、題目多到看不到盡頭，以及填完之後石沉大海。這個前端模組聚焦於後面兩件事：縮短作答過程、降低填答負擔，並在結尾提供填答者一個回來看自己結果的理由。
             </p>
 
+            <p class="text-sm text-gray-500 italic mb-10">
+                這是一個互動網頁模組：六張題目卡片，用滑動作答（滑鼠拖曳或手指滑動，也支援鍵盤左右鍵）。上方有進度條，滑完六題後出現結果頁，先給一個輕鬆的「型別」，再逐題列出你的選擇與大家同意的比例，跟多數人相反的題目會被標出來。下方的群體數據是示意用的假資料，正式版可接後端即時統計。
+            </p>
+
+            <figure class="my-10 mx-auto">
+                <img src="../PNG/NP_10.1.webp"
+                     alt="互動問卷前端模組流程"
+                     loading="lazy" class="w-full rounded-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    互動問卷的三段流程 — 滑動作答 → 進度回饋 → 結果鏡子
+                </figcaption>
+            </figure>
+
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 它最常出包的三種狀況
+                <span class="text-accent-purple">#</span> 為什麼大家對填問卷反感
             </h3>
 
             <p>
-                先講三個實際遇到的情況。
+                把「填很久」當成主因，會錯過更關鍵的一層。在問卷研究裡被反覆指認的主因，是填答者覺得對方根本不會根據回饋做任何事。當一個人認定「我填了也不會改變什麼」，作答動機就消失了，剩下的只是把表單關掉。回饋斷層比題目長度或寄送頻率，更能解釋參與率持續下降的原因。
             </p>
             <p>
-                <strong class="text-white">一、資料還沒到，先給一個編的數字。</strong>我請它同時跑幾個背景搜尋，工具都還沒回傳，它就先丟出一個數字當結論。那個數字事後在任何一個搜尋的輸出裡都找不到，是在資料到齊之前自己補上去的。
-            </p>
-            <p>
-                <strong class="text-white">二、沒去找，就說「找不到」。</strong>我要它確認一個之前存好的記憶檔還在不在，它沒有真的執行搜尋，直接回「不存在」。那個檔案就在原本的位置。
-            </p>
-            <p>
-                <strong class="text-white">三、同一個被否決的做法，再提一次。</strong>一個先前已經否決掉的方案，它在沒翻記憶的情況下又重新提了出來。這種「沒查記憶就重講舊方案」的同款錯誤，累積下來有 19 次。
-            </p>
-            <p>
-                三件事的共同點是語氣都很篤定，內容卻站不住，而且讀起來順、看起來正常，事後要一眼抓到很難。麻煩的地方就在這裡：它錯得很有自信。
-            </p>
-            <p>
-                我一開始想靠寫規則擋。純文字規則的約束力有限，規則累積到上百條，同類錯誤照樣重複。規則只是「說明」，做不做仍由模型自己決定，中間缺了一個一定會擋下來的環節。
-            </p>
-
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 我的做法：在它出錯的那一刻擋下來
-            </h3>
-
-            <p>
-                這套機制分三層，各自對應一種具體的失效形態。
+                題目數量則決定了作答品質。題目一多，人會從「認真讀每一題」滑向「快速掃過、隨手選一個」。一份回收上來看起來資料量很大，後半段其實全是敷衍的直線式作答。這兩件事合起來，就是問卷最常見的失敗：發得出去、收得回來，收到的卻是雜訊。
             </p>
 
             <div class="my-8 p-8 bg-white/5 rounded-2xl border border-white/10 font-light">
                 <ul class="list-none space-y-5">
                     <li class="flex items-start gap-3">
-                        <i class="fas fa-database text-accent-purple mt-1.5 shrink-0"></i>
+                        <i class="fas fa-circle-question text-accent-purple mt-1.5 shrink-0"></i>
                         <span>
-                            <strong class="text-white">第一層，記憶：</strong><br>
-                            檔案式記憶，跨對話保存專案進度與既有決策，降低重複詢問與資訊遺失。每則事實獨立成檔，並附帶來源。
+                            <strong class="text-white">主題與我無關：</strong><br>
+                            被請去填的，常常是跟自己生活沒有交集的題目，從第一秒就缺乏作答動機。
                         </span>
                     </li>
                     <li class="flex items-start gap-3">
-                        <i class="fas fa-shield-halved text-accent-purple mt-1.5 shrink-0"></i>
+                        <i class="fas fa-list-ol text-accent-purple mt-1.5 shrink-0"></i>
                         <span>
-                            <strong class="text-white">第二層，強制檢查（閘）：</strong><br>
-                            將規則轉為動手前實際攔截的檢查：未查記憶不得修改、修改前須先輸出診斷、宣稱「找不到」或「不存在」前須先執行搜尋。其中「未查記憶即重提已否決方案」累積 19 次同類錯誤、「指令格式錯誤」累積 240 次，作為設置對應檢查的依據。
+                            <strong class="text-white">題目太長：</strong><br>
+                            整頁題目一次攤開，光是往下滑就讓人想放棄；撐著填完的人，後段品質也已經崩了。
                         </span>
                     </li>
                     <li class="flex items-start gap-3">
-                        <i class="fas fa-heart-pulse text-accent-purple mt-1.5 shrink-0"></i>
+                        <i class="fas fa-ghost text-accent-purple mt-1.5 shrink-0"></i>
                         <span>
-                            <strong class="text-white">第三層，心跳：</strong><br>
-                            檢查背景自動化是否還活著。有一次負責寫記憶的背景程式默默停掉，資料整段沒被寫進去，過了好一陣子才發現。因此加上心跳檢查：排程沒有如期執行時主動回報，不要等到事後才知道。
+                            <strong class="text-white">填完石沉大海：</strong><br>
+                            填答者拿不到任何回饋，自然得出「填了也沒用」的結論。這是反感最深的一層。
                         </span>
                     </li>
                 </ul>
             </div>
 
-            <p>
-                三層分別對應資訊遺失、重複錯誤、靜默失效。實際的攔截點是四個條件：沒先查記憶、沒先輸出診斷、宣稱「找不到」之前沒先搜尋、心跳沒按時回報。任何一個條件成立，就在那一刻擋下來。
-            </p>
-
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 不只是我：GitHub 上一樣的狀況
+                <span class="text-accent-purple">#</span> 互填文化撐起了數量，換來的是品質崩壞
             </h3>
 
             <p>
-                2026 年 6 月，GitHub 的 Claude Code 專案出現一批集中回報，對象為 Opus 4.8。其中一則記錄模型在平行任務完成前就提交了捏造的數值，事後確認該數值不存在於任何工具輸出。官方對整體幻覺率的說明為各基準答錯率最低，達成方式是對不確定的問題選擇不作答；前述平行情境屬於此機制未涵蓋的部分。
+                在學術圈，問卷回收量的壓力催生出一整套「互填」生態：你幫我填、我幫你填，雙方對彼此的主題都沒有興趣。這種交易型的義務把回收數字撐了起來，代價是作答品質。當填答者看不懂題目、又只想盡快還掉這份人情，他會直接隨意填，研究因此失去效度與母體代表性。互填平台越成功，交付的資料就越接近雜訊，這是其結構上的矛盾。一份兩百筆的回收，可能有一半根本不能用。
+            </p>
+            <p>
+                因此，問卷反感的來源其實很具體：陌生主題的打擾、題目過長，以及填完後無聲無息，三個問題疊加。要讓人願意認真填，就得從這三點拆解。這個模組先處理「過程」與「回饋」兩塊，至於主題的精準投放，那是另一個層次的問題。
             </p>
 
-            <div class="bg-white/5 border-l-2 border-accent-purple/50 p-5 rounded-xl my-8">
-                <p class="text-sm text-gray-400 m-0">其中一則回報是一位開發者的整理：使用檔案式記憶兩個月後歸納出的 5 種失敗模式。以下將該清單逐項對照本機制，其中 4 項已被涵蓋。</p>
-            </div>
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 設計回應一：把作答的摩擦降到最低
+            </h3>
+
+            <p>
+                第一個方向是讓「填」這個動作本身變輕，靠三個具體做法。
+            </p>
 
             <div class="my-8 p-8 bg-white/5 rounded-2xl border border-white/10 font-light">
                 <ul class="list-none space-y-5">
-                    <li class="flex items-start gap-3">
-                        <i class="fas fa-file-lines text-accent-purple mt-1.5 shrink-0"></i>
-                        <span>
-                            <strong class="text-white">規則僅為說明，需有強制環節才能攔截。</strong><br>
-                            對應第二層的強制檢查。
-                        </span>
-                    </li>
-                    <li class="flex items-start gap-3">
-                        <i class="fas fa-triangle-exclamation text-amber-400 mt-1.5 shrink-0"></i>
-                        <span>
-                            <strong class="text-white">未標來源的模型輸出，會被當成事實沿用。</strong><br>
-                            本次補上的部分：規定記憶中任何外部事實須附來源連結，附不出來則不寫入。
-                        </span>
-                    </li>
                     <li class="flex items-start gap-3">
                         <i class="fas fa-layer-group text-accent-purple mt-1.5 shrink-0"></i>
                         <span>
-                            <strong class="text-white">歷史紀錄與當前待辦狀態，須分開存放。</strong><br>
-                            對應做法：一套檔案保存歷史，另一套僅記錄當前待辦。
+                            <strong class="text-white">一次一張，降低題海感：</strong><br>
+                            題目以卡片堆疊，一次只露出最上面一張，後面的縮小墊在底下。看到的永遠只有眼前這題，整份問卷的長度被藏了起來。
                         </span>
                     </li>
                     <li class="flex items-start gap-3">
-                        <i class="fas fa-heart-pulse text-accent-purple mt-1.5 shrink-0"></i>
+                        <i class="fas fa-hand-pointer text-accent-purple mt-1.5 shrink-0"></i>
                         <span>
-                            <strong class="text-white">缺少心跳的自動化，會靜默失效。</strong><br>
-                            對應第三層，近期補上。
+                            <strong class="text-white">滑動取代點擊：</strong><br>
+                            往右同意、往左不同意，在手機上像翻牌一樣自然。拖到一定距離才算數，沒到就彈回；拖曳時卡片會傾斜，並浮現對應顏色的標籤，提供即時回饋。鍵盤與按鈕保留為備援。
                         </span>
                     </li>
                     <li class="flex items-start gap-3">
-                        <i class="fas fa-copy text-accent-purple mt-1.5 shrink-0"></i>
+                        <i class="fas fa-bars-progress text-accent-purple mt-1.5 shrink-0"></i>
                         <span>
-                            <strong class="text-white">兩個同名檔案，會產生內容漂移。</strong><br>
-                            對應做法：狀態以進度日期為準，檔案修改時間僅供參考。
+                            <strong class="text-white">進度條：</strong><br>
+                            頂部一條進度條，觸發人「想把開始的事做完」的本能。每滑掉一張，進度就往前一格，作答變成一件看得到終點的事。
                         </span>
                     </li>
                 </ul>
             </div>
 
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Interactive Module: 滑卡問卷
+            </h3>
+
+            <!-- ===== 滑卡問卷互動模組（邏輯在 swipe_app.js、樣式在 swipe_style.css）===== -->
+            <div id="sw-module" class="bg-[#0A0A0A] border border-white/10 rounded-3xl shadow-2xl p-6 md:p-10 my-12 relative z-20">
+
+                <!-- 進度列 -->
+                <div class="flex justify-between items-baseline mb-3">
+                    <span class="text-accent-purple font-mono text-sm"><i class="fas fa-layer-group"></i> SWIPE_SURVEY</span>
+                    <span id="sw-progress-text" class="text-xs font-mono text-gray-500">第 1 / 6 題</span>
+                </div>
+                <div class="sw-progress-track"><div class="sw-progress-fill" id="sw-progress-fill"></div></div>
+
+                <!-- 卡片堆疊舞台（JS 動態填入卡片） -->
+                <div class="sw-stage" id="sw-stage"></div>
+
+                <!-- 操作提示 + 備援按鈕 -->
+                <div class="sw-hint" id="sw-hint">
+                    往右滑 <span class="text-gray-200">同意</span>，往左滑 <span class="text-gray-200">不同意</span> · 也可用鍵盤 ← →
+                </div>
+                <div class="sw-pills" id="sw-pills">
+                    <button class="sw-pill no" id="sw-no">← 不同意</button>
+                    <button class="sw-pill yes" id="sw-yes">同意 →</button>
+                </div>
+
+                <!-- 結果頁（鏡子）：滑完才顯示 -->
+                <div class="sw-result" id="sw-result">
+                    <div class="sw-type-label">你的結果</div>
+                    <div class="sw-type-name" id="sw-type-name">—</div>
+                    <div class="sw-type-desc" id="sw-type-desc"></div>
+                    <div class="sw-mirror-title">你 vs 大家：每一題你的選擇，對上多數人的傾向</div>
+                    <div id="sw-mirror-rows"></div>
+                    <button class="sw-restart" id="sw-restart">再玩一次</button>
+                    <div class="sw-made">前端 demo · 群體數據為示意用的假資料</div>
+                </div>
+
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 設計回應二：給填答者一面鏡子
+            </h3>
+
             <p>
-                5 項中有 4 項由既有機制涵蓋；第 2 項（未標來源的輸出被當成事實）為本次補上的部分。此項屬於檔案式記憶較難以機制硬性攔截的一類，主要依靠「寫入外部事實時一律附上來源」這條規則。
+                過程變輕之後，剩下回饋斷層這一塊。最有效的補法是互惠：先給對方一點東西，對方會把認真作答當成一種回禮。金錢誘因（抽獎、回饋金）是一種，但成本高，也不見得每個情境都適合。真正被低估的，是將結果回饋給填答者。
+            </p>
+            <p>
+                一個現成的例子是哈佛的 Project Implicit 內隱聯結測驗：你做完之後，它會告訴你「你的結果落在整體人口分布的哪個位置」。這招幾乎零成本，卻給了填答者一個真實的理由去填——我能拿到一面照自己的鏡子。問卷從「把資料交出去」變成「我也得到了一些東西」。
+            </p>
+            <p>
+                這個模組的結果頁就是這件事的最小實作。滑完六題，畫面先給一個輕鬆的型別當作收尾的鉤子，再逐題把「你的選擇」對上「大家同意的比例」。跟多數人相反的題目被標成琥珀色，讓填答者一眼看到自己在哪裡和別人不一樣。互惠與回饋在這一頁同時成立。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 適用範圍與下一步
+            </h3>
+
+            <p>
+                滑卡適合輕量、態度傾向類的題目，靠「同意／不同意」就能表達。需要嚴謹測量的場合——李克特七點量表、矩陣題、需要精確刻度的研究問卷——還是該回到正規表單，滑動會破壞測量的精度。把這個模組用對地方，它降低的是填答的心理門檻，研究的嚴謹度交給正規工具去守。
+            </p>
+            <p>
+                目前結果頁的群體數據是靜態的假資料，僅用於示範鏡子的呈現方式。下一步是接上後端：每滑完一份就寫一筆，結果頁的「大家同意比例」改成真實的即時查詢。那一步會把這個 demo 變成真的能驗證需求的東西，也是這面鏡子真正開始有意義的地方。
             </p>
 
             <hr class="border-white/10 my-12">
 
             <div class="mt-8 text-sm font-mono text-gray-500 border-l-2 border-accent-purple pl-4">
-                幻覺的控制主要來自模型外部的結構。模型自身行為是否改變，不在使用者的可控範圍內；可控的部分，是在錯誤輸出產生的當下是否存在一個攔截點。一位獨立使用者在兩個月後歸納的失敗清單，與本機制的設計高度重疊，可作為這個方向的一個外部對照。
+                問卷讓人反感的根源，多半來自三件事的疊加：陌生主題的打擾、題目過長，以及填完後缺乏回饋。把作答改成滑卡降低了過程的摩擦，結尾的鏡子給了填答者一個看自己的理由。當單向的抽取變成雙向的交換，願意認真填的人才會回來。
             </div>
 
             <div class="mt-10 p-6 rounded-2xl border border-white/10 bg-[#0A0A0A]">
@@ -197,9 +241,8 @@
                     <i class="fas fa-book text-accent-purple"></i> 參考
                 </h4>
                 <ul class="text-xs text-gray-500 leading-relaxed space-y-2 m-0 list-none pl-0">
-                    <li>anthropics/claude-code Issue #63884. <a href="https://github.com/anthropics/claude-code/issues/63884" target="_blank" rel="noopener" class="text-gray-400 hover:text-white underline underline-offset-2 decoration-white/20">Opus 4.8 starts hallucinating results before parallel tasks finish</a>（2026.05.30 回報）。</li>
-                    <li>anthropics/claude-code Issue #68546. <a href="https://github.com/anthropics/claude-code/issues/68546" target="_blank" rel="noopener" class="text-gray-400 hover:text-white underline underline-offset-2 decoration-white/20">Field report: 5 failure modes from 2 months of file-based Claude Code memory</a>（2026.06.15 回報）。</li>
-                    <li>Simon Willison (2026). <a href="https://simonwillison.net/2026/May/28/claude-opus-4-8/" target="_blank" rel="noopener" class="text-gray-400 hover:text-white underline underline-offset-2 decoration-white/20">Claude Opus 4.8</a>。各基準答錯率最低，達成方式是對不確定的問題選擇不作答。</li>
+                    <li>Project Implicit，<a href="https://implicit.harvard.edu/" target="_blank" rel="noopener" class="text-gray-400 hover:text-white underline underline-offset-2 decoration-white/20">Implicit Association Test</a>（哈佛大學）。做完測驗後會顯示你的結果落在整體匿名資料的分布位置，是「把結果回饋給填答者」的一個公開例子。</li>
+                    <li>CMSWire，<a href="https://www.cmswire.com/customer-experience/your-customers-arent-quiettheyve-given-up-on-your-surveys/" target="_blank" rel="noopener" class="text-gray-400 hover:text-white underline underline-offset-2 decoration-white/20">Your Customers Aren&rsquo;t Quiet&mdash;They&rsquo;ve Given Up on Your Surveys</a>。指出停止回覆問卷的人多半仍有意見，只是已經不相信自己的回饋會帶來實際改變。</li>
                 </ul>
             </div>
 
@@ -207,13 +250,13 @@
 
         <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
             <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
-                &larr; Prev Project
+                &larr; 上一篇
             </a>
             <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
-                View All Projects
+                查看所有專案
             </a>
             <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
-                Next Project &rarr;
+                下一篇 &rarr;
             </a>
         </div>
 

@@ -35,7 +35,7 @@
         <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
             <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
                 <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
-                BACK TO PROJECTS
+                返回專案列表
             </a>
             <span class="opacity-50">EXP / NP_02 (draft)</span>
         </div>
@@ -43,24 +43,24 @@
         <header class="mb-12 border-b border-white/10 pb-12">
 
             <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
-                HSVI Studio 專案管理：<br>
-                <span class="text-gradient text-2xl md:text-4xl">跨校創作社群的內容產製與團隊協作</span>
+                海科館生物資料庫：<br>
+                <span class="text-gradient text-2xl md:text-4xl">拿現在的資料庫視角，回看當年那疊 Excel</span>
             </h1>
 
             <div class="flex flex-wrap gap-3 mb-6">
                 <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
-                    Lifestyle
+                    Engineering
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Project Management
+                    Database
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Team Collaboration
+                    Data Modeling
                 </span>
             </div>
 
             <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
-                <span><i class="far fa-calendar mr-2"></i>2023.09 &mdash; 2025.06</span>
+                <span><i class="far fa-calendar mr-2"></i>2023.09 &mdash; 2024.03</span>
                 <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
             </div>
         </header>
@@ -68,90 +68,293 @@
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
             <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
-                HSVI Studio 是一個跨校線上協作的創作者支援工作室，主要產出 VTuber 角色的內容與行銷企劃。任職期間負責行銷組相關事務 &mdash; 從面試招募、甘特圖排程、心智圖規劃、廣告投放到成效分析。
+                國立海洋科技博物館內部生物資料庫的整理工作。當年交付的是統一的缸體編碼、清乾淨的物種清冊，以及一疊 Excel 樞紐報表。本文以現在的資料庫設計視角回顧，將當年散落的 Excel 檔案重新整理，分析其資料架構，並提出一版重做的關聯式設計方案。
             </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 工作室分工架構
+                <span class="text-accent-purple">#</span> 當年手上的資料，長這樣
             </h3>
 
             <p>
-                Studio 內部依職能分組，每組對接不同的產製環節，在每週的線上會議與線下聚會中交互回報進度：
+                所有東西都在 Excel 裡，分散在六份以上的活頁簿，每份底下再開十幾個工作表。同一批物種資料，在不同檔案裡以不同欄位、不同編號重複出現。
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
+                <div class="bg-white/5 rounded-2xl border border-white/10 p-5">
+                    <div class="font-bold text-white mb-2 flex items-center gap-2"><i class="fas fa-table text-accent-purple text-sm"></i> 缸子清冊</div>
+                    <div class="text-sm text-gray-400 font-light">缸位主表。欄位：No. / 新編碼 / 舊名 / 說明。負責把每一缸的新編碼對回原本的口語舊名。</div>
+                </div>
+                <div class="bg-white/5 rounded-2xl border border-white/10 p-5">
+                    <div class="font-bold text-white mb-2 flex items-center gap-2"><i class="fas fa-fish text-accent-purple text-sm"></i> 生物盤點表</div>
+                    <div class="text-sm text-gray-400 font-light">按展示區拆成多個工作表。欄位：缸體編號 / 中文名 / 俗名 / 學名 / 屬 / 科 / 目 / 數量 / 有無照片。</div>
+                </div>
+                <div class="bg-white/5 rounded-2xl border border-white/10 p-5">
+                    <div class="font-bold text-white mb-2 flex items-center gap-2"><i class="fas fa-camera text-accent-purple text-sm"></i> 未拍物種總和表</div>
+                    <div class="text-sm text-gray-400 font-light">追蹤哪些物種還沒有影像紀錄。欄位：展示區域 / 中文名 / 缺少的照片學名。</div>
+                </div>
+                <div class="bg-white/5 rounded-2xl border border-white/10 p-5">
+                    <div class="font-bold text-white mb-2 flex items-center gap-2"><i class="fas fa-clipboard-list text-accent-purple text-sm"></i> 養殖系統日報表</div>
+                    <div class="text-sm text-gray-400 font-light">一個月一個檔，一天一個工作表。記缸體清潔（換水 / 抽底 / 濾袋 / 視窗 / 蛋白）、生物狀況、機電、水質十二項。</div>
+                </div>
+                <div class="bg-white/5 rounded-2xl border border-white/10 p-5">
+                    <div class="font-bold text-white mb-2 flex items-center gap-2"><i class="fas fa-chart-pie text-accent-purple text-sm"></i> 月度統計樞紐</div>
+                    <div class="text-sm text-gray-400 font-light">按月切的死亡 / 移缸統計。欄位：目 / 科 / 屬 / 中文名 / 學名 / 數量 / 區域 / 缸體編號，外加一組樞紐欄。</div>
+                </div>
+                <div class="bg-white/5 rounded-2xl border border-white/10 p-5">
+                    <div class="font-bold text-white mb-2 flex items-center gap-2"><i class="fas fa-layer-group text-accent-purple text-sm"></i> 生物總整理</div>
+                    <div class="text-sm text-gray-400 font-light">把各區盤點併成一張總表，供樞紐分析。物種數量與隻數在這裡各版本略有出入。</div>
+                </div>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 當年的資料流
+            </h3>
+
+            <p>把六份檔案的關係畫出來，實際的流向是這樣：多個來源匯進人工整合，整合後再手動生出清冊與樞紐報表。整合過程完全依賴人工操作。</p>
+
+            <div class="my-8 space-y-4">
+                <div class="text-xs font-mono text-gray-500 uppercase tracking-wider">來源層</div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="text-xs px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-gray-300">缸子清冊</span>
+                    <span class="text-xs px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-gray-300">生物盤點表</span>
+                    <span class="text-xs px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-gray-300">養殖日報表</span>
+                    <span class="text-xs px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-gray-300">未拍物種表</span>
+                </div>
+                <div class="flex justify-center text-accent-purple"><i class="fas fa-arrow-down"></i></div>
+                <div class="text-xs font-mono text-gray-500 uppercase tracking-wider">整合層（人工）</div>
+                <div class="bg-accent-purple/10 border border-accent-purple/20 rounded-xl p-4 text-sm text-gray-300">
+                    統一缸體編碼 &middot; 手動對齊欄位 &middot; 消重複 &middot; Excel 樞紐分析
+                </div>
+                <div class="flex justify-center text-accent-purple"><i class="fas fa-arrow-down"></i></div>
+                <div class="text-xs font-mono text-gray-500 uppercase tracking-wider">產出層</div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="text-xs px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-gray-300">統一物種清冊</span>
+                    <span class="text-xs px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-gray-300">月度死亡 / 移缸統計</span>
+                    <span class="text-xs px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-gray-300">未拍物種清單</span>
+                </div>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 缸體編碼 schema
+            </h3>
+
+            <p>
+                整合的第一步是重編缸號，讓散落在不同名稱、不同尺寸的缸位能被統一索引。範例 <code class="text-accent-purple">C0AP0108L31</code>（舊名「A中3-1」，108 公升），拆解如下：
             </p>
 
             <div class="overflow-x-auto my-8">
                 <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
                     <thead class="bg-white/5">
                         <tr>
-                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider whitespace-nowrap w-32">組別</th>
-                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">職責</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider whitespace-nowrap w-32">段</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">範例值</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">意義</th>
                         </tr>
                     </thead>
                     <tbody class="text-gray-300">
                         <tr class="border-t border-white/10">
-                            <td class="px-4 py-3 font-bold text-white">中之人組</td>
-                            <td class="px-4 py-3">角色配音、台詞演繹、直播主持</td>
+                            <td class="px-4 py-3 font-bold text-white">類型字元</td>
+                            <td class="px-4 py-3 font-mono">C0 / A1 / A2 / A3 / A4</td>
+                            <td class="px-4 py-3">主缸類型（如 A1 大池、A2 主題缸、A3 水母、A4 中型主題、C0 後場標準缸）</td>
                         </tr>
                         <tr class="border-t border-white/10">
-                            <td class="px-4 py-3 font-bold text-white">繪師組</td>
-                            <td class="px-4 py-3">角色立繪、Q 圖、畫面設計與劇情大綱</td>
+                            <td class="px-4 py-3 font-bold text-white">區域</td>
+                            <td class="px-4 py-3 font-mono">A / B / C</td>
+                            <td class="px-4 py-3">後場分區（A 區、B 區、C 區）</td>
                         </tr>
                         <tr class="border-t border-white/10">
-                            <td class="px-4 py-3 font-bold text-white">混音組</td>
-                            <td class="px-4 py-3">BGM、音效、小動畫（畫面銜接）</td>
+                            <td class="px-4 py-3 font-bold text-white">尺寸代碼</td>
+                            <td class="px-4 py-3 font-mono">P / F / T 等</td>
+                            <td class="px-4 py-3">缸型分類（標準矩形 / 圓筒 / 噸級主缸）</td>
                         </tr>
-                        <tr class="border-t border-white/10 bg-accent-purple/5">
-                            <td class="px-4 py-3 font-bold text-white">行銷組</td>
-                            <td class="px-4 py-3">心智圖規劃、甘特圖排程、廣告投放、社群素材、面試招募（任職位）</td>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">水體量</td>
+                            <td class="px-4 py-3 font-mono">0108 / 0320 / 0150T</td>
+                            <td class="px-4 py-3">公升（L）；噸級主缸用 T 後綴（如 0150T = 150 噸，見大洋池 A1NN0150T01）</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">序號</td>
+                            <td class="px-4 py-3 font-mono">L31 / L01 ...</td>
+                            <td class="px-4 py-3">同尺寸同區域內的流水序號</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 行銷組工作流
+                <span class="text-accent-purple">#</span> 缸體量級
             </h3>
 
-            <p>實際在行銷組執行過的工作流程：</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-8">
+                <div class="bg-white/5 border border-accent-purple/20 rounded-2xl p-6 text-center">
+                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">108</div>
+                    <div class="text-xs text-gray-500 font-mono uppercase">大型缸位（A/B/C 三區）</div>
+                </div>
+                <div class="bg-white/5 border border-accent-purple/20 rounded-2xl p-6 text-center">
+                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">82</div>
+                    <div class="text-xs text-gray-500 font-mono uppercase">中型缸位（中間區）</div>
+                </div>
+                <div class="bg-white/5 border border-accent-purple/20 rounded-2xl p-6 text-center">
+                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">190</div>
+                    <div class="text-xs text-gray-500 font-mono uppercase">總有效缸位</div>
+                </div>
+            </div>
 
-            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
-                <li><strong class="text-white">招募面試</strong> &mdash; 2023.07 行銷組面試與成績統整（用 Excel 評分表追蹤候選人）</li>
-                <li><strong class="text-white">甘特圖排程</strong> &mdash; 2023.07-09 月度甘特圖兩次迭代版（追蹤跨組工作節奏）</li>
-                <li><strong class="text-white">心智圖規劃</strong> &mdash; 初配信行銷計畫、影片發佈順序、官方頻道架構三張心智圖（協助跨組對齊方向）</li>
-                <li><strong class="text-white">廣告投放</strong> &mdash; YouTube In-feed video for Consideration（動態內影片廣告）</li>
-                <li><strong class="text-white">線下聚會統籌</strong> &mdash; 2023.07.15 全體成員實體聚會（增進工作默契、討論工作室相關事項）</li>
-            </ul>
-
-
+            <p>從 81 公升到 150 噸跨度，依水體量分層：</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 my-6">
+                <div class="bg-white/5 rounded-xl border border-white/10 p-4 text-sm"><span class="text-white font-bold">噸級主缸</span> <span class="text-gray-400 font-light">大洋池 150 噸、俯視池 35 噸、一二三槽各 50 噸</span></div>
+                <div class="bg-white/5 rounded-xl border border-white/10 p-4 text-sm"><span class="text-white font-bold">主題缸</span> <span class="text-gray-400 font-light">花園鰻 / 珊瑚 / 小丑 / 蝴蝶魚，各 3.5 噸</span></div>
+                <div class="bg-white/5 rounded-xl border border-white/10 p-4 text-sm"><span class="text-white font-bold">水母缸</span> <span class="text-gray-400 font-light">倒立 / 馬賽克 / 海月，各 0.8 噸，共 6 缸</span></div>
+                <div class="bg-white/5 rounded-xl border border-white/10 p-4 text-sm"><span class="text-white font-bold">後場 A/B/C 區</span> <span class="text-gray-400 font-light">A 型 1,460 L / B 型 320 L / C 型 120 L / 檢疫缸 320 L</span></div>
+                <div class="bg-white/5 rounded-xl border border-white/10 p-4 text-sm md:col-span-2"><span class="text-white font-bold">中型缸</span> <span class="text-gray-400 font-light">81 L 到 723 L 不等，分布於各區後場</span></div>
+            </div>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 內容產製工具鏈
+                <span class="text-accent-purple">#</span> 從那疊 Excel 裡，其實藏著這些實體
             </h3>
 
+            <p>把重複的欄位對齊、把散落的工作表併回去，會發現當年的資料其實描述了幾個很清楚的實體。它們之間本來就有關聯，只是被 Excel 的平面格子壓扁了：</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
+                <div class="bg-white/5 rounded-2xl border border-white/10 p-5">
+                    <div class="font-bold text-accent-purple mb-3 font-mono text-sm">缸位 tank</div>
+                    <div class="text-xs text-gray-400 font-mono space-y-1 leading-relaxed">
+                        <div>tank_id &middot; 新編碼（PK）</div>
+                        <div>legacy_name &middot; 舊名</div>
+                        <div>area / type / volume_l</div>
+                    </div>
+                </div>
+                <div class="bg-white/5 rounded-2xl border border-white/10 p-5">
+                    <div class="font-bold text-accent-purple mb-3 font-mono text-sm">物種 species</div>
+                    <div class="text-xs text-gray-400 font-mono space-y-1 leading-relaxed">
+                        <div>species_id（PK）</div>
+                        <div>中文名 / 學名 / 俗名</div>
+                        <div>屬 / 科 / 目 &middot; has_photo</div>
+                    </div>
+                </div>
+                <div class="bg-white/5 rounded-2xl border border-white/10 p-5">
+                    <div class="font-bold text-accent-purple mb-3 font-mono text-sm">在缸 stock</div>
+                    <div class="text-xs text-gray-400 font-mono space-y-1 leading-relaxed">
+                        <div>tank_id（FK）&rarr; 缸位</div>
+                        <div>species_id（FK）&rarr; 物種</div>
+                        <div>count &middot; 隻數</div>
+                    </div>
+                </div>
+                <div class="bg-white/5 rounded-2xl border border-white/10 p-5">
+                    <div class="font-bold text-accent-purple mb-3 font-mono text-sm">事件 event</div>
+                    <div class="text-xs text-gray-400 font-mono space-y-1 leading-relaxed">
+                        <div>tank_id / species_id（FK）</div>
+                        <div>date &middot; type（死亡 / 移入 / 用藥）</div>
+                        <div>qty &middot; note</div>
+                    </div>
+                </div>
+                <div class="bg-white/5 rounded-2xl border border-white/10 p-5">
+                    <div class="font-bold text-accent-purple mb-3 font-mono text-sm">清潔日誌 daily_log</div>
+                    <div class="text-xs text-gray-400 font-mono space-y-1 leading-relaxed">
+                        <div>tank_id（FK）&middot; date</div>
+                        <div>換水 / 抽底 / 濾袋</div>
+                        <div>視窗 / 蛋白</div>
+                    </div>
+                </div>
+                <div class="bg-white/5 rounded-2xl border border-white/10 p-5">
+                    <div class="font-bold text-accent-purple mb-3 font-mono text-sm">水質 water_quality</div>
+                    <div class="text-xs text-gray-400 font-mono space-y-1 leading-relaxed">
+                        <div>tank_id（FK）&middot; date</div>
+                        <div>溫度 / 鹽度 / pH / ORP</div>
+                        <div>NH4 / NO2 / Ca / Mg / KH ...</div>
+                    </div>
+                </div>
+            </div>
+
+            <p class="text-sm text-gray-400 font-light">關聯很單純：一個缸位有很多筆在缸紀錄、很多筆日誌、很多筆水質、很多筆事件；一個物種可以出現在很多缸位。缸位與物種是多對多，中間靠「在缸」這張表接起來。</p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 當年這套架構的幾個痛點
+            </h3>
+
+            <p>用現在的眼光看，當年的資料有幾個地方會讓後續維運很痛。這些問題是 Excel 作為資料載體在規模擴大後的必然限制：</p>
+
+            <div class="space-y-3 my-8">
+                <div class="bg-white/5 rounded-xl border border-white/10 p-4">
+                    <span class="text-white font-bold text-sm">同一份資料散在六份檔案</span>
+                    <p class="text-sm text-gray-400 font-light mt-1">物種清單在盤點表、總整理、月度統計裡各存一份。改一個學名要追著改三個地方，版本一不同步就對不起來。</p>
+                </div>
+                <div class="bg-white/5 rounded-xl border border-white/10 p-4">
+                    <span class="text-white font-bold text-sm">缸體編碼存在多個版本</span>
+                    <p class="text-sm text-gray-400 font-light mt-1">清冊裡同時有四碼與三碼兩套編法（<code class="text-accent-purple text-xs">A1NN0150T01</code> 與 <code class="text-accent-purple text-xs">A1N0150T01</code>）。同一缸兩種寫法，交叉比對就會漏。</p>
+                </div>
+                <div class="bg-white/5 rounded-xl border border-white/10 p-4">
+                    <span class="text-white font-bold text-sm">日報一天開一個工作表</span>
+                    <p class="text-sm text-gray-400 font-light mt-1">一個月就是三十一個結構相同的分頁。要看一缸整季的趨勢，得手動翻九十幾個分頁再貼進樞紐。</p>
+                </div>
+                <div class="bg-white/5 rounded-xl border border-white/10 p-4">
+                    <span class="text-white font-bold text-sm">死亡與移缸藏在自由文字裡</span>
+                    <p class="text-sm text-gray-400 font-light mt-1">生物管理欄寫的是「食慾佳，移入 A 中 4 龍虎斑 *4」這種句子。要統計月死亡數，只能靠人一句一句讀出來再手動加總。</p>
+                </div>
+                <div class="bg-white/5 rounded-xl border border-white/10 p-4">
+                    <span class="text-white font-bold text-sm">水質橫向展開到三百多欄</span>
+                    <p class="text-sm text-gray-400 font-light mt-1">每個缸的十二項水質沿著欄位一路往右鋪，一張表寬到三百多欄。新增缸位時需修改整張表的結構。</p>
+                </div>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 如果現在重做：一版關聯式設計
+            </h3>
+
+            <p>把上面那些實體落成正規化的資料表，痛點將逐一解決。核心是一個原則：每個事實只存一次，其他地方用外鍵指過來。</p>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider whitespace-nowrap w-40">資料表</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">解掉的痛點</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-mono text-white">tanks</td>
+                            <td class="px-4 py-3">缸位只有一張主表，編碼定一套。舊名放 legacy_name 欄，查得到也不會混。</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-mono text-white">species</td>
+                            <td class="px-4 py-3">物種只存一次。改學名改一個地方，全站跟著對。</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-mono text-white">stock</td>
+                            <td class="px-4 py-3">缸位與物種的多對多用一張連接表處理，一缸幾種、一種在哪幾缸都是一句查詢。</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-mono text-white">daily_logs</td>
+                            <td class="px-4 py-3">日誌改成一列一天一缸，日期是欄位。整季趨勢用日期範圍撈，不再翻分頁。</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-mono text-white">water_quality</td>
+                            <td class="px-4 py-3">水質改成長格式，一列是一缸一次的量測。加缸只是多幾列，不動結構。</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-mono text-white">events</td>
+                            <td class="px-4 py-3">死亡 / 移入 / 用藥拆成有 type 欄的結構化事件。月度死亡統計僅需一條 group by 查詢即可完成。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
             <p>
-                Studio 的對內協作走以下七個資產分類，每個對應一個獨立資料夾、有負責人：
+                最有感的一項是 events。當年要生月度死亡統計，得把一整個月的日報一句一句讀過去、人工挑出死亡再加總。換成事件表以後，同一份報表退化成一句查詢：<code class="text-accent-purple">select species_id, sum(qty) from events where type='死亡' and month=…</code>。管理水族館的資料與管理缸內生物息息相關，核心在於讓狀態清晰可見，並能追溯所有變動。
             </p>
-            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
-                <li><strong class="text-white">心智圖</strong> &mdash; 跨組規劃用，初配信行銷、影片順序、官方頻道架構各一張</li>
-                <li><strong class="text-white">周表</strong> &mdash; 每週工作分配（含面試成績、廣告分析、甘特圖等 Excel 系列）</li>
-                <li><strong class="text-white">發文素材</strong> &mdash; 社群推廣文與配圖</li>
-                <li><strong class="text-white">網站素材</strong> &mdash; 官方頻道與相關頁面素材</li>
-                <li><strong class="text-white">影片剪輯</strong> &mdash; 短影片、初配宣傳、cover 曲、日常影片</li>
-                <li><strong class="text-white">QR / 其他素材</strong> &mdash; 線下宣傳用</li>
-                <li><strong class="text-white">粉絲賀圖</strong> &mdash; UGC 集中區</li>
-            </ul>
 
         </article>
 
         <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
             <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
-                &larr; Prev Project
+                &larr; 上一篇
             </a>
             <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
-                View All Projects
+                查看所有專案
             </a>
             <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
-                Next Project &rarr;
+                下一篇 &rarr;
             </a>
         </div>
 

@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / P26 | GHOST.ouo</title>
+
+    <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script type="module" src="../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                返回專案列表
+            </a>
+            <span class="opacity-50">EXP / P26</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                Claude 官方提示指南的一張地圖：<br>
+                <span class="text-gradient text-2xl md:text-4xl">選型、參數、提示技巧、遷移注意</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">AI &amp; Automation</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Prompt Engineering</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Reference</span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.07.05</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
+                Anthropic 在官方文件裡放了四份提示工程指南：三份講單一模型（Sonnet 5、Opus 4.8、Fable 5），一份講所有模型共用的通用技術。四份各自成篇，實務上要用得反覆跳頁。這篇把它們收攏成一張工作地圖，照拿到新任務時的決策順序排：先選模型，再調參數，然後套提示技巧，最後檢查從舊模型搬過來會踩什麼。
+            </p>
+
+            <figure class="my-10 mx-auto">
+                <img src="../PNG/project_26.1.webp"
+                     alt="Claude 官方提示指南地圖：選型、參數、提示技巧、遷移注意四層總覽"
+                     class="w-full rounded-2xl border border-white/10 shadow-2xl">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    四層地圖：選型、參數、提示技巧、遷移注意
+                </figcaption>
+            </figure>
+
+            <div class="pl-6 border-l-2 border-accent-purple my-8">
+                <p class="text-white font-medium mb-2">整理原則</p>
+                <p class="text-sm text-gray-400 m-0">
+                    內容全部取自四份文件的實際敘述，文件未提及的部分直接標註為「文件裡沒有」。文件明確規定的優先順序已完整納入地圖：<strong class="text-white">模型專屬指南優先，其次是通用技術，最後是遷移考量</strong>。若兩者講法衝突，以模型專屬指南為準。原文的英文提示片段，這裡全數譯成中文；參數名稱與程式碼維持原樣。
+                </p>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 第一層：選型——三個模型各自站在哪
+            </h3>
+
+            <p>
+                選型只回答一個問題：這個任務要多長的自主時程？文件給三個模型的定位剛好排成一條線，從單次任務到跨週的自主執行。
+            </p>
+
+            <div class="w-full overflow-x-auto my-6">
+                <table class="w-full text-left border-collapse min-w-[640px]">
+                    <thead>
+                        <tr class="text-white font-mono text-xs uppercase tracking-wider">
+                            <th class="py-3 pr-4 border-b border-white/20 w-2/12">模型</th>
+                            <th class="py-3 px-4 border-b border-white/20 w-5/12">文件所述強項</th>
+                            <th class="py-3 pl-4 border-b border-white/20 w-5/12">適用場景</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 text-white font-bold">Sonnet 5</td>
+                            <td class="py-4 px-4 text-gray-300">程式編寫與代理式任務</td>
+                            <td class="py-4 pl-4 text-gray-400">既有 Sonnet 4.6 提示開箱即用；工具鏈、結構化擷取</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 text-white font-bold">Opus 4.8</td>
+                            <td class="py-4 px-4 text-gray-300">長時程代理工作、知識工作、視覺、記憶任務</td>
+                            <td class="py-4 pl-4 text-gray-400">需要維持長時程連貫性的互動式程式編寫</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 pr-4 text-white font-bold">Fable 5</td>
+                            <td class="py-4 px-4 text-gray-300">端對端、需人類數小時到數週的工作（與 Mythos 5 同一底層模型）</td>
+                            <td class="py-4 pl-4 text-gray-400">最困難的未解問題；多日目標導向自主執行</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                Fable 5 的設計範圍有明確限制，文件指出其不適用於攻擊性網路安全、生物學及生命科學相關工作。此類請求可能直接回傳 <code class="text-accent-purple">stop_reason: "refusal"</code>。要跑這兩類任務，從一開始就換別的模型。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 第二層：參數——effort 是主控，thinking 三家預設不同
+            </h3>
+
+            <p>
+                三個模型共用同一組 effort 等級：<code class="text-accent-purple">max</code> ＞ <code class="text-accent-purple">xhigh</code> ＞ <code class="text-accent-purple">high</code> ＞ <code class="text-accent-purple">medium</code> ＞ <code class="text-accent-purple">low</code>。等級一樣，各家的起跳點卻差很多：
+            </p>
+
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
+                <li><strong class="text-white">Sonnet 5</strong>：預設 <code class="text-accent-purple">high</code>（與 4.6 相同）；最難的程式與代理任務提高到 <code class="text-accent-purple">xhigh</code>。</li>
+                <li><strong class="text-white">Opus 4.8</strong>：程式與代理任務從 <code class="text-accent-purple">xhigh</code> 起跳；對智慧敏感的任務至少 <code class="text-accent-purple">high</code>。<code class="text-accent-purple">max</code> 可能因 token 增加而報酬遞減，而且容易過度思考。</li>
+                <li><strong class="text-white">Fable 5</strong>：大多數任務用預設 <code class="text-accent-purple">high</code>，最敏感的用 <code class="text-accent-purple">xhigh</code>，例行工作降到 <code class="text-accent-purple">medium</code> 或 <code class="text-accent-purple">low</code>。文件明說它的低 effort 通常已超越先前模型的 xhigh 表現。</li>
+            </ul>
+
+            <p>
+                跨模型對照只有 Sonnet 5 的文件給了：Sonnet 5 的 <code class="text-accent-purple">medium</code> 約等於 4.6 的 <code class="text-accent-purple">high</code>，Sonnet 5 的 <code class="text-accent-purple">high</code> 約等於 4.6 的 <code class="text-accent-purple">max</code>。對照時看觀察到的思考長度，效果比對名稱可靠。
+            </p>
+
+            <p>
+                三個模型在 <code class="text-accent-purple">low</code> 和 <code class="text-accent-purple">medium</code> 有一個共同行為：嚴格把工作限定在被要求的範圍內。中等複雜度的任務用 <code class="text-accent-purple">low</code>，就有思考不足的風險；文件把「提高 effort」列為正解，提示只是延遲受限時的補強。真的必須停在 <code class="text-accent-purple">low</code>，就補這句：
+            </p>
+
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 text-sm text-gray-300 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">低 effort 補強提示（中譯）</div>
+                <p class="m-0">這個任務需要多步驟推理。回答之前，先把問題想透徹。</p>
+            </div>
+
+            <p>
+                thinking 的預設狀態三家各走各的，這是搬提示時最容易誤判的一格：
+            </p>
+
+            <div class="w-full overflow-x-auto my-6">
+                <table class="w-full text-left border-collapse min-w-[640px]">
+                    <thead>
+                        <tr class="text-white font-mono text-xs uppercase tracking-wider">
+                            <th class="py-3 pr-4 border-b border-white/20 w-2/12">模型</th>
+                            <th class="py-3 px-4 border-b border-white/20 w-4/12">省略 thinking 參數時</th>
+                            <th class="py-3 px-4 border-b border-white/20 w-3/12">關閉方式</th>
+                            <th class="py-3 pl-4 border-b border-white/20 w-3/12">手動擴展思考</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 text-white font-bold">Sonnet 5</td>
+                            <td class="py-4 px-4 text-gray-300">自適應思考<strong class="text-white">開啟</strong></td>
+                            <td class="py-4 px-4 text-gray-400"><code>thinking: {type: "disabled"}</code></td>
+                            <td class="py-4 pl-4 text-gray-400">用了回 400</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 text-white font-bold">Opus 4.8</td>
+                            <td class="py-4 px-4 text-gray-300">思考<strong class="text-white">關閉</strong>，要開需明設 <code>{type: "adaptive"}</code></td>
+                            <td class="py-4 px-4 text-gray-400">預設即關</td>
+                            <td class="py-4 pl-4 text-gray-400">文件裡沒有明列</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 pr-4 text-white font-bold">Fable 5</td>
+                            <td class="py-4 px-4 text-gray-300">僅自適應、<strong class="text-white">始終開啟</strong>，輸出摘要化思考</td>
+                            <td class="py-4 px-4 text-gray-400">文件裡沒有</td>
+                            <td class="py-4 pl-4 text-gray-400">無擴展思考預算</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                模型依兩個因素校準要想多深：effort 參數，加上查詢本身的複雜度。舊的 <code class="text-accent-purple">budget_tokens</code> 正在退場——Opus 4.6 與 Sonnet 4.6 還能用但已棄用，<strong class="text-white">Opus 4.7 之後、Fable 5、Mythos 5 設了直接回 400</strong>。遷移寫法是把思考預算換成自適應加 effort：
+            </p>
+
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre class="m-0"><code># 舊寫法（4.7+ 會回 400）
+thinking={"type": "enabled", "budget_tokens": 10000}
+
+# 新寫法
+thinking={"type": "adaptive"}
+output_config={"effort": "high"}   # max_tokens 當硬性上限</code></pre>
+            </div>
+
+            <p>
+                token 上限與取樣參數各家的規矩：Sonnet 5 換了新分詞器，相同文字約多三成 token，高 effort 時 <code class="text-accent-purple">max_tokens</code> 要預留思考與工具空間，留不夠就出現「全思考＋截斷答案＋<code class="text-accent-purple">stop_reason: "max_tokens"</code>」；取樣參數（temperature、top_p、top_k）設非預設值回 400。Opus 4.8 在 max 和 xhigh 檔的 max_tokens 從 64k 起跳再調；取樣限制文件本身未明列。Fable 5 沒給 max_tokens 數字，取樣限制的敘述文件裡沒有，但單一請求可能跑數分鐘、自主執行數小時，用戶端逾時要跟著調長。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 第三層：提示技巧——通用骨架，加上各模型的脾氣
+            </h3>
+
+            <p>
+                通用文件把基本功講得很直白：把 Claude 想成聰明但缺背景的新進員工。黃金法則一句話——拿你的提示給同事看，同事會困惑，Claude 也會。往下是四件基本功：
+            </p>
+
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
+                <li><strong class="text-white">清晰直接。</strong>要超出預期的行為就明講；步驟順序重要時用編號清單。</li>
+                <li><strong class="text-white">解釋原因。</strong>說明指令背後的動機，模型能從解釋歸納出更精準的行為。</li>
+                <li><strong class="text-white">給範例。</strong>3 到 5 個最佳；要相關、多樣（涵蓋邊緣案例）、包在 <code class="text-accent-purple">&lt;example&gt;</code> 標籤裡。</li>
+                <li><strong class="text-white">XML 結構化。</strong>指令、背景、範例、輸入混在一起時，用 <code class="text-accent-purple">&lt;instructions&gt;</code>、<code class="text-accent-purple">&lt;context&gt;</code>、<code class="text-accent-purple">&lt;input&gt;</code> 分隔。</li>
+            </ul>
+
+            <p>
+                長上下文（20k token 以上）有三個實測背書的做法：長文件放提示頂部、查詢與指令放末尾，多文件輸入時回應品質可提升達 30%；每份文件包 <code class="text-accent-purple">&lt;document&gt;</code> 標籤；先請模型引用相關段落、再執行任務，把其餘內容的干擾排掉。
+            </p>
+
+            <p>
+                輸出格式的控制有三招，方向一致：<strong class="text-white">用正向指示</strong>（要散文就說「用流暢的散文段落」）、用 XML 格式指示符、讓提示本身的風格貼近期望的輸出（提示裡拿掉 markdown，輸出的 markdown 就變少）。最新模型更直接、務實、話少，可能在工具呼叫後跳過口頭摘要；要摘要就明講。數學預設走 LaTeX，要純文字也得明講。
+            </p>
+
+            <p>
+                工具與子代理，三個模型脾氣完全不同，這一段值得整段背下來：
+            </p>
+
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
+                <li><strong class="text-white">Sonnet 5</strong> 相較於 4.6 更積極使用工具，並具備自我驗證迴圈。停用思考時工具使用頻率降低，若關閉思考但仍需依賴工具，需在系統提示中明確指示。</li>
+                <li><strong class="text-white">Opus 4.8</strong> 傾向先推理再動工具，提高 effort 是增加工具使用的有效手段；子代理預設偏少，要明確指引何時委派。</li>
+                <li><strong class="text-white">Fable 5</strong> 比先前模型更積極派遣平行子代理，文件建議設計成非同步溝通，避免主流程阻塞等待。</li>
+            </ul>
+
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 text-sm text-gray-300 font-light leading-relaxed space-y-3">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-1">Opus 4.8 子代理指引（中譯）</div>
+                <p class="m-0">你能在單一回應內直接完成的工作，不要開子代理。需要對多個項目分頭處理、或一次讀多個檔案時，在同一回合開出多個子代理。</p>
+            </div>
+
+            <p>
+                這裡有一個值得記的變化：同一個模型家族，隔一個版本，對「要不要自動開子任務（subagent）」的預設傾向會整個對調。前一代的 Opus 4.6 偏好積極開子任務，連簡單查詢就能解決的場合也開，官方文件要你明講什麼時候才該用；到了 Opus 4.8 預設轉為保守，需要你主動指引才會委派工作；再往後的 Fable 5 又擺回積極那一端。同一份提示詞照搬到不同版本，效果就會跑掉——<strong class="text-white">4.6 偏多、4.8 偏少、Fable 5 又偏多</strong>。
+            </p>
+
+            <p>
+                思考的引導也有幾個現成句式。大型系統提示下思考觸發太頻繁，Sonnet 5 與 Opus 4.8 通用這段（中譯）：「思考會增加延遲，只有在能實質提升答案品質時才用，通常是需要多步驟推理的問題。拿不準的時候，直接回答。」Opus 4.6 高 effort 前期探索多，要它選定路線就說（中譯）：「決定怎麼解一個問題時，選定一個做法並堅持執行。」另外兩個小地方：一般性指令（「徹底思考」）常勝過手寫的逐步計畫；Opus 4.5 在思考停用時對「think」這個詞敏感，改用 consider、evaluate、reason through。
+            </p>
+
+            <p>
+                長時程代理的段落，通用文件給了一整套框架。Sonnet 5、4.6、4.5 與 Haiku 4.5 具上下文感知，能追蹤剩餘 token；在會自動壓縮上下文的框架裡，要明講（中譯）「你的上下文視窗會自動壓縮，可以持續工作，剩餘 token 不構成停止的理由」，模型才不會提前收尾。狀態管理的分工是：結構化資料用 JSON、進度筆記用文字、狀態追蹤用 git——文件說最新模型在用 git 跨工作階段追蹤狀態這件事上表現特別出色。安全那頭，文件列了三類動作建議先確認：破壞性（刪檔、清資料表）、難還原（強制推送、重設歷史）、他人看得到（推送、留言、發訊息）。
+            </p>
+
+            <p>
+                程式編寫有四段可直接複用的防呆片段，全部中譯如下：
+            </p>
+
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 text-sm text-gray-300 font-light leading-relaxed space-y-3">
+                <p class="m-0"><span class="text-accent-purple font-mono mr-2">片段 1</span>過程中建立的暫存檔案或腳本，工作結束時全部清除。</p>
+                <p class="m-0"><span class="text-accent-purple font-mono mr-2">片段 2</span>避免過度工程化：範圍守在被要求的事情上；文件、防禦性程式碼、抽象層，只在被要求或明顯必要時才加。</p>
+                <p class="m-0"><span class="text-accent-purple font-mono mr-2">片段 3</span>寫高品質、通用的解法。禁止硬編碼特定測試的數值；解法要對所有合法輸入正確，通過測試只是自然結果。</p>
+                <p class="m-0"><span class="text-accent-purple font-mono mr-2">片段 4</span>回答前先調查：沒開過的檔案一律先讀再談；使用者提到特定檔案時，必須先打開它，禁止憑猜測描述程式碼。</p>
+            </div>
+
+            <p>
+                前端設計是唯一一個「模型有固定審美」的段落。Opus 4.8 的預設相當頑固：溫暖米白背景（約 <code class="text-accent-purple">#F4F1EA</code>）、襯線展示字體、斜體強調、赤陶琥珀色調。Sonnet 5 也會收斂到一套一致的預設風格（文件未列具體顏色），通用文件另外點名模型愛收斂到 Space Grotesk 這個字體。Fable 5 的指南沒有設計預設值的段落。解決方法有兩種：提供具體規格（如明確的 hex 值與字體名稱），或讓模型先提出四種設計方向後再進行實作。通用形容詞（「乾淨簡約」這類）只會讓它跳到另一組固定配色，等於沒說。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 第四層：遷移注意——從舊模型搬過來會踩的地雷
+            </h3>
+
+            <p>
+                這一層全是「原本能跑、搬過去就報錯或變質」的項目，逐條過一遍：
+            </p>
+
+            <div class="w-full overflow-x-auto my-6">
+                <table class="w-full text-left border-collapse min-w-[640px]">
+                    <thead>
+                        <tr class="text-white font-mono text-xs uppercase tracking-wider">
+                            <th class="py-3 pr-4 border-b border-white/20 w-3/12">項目</th>
+                            <th class="py-3 px-4 border-b border-white/20 w-4/12">症狀</th>
+                            <th class="py-3 pl-4 border-b border-white/20 w-5/12">處理</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 text-gray-300">Sonnet 5 新分詞器</td>
+                            <td class="py-4 px-4 text-gray-400">相同文字約多 30% token，舊的 max_tokens 造成截斷</td>
+                            <td class="py-4 pl-4 text-gray-400">重估 max_tokens，高 effort 預留思考與工具空間</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 text-gray-300">預填回應移除</td>
+                            <td class="py-4 px-4 text-gray-400">4.6 世代與 Mythos Preview 起，最後一個助理回合的預填回 400</td>
+                            <td class="py-4 pl-4 text-gray-400">原本靠預填做的格式控制、消前言、接續，改用格式指示；對話其他位置的助理訊息照舊</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 text-gray-300">budget_tokens 退場</td>
+                            <td class="py-4 px-4 text-gray-400">Opus 4.7+、Fable 5、Mythos 5 設了回 400</td>
+                            <td class="py-4 pl-4 text-gray-400">改 <code>{type:"adaptive"}</code> ＋ effort，max_tokens 當硬上限</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 text-gray-300">取樣參數鎖定</td>
+                            <td class="py-4 px-4 text-gray-400">Sonnet 5 設非預設 temperature／top_p／top_k 回 400</td>
+                            <td class="py-4 pl-4 text-gray-400">拿掉取樣參數；文件說這限制對 Sonnet 級是新的</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 text-gray-300">措辭強度</td>
+                            <td class="py-4 px-4 text-gray-400">Opus 4.5／4.6 起對系統提示更敏感，「CRITICAL: You MUST」會過度觸發</td>
+                            <td class="py-4 pl-4 text-gray-400">降回平常的描述句（「這種情況用這個工具」）</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 pr-4 text-gray-300">effort 對照</td>
+                            <td class="py-4 px-4 text-gray-400">同名等級在新舊模型的實際思考量差一級</td>
+                            <td class="py-4 pl-4 text-gray-400">按觀察到的思考長度對照，別按名稱</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                Fable 5 另外有四點專屬調整，前兩點跟安全分類器直接相關。它對三類內容跑分類器：攻擊性網路安全、生物與生命科學、提取摘要化思考；良性工作也可能誤觸。文件的建議是在伺服器端或用戶端設<strong class="text-white">備援到 Opus 4.8</strong>，被拒的請求自動重導。第二點是別叫模型重現推理——要求回顯或謄寫內部推理，可能觸發 <code class="text-accent-purple">reasoning_extraction</code> 拒絕類別；需要推理可見性，改讀結構化的 thinking 區塊。
+            </p>
+
+            <p>
+                後兩點針對長時自主執行。防虛構進度（中譯）：「回報進度之前，把每一項聲稱對照本次工作階段裡的工具結果。只回報指得出證據的工作；還沒驗證的，明說還沒驗證。」防提前停止（中譯）：「你正在自主運作，使用者沒有即時盯著。對於符合原始要求且可逆的動作，直接執行不必再問。結束回合之前，檢查你的最後一段：如果那是一份計畫、一段分析、一個問題、或對還沒做的工作的承諾，現在就用工具呼叫把它做完。」
+            </p>
+
+            <hr class="border-white/10 my-12">
+
+            <div class="mt-8 text-sm font-mono text-gray-500 border-l-2 border-accent-purple pl-4">
+                使用方式可簡化為以下步驟：首先閱讀對應模型的專屬頁面以調整 effort 與 thinking，接著回到通用頁面提取骨架片段（如 XML 結構、格式控制、代理防呆），最後檢查遷移清單。衝突時，模型專屬指南說了算。
+            </div>
+
+            <hr class="border-white/10 my-12">
+
+            <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 相關連結
+            </h3>
+
+            <ul class="space-y-2 text-sm text-gray-400 list-none pl-0">
+                <li>
+                    <span class="text-accent-purple mr-2">●</span>
+                    <a href="https://platform.claude.com/docs/zh-TW/build-with-claude/prompt-engineering/claude-prompting-best-practices" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        Claude 提示最佳實踐（通用篇）
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">●</span>
+                    <a href="https://platform.claude.com/docs/zh-TW/build-with-claude/prompt-engineering/prompting-claude-sonnet-5" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        Sonnet 5 提示指南
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">●</span>
+                    <a href="https://platform.claude.com/docs/zh-TW/build-with-claude/prompt-engineering/prompting-claude-opus-4-8" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        Opus 4.8 提示指南
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">●</span>
+                    <a href="https://platform.claude.com/docs/zh-TW/build-with-claude/prompt-engineering/prompting-claude-fable-5" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        Fable 5 提示指南
+                    </a>
+                </li>
+            </ul>
+
+            <p class="text-sm text-gray-500 font-mono mt-4">
+                Source：platform.claude.com 官方文件（zh-TW）・整理範圍：Sonnet 5 ・ Opus 4.8 ・ Fable 5 ・ 通用最佳實踐
+            </p>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                &larr; 上一篇
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                查看所有專案
+            </a>
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                下一篇 &rarr;
+            </a>
+        </div>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+</body>
+</html>

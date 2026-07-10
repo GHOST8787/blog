@@ -97,7 +97,7 @@
             <p>
                 v2.1.0 的目標是把功能跑通，介面採高飽和深色配色，每個裝置配一個整批開啟按鈕。實際使用一段時間後，兩個落差浮出來：
             </p>
-            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
                 <li><strong class="text-white">1. 視覺基調與 Chrome Web Store 商店頁的調性差距</strong> &mdash; 深色高飽和適合短時間 popup，但放到 1280×800 promotional 截圖時，整體呈現偏 game demo 風格，跟「日常生產力工具」的定位有距離。</li>
                 <li><strong class="text-white">2. 互動單位太粗</strong> &mdash; 同步進來的分頁常常包含十幾個雜訊頁，「整裝置全開」會把雜訊也一起開出來。實務上每次都要先在手機上手動關掉雜訊，再用工具開啟，等於把篩選成本推回給使用者。</li>
             </ul>
@@ -152,7 +152,17 @@
             <p>
                 這次的配色目標是讓 popup 與商店頁 promotional 截圖共用同一套 design tokens，使整體呈現靠近紙本雜誌 / Editorial 的調性。四個色塊各自分工：
             </p>
-            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+            <div class="flex gap-3 my-6">
+                <div class="flex items-center gap-2 px-4 py-2 rounded-lg border border-white/10">
+                    <span class="inline-block w-5 h-5 rounded" style="background:#faf3e8"></span>
+                    <span class="text-sm font-mono text-gray-400">米白 #faf3e8</span>
+                </div>
+                <div class="flex items-center gap-2 px-4 py-2 rounded-lg border border-white/10">
+                    <span class="inline-block w-5 h-5 rounded" style="background:#d65a3a"></span>
+                    <span class="text-sm font-mono text-gray-400">暖橘 #d65a3a</span>
+                </div>
+            </div>
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
                 <li><strong class="text-white">米白 <code>#faf3e8</code></strong> &mdash; 底色與卡片背景，模擬印刷紙感。</li>
                 <li><strong class="text-white">暖橘 <code>#d65a3a</code></strong> &mdash; primary，CTA 按鈕 + 焦點字色 + chips 邊框。</li>
                 <li><strong class="text-white">赤陶 / 紫 / 黃</strong> &mdash; accent 三色，用在 logo 三色塊與 promo 視覺，避免單一橘色過於壓迫。</li>
@@ -177,7 +187,7 @@
             <p>
                 把整批按鈕拆成三層控制：
             </p>
-            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
                 <li><strong class="text-white">分頁層級</strong> &mdash; 每個分頁 row 一個 checkbox，預設未勾選，使用者自行勾選想開的分頁。</li>
                 <li><strong class="text-white">裝置層級</strong> &mdash; header 提供「全選 / 取消」toggle，整批場景仍能一鍵覆蓋。</li>
                 <li><strong class="text-white">全域 CTA</strong> &mdash; 底部按鈕文案動態化：「開啟選取的 3 個分頁」。沒勾選任何分頁時 disable。</li>
@@ -218,7 +228,7 @@
                 Chrome Extension 原生支援 <code class="text-accent-purple">_locales/</code> 目錄結構：
             </p>
 
-            <div class="bg-white/5 p-5 rounded-xl border-l-4 border-accent-purple font-mono text-sm text-gray-300 mb-8 overflow-x-auto">
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-300 overflow-x-auto">
 <pre class="m-0"><code>_locales/
   zh_TW/messages.json   ← 預設
   en/messages.json      ← 切換</code></pre>
@@ -242,7 +252,7 @@
                 <span class="text-accent-purple">#</span> 觸達性：兩個媒體查詢
             </h3>
 
-            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
                 <li><strong class="text-white"><code>:focus-visible</code></strong> &mdash; CSS 媒體查詢，可區分使用者是用鍵盤 tab 鍵還是滑鼠操作。鍵盤導覽顯示橘色焦點環方便視覺追蹤，滑鼠點擊保持原樣以免干擾。</li>
                 <li><strong class="text-white"><code>prefers-reduced-motion: reduce</code></strong> &mdash; CSS 媒體查詢，偵測使用者是否在作業系統開啟「減少動態效果」選項（前庭功能障礙者常用設定）。偵測到時，全部 transition 動畫退到 0s。</li>
                 <li><strong class="text-white">系統高對比模式</strong> &mdash; 由瀏覽器原生樣式處理，未覆蓋 CSS。</li>
@@ -258,7 +268,7 @@
             <p>
                 Promotional 截圖五張全部換暖色 Editorial 樣式：
             </p>
-            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
                 <li><strong class="text-white">Hero (1280×800)</strong> &mdash; 「手機上的分頁，一鍵全開到電腦」+ popup mockup</li>
                 <li><strong class="text-white">Bilingual (1280×800)</strong> &mdash; 中文版 / English 兩張卡片並排對照</li>
                 <li><strong class="text-white">Select (1280×800)</strong> &mdash; 「勾選你要的，跳過你不要的」+ 三步驟編號清單</li>
@@ -367,7 +377,7 @@
             <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
                 View All Projects
             </a>
-            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+            <a href="project_15.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
                 Next Project &rarr;
             </a>
         </div>

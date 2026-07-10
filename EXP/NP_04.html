@@ -35,7 +35,7 @@
         <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
             <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
                 <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
-                BACK TO PROJECTS
+                返回專案列表
             </a>
             <span class="opacity-50">EXP / NP_04 (draft)</span>
         </div>
@@ -43,24 +43,24 @@
         <header class="mb-12 border-b border-white/10 pb-12">
 
             <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
-                夢想智賦實習：<br>
-                <span class="text-gradient text-2xl md:text-4xl">用 GPT 自動化政府補助研究與報告產出</span>
+                影視製作公司實習：<br>
+                <span class="text-gradient text-2xl md:text-4xl">從零建立內容營運與專案管理系統</span>
             </h1>
 
             <div class="flex flex-wrap gap-3 mb-6">
                 <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
-                    AI &amp; Automation
+                    Lifestyle
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Grant Research
+                    Operations
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Workflow
+                    Project Management
                 </span>
             </div>
 
             <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
-                <span><i class="far fa-calendar mr-2"></i>2024.07 &mdash; 2024.09</span>
+                <span><i class="far fa-calendar mr-2"></i>2025.01 &mdash; Present</span>
                 <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
             </div>
         </header>
@@ -68,137 +68,202 @@
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
             <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
-                夢想智賦實習任內負責政府補助案的研究、盤點與月度報告產出。靠人工逐筆查政府網站、整理進 Excel，再用樞紐分析做分類統計。2024.08 月底盤點完成 77 個中央補助、49 個地方補助。
+                影視製作公司實習任內負責建立對內運作流程與小助理 SOP。從「大改 vs 小修」工作分類定義、影片排程命名、月度行政規範到開箱影片 VOOM 數據分析框架，整理成可交接的書面文件。這篇文章探討如何將這套 SOP 的每一條轉化為 APP 的功能規格。把它做成系統，架構會長怎樣、哪裡能優化。
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 8 月底盤點量級
-            </h3>
+            <figure class="my-10 mx-auto">
+                <img src="../PNG/NP_04.1.webp"
+                     alt="影視製作 SOP 架構圖"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    影視製作 SOP 四大模組 — 每條規則對應一塊系統功能
+                </figcaption>
+            </figure>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
-                <div class="bg-white/5 border border-accent-purple/20 rounded-2xl p-6 text-center">
-                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">77</div>
-                    <div class="text-xs text-gray-500 font-mono uppercase">中央補助（細分）</div>
-                </div>
-                <div class="bg-white/5 border border-accent-purple/20 rounded-2xl p-6 text-center">
-                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">49</div>
-                    <div class="text-xs text-gray-500 font-mono uppercase">地方補助（細分）</div>
-                </div>
-            </div>
-
-            <p>大綱 / 細分兩種粒度：中央 63 個大綱 / 77 個細分；地方 43 個大綱 / 49 個細分。</p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 中央補助 14 大類別
+                <span class="text-accent-purple">#</span> 大改 vs 小修：工作分類定義
             </h3>
 
-            <p>對照 113 年度政府電子手冊的 14 大分類，盤點每一類底下有多少筆補助，協助客戶辨識可優先申請的方向：</p>
+            <p>
+                為了避免因修改範圍模糊而導致跨部門協調成本增加，老闆同意將腳本修改拆分為兩類，並訂出明確判斷依據：
+            </p>
 
             <div class="overflow-x-auto my-8">
                 <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
                     <thead class="bg-white/5">
                         <tr>
-                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider whitespace-nowrap w-32">類別</th>
-                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">補助數量</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider whitespace-nowrap w-24">面向</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">小修</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">大改</th>
                         </tr>
                     </thead>
                     <tbody class="text-gray-300">
-                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">12 民生化工</td><td class="px-4 py-3 font-mono">37</td></tr>
-                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">10 金屬機電</td><td class="px-4 py-3 font-mono">22</td></tr>
-                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">07 淨零排放</td><td class="px-4 py-3 font-mono">18</td></tr>
-                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">05 財務管理</td><td class="px-4 py-3 font-mono">13</td></tr>
-                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">01 生產管理</td><td class="px-4 py-3 font-mono">12</td></tr>
-                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">02 市場行銷</td><td class="px-4 py-3 font-mono">10</td></tr>
-                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">08 創業育成</td><td class="px-4 py-3 font-mono">9</td></tr>
-                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">13 服務產業</td><td class="px-4 py-3 font-mono">7</td></tr>
-                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">03 人才發展</td><td class="px-4 py-3 font-mono">6</td></tr>
-                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">11 電子資訊</td><td class="px-4 py-3 font-mono">5</td></tr>
-                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">14 中小企業</td><td class="px-4 py-3 font-mono">4</td></tr>
-                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">09 綜合服務</td><td class="px-4 py-3 font-mono">3</td></tr>
-                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">04 研發創新</td><td class="px-4 py-3 font-mono">2</td></tr>
-                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">06 數位創新</td><td class="px-4 py-3 font-mono">2</td></tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">範圍</td>
+                            <td class="px-4 py-3">特定場景、對白、動作</td>
+                            <td class="px-4 py-3">整體結構、主題或重要場景</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">目的</td>
+                            <td class="px-4 py-3">語氣 / 描述 / 細節優化</td>
+                            <td class="px-4 py-3">重寫情節、調整角色動機、改變結局</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">影響</td>
+                            <td class="px-4 py-3">不動分鏡、拍攝計畫、後製</td>
+                            <td class="px-4 py-3">可能要重排分鏡、拍攝、預算</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">協調層</td>
+                            <td class="px-4 py-3">編劇 / 編輯團隊現場快速處理</td>
+                            <td class="px-4 py-3">製片或客戶批准 + 跨部門重新協調</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">判斷依據</td>
+                            <td class="px-4 py-3">局部優化、整體影響有限</td>
+                            <td class="px-4 py-3">會動到分鏡 / 場景設計 / 拍攝計畫</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 政府手冊 vs 公司資料對比
+                <span class="text-accent-purple">#</span> 小助理守則：排程與行政
             </h3>
 
-            <p>比對「113 年度產業輔導資源手冊」與公司既有補助清單，找出可新增的補助機會：</p>
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">影片歸檔</strong> &mdash; 剪完的影片依客戶或創作者名稱，存到對應雲端資料夾</li>
+                <li><strong class="text-white">排程編號</strong> &mdash; 「月-次數」格式（例：3-1 = 3 月第一次拍攝）</li>
+                <li><strong class="text-white">月度簽到</strong> &mdash; 月初印簽到表、貼門口、舊表歸檔；每天檢查簽到狀況；人事變動時更新名單</li>
+                <li><strong class="text-white">發票歸檔</strong> &mdash; 雙月月底處理</li>
+                <li><strong class="text-white">分組對接</strong> &mdash; 企劃編導、拍攝剪輯及後續助理三個職能，各自負責對接不同案件</li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 開箱影片 VOOM 數據分析框架
+            </h3>
+
+            <p>
+                負責的開箱類影片發佈於 VOOM 平台。為了讓老闆能用同一套指標跨支影片比較，整理了一套五層轉換率公式：
+            </p>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider whitespace-nowrap w-44">指標</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">公式</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">用途</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">點擊率 (CTR)</td><td class="px-4 py-3 font-mono">點擊 ÷ 曝光</td><td class="px-4 py-3">封面是否吸引人</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">3 秒觀看率</td><td class="px-4 py-3 font-mono">3 秒觀看 ÷ 曝光</td><td class="px-4 py-3">開頭是否留得住</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">1 分鐘觀看率</td><td class="px-4 py-3 font-mono">1 分鐘觀看 ÷ 曝光</td><td class="px-4 py-3">深度觀眾比例</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">3 秒到 1 分鐘留存率</td><td class="px-4 py-3 font-mono">1 分鐘 ÷ 3 秒觀看</td><td class="px-4 py-3">滑過 → 認真觀看的轉換</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">互動率</td><td class="px-4 py-3 font-mono">(反應 + 留言) ÷ 曝光</td><td class="px-4 py-3">觸及到互動的轉換</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 異常識別規則
+            </h3>
+
+            <p>有了五層公式後，把常見的「異常組合 → 可能原因」整理成判斷規則：</p>
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">點擊率高但觀看低</strong> &mdash; 封面黨（封面內容與影片主題不符）</li>
+                <li><strong class="text-white">觀看高但互動低</strong> &mdash; 影片品質可以但缺 CTA（call-to-action）</li>
+                <li><strong class="text-white">3 秒觀看多但 1 分鐘觀看少</strong> &mdash; 開頭不吸引、留不住觀眾</li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 工作量級（2025.06-07 開箱系列）
+            </h3>
+
+            <p>
+                兩個月內發佈 13 支開箱影片，覆蓋生活用品、廚房用品、彩妝、健身工具等品類。其中單支峰值表現：
+            </p>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-8">
                 <div class="bg-white/5 border border-accent-purple/20 rounded-2xl p-6 text-center">
-                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">150</div>
-                    <div class="text-xs text-gray-500 font-mono uppercase">政府獨有（公司可新增）</div>
+                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">67K</div>
+                    <div class="text-xs text-gray-500 font-mono uppercase">單支峰值曝光</div>
                 </div>
                 <div class="bg-white/5 border border-accent-purple/20 rounded-2xl p-6 text-center">
-                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">49</div>
-                    <div class="text-xs text-gray-500 font-mono uppercase">公司獨有</div>
+                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">37K</div>
+                    <div class="text-xs text-gray-500 font-mono uppercase">單支峰值 3 秒觀看</div>
                 </div>
                 <div class="bg-white/5 border border-accent-purple/20 rounded-2xl p-6 text-center">
-                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">14</div>
-                    <div class="text-xs text-gray-500 font-mono uppercase">兩者重疊</div>
+                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">301</div>
+                    <div class="text-xs text-gray-500 font-mono uppercase">單支峰值互動</div>
                 </div>
             </div>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 中央主辦單位分佈（77 個補助）
+                <span class="text-accent-purple">#</span> 如果現在做成一個 APP：架構
             </h3>
 
-            <p>依主辦單位拆分：經濟部相關 48 個、其他部會 29 個。承辦量大的執行單位：</p>
-            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
-                <li><strong class="text-white">A+ 企業創新專案辦公室</strong> &mdash; 13 個補助（最多）</li>
-                <li><strong class="text-white">財團法人台灣中小企業聯合輔導基金會</strong> &mdash; 11 個</li>
-                <li><strong class="text-white">數位發展部數位產業署</strong> &mdash; 11 個</li>
-                <li><strong class="text-white">財團法人中國生產力中心</strong> &mdash; 6 個</li>
-            </ul>
+            <p>上面四塊 SOP 對應到系統就是四個模組，共用一組資料表。三個職能分別是系統裡三種角色，各自看到自己該做的事。</p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 地方補助 49 個分佈
-            </h3>
-
-            <div class="overflow-x-auto my-8">
-                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
-                    <thead class="bg-white/5">
-                        <tr>
-                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">城市</th>
-                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">補助數量</th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-gray-300">
-                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">高雄市</td><td class="px-4 py-3 font-mono">16</td></tr>
-                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">新北市</td><td class="px-4 py-3 font-mono">11</td></tr>
-                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">台北市</td><td class="px-4 py-3 font-mono">10</td></tr>
-                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">桃園市</td><td class="px-4 py-3 font-mono">8</td></tr>
-                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">台南市</td><td class="px-4 py-3 font-mono">4</td></tr>
-                    </tbody>
-                </table>
+            <div class="my-8 space-y-4">
+                <div class="text-xs font-mono text-gray-500 uppercase tracking-wider">功能模組</div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div class="bg-white/5 rounded-xl border border-white/10 p-4">
+                        <div class="text-white font-bold text-sm mb-1">工單模組</div>
+                        <div class="text-sm text-gray-400 font-light">腳本修改開單，送出時依判斷依據自動分「小修 / 大改」。大改自動觸發跨部門審批。</div>
+                    </div>
+                    <div class="bg-white/5 rounded-xl border border-white/10 p-4">
+                        <div class="text-white font-bold text-sm mb-1">排程模組</div>
+                        <div class="text-sm text-gray-400 font-light">拍攝日曆，編號用「月-次數」自動生。影片剪完依客戶名自動歸到對應雲端資料夾。</div>
+                    </div>
+                    <div class="bg-white/5 rounded-xl border border-white/10 p-4">
+                        <div class="text-white font-bold text-sm mb-1">數據模組</div>
+                        <div class="text-sm text-gray-400 font-light">接 VOOM 數據，自動套五層轉換率公式，算出 CTR、留存、互動率。</div>
+                    </div>
+                    <div class="bg-white/5 rounded-xl border border-white/10 p-4">
+                        <div class="text-white font-bold text-sm mb-1">預警模組</div>
+                        <div class="text-sm text-gray-400 font-light">異常識別規則做成規則引擎，數據一進來就自動比對、標出封面黨或缺 CTA 的影片。</div>
+                    </div>
+                </div>
+                <div class="flex justify-center text-accent-purple"><i class="fas fa-arrow-down"></i></div>
+                <div class="text-xs font-mono text-gray-500 uppercase tracking-wider">核心資料表</div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="text-xs px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-gray-300 font-mono">projects 案件</span>
+                    <span class="text-xs px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-gray-300 font-mono">videos 影片</span>
+                    <span class="text-xs px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-gray-300 font-mono">schedules 排程</span>
+                    <span class="text-xs px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-gray-300 font-mono">staff 人員</span>
+                    <span class="text-xs px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-gray-300 font-mono">metrics 數據</span>
+                    <span class="text-xs px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-gray-300 font-mono">alerts 預警</span>
+                </div>
             </div>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 工具與工作流
+                <span class="text-accent-purple">#</span> 會怎麼優化
             </h3>
 
-            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
-                <li><strong class="text-white">Excel 樞紐分析</strong> &mdash; 主辦單位 / 類別 / 地區三軸切片</li>
-                <li><strong class="text-white">月度總結報告</strong> &mdash; 7 月、8 月、9 月各一份 PowerPoint，含進度 / 主辦單位 / 比對結果 / 結論</li>
-            </ul>
+            <p>優化的方向都是同一件事：SOP 裡本來要人記在腦子裡、每次手動判斷的規則，搬進系統讓它自動跑。</p>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-10">
-            </div>
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-8">
+                <li><strong class="text-white">分類自動化</strong> &mdash; 大改 / 小修的判斷依據寫成表單邏輯，開單時系統自己判類、自己決定要不要跨部門審批。人不用每次重新想這條改動算大還算小。</li>
+                <li><strong class="text-white">編號與歸檔自動化</strong> &mdash; 排程編號、雲端歸檔路徑照規則自動生成。命名若依賴人工輸入容易出現錯誤，交由系統生成則能確保一致性。</li>
+                <li><strong class="text-white">指標即時算</strong> &mdash; 五層轉換率公式寫進系統，數據一進來就算好，跨影片用同一把尺比較。省下每支手動套 Excel 的工。</li>
+                <li><strong class="text-white">規則引擎預警</strong> &mdash; 異常組合對應原因做成規則，數據進來自動標紅並附上可能原因。判斷這種有明確條件的事交給規則引擎，人只看被標出來的那幾支。</li>
+                <li><strong class="text-white">簽到電子化</strong> &mdash; 月度簽到由原本的印表格貼門口，改為掃碼或按鈕打卡，簽到狀態即時更新至 staff 表，人事變動時可直接修改名單。</li>
+            </ul>
 
         </article>
 
         <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
             <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
-                &larr; Prev Project
+                &larr; 上一篇
             </a>
             <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
-                View All Projects
+                查看所有專案
             </a>
             <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
-                Next Project &rarr;
+                下一篇 &rarr;
             </a>
         </div>
 

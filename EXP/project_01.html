@@ -117,6 +117,30 @@
 
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 技術決策與踩過的坑
+            </h3>
+
+            <p class="mb-6">
+                全站共用邏輯集中在四個檔案：<code class="text-accent-purple bg-accent-purple/10 px-1 rounded">main.js</code>（組件載入與動畫）、<code class="text-accent-purple bg-accent-purple/10 px-1 rounded">tailwind.config.js</code>（主題定義）、<code class="text-accent-purple bg-accent-purple/10 px-1 rounded">i18n.js</code>（語言切換）、<code class="text-accent-purple bg-accent-purple/10 px-1 rounded">style.css</code>（自訂樣式）。以下是幾個實際影響架構的決策與除錯紀錄。
+            </p>
+
+            <p class="mb-6">
+                <strong class="text-white">Tailwind 直接走 CDN Play：</strong>靜態站不想引入 Node 建置流程，樣式用 CDN 版 Tailwind，主題色（如 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">accent-purple #BF94FF</code>）集中定義在 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">tailwind.config.js</code>。踩到的坑是載入順序：必須 CDN 先、config 後，順序反了不會報任何錯，客製色直接靜默失效、整片畫面回到預設值。Console 找不到線索，最後是逐一對照 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">&lt;head&gt;</code> 內的 script 順序才定位出來。
+            </p>
+
+            <p class="mb-6">
+                <strong class="text-white">共用區塊動態掛載的路徑陷阱：</strong>Navbar 與 Footer 以 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">fetch</code> 載入 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">components/*.html</code> 再掛進頁面。文章內頁位於 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">EXP/</code> 深一層，同一份 navbar 的相對連結在內頁會全數斷掉。解法是每頁宣告 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">window.siteRoot</code>，組件載入完成後由 JS 把每個連結補上路徑前綴。這是組件分離設計實際要付的維護成本。
+            </p>
+
+            <p class="mb-6">
+                <strong class="text-white">動畫的邊界處理：</strong>卡片進場用 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">IntersectionObserver</code> 觸發位移淡入，觸發前先讀取 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">prefers-reduced-motion</code>，使用者系統設定減少動態效果時整段動畫直接跳過。
+            </p>
+
+            <p class="mb-6">
+                <strong class="text-white">互動資料接 Firebase Realtime Database：</strong>GitHub Pages 只供靜態檔案，按讚計數這類需要寫入的功能接 Firebase 處理。計數更新用 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">runTransaction</code> 處理並發，兩個訪客同時點擊時不會互相覆寫。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 開發流程與 AI 協作除錯 (Debugging)
             </h3>
 
@@ -145,6 +169,18 @@
                     </li>
                 </ul>
             </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 架構的延伸驗證
+            </h3>
+
+            <p class="mb-6">
+                v1.0 之後陸續加上兩項功能，過程可以檢驗當初架構決策的擴充性。中英雙語：整站鏡像一份 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">en/</code> 目錄，<code class="text-accent-purple bg-accent-purple/10 px-1 rounded">i18n.js</code> 以 URL 路徑判斷當前語言、用 localStorage 記住偏好，切換前先發 HEAD 請求探測對應頁面是否存在，找不到就退回該語言首頁。列表頁資料驅動：文章與專案清單存於 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">articles.json</code> 與 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">projects.json</code>，列表卡片由 JS 讀取 json 生成，新增文章只需要補一筆 json，列表 HTML 完全不用動。
+            </p>
+
+            <p class="mb-6">
+                兩項功能都在既有目錄結構上直接追加完成，v1.0 拆組件、集中設定的做法在這個階段收到效果。
+            </p>
 
             <hr class="border-white/10 my-12">
 

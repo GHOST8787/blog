@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / P28 | GHOST.ouo</title>
+
+    <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script type="module" src="../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                返回專案列表
+            </a>
+            <span class="opacity-50">EXP / P28</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                NTUST MVC Lab W9&ndash;12：<br>
+                <span class="text-gradient text-2xl md:text-4xl">從 Agentic RAG 到擴散模型</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    AI &amp; Automation
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Generative AI
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Coursework
+                </span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.06 &mdash; 2026.07</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
+                MVC Lab 課程的第九到十二週，主題整批轉向生成式 AI：W9 用 LangGraph 把檢索組成會自己判斷的 agent，W10 用 CLIP 和 BLIP 做圖文推論，W11 和 W12 是兩種生成模型——VAE 從潛在空間解碼、DDPM 從純雜訊一步步去噪。四個單元全部在本機跑完，模型下載、訓練、生成都有可驗證的輸出，其中 DDPM 在 MNIST 上訓練 20 個 epoch 後生成的手寫數字已經可以直接辨認。
+            </p>
+
+            <p class="text-sm text-gray-500 italic mb-10">
+                前八週的主軸是辨識：分類、偵測、分割、決策，模型的輸出是一個標籤、一個框、一個動作。這四週的模型開始產東西——查資料回答問題、看圖說話、畫出沒見過的數字。前五份作業的紀錄在 <a href="project_16.html" class="text-accent-purple hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">EXP / P16</a>，W6&ndash;W8（開集偵測、語意分割、強化學習）在上一篇。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 四個單元總覽
+            </h3>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">週次</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">主題</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">工具 / 模型</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">關鍵結果</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">W9</td>
+                            <td class="px-4 py-3">Agentic RAG</td>
+                            <td class="px-4 py-3">LangGraph + Chroma + 本機 LLM</td>
+                            <td class="px-4 py-3 font-mono">兩種情境路由皆正確</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">W10</td>
+                            <td class="px-4 py-3">VLM 圖文推論</td>
+                            <td class="px-4 py-3">CLIP ViT-B/32 + BLIP</td>
+                            <td class="px-4 py-3 font-mono">zero-shot 分類三圖全對（0.89&ndash;1.00）</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">W11</td>
+                            <td class="px-4 py-3">VAE（MNIST 生成）</td>
+                            <td class="px-4 py-3">PyTorch，2 維 latent</td>
+                            <td class="px-4 py-3 font-mono">loss/sample 187.8 &rarr; 150.9</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">W12</td>
+                            <td class="px-4 py-3">DDPM（擴散模型）</td>
+                            <td class="px-4 py-3">MiniUNet 1.37M 參數</td>
+                            <td class="px-4 py-3 font-mono">20 epoch 生成可辨認的手寫數字</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 逐週拆解
+            </h3>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">W9 &mdash; Agentic RAG：讓模型自己決定要不要查資料</h4>
+            <p>
+                兩本 notebook，全部在本機跑：LLM 掛在 localhost 的推論伺服器上，嵌入用 nomic-embed-text，向量庫用 Chroma。知識庫拿 NTUST AI 研究中心的公開介紹當示範素材，切成 10 個 chunk；每個問題都有明確的標準答案，檢索有沒有撈對段落一眼可驗。
+            </p>
+            <p>
+                第一本做基本 RAG：載入、切塊、嵌入、檢索、生成一條龍。兩個小實驗值得記：單一查詢 k=1 常撈錯段落，多查詢檢索讓 LLM 先把問題改寫成幾種問法、各自檢索再合併，命中率明顯改善；查詢擴展把「AI for farming」擴寫成一串農業關鍵字再查，把原查詢撈不到的段落補了回來。
+            </p>
+            <p>
+                第二本用 LangGraph 把 retriever 包成工具，決定權交給模型。流程圖上四個節點：generate_query_or_respond 先判斷這題需要查資料還是直接答；要查就走 retrieve，grade_documents 評估撈回來的內容相關與否；相關就 generate_answer 收尾，偏掉就 rewrite_question 改寫問題重跑一輪。兩種情境驗證：問中心的研究領域，走完整檢索路徑；寒暄性問題時，模型直接生成回答，未進行檢索。
+            </p>
+            <figure class="my-8">
+                <img src="../PNG/project_28.1.webp"
+                     alt="W9 LangGraph agentic RAG 流程圖：檢索、評分、改寫、作答四個節點"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">W9：LangGraph 組出來的 agent 流程，模型自己決定檢索與否、內容偏掉就改寫問題重來</figcaption>
+            </figure>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">W10 &mdash; VLM：CLIP 對齊、BLIP 開口</h4>
+            <p>
+                這週不訓練，作業是三個純推論 demo，素材是六張 COCO 公開影像。Demo A 用 CLIP 做 zero-shot 分類：把五句「a photo of a ...」的候選描述和圖片各自編碼，比餘弦相似度。三張測試圖全部答對——貓 0.982、熊 0.999、街景 0.889，中間零訓練、零標註。
+            </p>
+            <p>
+                Demo B 反過來做圖文檢索：三個查詢句各自在六張圖裡找最相符的一張。「animals」排第一的是熊、「a vehicle on the street」是街景、「something you can eat」是食物圖，三題排序全對。相似度數值都只在 0.2 上下，排序的相對高低才是 CLIP 可用的訊號。
+            </p>
+            <p>
+                Demo C 使用 BLIP 生成描述，對一張雙貓照片生成「two cats sleeping on a couch」，並進行問答：有什麼（cats）、幾隻（2）、主體顏色（pink）。CLIP 是將圖文對齊到同一向量空間以進行比對，BLIP 則是透過視覺特徵接入語言模型進行生成。
+            </p>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">W11 &mdash; VAE：把 MNIST 壓進 2 維再畫出來</h4>
+            <p>
+                VAE 在 MNIST 上訓練：encoder 把 784 維像素壓到 2 維 latent（輸出平均值與變異數），decoder 從 latent 重建影像，損失是重建誤差加 KL 散度。15 個 epoch 跑完，每樣本 loss 從 187.8 收斂到 150.9。latent 取 2 維是刻意的——整個潛在空間可以直接攤在平面上看。
+            </p>
+            <figure class="my-8">
+                <img src="../PNG/project_28.2.webp"
+                     alt="W11 VAE 的 2 維 latent manifold：20×20 格點解碼出的數字連續變形"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">W11：把 2 維 latent 空間切成 20&times;20 格點逐一解碼，數字在平面上連續變形</figcaption>
+            </figure>
+            <p>
+                上圖是這份 demo 最值得看的一張：在 latent 平面取 20&times;20 個格點逐一解碼，7、9、8、1、3、6、0 在平面上連續變形，相鄰格點的字形幾乎一樣。下圖把一萬張測試影像編碼後依真實數字上色，同一個數字聚成一團、字形相近的類別彼此相鄰——生成的平滑性和分群結構是同一件事的兩面。
+            </p>
+            <figure class="my-8">
+                <img src="../PNG/project_28.3.webp"
+                     alt="W11 測試集影像編碼到 2 維 latent 後依數字類別上色的散佈圖"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">W11：測試集一萬張編碼進 latent 平面，依真實數字上色，十類自然分群</figcaption>
+            </figure>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">W12 &mdash; DDPM：從純雜訊一步步去噪</h4>
+            <p>
+                擴散模型的訓練分為兩部分。首先使用 2 維的雙月牙玩具資料進行原理驗證：前向過程按照 cosine schedule 加噪 200 步，最後一步 alpha_bar 只剩 6&times;10<sup>-8</sup>，資料變為純雜訊；反向過程則訓練一個小型網路預測每步的雜訊，從高斯雜訊逐步採樣回來，最終還原雙月牙的形狀。demo 裡還做了一個對照：採樣時把隨機項關掉、每步只取平均值，點群會塌縮到少數幾條平均路徑上——生成的核心是從分布中進行取樣，若每步僅選擇最可能值，則無法呈現分布的多樣性。
+            </p>
+            <figure class="my-8">
+                <img src="../PNG/project_28.4.webp"
+                     alt="W12 DDPM 反向去噪過程：從 t=199 純雜訊到 t=0 雙月牙分布的五個階段"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">W12：反向去噪五個階段，t=199 的純雜訊在 t=0 收回雙月牙分布</figcaption>
+            </figure>
+            <p>
+                第二段搬上 MNIST：1.37M 參數的 MiniUNet 配時間嵌入，20 個 epoch 在 RTX 4060 上跑了 528 秒，loss 從 0.0605 降到 0.04 左右。從純雜訊採樣 64 張，多數數字直接可辨認，筆劃粗細和歪斜各有變化，是模型自己畫的、資料集裡沒有的字。
+            </p>
+            <figure class="my-8">
+                <img src="../PNG/project_28.5.webp"
+                     alt="W12 DDPM 在 MNIST 訓練 20 epoch 後從純雜訊生成的 64 張手寫數字"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">W12：MiniUNet 訓練 20 epoch 後生成的 64 張手寫數字，多數可直接辨認</figcaption>
+            </figure>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 學術誠信聲明
+            </h3>
+
+            <p>
+                這篇文章記錄了個人的學習過程。W10 是課程作業（純推論），W9、W11、W12 則是課程教學 notebook 的本機重現。notebook 的骨架由課程提供，所有執行輸出、訓練資料與圖表均由本人在本機完成。資料集（MNIST、COCO 樣圖）由程式自公開來源下載，一律不隨附。在學的 MVC Lab 學生請自己跑過一次。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 技術環境
+            </h3>
+
+            <ul class="list-none space-y-2 text-sm text-gray-400 font-light border-l-2 border-white/10 pl-5 my-6">
+                <li><strong class="text-gray-200">語言</strong> &mdash; Python 3.11、PyTorch 2.6（CUDA 12.4）</li>
+                <li><strong class="text-gray-200">W9</strong> &mdash; LangChain / LangGraph、Chroma、本機 LLM 推論伺服器 + nomic-embed-text</li>
+                <li><strong class="text-gray-200">W10</strong> &mdash; HuggingFace Transformers（CLIP ViT-B/32、BLIP captioning / VQA）</li>
+                <li><strong class="text-gray-200">W11 / W12</strong> &mdash; torchvision（MNIST）、matplotlib；DDPM 為 MiniUNet 1.37M 參數</li>
+                <li><strong class="text-gray-200">硬體</strong> &mdash; RTX 4060 8GB（VAE 15 epoch 數分鐘；DDPM 20 epoch 528 秒）</li>
+                <li><strong class="text-gray-200">Windows 重現注意</strong> &mdash; DataLoader 要設 num_workers=0（spawn 模式無法 pickle lambda transform）；transformers 固定 4.x（5.x 起 get_image_features 回傳型別改變）</li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 相關連結
+            </h3>
+
+            <ul class="space-y-2 text-sm text-gray-400 list-none pl-0">
+                <li>
+                    <span class="text-accent-purple mr-2">●</span>
+                    <a href="https://github.com/GHOST8787/ntust-mvclab-2026" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        GitHub — GHOST8787/ntust-mvclab-2026
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">●</span>
+                    <a href="project_16.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        前五份作業的紀錄 — EXP / P16
+                    </a>
+                </li>
+            </ul>
+
+            <p class="text-sm text-gray-500 font-mono mt-4">
+                MIT License
+            </p>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                &larr; 上一篇
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                查看所有專案
+            </a>
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                下一篇 &rarr;
+            </a>
+        </div>
+
+    </main>
+    <div id="footer-placeholder"></div>
+</body>
+</html>

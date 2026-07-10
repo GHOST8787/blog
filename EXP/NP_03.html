@@ -35,7 +35,7 @@
         <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
             <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
                 <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
-                BACK TO PROJECTS
+                返回專案列表
             </a>
             <span class="opacity-50">EXP / NP_03 (draft)</span>
         </div>
@@ -43,24 +43,24 @@
         <header class="mb-12 border-b border-white/10 pb-12">
 
             <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
-                海科館生物資料庫建置：<br>
-                <span class="text-gradient text-2xl md:text-4xl">從 Excel 樞紐分析到物種管理系統</span>
+                夢想智賦實習：<br>
+                <span class="text-gradient text-2xl md:text-4xl">用 Excel 樞紐分析整理政府補助研究與月報</span>
             </h1>
 
             <div class="flex flex-wrap gap-3 mb-6">
                 <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
-                    Engineering
+                    AI &amp; Automation
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Database
+                    Grant Research
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Marine Biology
+                    Workflow
                 </span>
             </div>
 
             <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
-                <span><i class="far fa-calendar mr-2"></i>2024.04 &mdash; 2024.08</span>
+                <span><i class="far fa-calendar mr-2"></i>2024.07 &mdash; 2024.09</span>
                 <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
             </div>
         </header>
@@ -68,143 +68,173 @@
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
             <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
-                國立海洋科技博物館（海科館）內部生物資料庫整理工作。建立統一缸體編碼 schema、整合 A/B/C 三區共 190 個缸位的清冊。產出可查詢、可擴展的物種管理表單供館內後續維運使用。
+                夢想智賦實習任內負責政府補助案的研究、盤點與月度報告產出。當年的做法是人工逐筆查政府網站、把每一筆補助抄進 Excel，再靠 GPT for Sheet 一格一格做初步分類，最後用樞紐分析切出統計。2024 年 8 月底完成盤點，涵蓋 77 個中央補助與 49 個地方補助。本文也回顧同樣的流程，探討現今可採用的 AI 工具。
             </p>
+
+            <figure class="my-10 mx-auto">
+                <img src="../PNG/NP_03.1.webp"
+                     alt="夢想智賦補助盤點流程圖"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    補助盤點流程 — 從逐筆查到月報產出的四段工作
+                </figcaption>
+            </figure>
+
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 缸體編碼 schema
+                <span class="text-accent-purple">#</span> 8 月底盤點數量統計
             </h3>
 
-            <p>
-                為了讓散落在不同名稱、不同尺寸的缸位能被統一索引，重新設計編碼規則。範例：<code class="text-accent-purple">C0AF0120L01</code> 拆解：
-            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
+                <div class="bg-white/5 border border-accent-purple/20 rounded-2xl p-6 text-center">
+                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">77</div>
+                    <div class="text-xs text-gray-500 font-mono uppercase">中央補助（細分）</div>
+                </div>
+                <div class="bg-white/5 border border-accent-purple/20 rounded-2xl p-6 text-center">
+                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">49</div>
+                    <div class="text-xs text-gray-500 font-mono uppercase">地方補助（細分）</div>
+                </div>
+            </div>
+
+            <p>大綱 / 細分兩種粒度：中央 63 個大綱 / 77 個細分；地方 43 個大綱 / 49 個細分。</p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 中央補助 14 大類別
+            </h3>
+
+            <p>對照 113 年度政府電子手冊的 14 大分類，盤點每一類底下有多少筆補助，協助客戶辨識可優先申請的方向。因為同一筆補助可能同時歸入多個類別，以下合計 150 筆次，對應的是 77 筆獨立補助：</p>
 
             <div class="overflow-x-auto my-8">
                 <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
                     <thead class="bg-white/5">
                         <tr>
-                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider whitespace-nowrap w-32">段</th>
-                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">範例值</th>
-                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">意義</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider whitespace-nowrap w-32">類別</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">補助數量</th>
                         </tr>
                     </thead>
                     <tbody class="text-gray-300">
-                        <tr class="border-t border-white/10">
-                            <td class="px-4 py-3 font-bold text-white">類型字元</td>
-                            <td class="px-4 py-3 font-mono">C0 / A1 / A2 / A3 / A4</td>
-                            <td class="px-4 py-3">主缸類型（如 A1 大池、A2 主題缸、A3 水母、A4 中型主題、C0 後場標準缸）</td>
-                        </tr>
-                        <tr class="border-t border-white/10">
-                            <td class="px-4 py-3 font-bold text-white">區域</td>
-                            <td class="px-4 py-3 font-mono">A / B / C</td>
-                            <td class="px-4 py-3">後場分區（A 區、B 區、C 區）</td>
-                        </tr>
-                        <tr class="border-t border-white/10">
-                            <td class="px-4 py-3 font-bold text-white">尺寸代碼</td>
-                            <td class="px-4 py-3 font-mono">F / J / T 等</td>
-                            <td class="px-4 py-3">缸型分類（標準矩形 / 圓筒 / 噸級主缸）</td>
-                        </tr>
-                        <tr class="border-t border-white/10">
-                            <td class="px-4 py-3 font-bold text-white">水體量</td>
-                            <td class="px-4 py-3 font-mono">0120 / 0320 / 1460</td>
-                            <td class="px-4 py-3">公升（L）；噸級主缸用 T 後綴（如 0150T = 150 噸）</td>
-                        </tr>
-                        <tr class="border-t border-white/10">
-                            <td class="px-4 py-3 font-bold text-white">序號</td>
-                            <td class="px-4 py-3 font-mono">L01 / L02 ...</td>
-                            <td class="px-4 py-3">同尺寸同區域內的流水序號</td>
-                        </tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">12 民生化工</td><td class="px-4 py-3 font-mono">37</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">10 金屬機電</td><td class="px-4 py-3 font-mono">22</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">07 淨零排放</td><td class="px-4 py-3 font-mono">18</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">05 財務管理</td><td class="px-4 py-3 font-mono">13</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">01 生產管理</td><td class="px-4 py-3 font-mono">12</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">02 市場行銷</td><td class="px-4 py-3 font-mono">10</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">08 創業育成</td><td class="px-4 py-3 font-mono">9</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">13 服務產業</td><td class="px-4 py-3 font-mono">7</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">03 人才發展</td><td class="px-4 py-3 font-mono">6</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">11 電子資訊</td><td class="px-4 py-3 font-mono">5</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">14 中小企業</td><td class="px-4 py-3 font-mono">4</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">09 綜合服務</td><td class="px-4 py-3 font-mono">3</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">04 研發創新</td><td class="px-4 py-3 font-mono">2</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">06 數位創新</td><td class="px-4 py-3 font-mono">2</td></tr>
                     </tbody>
                 </table>
             </div>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 缸體量級
+                <span class="text-accent-purple">#</span> 政府手冊 vs 公司資料對比
             </h3>
+
+            <p>比對「113 年度產業輔導資源手冊」與公司既有補助清單，找出可新增的機會。手冊收錄的是產業輔導資源（含補助、顧問輔導、研發獎勵等），共約 164 筆，範圍比上述 126 筆純補助更廣：</p>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-8">
                 <div class="bg-white/5 border border-accent-purple/20 rounded-2xl p-6 text-center">
-                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">108</div>
-                    <div class="text-xs text-gray-500 font-mono uppercase">大型缸位（A/B/C 三區）</div>
+                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">150</div>
+                    <div class="text-xs text-gray-500 font-mono uppercase">政府獨有（公司可新增）</div>
                 </div>
                 <div class="bg-white/5 border border-accent-purple/20 rounded-2xl p-6 text-center">
-                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">82</div>
-                    <div class="text-xs text-gray-500 font-mono uppercase">中型缸位（中間區）</div>
+                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">49</div>
+                    <div class="text-xs text-gray-500 font-mono uppercase">公司獨有</div>
                 </div>
                 <div class="bg-white/5 border border-accent-purple/20 rounded-2xl p-6 text-center">
-                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">190</div>
-                    <div class="text-xs text-gray-500 font-mono uppercase">總有效缸位</div>
+                    <div class="text-3xl md:text-4xl font-extrabold text-accent-purple mb-2">14</div>
+                    <div class="text-xs text-gray-500 font-mono uppercase">兩者重疊</div>
                 </div>
             </div>
 
-            <p>從 81 公升到 150 噸跨度，依水體量分層：</p>
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 中央主辦單位分佈（77 個補助）
+            </h3>
+
+            <p>依主辦單位拆分：經濟部相關 48 個、其他部會 29 個。承辦量大的執行單位：</p>
             <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
-                <li><strong class="text-white">噸級主缸</strong> &mdash; 大洋池 150 噸、俯視池 35 噸、一二三槽各 50 噸</li>
-                <li><strong class="text-white">主題缸</strong> &mdash; 花園鰻 / 珊瑚 / 小丑 / 蝴蝶魚（各 3.5 噸）</li>
-                <li><strong class="text-white">水母缸</strong> &mdash; 倒立 / 馬賽克 / 海月（各 0.8 噸，共 6 缸）</li>
-                <li><strong class="text-white">後場 A/B/C 區</strong> &mdash; A 型（1,460 L）/ B 型（320 L）/ C 型（120 L）/ 檢疫缸（320 L）</li>
-                <li><strong class="text-white">中型缸</strong> &mdash; 81 L 到 723 L 不等，分布於各區後場</li>
+                <li><strong class="text-white">A+ 企業創新專案辦公室</strong> &mdash; 13 個補助（最多）</li>
+                <li><strong class="text-white">財團法人台灣中小企業聯合輔導基金會</strong> &mdash; 11 個</li>
+                <li><strong class="text-white">數位發展部數位產業署</strong> &mdash; 11 個</li>
+                <li><strong class="text-white">財團法人中國生產力中心</strong> &mdash; 6 個</li>
             </ul>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 整合的資料源
+                <span class="text-accent-purple">#</span> 地方補助 49 個分佈
             </h3>
 
             <div class="overflow-x-auto my-8">
                 <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
                     <thead class="bg-white/5">
                         <tr>
-                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider whitespace-nowrap w-44">資料源</th>
-                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">用途</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">城市</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">補助數量</th>
                         </tr>
                     </thead>
                     <tbody class="text-gray-300">
-                        <tr class="border-t border-white/10">
-                            <td class="px-4 py-3 font-bold text-white">生物盤點表</td>
-                            <td class="px-4 py-3">各區生物總清單，缸位 × 物種對照</td>
-                        </tr>
-                        <tr class="border-t border-white/10">
-                            <td class="px-4 py-3 font-bold text-white">缸子清冊</td>
-                            <td class="px-4 py-3">缸體編碼 schema 主表（新編碼 vs 舊名對照）</td>
-                        </tr>
-                        <tr class="border-t border-white/10">
-                            <td class="px-4 py-3 font-bold text-white">養殖系統日報表</td>
-                            <td class="px-4 py-3">每日各缸狀態（水質、餵食、處置）</td>
-                        </tr>
-                        <tr class="border-t border-white/10">
-                            <td class="px-4 py-3 font-bold text-white">未拍物種總和表</td>
-                            <td class="px-4 py-3">已盤點但尚無影像紀錄的物種清單</td>
-                        </tr>
-                        <tr class="border-t border-white/10">
-                            <td class="px-4 py-3 font-bold text-white">月度統計樞紐</td>
-                            <td class="px-4 py-3">按月切片的死亡 / 移缸 / 處置統計</td>
-                        </tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">高雄市</td><td class="px-4 py-3 font-mono">16</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">新北市</td><td class="px-4 py-3 font-mono">11</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">台北市</td><td class="px-4 py-3 font-mono">10</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">桃園市</td><td class="px-4 py-3 font-mono">8</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">台南市</td><td class="px-4 py-3 font-mono">4</td></tr>
                     </tbody>
                 </table>
             </div>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 工作流
+                <span class="text-accent-purple">#</span> 當年的做法
             </h3>
 
             <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
-                <li><strong class="text-white">編碼設計</strong> &mdash; 設計 schema 規則，產生「新編碼 vs 舊名」對照表</li>
-                <li><strong class="text-white">資料清洗</strong> &mdash; 把不同來源的 Excel 表統一欄位、消除重複、補齊缺失</li>
-                <li><strong class="text-white">樞紐分析</strong> &mdash; Excel pivot table 產出多角度切片（按缸 / 物種 / 月）</li>
-                <li><strong class="text-white">交付</strong> &mdash; 把樞紐 output 與原始清冊一起歸檔，供館方後續維運</li>
+                <li><strong class="text-white">逐筆查</strong> &mdash; 政府補助資訊分散於經濟部、數位部及各縣市政府網站，需人工逐一開啟並手動抄錄至 Excel。</li>
+                <li><strong class="text-white">GPT for Sheet 分類</strong> &mdash; 將補助名稱輸入 GPT for Sheet，逐格請其歸類至 14 大類。快，但一次一格，量大就慢，也要回頭抽查它有沒有分錯。</li>
+                <li><strong class="text-white">Excel 樞紐</strong> &mdash; 主辦單位 / 類別 / 地區三軸切片，統計每一格有幾筆。</li>
+                <li><strong class="text-white">手動月報</strong> &mdash; 7、8、9 月各一份 PowerPoint，含進度、主辦單位、比對結果、結論，一頁一頁排。</li>
             </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 如果現在做，會用什麼 AI 來接
+            </h3>
+
+            <p>整條流程裡真正吃時間的是查、抄、分類、比對這四段。現在會這樣拆：AI 負責讀非結構化的公告、抽欄位、做初步分類跟比對；判斷金額與資格這種一步錯就影響客戶申請的事，還是留給人。</p>
+
+            <div class="space-y-3 my-8">
+                <div class="bg-white/5 rounded-xl border border-white/10 p-4">
+                    <span class="text-white font-bold text-sm">抓取＋抽取</span>
+                    <p class="text-sm text-gray-400 font-light mt-1">排程定期抓各補助網站，遇到寫成一整篇公告的，交給 LLM 抽出固定欄位：補助名稱、主辦、對象、金額、截止日。取代人工逐筆開網頁。</p>
+                </div>
+                <div class="bg-white/5 rounded-xl border border-white/10 p-4">
+                    <span class="text-white font-bold text-sm">批次分類</span>
+                    <p class="text-sm text-gray-400 font-light mt-1">14 大類一次批次跑完，不再一格一格點。分類這種靠語意判斷的事正適合交給 LLM，配一份標準類別定義當依據。</p>
+                </div>
+                <div class="bg-white/5 rounded-xl border border-white/10 p-4">
+                    <span class="text-white font-bold text-sm">語意比對找缺口</span>
+                    <p class="text-sm text-gray-400 font-light mt-1">政府清單對公司既有清單，用向量檢索做語意配對。補助名稱寫法不同也能認出是同一個，比人工逐筆對省下最多時間。</p>
+                </div>
+                <div class="bg-white/5 rounded-xl border border-white/10 p-4">
+                    <span class="text-white font-bold text-sm">月報生成草稿</span>
+                    <p class="text-sm text-gray-400 font-light mt-1">將當月統計結果輸入 LLM 生成報告草稿，僅需人工進行審核與定稿。統計數字本身用程式算，AI 只寫敘述那一段。</p>
+                </div>
+            </div>
+
+            <p class="text-sm text-gray-400 font-light">分工明確：AI 負責分類、摘要及從公告中抽取欄位等非結構化任務；而金額、資格、截止日等關鍵資訊則由人工最終核對。</p>
 
         </article>
 
         <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
             <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
-                &larr; Prev Project
+                &larr; 上一篇
             </a>
             <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
-                View All Projects
+                查看所有專案
             </a>
             <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
-                Next Project &rarr;
+                下一篇 &rarr;
             </a>
         </div>
 

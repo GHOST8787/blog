@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / P27 | GHOST.ouo</title>
+
+    <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script type="module" src="../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                返回專案列表
+            </a>
+            <span class="opacity-50">EXP / P27</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                NTUST MVC Lab W6&ndash;8：<br>
+                <span class="text-gradient text-2xl md:text-4xl">開集偵測、語意分割與強化學習</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    AI &amp; Automation
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Deep Learning
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Coursework
+                </span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.06 &mdash; 2026.07</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
+                上一篇整理了 MVC Lab 前五份作業的索引，這篇記錄第六到第八週的三份作業。路線分成兩條：HW7 與 HW8 從零訓練模型，一個是 U-Net 語意分割、一個是 DQN 玩 Ms. Pac-Man；HW6 拿現成的預訓練模型做 zero-shot 偵測，重點放在 prompt 寫法的研究。三份都有可驗證的數字，訓練量最大的 DQN 跑了 150 萬步，評估拿到 2990 分，站上滿分門檻的 2000。
+            </p>
+
+            <p class="text-sm text-gray-500 italic mb-10">
+                課程走到下半段，三份作業各占一種任務型態：HW6 用 Grounding DINO 做 zero-shot 偵測，整份作業其實是一個 prompt 工程研究；HW7 從零刻一個 U-Net，在杜拜空拍圖上分割六類地物；HW8 用 DQN 從像素學會玩 Ms. Pac-Man，是三份裡訓練量最大的一份。前五份作業的紀錄在 <a href="project_16.html" class="text-accent-purple hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">EXP / P16</a>。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 三份作業總覽
+            </h3>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">HW</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">主題</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">框架 / 模型</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">關鍵指標</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">HW6</td>
+                            <td class="px-4 py-3">Grounding DINO 開集偵測 prompt 研究</td>
+                            <td class="px-4 py-3">grounding-dino-tiny（zero-shot）</td>
+                            <td class="px-4 py-3 font-mono">person 裸名詞 precision 0.812</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">HW7</td>
+                            <td class="px-4 py-3">U-Net 語意分割（杜拜空拍）</td>
+                            <td class="px-4 py-3">PyTorch 從零實作（7.76M 參數）</td>
+                            <td class="px-4 py-3 font-mono">pixel acc 0.8505（門檻 0.84）</td>
+                        </tr>
+                        <tr class="border-t border-white/10 bg-white/5">
+                            <td class="px-4 py-3 font-bold text-white">HW8</td>
+                            <td class="px-4 py-3">DQN 玩 Ms. Pac-Man</td>
+                            <td class="px-4 py-3">PyTorch（Nature DQN）</td>
+                            <td class="px-4 py-3 font-mono font-bold text-white">評估 2990 分（門檻 2000）</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 逐份拆解
+            </h3>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">HW6 &mdash; Grounding DINO：一個 prompt 工程研究</h4>
+            <p>
+                這份作業從頭到尾沒有訓練步驟。拿 HuggingFace 上的 grounding-dino-tiny 做 zero-shot 開集偵測，研究對象是 prompt 本身：五個 COCO 類別，每類寫三種 prompt（裸名詞、加冠詞、描述性片語），在 20 張有標註的影像上量 precision@IoU=0.5，勝出的寫法再套到 150 張未標註影像做質性觀察。
+            </p>
+            <p>
+                結果很一致：常見又視覺明顯的類別，裸名詞全部勝出，person 0.812、car 0.889、cat 0.429；多加冠詞或描述子句只會多出一堆低信心的框，把 precision 拉低。bicycle 和 dog 在這個小標註集上屬於病態案例，GT 實例太少，描述性 prompt 又過度觸發，數字參考價值有限。
+            </p>
+            <figure class="my-8">
+                <img src="../PNG/project_27.1.webp"
+                     alt="HW6 密集場景失敗案例：照片牆房間被框出 47 個偵測框"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">HW6：密集場景的爆框失敗模式，一面照片牆被 person prompt 框出 46 個 person（含誤判共 47 框）</figcaption>
+            </figure>
+            <p>
+                失敗模式的觀察比數字更具啟發性。密集場景會爆框，一個貼滿照片牆的房間被框出 46 個 person；描述性的 dog prompt 會在人和背景紋理上憑空生出狗；欄杆和肢體會被當成腳踏車。結論收在「若拿來當標註輔助工具」：信心門檻提到 0.40、加上 class-wise NMS、只用裸名詞。標註者的瓶頸是刪錯框，precision 在這個場景比 recall 值錢。
+            </p>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">HW7 &mdash; U-Net 語意分割</h4>
+            <p>
+                從零實作一個 7.76M 參數的 U-Net：encoder 一路壓、bottleneck 換手、decoder 用 transposed conv 一路放大，skip connection 在 channel 維把兩邊接起來。資料是杜拜空拍影像，72 張大圖切成約 1300 個 256&times;256 patch，分六類地物。25 個 epoch 跑完，驗證 pixel accuracy 0.8505，過了 0.84 的課程門檻。
+            </p>
+            <div class="overflow-x-auto my-6">
+                <table class="w-full table-fixed text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider w-1/2">類別</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider w-1/2">IoU</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10 bg-white/5"><td class="px-4 py-3 font-bold text-white">水體 Water</td><td class="px-4 py-3 font-mono font-bold text-white">0.886</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">裸地 Land</td><td class="px-4 py-3 font-mono">0.810</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">建築 Building</td><td class="px-4 py-3 font-mono">0.658</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">植被 Vegetation</td><td class="px-4 py-3 font-mono">0.568</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">道路 Road</td><td class="px-4 py-3 font-mono">0.527</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">未標註 Unlabeled</td><td class="px-4 py-3 font-mono">0.000</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>
+                各類 IoU 的排序跟直覺一致：水體和裸地面積大、紋理均勻，分數最高；道路細長、占比低，0.527 墊底，是語意分割的老問題。Unlabeled 是稀疏的 catch-all 類別，模型幾乎不會主動預測它，IoU 掛零，對 pixel accuracy 達標沒有影響。
+            </p>
+            <figure class="my-8">
+                <img src="../PNG/project_27.2.webp"
+                     alt="HW7 U-Net 訓練與驗證 loss 曲線，25 epoch"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">HW7：train / val loss 走 25 個 epoch，收斂到 0.476 / 0.462</figcaption>
+            </figure>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">HW8 &mdash; DQN 從像素學玩 Ms. Pac-Man</h4>
+            <p>
+                任務是讓代理直接看畫面學會玩 Atari 的 Ms. Pac-Man。輸入是 4 張堆疊的 84&times;84 灰階畫面，走 Nature DQN 的經典架構：三層卷積接兩層全連接，輸出 9 個動作各自的 Q 值。堆 4 張是為了讓網路看得出移動方向，單張靜態畫面無法判斷鬼的行動方向，例如是在追人還是逃跑。
+            </p>
+            <p>
+                訓練靠三個機制撐住：replay buffer 存 6 萬筆 transition，隨機抽樣打散時間相關性；target network 每隔固定步數才同步一次，讓學習目標穩住；ε-greedy 從 0.9 線性降到 0.05，前期到處亂走探索，後期照 Q 值行動。折扣因子 0.99，讓代理在意長期回報。
+            </p>
+            <div class="pl-6 border-l-2 border-accent-purple my-8">
+                <p class="text-white font-medium mb-2">訓練量就是分數</p>
+                <p class="text-sm text-gray-400 m-0">
+                    預設的 25 萬步通常到不了 2000 分的滿分門檻，這次直接拉到 150 萬步，單張 RTX 4060 跑了八個多小時。平均分數從 400 起步，50 萬步前後站上 1500，尾段在 2200 到 3600 之間震盪；訓練完的評估拿到 2990 分。
+                </p>
+            </div>
+            <figure class="my-8">
+                <img src="../PNG/project_27.3.webp"
+                     alt="HW8 DQN 訓練曲線：評估獎勵與 value loss 對步數"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">HW8：150 萬步的評估獎勵（左）與 value loss（右），獎勵一路爬、loss 隨 Q 值長大而墊高屬正常現象</figcaption>
+            </figure>
+            <figure class="my-8">
+                <img src="../PNG/project_27.4.webp"
+                     alt="HW8 DQN 訓練完成的終端機輸出：eval score 2990、提交檔案清單"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">HW8：150 萬步訓練完成，eval score 2990.0，產出模型檔 pacma_dqn.pt（6.4MB）與遊戲錄影 mspacman.mp4</figcaption>
+            </figure>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 學術誠信聲明
+            </h3>
+
+            <p>
+                本文為個人學習紀錄。三份作業的 starter 骨架與教學 notebook 由課程提供，TODO 實作、prompt 設計與所有實驗數據是自己跑出來的；課程資料集與模型權重一律不隨附，請透過正規管道取得。在學的 MVC Lab 學生請自己寫過一次，歡迎參考結構與思路。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 技術環境
+            </h3>
+
+            <ul class="list-none space-y-2 text-sm text-gray-400 font-light border-l-2 border-white/10 pl-5 my-6">
+                <li><strong class="text-gray-200">語言</strong> &mdash; Python 3.11</li>
+                <li><strong class="text-gray-200">深度學習框架</strong> &mdash; PyTorch 2.x（HW7 / HW8）</li>
+                <li><strong class="text-gray-200">HW6</strong> &mdash; HuggingFace Transformers（IDEA-Research/grounding-dino-tiny）</li>
+                <li><strong class="text-gray-200">HW8</strong> &mdash; Gymnasium[atari]（ALE/MsPacman-v5）</li>
+                <li><strong class="text-gray-200">硬體</strong> &mdash; RTX 4060 8GB（HW8 的 150 萬步約八小時；HW6 掃 150 張影像約 4 分鐘）</li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 相關連結
+            </h3>
+
+            <ul class="space-y-2 text-sm text-gray-400 list-none pl-0">
+                <li>
+                    <span class="text-accent-purple mr-2">●</span>
+                    <a href="https://github.com/GHOST8787/ntust-mvclab-2026" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        GitHub — GHOST8787/ntust-mvclab-2026
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">●</span>
+                    <a href="project_16.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        前五份作業的紀錄 — EXP / P16
+                    </a>
+                </li>
+            </ul>
+
+            <p class="text-sm text-gray-500 font-mono mt-4">
+                MIT License
+            </p>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                &larr; 上一篇
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                查看所有專案
+            </a>
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                下一篇 &rarr;
+            </a>
+        </div>
+
+    </main>
+    <div id="footer-placeholder"></div>
+</body>
+</html>
