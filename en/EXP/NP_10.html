@@ -14,10 +14,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../EXP/swipe_style.css">
 
     <script> window.siteRoot = '../'; </script>
     <script src="../../i18n.js" defer></script>
     <script type="module" src="../../main.js" defer></script>
+    <script src="../../EXP/swipe_app.js" defer></script>
 </head>
 
 <body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
@@ -42,19 +44,19 @@
         <header class="mb-12 border-b border-white/10 pb-12">
 
             <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
-                Building a Memory System to Block AI Hallucination<br>
-                <span class="text-gradient text-2xl md:text-4xl">Three Gates, Checked Against the Same Reports on GitHub</span>
+                Turning a Survey into Cards You Swipe One at a Time<br>
+                <span class="text-gradient text-2xl md:text-4xl">Finish Swiping and a Mirror Appears: You vs Everyone</span>
             </h1>
 
             <div class="flex flex-wrap gap-3 mb-6">
                 <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
-                    AI &amp; Automation
+                    Engineering
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Memory System
+                    Vanilla JS
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Claude Code
+                    Interaction Design
                 </span>
             </div>
 
@@ -66,131 +68,167 @@
 
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
-            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
-                A common reliability problem with generative AI tools is that they output unverified content as fact: generating numbers that do not exist, claiming to have read a file they never opened. Putting these tools to real work calls for a layer of structure outside the model to intercept this kind of output. This piece records a memory and safeguard mechanism I built for the Claude Code I use day to day, checked against a cluster of reports about the same class of problem on GitHub in June 2026.
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
+                Plenty of people want to close a survey the moment they see one. The common explanation is "filling out surveys takes time", yet what truly puts people off tends to be three things stacked together: being interrupted by a topic that has nothing to do with them, questions long enough to have no visible end, and silence after they finish. This front-end module sets out to handle the latter two, making the act of answering shorter and lighter, and giving the respondent a reason at the end to come back and look at themselves.
             </p>
 
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">Context</div>
+                <p class="m-0">
+                    This is an interactive web module: six question cards, answered by swiping (mouse drag or finger swipe, with left and right arrow keys supported too). A progress bar sits at the top; after six cards a result page appears, offering a light "type" first, then listing your choice against the share who agreed on each question, with the ones where you went against the majority flagged. The group data below is illustrative placeholder data, and a production version can wire up to live back-end stats.
+                </p>
+            </div>
+
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> The Three Situations Where It Fails Most Often
+                <span class="text-accent-purple">#</span> Why People Resent Filling Out Surveys
             </h3>
 
             <p>
-                Start with three situations I actually ran into.
+                Treating "it takes too long" as the main cause misses a more critical layer. The cause named again and again in survey research is the respondent's sense that the other side will do nothing with the feedback at all. Once a person settles on "filling this out changes nothing", the motivation to answer disappears, and what remains is closing the form. The feedback gap explains the steady decline in participation better than question length or sending frequency does.
             </p>
             <p>
-                <strong class="text-white">One: the data has not arrived, and it hands over a made-up number.</strong> I asked it to run several background searches at once; before any tool returned, it threw out a number as the conclusion. That number turned up in none of the search outputs afterward, filled in on its own before the data was complete.
-            </p>
-            <p>
-                <strong class="text-white">Two: it says "not found" without looking.</strong> I asked it to confirm whether a previously saved memory file still existed; it ran no actual search and answered "does not exist" outright. The file sat in its original place.
-            </p>
-            <p>
-                <strong class="text-white">Three: it proposes a rejected approach again.</strong> A plan already turned down earlier came back up, raised again without checking memory. This same error, re-pitching an old plan without checking memory, added up to 19 times.
-            </p>
-            <p>
-                What the three share is a confident tone over content that does not hold up, and they read smoothly and look normal, which makes them hard to catch at a glance after the fact. That is the trouble: it gets things wrong with confidence.
-            </p>
-            <p>
-                At first I tried to block this by writing rules. Plain-text rules carry limited force; the rules grew into the hundreds, and the same class of error repeated all the same. A rule is only a "description", and whether to follow it stays with the model, leaving the chain short of a step that would reliably stop it.
-            </p>
-
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> My Approach: Stop It at the Moment It Errs
-            </h3>
-
-            <p>
-                The mechanism has three layers, each matched to a concrete failure form.
+                Question count, in turn, decides answer quality. As questions pile up, people slide from "reading each one carefully" toward "skimming fast and picking one offhand". A return can look data-rich while its back half is all perfunctory straight-line answering. Put those two together and you get the most common survey failure: it goes out, it comes back, and what comes back is noise.
             </p>
 
             <div class="my-8 p-8 bg-white/5 rounded-2xl border border-white/10 font-light">
                 <ul class="list-none space-y-5">
                     <li class="flex items-start gap-3">
-                        <i class="fas fa-database text-accent-purple mt-1.5 shrink-0"></i>
+                        <i class="fas fa-circle-question text-accent-purple mt-1.5 shrink-0"></i>
                         <span>
-                            <strong class="text-white">Layer one, memory:</strong><br>
-                            File-based memory that preserves project progress and existing decisions across conversations, reducing repeated questions and lost information. Each fact lives in its own file, with its source attached.
+                            <strong class="text-white">The topic has nothing to do with me:</strong><br>
+                            What people get asked to fill out is often a set of questions with no overlap with their own life, lacking any motivation to answer from the first second.
                         </span>
                     </li>
                     <li class="flex items-start gap-3">
-                        <i class="fas fa-shield-halved text-accent-purple mt-1.5 shrink-0"></i>
+                        <i class="fas fa-list-ol text-accent-purple mt-1.5 shrink-0"></i>
                         <span>
-                            <strong class="text-white">Layer two, enforced checks (gates):</strong><br>
-                            Turning rules into checks that intercept before any action: no edits without checking memory first, output a diagnosis before editing, run a search before claiming "not found" or "does not exist". Among these, re-pitching a rejected plan without checking memory accumulated 19 errors of the same kind, and malformed commands accumulated 240, serving as the basis for setting up the matching checks.
+                            <strong class="text-white">The questions are too long:</strong><br>
+                            A whole page of questions laid out at once makes people want to give up just from scrolling down; for those who push through, the back portion has already collapsed in quality.
                         </span>
                     </li>
                     <li class="flex items-start gap-3">
-                        <i class="fas fa-heart-pulse text-accent-purple mt-1.5 shrink-0"></i>
+                        <i class="fas fa-ghost text-accent-purple mt-1.5 shrink-0"></i>
                         <span>
-                            <strong class="text-white">Layer three, heartbeat:</strong><br>
-                            Checking whether the background automation is still alive. One time the background process responsible for writing memory quietly stopped, a whole stretch of data went unwritten, and it took quite a while to notice. So a heartbeat check went in: when the schedule misses its expected run, it reports on its own, ahead of finding out after the fact.
+                            <strong class="text-white">Silence after finishing:</strong><br>
+                            The respondent gets no feedback at all and naturally reaches the conclusion "filling it out was pointless". This is the deepest layer of resentment.
                         </span>
                     </li>
                 </ul>
             </div>
 
-            <p>
-                The three layers map to lost information, repeated errors, and silent failure. The actual interception points are four conditions: no memory check first, no diagnosis output first, no search before claiming "not found", and a heartbeat that misses its report. The moment any one condition holds, it stops right there.
-            </p>
-
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> Others See This Too: The Same Situation on GitHub
+                <span class="text-accent-purple">#</span> A Mutual-Fill Culture Props Up the Count and Trades Away Quality
             </h3>
 
             <p>
-                In June 2026, a cluster of reports landed on the Claude Code project on GitHub, all about Opus 4.8. One recorded the model submitting a fabricated number before parallel tasks finished, with later confirmation that the number existed in no tool output. The official account of the overall hallucination rate is the lowest error rate across benchmarks, achieved by declining to answer uncertain questions; the parallel scenario above falls outside what that mechanism covers.
+                In academia, pressure on response counts has bred a whole "mutual-fill" ecosystem: you fill out mine, I fill out yours, with neither side interested in the other's topic. This transactional obligation props up the response number at the cost of answer quality. When a respondent cannot make sense of the questions and only wants to repay the favor as fast as possible, they fill it in at random, and the study loses validity and population representativeness as a result. The more successful a mutual-fill platform becomes, the closer the data it delivers gets to noise, which is its structural contradiction. A return of two hundred responses may have half that simply cannot be used.
+            </p>
+            <p>
+                So the source of the resentment is quite concrete: interruption by an unfamiliar topic, overlong questions, and silence after finishing, three landmines stepped on at once. Getting people to answer in earnest means dismantling those three in reverse. This module handles the "process" and "feedback" pieces first; precise targeting of the topic is a question on another level.
             </p>
 
-            <div class="bg-white/5 border-l-2 border-accent-purple/50 p-5 rounded-xl my-8">
-                <p class="text-sm text-gray-400 m-0">One of the reports is a developer's writeup: five failure modes distilled after two months of file-based memory. Below, each item on that list is checked against this mechanism, four of them already covered.</p>
-            </div>
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Design Response One: Cut the Friction of Answering to a Minimum
+            </h3>
+
+            <p>
+                The first direction makes the act of "filling" itself lighter, through three concrete moves.
+            </p>
 
             <div class="my-8 p-8 bg-white/5 rounded-2xl border border-white/10 font-light">
                 <ul class="list-none space-y-5">
-                    <li class="flex items-start gap-3">
-                        <i class="fas fa-file-lines text-accent-purple mt-1.5 shrink-0"></i>
-                        <span>
-                            <strong class="text-white">Rules are only descriptions; an enforced step is needed to intercept.</strong><br>
-                            Maps to the enforced checks in layer two.
-                        </span>
-                    </li>
-                    <li class="flex items-start gap-3">
-                        <i class="fas fa-triangle-exclamation text-amber-400 mt-1.5 shrink-0"></i>
-                        <span>
-                            <strong class="text-white">Model output without a cited source gets carried forward as fact.</strong><br>
-                            Added this round: any external fact in memory must carry a source link, and what cannot cite one stays out.
-                        </span>
-                    </li>
                     <li class="flex items-start gap-3">
                         <i class="fas fa-layer-group text-accent-purple mt-1.5 shrink-0"></i>
                         <span>
-                            <strong class="text-white">History and current to-do state must be stored separately.</strong><br>
-                            The matching approach: one set of files holds history, another records only the current to-do.
+                            <strong class="text-white">One at a time, easing the sea-of-questions feel:</strong><br>
+                            Questions stack as cards, with only the top one shown at a time and the rest shrunk underneath. What you see is always just the question in front of you, and the length of the whole survey stays hidden.
                         </span>
                     </li>
                     <li class="flex items-start gap-3">
-                        <i class="fas fa-heart-pulse text-accent-purple mt-1.5 shrink-0"></i>
+                        <i class="fas fa-hand-pointer text-accent-purple mt-1.5 shrink-0"></i>
                         <span>
-                            <strong class="text-white">Automation without a heartbeat fails silently.</strong><br>
-                            Maps to layer three, added recently.
+                            <strong class="text-white">Swiping in place of tapping:</strong><br>
+                            Right to agree, left to disagree, as natural as flipping cards on a phone. A drag counts only past a set distance and springs back short of it; while dragging, the card tilts and a color-coded label surfaces, giving instant feedback. Keyboard and buttons remain as backups.
                         </span>
                     </li>
                     <li class="flex items-start gap-3">
-                        <i class="fas fa-copy text-accent-purple mt-1.5 shrink-0"></i>
+                        <i class="fas fa-bars-progress text-accent-purple mt-1.5 shrink-0"></i>
                         <span>
-                            <strong class="text-white">Two files of the same name produce content drift.</strong><br>
-                            The matching approach: status follows the progress date, with file modification time for reference only.
+                            <strong class="text-white">Progress bar:</strong><br>
+                            A progress bar at the top triggers the instinct to "finish what was started". Each card swiped moves the bar forward a notch, turning answering into something with a visible finish line.
                         </span>
                     </li>
                 </ul>
             </div>
 
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Interactive Module: Swipe Survey
+            </h3>
+
+            <!-- ===== Swipe survey interactive module (logic in ../../EXP/swipe_app.js, styles in ../../EXP/swipe_style.css; question content falls back to the shared Chinese assets) ===== -->
+            <div id="sw-module" class="bg-[#0A0A0A] border border-white/10 rounded-3xl shadow-2xl p-6 md:p-10 my-12 relative z-20">
+
+                <!-- progress bar -->
+                <div class="flex justify-between items-baseline mb-3">
+                    <span class="text-accent-purple font-mono text-sm"><i class="fas fa-layer-group"></i> SWIPE_SURVEY</span>
+                    <span id="sw-progress-text" class="text-xs font-mono text-gray-500">Q 1 / 6</span>
+                </div>
+                <div class="sw-progress-track"><div class="sw-progress-fill" id="sw-progress-fill"></div></div>
+
+                <!-- card stack stage (cards injected by JS) -->
+                <div class="sw-stage" id="sw-stage"></div>
+
+                <!-- hint + fallback buttons -->
+                <div class="sw-hint" id="sw-hint">
+                    Swipe right to <span class="text-gray-200">agree</span>, left to <span class="text-gray-200">disagree</span> · or use the &larr; &rarr; keys
+                </div>
+                <div class="sw-pills" id="sw-pills">
+                    <button class="sw-pill no" id="sw-no">&larr; Disagree</button>
+                    <button class="sw-pill yes" id="sw-yes">Agree &rarr;</button>
+                </div>
+
+                <!-- result page (mirror): shown only after finishing -->
+                <div class="sw-result" id="sw-result">
+                    <div class="sw-type-label">Your result</div>
+                    <div class="sw-type-name" id="sw-type-name">&mdash;</div>
+                    <div class="sw-type-desc" id="sw-type-desc"></div>
+                    <div class="sw-mirror-title">You vs everyone: your choice on each question against the share who agreed</div>
+                    <div id="sw-mirror-rows"></div>
+                    <button class="sw-restart" id="sw-restart">Play again</button>
+                    <div class="sw-made">Front-end demo · group data is illustrative placeholder data</div>
+                </div>
+
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Design Response Two: Give the Respondent a Mirror
+            </h3>
+
             <p>
-                Four of the five are covered by the existing mechanism; item two (unsourced output taken as fact) is the part added this round. This one sits among the kinds that file-based memory finds harder to intercept by hard mechanism, and it rests mainly on the rule "always attach a source when writing an external fact".
+                Once the process is lighter, the feedback gap is the piece that remains. The most effective fix is reciprocity: give the other side a little something first, and they treat answering in earnest as a return gift. Monetary incentives (prize draws, cash rewards) are one option, though they cost a lot and suit only some situations. The genuinely underrated one is giving the result back to the respondent.
+            </p>
+            <p>
+                A ready example is Harvard's Project Implicit association test: once you finish, it tells you "where your result falls in the overall population distribution". The move costs almost nothing, yet it gives the respondent a real reason to answer, that I get a mirror reflecting myself. The survey shifts from "hand over your data" to "I got something too".
+            </p>
+            <p>
+                This module's result page is the minimal implementation of that idea. After six cards, the screen offers a light type first as a closing hook, then sets "your choice" against "the share who agreed" question by question. The ones where you went against the majority are marked amber, letting the respondent see at a glance where they differ from others. Reciprocity and feedback both hold on this single page.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Where It Fits and What Comes Next
+            </h3>
+
+            <p>
+                Swipe cards suit light, attitude-leaning questions that "agree/disagree" can express. Settings that need rigorous measurement, seven-point Likert scales, matrix questions, research surveys that need precise gradations, still belong on a regular form, since swiping breaks measurement precision. Used in the right place, this module lowers the psychological barrier to answering, and leaves research rigor to regular tools to guard.
+            </p>
+            <p>
+                Right now the group data on the result page is hard-coded placeholder data, used only to show what the mirror looks like. The next step is wiring up a back end: write a record each time someone finishes, and change the result page's "share who agreed" into a real live query. That step turns this demo into something that can actually validate a need, and it is where this mirror starts to mean something.
             </p>
 
             <hr class="border-white/10 my-12">
 
             <div class="mt-8 text-sm font-mono text-gray-500 border-l-2 border-accent-purple pl-4">
-                Control over hallucination comes mainly from structure outside the model. Whether the model's own behavior changes sits outside the user's control; the controllable part is whether an interception point exists at the moment the wrong output appears. An independent user's failure list, distilled after two months, overlaps heavily with this mechanism's design, and serves as one external check on the direction.
+                The root of survey resentment is mostly three things stacked: interruption by an unfamiliar topic, overlong questions, and no feedback after finishing. Turning answering into swipe cards lowers the friction of the process, and the mirror at the end gives the respondent a reason to look at themselves. Once a one-way extraction becomes a two-way exchange, the people willing to answer in earnest come back.
             </div>
 
             <div class="mt-10 p-6 rounded-2xl border border-white/10 bg-[#0A0A0A]">
@@ -198,9 +236,8 @@
                     <i class="fas fa-book text-accent-purple"></i> References
                 </h4>
                 <ul class="text-xs text-gray-500 leading-relaxed space-y-2 m-0 list-none pl-0">
-                    <li>anthropics/claude-code Issue #63884. <a href="https://github.com/anthropics/claude-code/issues/63884" target="_blank" rel="noopener" class="text-gray-400 hover:text-white underline underline-offset-2 decoration-white/20">Opus 4.8 starts hallucinating results before parallel tasks finish</a> (reported 2026.05.30).</li>
-                    <li>anthropics/claude-code Issue #68546. <a href="https://github.com/anthropics/claude-code/issues/68546" target="_blank" rel="noopener" class="text-gray-400 hover:text-white underline underline-offset-2 decoration-white/20">Field report: 5 failure modes from 2 months of file-based Claude Code memory</a> (reported 2026.06.15).</li>
-                    <li>Simon Willison (2026). <a href="https://simonwillison.net/2026/May/28/claude-opus-4-8/" target="_blank" rel="noopener" class="text-gray-400 hover:text-white underline underline-offset-2 decoration-white/20">Claude Opus 4.8</a>. The lowest error rate across benchmarks, achieved by declining to answer uncertain questions.</li>
+                    <li>Project Implicit, <a href="https://implicit.harvard.edu/" target="_blank" rel="noopener" class="text-gray-400 hover:text-white underline underline-offset-2 decoration-white/20">Implicit Association Test</a> (Harvard University). After the test it shows where your result falls in the distribution of the overall anonymous data, a public example of "giving the result back to the respondent".</li>
+                    <li>CMSWire, <a href="https://www.cmswire.com/customer-experience/your-customers-arent-quiettheyve-given-up-on-your-surveys/" target="_blank" rel="noopener" class="text-gray-400 hover:text-white underline underline-offset-2 decoration-white/20">Your Customers Aren&rsquo;t Quiet&mdash;They&rsquo;ve Given Up on Your Surveys</a>. It points out that people who stop answering surveys usually still hold opinions, and the deciding factor is doubt that their opinion will bring real change.</li>
                 </ul>
             </div>
 

@@ -35,7 +35,7 @@
         <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
             <a href="../articles.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
                 <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
-                BACK TO ARTICLES
+                返回文章列表
             </a>
             <span class="opacity-50">EXP / NA_05 (draft)</span>
         </div>
@@ -43,19 +43,19 @@
         <header class="mb-12 border-b border-white/10 pb-12">
 
             <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
-                大學四年回顧：<br>
-                <span class="text-gradient text-2xl md:text-4xl">131 學分、6 個社團、和一套資源分配的生存策略</span>
+                半年 AI 重度使用觀察：<br>
+                <span class="text-gradient text-2xl md:text-4xl">效率幻覺、理解盲區、與工具的正確定位</span>
             </h1>
 
             <div class="flex gap-3 mb-6">
                 <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
-                    Thinking
+                    AI & Automation
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Reflection
+                    Observation
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    University
+                    Calibration
                 </span>
             </div>
 
@@ -68,139 +68,190 @@
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
             <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
-                131 學分、6 個社團、4 份以上幹部經歷、3 段以上實習、家庭月生活費不超過 5,000 元——這是我大學四年的數字摘要。回頭看這些數字，每一個背後都是一次資源分配的取捨。這篇文章是一份關於「在有限條件下如何做選擇」的個人紀錄。
+                過去六個月，我同時訂閱了六種以上的 AI 服務——Claude MAX、Cursor、GPT Plus、Gemini，加上各種小工具。這是實驗的成本。我想了解這些工具在我的工作流程中能扮演什麼角色，以及它們的使用邊界。以下是觀察紀錄。
             </p>
+            <figure class="my-10 mx-auto">
+                <img src="../PNG/NA_05.1.webp"
+                     alt="從高處俯瞰大學校園與分岔的道路"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    六個月六種訂閱 — 站遠一步才看見工具的邊界在哪
+                </figcaption>
+            </figure>
+
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 大一：在壓力中找生存空間
+                <span class="text-accent-purple">#</span> 效率幻覺：體感與實測的落差
             </h3>
 
             <p>
-                大一上學期，23 學分、每週 27 堂課。大一下更誇張，22 學分但排課密度拉到每週 33 堂。剛進大學什麼都不懂，唯一的策略就是把學分塞滿，因為我很清楚後面可能沒有多餘的時間和金錢讓我慢慢修。
-            </p>
-            <p>
-                社團方面，我加了<strong class="text-white">創客社</strong>。原因非常現實——社課有免費便當。對一個月生活費 5,000 元的學生來說，每省一餐就是多活一天的餘裕。但創客社不是白吃的，代價是頻繁上台做簡報、接受商業評審的提問。回頭看，那些被迫上台的經驗，比任何選修課都實用。
-            </p>
-            <p>
-                大一也去了<strong class="text-white">嘉義邱家兄弟實習</strong>，第一次離開學校接觸業界。同時在下學期加入了<strong class="text-white">光畫社</strong>擔任文書，一個月大概花 4 小時，投入不大但維持了社團參與。
-            </p>
-            <p>
-                真正吃掉大量時間的是 <strong class="text-white">MI 樂創業團隊</strong>。這是一個比賽專案，我負責專案管理，每個月投入超過 24 小時。大一下學期的生活基本上就是：白天上課、晚上做比賽、週末補作業。沒有什麼 work-life balance，只有 survive。
+                我在用 AI 輔助開發的時候，主觀感受是快了不少。但我後來找到一份讓我重新校正這個判斷的研究。
             </p>
 
+            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/10 shadow-xl my-8">
+                <h4 class="text-white font-bold mb-4 flex items-center gap-2">
+                    <i class="fas fa-flask text-accent-purple"></i> METR 2025 隨機對照試驗
+                </h4>
+                <ul class="list-none space-y-3 text-sm text-gray-400 font-light m-0 pl-0">
+                    <li class="flex justify-between items-center border-b border-white/5 pb-2"><span>受試者</span><span class="text-white font-mono">16 位資深開發者，平均 5 年專案經驗</span></li>
+                    <li class="flex justify-between items-center border-b border-white/5 pb-2"><span>任務規模</span><span class="text-white font-mono">246 個真實任務，來自 22,000+ 顆星 GitHub 專案</span></li>
+                    <li class="flex justify-between items-center border-b border-white/5 pb-2"><span>使用工具</span><span class="text-white font-mono">Cursor Pro + Claude 3.5 / 3.7 Sonnet</span></li>
+                    <li class="flex justify-between items-center border-b border-white/5 pb-2"><span>開發者預期</span><span class="text-green-400 font-mono">快 24%</span></li>
+                    <li class="flex justify-between items-center border-b border-white/5 pb-2"><span>實驗後主觀感受</span><span class="text-green-400 font-mono">覺得快了 20%</span></li>
+                    <li class="flex justify-between items-center"><span>實際完成時間</span><span class="text-red-400 font-mono">慢了 19%</span></li>
+                </ul>
+                <p class="text-xs text-gray-600 mt-4 mb-0 font-mono">
+                    來源：<a href="https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/" target="_blank" class="text-accent-purple/70 hover:text-accent-purple transition-colors">METR.org — Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity (2025.07)</a>
+                </p>
+            </div>
+
+            <p>
+                研究者分析了螢幕錄影後發現原因：多出來的時間花在<strong class="text-white">撰寫提示詞、審查 AI 輸出、以及等待 AI 生成</strong>。最反直覺的一點在後面。這些開發者做完實驗，<strong class="text-white">仍然相信自己快了 20%</strong>，主觀感受和客觀數據之間，差了將近 40 個百分點。
+            </p>
+
+            <p>
+                這跟我自己的經驗吻合。我之前重構一個開源專案的時候，讓 AI 自由發揮的結果是：功能過度擴張、渲染層解耦失敗、控制流被破壞，導致修正一處又破壞另一處，進入無窮迴圈。最後我強制收回全局修改權限，改成只讓 AI 執行明確受限的子任務，速度反而穩定下來。<strong class="text-white">體感的快，在實測裡會被審查與等待的時間抵銷。</strong>
+            </p>
+
+            <div class="bg-white/5 p-5 rounded-xl border border-white/10 my-8 text-sm text-gray-400">
+                <p class="m-0">
+                    <strong class="text-white">補充：</strong>MIT Sloan 聯合 Microsoft 與 Accenture 的研究指出，AI 對初級工程師的產出提升約 27–39%，但對資深工程師僅 8–13%。你越熟悉自己的領域，AI 能給的邊際效益越低。這符合直覺。<strong class="text-white">AI 在填補知識差距方面效果顯著；對於已經擁有深度經驗的領域，它的邊際效益有限。</strong>
+                </p>
+                <p class="text-xs text-gray-600 mt-3 mb-0 font-mono">
+                    來源：<a href="https://mitsloan.mit.edu/ideas-made-to-matter/how-generative-ai-affects-highly-skilled-workers" target="_blank" class="text-accent-purple/70 hover:text-accent-purple transition-colors">MIT Sloan Management Review (2026.01)</a>
+                </p>
+            </div>
+
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 大二：最高負荷的一年
+                <span class="text-accent-purple">#</span> 理解幻覺：「覺得懂了」和「真的會了」的鴻溝
             </h3>
 
             <p>
-                大二上學期是整個大學的巔峰負荷：<strong class="text-white">29 學分、每週 36 堂課</strong>。這個數字意味著週一到週五幾乎每一堂都有課，加上晚上的實驗課和報告。大二下稍微降到 30 學分、34 堂/週，但依然是高壓狀態。這兩個學期的學分全拿了，沒有被當掉任何一科。
+                AI 回答問題的速度極快，解釋通常也結構清晰。但我注意到一個模式：用 AI 快速理解一個概念之後，真正要應用的時候，那個理解經常是空的。
+            </p>
+
+            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/10 shadow-xl my-8">
+                <h4 class="text-white font-bold mb-4 flex items-center gap-2">
+                    <i class="fas fa-brain text-accent-purple"></i> AI 輔助學習的記憶衰退數據
+                </h4>
+                <ul class="list-none space-y-3 text-sm text-gray-400 font-light m-0 pl-0">
+                    <li class="flex justify-between items-center border-b border-white/5 pb-2"><span>趨勢</span><span class="text-white text-xs">使用 AI 輔助學習後，短期測驗成績正常，但一週後未複習的記憶衰退幅度明顯大於自行學習</span></li>
+                    <li class="flex justify-between items-center"><span>原因</span><span class="text-white text-xs">AI 跳過了大腦建立長期記憶所需的認知努力過程</span></li>
+                </ul>
+                <p class="text-xs text-gray-600 mt-4 mb-0 font-mono">
+                    來源：<a href="https://blogs.worldbank.org/en/education/is-ai-making-us-smarter-or-just-making-us-look-smart-" target="_blank" class="text-accent-purple/70 hover:text-accent-purple transition-colors">World Bank Education Blog (2025)</a>；<a href="https://www.nature.com/articles/s41586-024-07146-0" target="_blank" class="text-accent-purple/70 hover:text-accent-purple transition-colors">Nature (2024)</a>
+                </p>
+            </div>
+
+            <p>
+                這在學術上叫「理解幻覺 (Illusion of Understanding)」。AI 的濃縮版答案直接給你結論，跳過了建構心智模型的過程。短期內看起來像懂了，但那個知識沒有根，遇到變化就站不住。
             </p>
             <p>
-                光畫社文書繼續做，一個月頂多花 4 小時。這是刻意的選擇：<strong class="text-white">投入產出比</strong>。社團參與需要維持，但不能讓它吃掉拿學分的時間。在資源有限的情況下，每一個小時都要花在回報最高的地方。
-            </p>
-            <p>
-                大二下學期開始出現轉折。我去<strong class="text-white">清理熱研社辦</strong>，這是後來接社長的伏筆，雖然當時沒有想那麼遠。同時<strong class="text-white">加入 HSVI</strong>，開始接觸更有系統性的專案工作。
-            </p>
-            <p>
-                暑假去了<strong class="text-white">澎湖種苗繁殖場實習</strong>。在離島待了一整個暑假，每天和魚苗與海水打交道。這段經歷讓我確認了一件事：我對海洋生物的興趣是真的，但我更想用管理和技術的方式去參與。
+                <strong class="text-white">AI 的真正挑戰在於，它讓你誤以為自己已經掌握了知識。</strong>直到你真的需要用到那個知識，空洞才會浮現。我目前的做法是：用 AI 建立初步輪廓，然後自己去驗證和重建一次。多一步，但那一步是真實的。
             </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 大三：策略性減速
+                <span class="text-accent-purple">#</span> 通用模型的邊界：你的 know-how 不在訓練資料裡
             </h3>
 
             <p>
-                大三上學期：15 學分、每週 17 堂課。大三下：10 學分、每週 16 堂課。從每週 36 堂驟降到 16-17 堂，<strong class="text-white">這是算過的</strong>。
+                每個 LLM 都有它被期待成為的樣子。大廠的模型是為了輔助自家產品生態而設計的，針對你的特定場景做的優化很有限。
             </p>
             <p>
-                前兩年用高壓模式把大部分必修和通識學分拼完了，大三開始可以策略性地釋放時間。釋放出來的時間去了哪裡？<strong class="text-white">HSVI 專案管理、潮境智能海洋館 PT、釣具店員工</strong>——三條線同時跑。
+                這對獨立開發者和小團隊來說是一個構造性限制：<strong class="text-white">你辛苦累積的核心競爭力——對使用者的理解、領域裡說不清楚但很重要的判斷力——在通用模型裡根本不存在。</strong>你的 know-how 是你和競爭者之間的差距，而通用模型裡沒有這塊。它能加速你把程式碼寫出來；至於該寫什麼，得你自己決定。
             </p>
             <p>
-                大三下學期更忙：HSVI PM 繼續、潮境 PT 繼續、接下了<strong class="text-white">熱研社社長</strong>、開始學剪影片和架網站。暑假再去了<strong class="text-white">夢想銀號實習</strong>。表面上學分變少了，實際上每天的行程比大二還滿。差別在於，這些時間投資在不會出現在成績單上的經歷。
-            </p>
-            <p>
-                釣具店的工作看似和職涯無關，但它教了我一件很重要的事：<strong class="text-white">和完全不同背景的人溝通</strong>。客人有退休老伯、有假日釣客、有職業船長，每個人要的東西不一樣，你得在三十秒內判斷對方的程度然後給出合適的建議。這個能力後來在帶社團和做 PM 的時候不斷用到。
+                我自己在做 side project 的時候，AI 在「怎麼做」這一層確實有用。至於「做什麼」和「為什麼做」這兩個對產品最關鍵的問題，AI 給的多半是泛論。最終的決策判斷，來自你對領域的理解。
             </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 大四：全面投入實戰
+                <span class="text-accent-purple">#</span> 文生影片的結構性問題
             </h3>
 
             <p>
-                大四上：2 學分、每週 5 堂課。大四下：0 學分、每週只剩 2 堂課（體育之類的）。學分幾乎清零，但這是整個大學最忙的時期。
+                目前社群上有大量「用 AI 把 prompt 變成影片」的展示。我認真看了一輪之後，發現目前的文生影片工具有幾個無法迴避的技術瓶頸：
             </p>
+
+            <ul class="list-disc pl-5 space-y-3 text-gray-300 my-6 font-light">
+                <li><strong class="text-white">時間連貫性：</strong>物體和角色在幀與幀之間會變形，道具會在鏡頭間憑空傳送或消失。</li>
+                <li><strong class="text-white">運動真實感：</strong>人類動作容易落入怪異谷——腳會滑動、關節角度不自然、重量感缺失。</li>
+                <li><strong class="text-white">身份漂移：</strong>同一個角色的臉，在不同鏡頭之間會悄悄變成另一個人。模型對「同一角色」沒有持久的身份表徵。</li>
+            </ul>
+
             <p>
-                同時在線的身份：<strong class="text-white">熱研社社長、自由潛水社網管、HSVI PM、petvibe PT</strong>，再加上後來的 <strong class="text-white">dreamcity 合作企劃</strong>。每一個都不是掛名，每一個都有實際產出。
-            </p>
-            <p>
-                熱研社的經營我在上一篇文章裡寫過了——16 場活動、幹部面試制、數位轉型、三校聯合社課、水族教室整建。自由潛水社的網管工作讓我實際操作了一次從零開始建社群的過程。HSVI 的 PM 經歷則是最接近真實職場的訓練，有 timeline、有 stakeholder、有預算、有交付物。
-            </p>
-            <p>
-                大四下的 dreamcity 合作企劃，是我第一次以獨立合作者的身份參與外部專案，扮演對等的合作角色。這個轉變很微妙但很重要。<strong class="text-white">當你不再有「學生」這個身份當緩衝，每一個承諾都必須兌現</strong>。
+                這些問題涉及模型架構層面的限制，微調參數解決不了。<strong class="text-white">目前文生影片的產出停留在「氛圍」層級：畫面符合期待，但內容的深度與連貫性仍然不足。</strong>拿來快速製造視覺素材填充版面，堪用；要它取代影片製作的核心流程，目前還差得遠。
             </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 反思一：資源分配
+                <span class="text-accent-purple">#</span> 校正後的定位：AI 在我工作流裡的實際位置
             </h3>
 
             <p>
-                月生活費 5,000 元。這個數字決定了我大學四年所有決策的底層邏輯。
-            </p>
-            <p>
-                加創客社吃便當、選離家近的實習減少交通費、用免費工具架網站而不是花錢買模板、社團活動能借不買——<strong class="text-white">每一個選擇都有機會成本</strong>。花 3,000 元買一件社服，等於我半個月的伙食費。所以當我決定要做一件事的時候，我會先算：這件事的回報值不值得我放棄的東西？
-            </p>
-            <p>
-                時間也是一樣。大二每週 36 堂課的時候，我連社團也只能花最低限度的時間。當時投入不起。等到大三學分壓力釋放了，才有辦法把時間投資到更長期的事情上。<strong class="text-white">資源分配是個持續調整的過程，要根據手上條件重新分配</strong>。
+                說了這些限制，不代表 AI 沒用。它在我的工作流裡確實佔有一席之地，只是那個位置和多數人想像的不同。根據半年的實際使用，以下是我認為有效的場景：
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 反思二：從被動到主動
-            </h3>
+            <ul class="list-disc pl-5 space-y-3 text-gray-300 my-6 font-light">
+                <li><strong class="text-white">快速建立輪廓：</strong>碰到不熟的概念或技術時，用 AI 快速取得結構化的初步理解。這是起點，後面還是要自己驗證。</li>
+                <li><strong class="text-white">受限子任務的執行：</strong>明確定義輸入、輸出和邊界條件的任務。讓 AI 執行，人類驗收。全局架構決策不能交給它。</li>
+                <li><strong class="text-white">草稿起點：</strong>用 AI 的輸出作為初稿，在上面修改比從零開始寫快。但最終版本的品質取決於你自己的判斷力。</li>
+                <li><strong class="text-white">加速查找：</strong>替代 Google 搜尋的部分場景。問一個具體問題、拿到結構化的回答，比翻十頁搜尋結果快。但需要交叉驗證。</li>
+            </ul>
 
             <p>
-                大一加社團的動機是「有免費便當」和「學長叫我去」。大三接社長的動機是「這個社團值得被好好經營，而我有能力做這件事」。從被動參與到主動創造的轉變慢慢累積在一次又一次的「被迫上場」之中，沒有某個明確的轉折日。
-            </p>
-            <p>
-                MI 樂創業比賽是第一次被迫當 PM——沒人要做的位置，我接了下來。熱研社清社辦是第一次主動投入一件沒有學分、沒有報酬的工作。到了 HSVI 接 PM 的時候，已經出於「知道自己能做、想做」的判斷。
-            </p>
-            <p>
-                <strong class="text-white">被動到主動的轉折點，往往來自重複做某件事，做著做著，會發現自己其實還不錯。</strong>
-            </p>
-
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 反思三：策略性減速是主動取捨
-            </h3>
-
-            <p>
-                我的學分曲線長這樣：每週 27 → 33 → 36 → 34 → 17 → 16 → 5 → 2 堂課。
-            </p>
-            <p>
-                這條曲線的真相是：<strong class="text-white">前兩年拼命拿學分，是為了後兩年能把時間投資在不會出現在成績單上的經歷</strong>。
-            </p>
-            <p>
-                社團經營、專案管理、實習經驗、跨校合作、網站架設、影片剪輯——這些東西不會反映在 GPA 上，但它們是真正讓我和其他畢業生不一樣的部分。大學的遊戲規則是：你有 8 個學期的時間和極其有限的資源，怎麼分配決定了你帶走什麼。
-            </p>
-            <p>
-                我的策略是：<strong class="text-white">前半段犧牲生活品質換學分自由度，後半段用學分自由度換實戰經驗</strong>。在月生活費 5,000 元的限制下，這是我能找到的最合理的路徑。
+                共通點是：<strong class="text-white">AI 的角色是加速器。</strong>它能壓縮「從零到六十分」的時間；「從六十到九十分」那段路，進度條要自己推。
             </p>
 
             <hr class="border-white/10 my-12">
 
-            <div class="mt-8 text-sm font-mono text-gray-500 border-l-2 border-accent-purple pl-4">
-                131 學分是成本。真正的收穫在那些你選擇把時間花在哪裡的決定裡，成績單反映不了這部分。每個人的條件不同，沒有通用的最佳解——但有一件事是確定的：不管手上的牌多差，你永遠可以決定怎麼出。
+            <p>
+                半年過去，我的產能沒有因此翻倍。METR 的研究裡有一個細節讓我印象很深：即使數據顯示 AI 拖慢了速度，那些開發者還是不想停止使用。研究者問為什麼，回答是——<em class="text-gray-400">「用起來更愉快」</em>。
+            </p>
+
+            <p>
+                「雖然不能更快，但一定更快樂。」——這句話某種程度上說出了我們使用 AI 的真實動機。認清這一點之後，接下來要做的是持續校正自己對 AI 的期待，讓工具的角色停在它真正有效的地方。
+            </p>
+
+            <hr class="border-white/10 my-12">
+
+            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/10 shadow-xl">
+                <h4 class="text-white font-bold mb-4 flex items-center gap-2">
+                    <i class="fas fa-bookmark text-accent-purple"></i> 本文數據來源
+                </h4>
+                <ul class="list-none space-y-3 text-sm text-gray-400 font-light m-0 pl-0">
+                    <li class="flex justify-between items-start border-b border-white/5 pb-2 gap-4">
+                        <a href="https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/" target="_blank" class="text-accent-purple/70 hover:text-accent-purple transition-colors shrink-0">METR 2025 RCT</a>
+                        <span class="text-right">AI 讓資深開發者慢 19%，但主觀感覺快 20%</span>
+                    </li>
+                    <li class="flex justify-between items-start border-b border-white/5 pb-2 gap-4">
+                        <a href="https://mitsloan.mit.edu/ideas-made-to-matter/how-generative-ai-affects-highly-skilled-workers" target="_blank" class="text-accent-purple/70 hover:text-accent-purple transition-colors shrink-0">MIT Sloan / MS / Accenture</a>
+                        <span class="text-right">AI 對初級工程師效果顯著，資深者有限</span>
+                    </li>
+                    <li class="flex justify-between items-start border-b border-white/5 pb-2 gap-4">
+                        <a href="https://www.nature.com/articles/s41586-024-07146-0" target="_blank" class="text-accent-purple/70 hover:text-accent-purple transition-colors shrink-0">Nature (2024)</a>
+                        <span class="text-right">AI 使用者普遍存在「理解幻覺」</span>
+                    </li>
+                    <li class="flex justify-between items-start gap-4">
+                        <a href="https://blogs.worldbank.org/en/education/is-ai-making-us-smarter-or-just-making-us-look-smart-" target="_blank" class="text-accent-purple/70 hover:text-accent-purple transition-colors shrink-0">World Bank (2025)</a>
+                        <span class="text-right">AI 輔助學習一週後成績跌 30%</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="bg-[#0A0A0A] p-4 rounded-xl border border-white/10 mt-6 text-xs text-gray-500">
+                <strong class="text-gray-400">關於排除的數據：</strong>本文刻意排除網路上流傳的「IBM 95% AI 試點失敗率」數據——因其原始來源無法核實，屬於反覆轉引的二手資料。放進去只會傷害整篇文章的可信度。
             </div>
 
         </article>
 
         <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
-            <a href="article_12.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
-                &larr; Prev Article
+            <a href="article_13.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; 上一篇
             </a>
             <a href="../articles.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
-                View All Articles
+                查看所有文章
             </a>
-            <a href="article_14.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
-                Next Article &rarr;
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                下一篇 &rarr;
             </a>
         </div>
 

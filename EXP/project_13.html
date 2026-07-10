@@ -47,7 +47,7 @@
 
             <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
                 NTUST AI 期末作業：<br>
-                <span class="text-gradient text-2xl md:text-4xl">用學校 Azure quota 把 60.9% 推到 76.4% 的雙軸實驗</span>
+                <span class="text-gradient text-2xl md:text-4xl">V2 雙軸實驗 60.9%&rarr;76.4%</span>
             </h1>
 
             <div class="flex flex-wrap gap-3 mb-6">
@@ -92,7 +92,7 @@
                 <span class="text-accent-purple">#</span> 任務規格
             </h3>
 
-            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
                 <li><strong class="text-white">輸入</strong> &mdash; 10 份電子元件 datasheet PDF（二極體 / 整流橋 / 電晶體封裝，這三類都是電源電路常用的小零件）</li>
                 <li><strong class="text-white">輸出</strong> &mdash; 每份 PDF 抽出 11 個結構化欄位：Part Number（零件型號）、Operating Temperature（工作溫度範圍）、封裝尺寸（零件外觀的長寬高 mm）、PIN Number（腳位數量）、I_O / I_F（輸出 / 順向電流）、V_F（順向電壓）、V_RRM（最大反向電壓）、I_R（反向漏電流）</li>
                 <li><strong class="text-white">評分</strong> &mdash; 與 <code class="text-accent-purple">specbook.xlsx</code> 標答 byte-for-byte 比對，計算欄位準確率（11 欄 × 10 份 PDF = 110 個答案，答對幾題就是幾 %）</li>
@@ -245,7 +245,7 @@
             <p>
                 同一份 prompt 與模型下，輪流換 PDF 抽取 backend，量化每種抽法對最終準確率的影響：
             </p>
-            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
                 <li><strong class="text-white">pdfplumber</strong> &mdash; 純文字 layer，對標準格式 datasheet 表現最穩，成為 V2 預設。</li>
                 <li><strong class="text-white">PyMuPDF / fitz</strong> &mdash; 向量物件層，對含 inline 註解與圖片的頁面解析較細，但整體準確率與 pdfplumber 接近。</li>
                 <li><strong class="text-white">camelot-py</strong> &mdash; lattice 模式偵測表格框線，需 Ghostscript 依賴；對純表格 datasheet 有優勢但整體不及 pdfplumber。</li>
@@ -300,7 +300,7 @@
             <p>
                 prompt 改造後仍會有約 10% 的格式 / 邏輯邊角錯。<code class="text-accent-purple">validators.py</code> 接在 LLM 輸出後做規則修正：
             </p>
-            <ul class="list-none space-y-2 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
                 <li>單位再次標準化（μ→u、mA→A 等覆核）</li>
                 <li>L/W/H 強制取 MAX</li>
                 <li>多值欄位排序 + 全形頓號重組</li>
@@ -376,7 +376,7 @@
             </div>
 
             <p>三家雲端模型在不同類型 PDF 上各有強項：</p>
-            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
                 <li><strong class="text-white">GPT-4o</strong> &mdash; multi-product datasheet 王（MBR15U150 7/11）+ 一般電氣參數王（BAT750 10/11）</li>
                 <li><strong class="text-white">Llama-4-Maverick + mistral-medium-2505</strong> &mdash; 簡單表格王（CD4148WTP 雙雙 11/11 滿分）</li>
                 <li><strong class="text-white">mistral-medium-2505</strong> &mdash; 橋式整流王（MSB30M 9/11）</li>
@@ -390,7 +390,7 @@
                 <span class="text-accent-purple">#</span> 76.4% 在這個任務上代表什麼
             </h3>
 
-            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
                 <li><strong class="text-white">就課程要求而言</strong> &mdash; 基本要求為「跑通即過關」，並未訂定準確率門檻。V2 的 76.4% 較交件版 60.9% 高出 15.5 個百分點。</li>
                 <li><strong class="text-white">就任務難度而言</strong> &mdash; 110 個答案中命中 84 題。datasheet 來自不同廠商、不同年代，欄位命名與表格排版差異顯著，此準確率反映 pipeline 對未見 PDF 樣本具備跨樣本的泛化能力。</li>
                 <li><strong class="text-white">就方法可複製性而言</strong> &mdash; 雙軸實驗設計可移植至同類型任務。面對任何「非結構化文件抽欄位」題目，先以雙軸矩陣跑一輪基準，即可量化判斷預算應投入哪個方向。</li>
@@ -400,7 +400,7 @@
                 <span class="text-accent-purple">#</span> 技術棧
             </h3>
 
-            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
                 <li><strong class="text-white">語言 / 主要套件</strong> &mdash; Python 3.11.5、pdfplumber、PyMuPDF、camelot-py、openpyxl、openai SDK、python-dotenv</li>
                 <li><strong class="text-white">本地推理</strong> &mdash; Ollama + qwen2.5:7b / 14b（Q4_K_M 量化）</li>
                 <li><strong class="text-white">雲端推理</strong> &mdash; Azure AI Foundry V1 統一 API（OpenAI 相容 endpoint，由培訓班提供 quota）</li>
@@ -435,8 +435,8 @@
             <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
                 View All Projects
             </a>
-            <a href="project_14.html" class="text-accent-purple hover:text-white transition-colors text-sm font-bold tracking-wide">
-                Next: Device Tabs Opener v2.2.0 &rarr;
+            <a href="project_14.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                Next Project &rarr;
             </a>
         </div>
 

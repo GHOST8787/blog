@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / P20 | GHOST.ouo</title>
+
+    <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script type="module" src="../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                返回專案列表
+            </a>
+            <span class="opacity-50">EXP / P20</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                2026 Google 數位人才探索計畫：<br>
+                <span class="text-gradient text-2xl md:text-4xl">三學程 59 門課的總覽與筆記</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    AI &amp; Automation
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Google
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Self Learning
+                </span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.06</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
+                「Google 數位人才探索計畫」是 Google 在台灣辦的免費線上學習計畫，課程分成三個學程：AI 職場通識、數位行銷、Google Cloud，共計 59 門課，掛在 skills.google 平台。我把三學程都修過一輪，過程中把每一門課整理成一套繁體中文的系統化筆記。這篇文章是整個計畫的地圖，涵蓋學習內容、報名與認證流程，以及可用資源。三個學程的細節另有三篇文章分別詳述。
+            </p>
+
+            <figure class="my-10 mx-auto">
+                <img src="../PNG/project_20.1.webp"
+                     alt="Google 數位人才三學程總覽"
+                     loading="lazy" class="w-full rounded-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    三學程地圖 — AI 33 門 + 行銷 15 門 + Cloud 11 門 = 59 門課
+                </figcaption>
+            </figure>
+
+            <p class="text-gray-400 font-light mb-8">
+                這個計畫適合想把生成式 AI、雲端、數位行銷補成完整一塊的人。課程多數來自 Google 官方教材，形式為短課，搭配可重複測驗的認證機制，零成本且可自行安排進度。底下先給三學程地圖，再給報名入口、考試規則與幾個讓進度快很多的實戰技巧。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 這個計畫是什麼
+            </h3>
+
+            <p>
+                計畫由 Google 主辦，主軸是培育台灣的數位人才，把生成式 AI 工具、雲端基礎、數位行銷三條線的能力一次補齊。課程本身放在 Google 的兩個學習平台上：大部分在 skills.google（原本的 Cloud Skills Boost），少數行銷認證在 Skillshop。報名、進度追蹤與課程通知則透過計畫的官方 LINE 帳號串起來。
+            </p>
+
+            <p>
+                學習方式是自己排進度的線上自學。多數課程屬於 Google 官方教材，含中文與英文課；英文課可以搭翻譯工具讀。每個學程修完並通過各課程的認證考試後，會收到「總整課程」的通知，那是計畫最後一關。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 三學程地圖
+            </h3>
+
+            <p>
+                三學程合計 59 門課（含跨學程重複的課，例如「生成式 AI：瞭解基礎概念」三個學程都列）。每個學程的細節我各寫了一篇拆開講：
+            </p>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">學程</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">課程數</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">在學什麼</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">AI 職場通識學程</td>
+                            <td class="px-4 py-3 font-mono">33</td>
+                            <td class="px-4 py-3">把生成式 AI 用進日常工作：從 AI 觀念、Gemini for Workspace、NotebookLM 到主管級應用情境，含 Gen AI Leader 認證 5 門</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">數位行銷學程</td>
+                            <td class="px-4 py-3 font-mono">15</td>
+                            <td class="px-4 py-3">用 Gemini 與 NotebookLM 做行銷：內容生成、市場與競品研究、顧客洞察，外加 5 門 Skillshop 廣告與分析認證</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">Google Cloud 學程</td>
+                            <td class="px-4 py-3 font-mono">11</td>
+                            <td class="px-4 py-3">建立雲端與數位轉型的整體視角：Cloud 基礎、網路安全、資料轉型、Vertex AI、營運與負責任 AI</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <ul class="space-y-2 text-sm text-gray-400 list-none pl-0 my-6">
+                <li>
+                    <span class="text-accent-purple mr-2">●</span>
+                    <a href="project_21.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        學程一詳解 — AI 職場通識學程（33 門）
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">●</span>
+                    <a href="project_22.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        學程二詳解 — 數位行銷學程（15 門）
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">●</span>
+                    <a href="project_23.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        學程三詳解 — Google Cloud 學程（11 門）
+                    </a>
+                </li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 報名與入口
+            </h3>
+
+            <p>
+                計畫的主入口是官方活動頁，從那裡能進到報名與課程說明。報名後，課程進度、開始學習與認證提交都走計畫的官方 LINE 帳號操作。課程平台分為兩站：大部分課程在 skills.google，數位行銷相關的廣告與分析認證則在 Skillshop。計畫另有官方的 LINE 交流社群，裡頭有同學分享的學習經驗與技巧。
+            </p>
+
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">官方活動頁</strong> &mdash; <a href="https://growonairtw.withgoogle.com/events/digitaleducation" target="_blank" rel="noopener noreferrer" class="text-accent-purple hover:text-white transition-colors break-all">growonairtw.withgoogle.com/events/digitaleducation</a></li>
+                <li><strong class="text-white">課程平台</strong> &mdash; skills.google（多數課程）＋ Skillshop（部分行銷認證）</li>
+                <li><strong class="text-white">報名與認證提交</strong> &mdash; 透過計畫官方 LINE 帳號操作；另有官方 LINE 交流社群可交流</li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 認證與考試規則
+            </h3>
+
+            <p>
+                計畫的測驗分成三層，規則各自不同，搞懂之後排進度會輕鬆很多：
+            </p>
+
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">學以致用（章節小測驗）</strong> &mdash; <span>每一章課程最後的小測驗，可以一直重複測，用來確認自己有沒有讀懂。</span></li>
+                <li><strong class="text-white">認證考試</strong> &mdash; <span>每門課的認證考試，每 24 小時可以再考一次，沒過就隔天再來。</span></li>
+                <li><strong class="text-white">總整課程</strong> &mdash; <span>所有課程的認證考試都通過後，會收到總整課程的通知，上完課後一週內要參加測驗。這個測驗可以一直重複考，沒有時間限制。</span></li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 幾個讓進度快很多的技巧
+            </h3>
+
+            <p>
+                計畫的交流社群裡有同學整理過幾個實戰技巧，我自己用下來確實省時間，整理在這裡供參：
+            </p>
+
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
+                <li><strong class="text-white">Lab 卡關時可用 GSP 編號搜尋解法</strong> &mdash; <span>Google Cloud 的動手 Lab 都附有 <code class="text-accent-purple">GSP</code> 編號。遇到問題時，搜尋類似「GSP207 lab solution」的關鍵字，能快速找到完整流程。若時間充裕可自行探索，趕時間則可採用此方法。</span></li>
+                <li><strong class="text-white">英文課搭沉浸式翻譯</strong> &mdash; <span>英文課程想看中文，搜尋「沉浸式翻譯」這個瀏覽器外掛，整頁中英對照閱讀。</span></li>
+                <li><strong class="text-white">用官方 LINE 一鍵提交認證</strong> &mdash; <span>考過認證後到計畫的官方 LINE 提交：流程大致是官方 LINE → 左下 → 開始學習 → 線上自學 → 一鍵提交認證 → 選你修的課程 → 貼上認證網址編號。</span></li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 我整理的學習筆記
+            </h3>
+
+            <p>
+                修課過程中，我將三學程的每門課整理成一套繁體中文的系統化筆記，格式統一為：課程大綱 → 章節導覽 → 逐章重點 → 速記卡 → 自我檢核。這套筆記完全依據課程教材撰寫，將英文教材內容轉化為白話中文，重點聚焦於「學完後的實際應用」。
+            </p>
+
+            <p>
+                三篇學程詳解就是這套筆記濃縮後的公開版，把每個學程的課程分群、各門課的關鍵重點、最值得記住的觀念整理出來。配合這個計畫，我另外做了一個 Chrome 擴充，把三學程 59 門課的完成度在一頁攤開，省掉一頁頁點進去數進度的麻煩。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 相關連結
+            </h3>
+
+            <ul class="space-y-2 text-sm text-gray-400 list-none pl-0">
+                <li>
+                    <span class="text-accent-purple mr-2">●</span>
+                    <a href="https://growonairtw.withgoogle.com/events/digitaleducation" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        官方活動頁 — Google 數位人才探索計畫
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">●</span>
+                    <a href="project_21.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        學程一詳解 — AI 職場通識學程
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">●</span>
+                    <a href="project_22.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        學程二詳解 — 數位行銷學程
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">●</span>
+                    <a href="project_23.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        學程三詳解 — Google Cloud 學程
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">●</span>
+                    <a href="project_19.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        相關專案 — Skills 學程進度檢查 Chrome 擴充
+                    </a>
+                </li>
+            </ul>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="project_19.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; 上一篇
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                查看所有專案
+            </a>
+            <a href="project_21.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                下一篇 &rarr;
+            </a>
+        </div>
+
+    </main>
+    <div id="footer-placeholder"></div>
+</body>
+</html>

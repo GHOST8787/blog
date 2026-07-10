@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / P29 | GHOST.ouo</title>
+
+    <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script type="module" src="../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                返回專案列表
+            </a>
+            <span class="opacity-50">EXP / P29</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                一台 RTX 4060 筆電跑 LLM 部署<br>
+                <span class="text-gradient text-2xl md:text-4xl">從 vLLM 推論到 K8s 編排的自學紀錄</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    AI &amp; Automation
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Self Learning
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Infrastructure
+                </span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.06 &mdash; 2026.07</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
+                用一台搭載 RTX 4060（8GB 顯存）的筆電，從零走了一遍 LLM 部署的技能樹：vLLM 推論服務、Ollama 選型對照、MLflow 實驗追蹤、Docker 容器化、K8s 容器編排、PyTorch 訓練框架，最後讀了群聯 aiDAPTIV+ 的儲存推論加速架構。每塊都在本機實際操作驗證過，benchmark 數據用 MLflow 記錄，踩到的坑全部收在這篇。
+            </p>
+
+            <p class="text-sm text-gray-500 italic mb-10">
+                對 LLM 從訓練到上線的整條部署路徑感到好奇，想在自己的筆電上走過一遍，搞清楚推論引擎、實驗追蹤、容器化、容器編排這些工具各自解決什麼問題、彼此怎麼接。設備是一台 Windows 11 筆電，GPU 是 RTX 4060 Laptop（8GB 顯存），WSL2 裝了 Ubuntu。先前在 NTUST MVC Lab 的課程作業已經用 PyTorch 訓練過 DQN 和 U-Net，對訓練端有基礎，缺的是推論到部署這段。
+            </p>
+
+            <figure class="my-10 mx-auto">
+                <img src="../PNG/project_29.2.webp"
+                     alt="RTX 4060 筆電上的 vLLM 推論架構"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    vLLM 推論服務 — 在 8GB 顯存的 RTX 4060 上跑 Qwen2.5-1.5B-Instruct
+                </figcaption>
+            </figure>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 六塊主題總覽
+            </h3>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">主題</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">工具</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">實際驗證</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10 bg-accent-purple/5">
+                            <td class="px-4 py-3 font-bold text-white">LLM 推論引擎</td>
+                            <td class="px-4 py-3">vLLM 0.24 + Ollama 0.30</td>
+                            <td class="px-4 py-3 font-mono">WSL2 部署 + benchmark 4 組</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">實驗追蹤</td>
+                            <td class="px-4 py-3">MLflow</td>
+                            <td class="px-4 py-3 font-mono">記錄 benchmark、UI 比較</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">容器化</td>
+                            <td class="px-4 py-3">Docker 29.1.3</td>
+                            <td class="px-4 py-3 font-mono">hello-world &rarr; build &rarr; run &rarr; curl</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">容器編排</td>
+                            <td class="px-4 py-3">k3s v1.36.2</td>
+                            <td class="px-4 py-3 font-mono">Deployment + NodePort Service</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">訓練框架</td>
+                            <td class="px-4 py-3">PyTorch 2.11 + CUDA 13.0</td>
+                            <td class="px-4 py-3 font-mono">GPU 線性迴歸驗證</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">儲存推論加速</td>
+                            <td class="px-4 py-3">aiDAPTIV+</td>
+                            <td class="px-4 py-3 font-mono">閱讀理解（非實作）</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 逐塊拆解
+            </h3>
+
+            <!-- ===== 1. LLM 推論引擎 ===== -->
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">LLM 推論引擎 &mdash; vLLM 與 Ollama</h4>
+
+            <p>
+                vLLM 在 WSL2 上的部署可以拆成七步：用 uv 建一個 Python 3.12 的虛擬環境（本機預設是 3.13，vLLM 只支援 3.9 到 3.12），裝 vllm 套件，把 Qwen2.5-1.5B-Instruct 的權重下載到本地（約 3GB），補裝缺少的 gcc（編譯 C extension 需要），然後用 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">vllm serve</code> 起服務。8GB 顯存跑 vLLM 需要加 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">--enforce-eager</code> 關閉 CUDA graph，讓 vLLM 用即時運算取代預先佔滿顯存的策略，代價是吞吐量降低。起來之後用 curl 打 OpenAI 相容的 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">/v1/chat/completions</code> 端點，拿到繁體中文回覆，服務通了。
+            </p>
+            <p>
+                重跑啟動流程時碰到兩個 bash 基本雷：<code class="text-accent-purple bg-accent-purple/10 px-1 rounded">@~</code> 在某些 shell 環境下不會自動展開成 home 路徑，要寫完整路徑或用 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">$HOME</code>；多行指令的斷行符 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">\</code> 後面不能跟空白字元，否則下一行被當成新指令。
+            </p>
+            <p>
+                Ollama 裝在 Windows 端（0.30.11），機器上已 pull 好 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">qwen2.5:1.5b</code>（986MB，Q4_K_M 量化），一條指令 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">ollama run qwen2.5:1.5b</code> 就能聊天。它同樣提供 OpenAI 相容 API（<code class="text-accent-purple bg-accent-purple/10 px-1 rounded">localhost:11434</code>），程式從 vLLM 切到 Ollama 只要換 URL 和模型名，不改程式碼。
+            </p>
+            <p>
+                兩邊同時跑同一顆 Qwen2.5-1.5B、走同一套 API，量兩個指標：吞吐（tok/s）和首字延遲（TTFT）。結果用 MLflow 記錄：
+            </p>
+
+            <div class="overflow-x-auto my-6">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">情境</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">Ollama 0.30</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">vLLM 0.24</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">差距</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">單一請求吞吐</td>
+                            <td class="px-4 py-3 font-mono">47.3 tok/s</td>
+                            <td class="px-4 py-3 font-mono">31.5 tok/s</td>
+                            <td class="px-4 py-3 font-mono font-bold text-accent-purple">Ollama +50%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">8 個同時請求總吞吐</td>
+                            <td class="px-4 py-3 font-mono">119.4 tok/s</td>
+                            <td class="px-4 py-3 font-mono">102.4 tok/s</td>
+                            <td class="px-4 py-3 font-mono font-bold text-accent-purple">Ollama +17%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                在這台 8GB 筆電上，Ollama 兩項都贏。原因是 vLLM 被迫用 enforce-eager 模式跑，顯存又被 WSL2 和其他程式分走一部分，PagedAttention 的並發優勢發揮不出來。vLLM 的長處適合伺服器級 GPU（24GB 以上）、跑大模型、高並發場景。
+            </p>
+
+            <div class="pl-6 border-l-2 border-accent-purple my-8">
+                <p class="text-white font-medium mb-2">模型大小的影響</p>
+                <p class="text-sm text-gray-400 m-0">
+                    1.5B 參數的模型太小，問它「vLLM 是什麼」兩邊都答錯，編出不存在的功能描述，屬於典型的小模型幻覺。引擎決定「跑多快、能服務多少人」，模型決定「答得多準」，這兩件事要分開看。Ollama 跑得快代表效能優勢，vLLM 答錯則是模型能力的限制，這兩者分屬不同層面。
+                </p>
+            </div>
+
+            <!-- ===== 2. MLflow ===== -->
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">實驗追蹤 &mdash; MLflow</h4>
+
+            <p>
+                MLflow 裝在 Windows 上（<code class="text-accent-purple bg-accent-purple/10 px-1 rounded">pip install mlflow</code>），用來記錄上面的 benchmark 結果。記了 4 組數據（vLLM 單請求、vLLM 並發、Ollama 單請求、Ollama 並發），用 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">mlflow ui</code> 開 web 介面，在 Compare 頁面把四組攤開比較吞吐和延遲。數據存在 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">mlflow.db</code> 這個 SQLite 檔裡，下次開 UI 會自動讀取，實驗結果不會消失。
+            </p>
+            <p>
+                踩了一個 Windows 的坑：MLflow 的 web server 啟動時預設會開多個 worker process，Windows 的多進程機制跟 Linux 不同，直接跑會卡住。加 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">--workers 1</code> 限制成單進程就正常了。
+            </p>
+            <figure class="my-8">
+                <img src="../PNG/project_29.1.webp"
+                     alt="MLflow UI Parallel Coordinates Plot：vLLM vs Ollama 的 tokens_per_s 比較"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">MLflow Compare 頁面：兩條線交叉顯示 Ollama 47.3 tok/s 勝過 vLLM 31.5 tok/s（單一請求）</figcaption>
+            </figure>
+
+            <!-- ===== 3. Docker ===== -->
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">容器化 &mdash; Docker</h4>
+
+            <p>
+                Docker 29.1.3 裝在 WSL2 的 Ubuntu 裡，daemon 由 systemd 管理。練習的路線是：<code class="text-accent-purple bg-accent-purple/10 px-1 rounded">docker run hello-world</code> 跑通確認環境 &rarr; 自己寫一個 Flask 小 API 加 Dockerfile &rarr; <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">docker build</code> 打成 image &rarr; <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">docker run</code> 跑成 container &rarr; curl 打通端點 &rarr; 最後清理 container 和 image。
+            </p>
+            <p>
+                全流程走完等於走過一次「開發 &rarr; 打包 &rarr; 部署 &rarr; 驗證」。把這條路線拉長，把 Flask 小 API 換成 vLLM 推論服務，就是實際部署 AI 模型的同一套動作。
+            </p>
+
+            <!-- ===== 4. K8s ===== -->
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">容器編排 &mdash; K8s（k3s）</h4>
+
+            <p>
+                原本用 kind（Kubernetes IN Docker）在 WSL2 上練習，踩到 docker-in-docker 的結構問題：WSL2 裡的 dockerd 偶爾會自動重啟，重啟的連鎖反應直接把 kind 建立的叢集殺掉；重啟後 cgroup scope 建立又失敗，叢集救不回來。這個問題在 kind 的 GitHub issue 裡有人回報過，屬 WSL 環境下的已知限制。
+            </p>
+            <p>
+                改用 k3s（v1.36.2+k3s1），一條安裝腳本裝好。k3s 是輕量級 K8s，直接跑在 Linux 上，省掉了把 K8s 跑在 Docker 容器裡再跑在 WSL2 裡的那層套娃。練習完用 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">systemctl disable --now k3s</code> 把它關掉省資源，下次 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">systemctl start k3s</code> 叫醒就好。
+            </p>
+            <p>
+                在使用 K8s 的 NodePort 時，需注意它綁定的是節點 IP，因此直接使用 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">curl localhost:節點埠</code> 可能無法通過。解決方法是先用 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">hostname -I</code> 查詢 WSL2 分配的虛擬 IP，然後使用該 IP 進行訪問。
+            </p>
+
+            <!-- ===== 5. PyTorch ===== -->
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">訓練框架 &mdash; PyTorch</h4>
+
+            <p>
+                裝 vLLM 時已經把 PyTorch 一起帶進來了（torch 2.11 + CUDA 13.0，在 vllm 的 venv 裡），所以練習 PyTorch 不需要額外裝任何東西，直接在同一個 venv 裡跑。寫了一個最小的 GPU 訓練腳本：在 CUDA 上跑線性迴歸 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">y = 2x + 3</code>，loss 從 148 降到 0.26，驗證 GPU 訓練路徑通了。
+            </p>
+            <p>
+                先前在 NTUST MVC Lab 的課程已經用 PyTorch 做過 DQN（150 萬步，評估 2990 分）和 U-Net 語意分割（pixel accuracy 0.8505），對訓練迴圈、loss 曲線、optimizer 都有操作經驗。這次確認的是本機 GPU 環境在 WSL2 上跑得通，訓練端和推論端接在同一張卡上可以正常運作。
+            </p>
+
+            <!-- ===== 6. aiDAPTIV+ ===== -->
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">儲存推論加速 &mdash; aiDAPTIV+</h4>
+
+            <p>
+                aiDAPTIV+ 是群聯電子開發的一套產品，把 SSD 儲存和 AI 推論加速結合在一起。aiDAPTIV+ 的設計分為三個層級：Cache 負責推論時 KV cache 的暫存加速；Link 處理主機間的模型分散推論；Pro 則將部分運算直接移至 SSD 控制器執行。
+            </p>
+            <p>
+                幾個公開的技術指標：用雙 GPU 加上 8TB SSD 的配置跑 Llama 405B 微調；SSD 用 100 DWPD 的 SLC 等級顆粒承受 AI 工作負載的高寫入量；Link 3.0 宣稱把首字延遲（TTFT）壓到原來的十分之一。
+            </p>
+            <p>
+                透過理解 vLLM 的 PagedAttention 機制，可以更清楚 aiDAPTIV+ Cache 的設計邏輯，兩者在解決 KV cache 管理問題上有相似之處。
+            </p>
+
+            <!-- ===== 技術環境 ===== -->
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 技術環境
+            </h3>
+
+            <ul class="list-none space-y-2 text-sm text-gray-400 font-light border-l-2 border-white/10 pl-5 my-6">
+                <li><strong class="text-gray-200">OS</strong> &mdash; Windows 11 + WSL2 Ubuntu 26.04</li>
+                <li><strong class="text-gray-200">GPU</strong> &mdash; NVIDIA RTX 4060 Laptop（8GB 顯存，driver 581.57）</li>
+                <li><strong class="text-gray-200">Python</strong> &mdash; 3.12（vLLM venv，via uv）/ 3.13（Windows 預設）</li>
+                <li><strong class="text-gray-200">vLLM</strong> &mdash; 0.24 + Qwen2.5-1.5B-Instruct（safetensors 原格式）</li>
+                <li><strong class="text-gray-200">Ollama</strong> &mdash; 0.30.11 + qwen2.5:1.5b（Q4_K_M 量化，986MB）</li>
+                <li><strong class="text-gray-200">MLflow</strong> &mdash; pip install，本機 SQLite 儲存</li>
+                <li><strong class="text-gray-200">Docker</strong> &mdash; 29.1.3（WSL2，systemd daemon）</li>
+                <li><strong class="text-gray-200">k3s</strong> &mdash; v1.36.2+k3s1 + kubectl v1.36.2</li>
+                <li><strong class="text-gray-200">PyTorch</strong> &mdash; 2.11 + CUDA 13.0（vLLM venv 附帶）</li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 相關連結
+            </h3>
+
+            <ul class="space-y-2 text-sm text-gray-400 list-none pl-0">
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="https://docs.vllm.ai/en/latest/getting_started/quickstart/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        vLLM Quickstart
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="https://ollama.com/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        Ollama
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="https://mlflow.org/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        MLflow
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="https://k3s.io/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        k3s
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="project_16.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        NTUST MVC Lab 作業紀錄 &mdash; EXP / P16
+                    </a>
+                </li>
+            </ul>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                &larr; 上一篇
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                查看所有專案
+            </a>
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                下一篇 &rarr;
+            </a>
+        </div>
+
+    </main>
+    <div id="footer-placeholder"></div>
+</body>
+</html>

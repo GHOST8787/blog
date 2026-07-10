@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / P24 | GHOST.ouo</title>
+
+    <link rel="icon" type="image/png" href="../../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script src="../../i18n.js" defer></script>
+    <script type="module" src="../../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / P24</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                Building a Memory System to Block AI Hallucination<br>
+                <span class="text-gradient text-2xl md:text-4xl">Three Gates, Checked Against the Same Reports on GitHub</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    AI &amp; Automation
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Memory System
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Claude Code
+                </span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.06.25</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                A common reliability problem with generative AI tools is that they output unverified content as fact: generating numbers that do not exist, claiming to have read a file they never opened. Putting these tools to real work calls for a layer of structure outside the model to intercept this kind of output. This piece records a memory and safeguard mechanism I built for the Claude Code I use day to day, checked against a cluster of reports about the same class of problem on GitHub in June 2026.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> The Three Situations Where It Fails Most Often
+            </h3>
+
+            <p>
+                Start with three situations I actually ran into.
+            </p>
+            <p>
+                <strong class="text-white">One: the data has not arrived, and it hands over a made-up number.</strong> I asked it to run several background searches at once; before any tool returned, it threw out a number as the conclusion. That number turned up in none of the search outputs afterward, filled in on its own before the data was complete.
+            </p>
+            <p>
+                <strong class="text-white">Two: it says "not found" without looking.</strong> I asked it to confirm whether a previously saved memory file still existed; it ran no actual search and answered "does not exist" outright. The file sat in its original place.
+            </p>
+            <p>
+                <strong class="text-white">Three: it proposes a rejected approach again.</strong> A plan already turned down earlier came back up, raised again without checking memory. This same error, re-pitching an old plan without checking memory, added up to 19 times.
+            </p>
+            <p>
+                What the three share is a confident tone over content that does not hold up, and they read smoothly and look normal, which makes them hard to catch at a glance after the fact. That is the trouble: it gets things wrong with confidence.
+            </p>
+            <p>
+                At first I tried to block this by writing rules. Plain-text rules carry limited force; the rules grew into the hundreds, and the same class of error repeated all the same. A rule is only a "description", and whether to follow it stays with the model, leaving the chain short of a step that would reliably stop it.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> My Approach: Stop It at the Moment It Errs
+            </h3>
+
+            <p>
+                The mechanism has three layers, each matched to a concrete failure form.
+            </p>
+
+            <div class="my-8 p-8 bg-white/5 rounded-2xl border border-white/10 font-light">
+                <ul class="list-none space-y-5">
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-database text-accent-purple mt-1.5 shrink-0"></i>
+                        <span>
+                            <strong class="text-white">Layer one, memory:</strong><br>
+                            File-based memory that preserves project progress and existing decisions across conversations, reducing repeated questions and lost information. Each fact lives in its own file, with its source attached.
+                        </span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-shield-halved text-accent-purple mt-1.5 shrink-0"></i>
+                        <span>
+                            <strong class="text-white">Layer two, enforced checks (gates):</strong><br>
+                            Turning rules into checks that intercept before any action: no edits without checking memory first, output a diagnosis before editing, run a search before claiming "not found" or "does not exist". Among these, re-pitching a rejected plan without checking memory accumulated 19 errors of the same kind, and malformed commands accumulated 240, serving as the basis for setting up the matching checks.
+                        </span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-heart-pulse text-accent-purple mt-1.5 shrink-0"></i>
+                        <span>
+                            <strong class="text-white">Layer three, heartbeat:</strong><br>
+                            Checking whether the background automation is still alive. One time the background process responsible for writing memory quietly stopped, a whole stretch of data went unwritten, and it took quite a while to notice. So a heartbeat check went in: when the schedule misses its expected run, it reports on its own, ahead of finding out after the fact.
+                        </span>
+                    </li>
+                </ul>
+            </div>
+
+            <p>
+                The three layers map to lost information, repeated errors, and silent failure. The actual interception points are four conditions: no memory check first, no diagnosis output first, no search before claiming "not found", and a heartbeat that misses its report. The moment any one condition holds, it stops right there.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Others See This Too: The Same Situation on GitHub
+            </h3>
+
+            <p>
+                In June 2026, a cluster of reports landed on the Claude Code project on GitHub, all about Opus 4.8. One recorded the model submitting a fabricated number before parallel tasks finished, with later confirmation that the number existed in no tool output. The official account of the overall hallucination rate is the lowest error rate across benchmarks, achieved by declining to answer uncertain questions; the parallel scenario above falls outside what that mechanism covers.
+            </p>
+
+            <div class="bg-white/5 border-l-2 border-accent-purple/50 p-5 rounded-xl my-8">
+                <p class="text-sm text-gray-400 m-0">One of the reports is a developer's writeup: five failure modes distilled after two months of file-based memory. Below, each item on that list is checked against this mechanism, four of them already covered.</p>
+            </div>
+
+            <div class="my-8 p-8 bg-white/5 rounded-2xl border border-white/10 font-light">
+                <ul class="list-none space-y-5">
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-file-lines text-accent-purple mt-1.5 shrink-0"></i>
+                        <span>
+                            <strong class="text-white">Rules are only descriptions; an enforced step is needed to intercept.</strong><br>
+                            Maps to the enforced checks in layer two.
+                        </span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-triangle-exclamation text-amber-400 mt-1.5 shrink-0"></i>
+                        <span>
+                            <strong class="text-white">Model output without a cited source gets carried forward as fact.</strong><br>
+                            Added this round: any external fact in memory must carry a source link, and what cannot cite one stays out.
+                        </span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-layer-group text-accent-purple mt-1.5 shrink-0"></i>
+                        <span>
+                            <strong class="text-white">History and current to-do state must be stored separately.</strong><br>
+                            The matching approach: one set of files holds history, another records only the current to-do.
+                        </span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-heart-pulse text-accent-purple mt-1.5 shrink-0"></i>
+                        <span>
+                            <strong class="text-white">Automation without a heartbeat fails silently.</strong><br>
+                            Maps to layer three, added recently.
+                        </span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-copy text-accent-purple mt-1.5 shrink-0"></i>
+                        <span>
+                            <strong class="text-white">Two files of the same name produce content drift.</strong><br>
+                            The matching approach: status follows the progress date, with file modification time for reference only.
+                        </span>
+                    </li>
+                </ul>
+            </div>
+
+            <p>
+                Four of the five are covered by the existing mechanism; item two (unsourced output taken as fact) is the part added this round. This one sits among the kinds that file-based memory finds harder to intercept by hard mechanism, and it rests mainly on the rule "always attach a source when writing an external fact".
+            </p>
+
+            <hr class="border-white/10 my-12">
+
+            <div class="mt-8 text-sm font-mono text-gray-500 border-l-2 border-accent-purple pl-4">
+                Control over hallucination comes mainly from structure outside the model. Whether the model's own behavior changes sits outside the user's control; the controllable part is whether an interception point exists at the moment the wrong output appears. An independent user's failure list, distilled after two months, overlaps heavily with this mechanism's design, and serves as one external check on the direction.
+            </div>
+
+            <div class="mt-10 p-6 rounded-2xl border border-white/10 bg-[#0A0A0A]">
+                <h4 class="text-white font-bold mb-3 flex items-center gap-2 text-sm">
+                    <i class="fas fa-book text-accent-purple"></i> References
+                </h4>
+                <ul class="text-xs text-gray-500 leading-relaxed space-y-2 m-0 list-none pl-0">
+                    <li>anthropics/claude-code Issue #63884. <a href="https://github.com/anthropics/claude-code/issues/63884" target="_blank" rel="noopener" class="text-gray-400 hover:text-white underline underline-offset-2 decoration-white/20">Opus 4.8 starts hallucinating results before parallel tasks finish</a> (reported 2026.05.30).</li>
+                    <li>anthropics/claude-code Issue #68546. <a href="https://github.com/anthropics/claude-code/issues/68546" target="_blank" rel="noopener" class="text-gray-400 hover:text-white underline underline-offset-2 decoration-white/20">Field report: 5 failure modes from 2 months of file-based Claude Code memory</a> (reported 2026.06.15).</li>
+                    <li>Simon Willison (2026). <a href="https://simonwillison.net/2026/May/28/claude-opus-4-8/" target="_blank" rel="noopener" class="text-gray-400 hover:text-white underline underline-offset-2 decoration-white/20">Claude Opus 4.8</a>. The lowest error rate across benchmarks, achieved by declining to answer uncertain questions.</li>
+                </ul>
+            </div>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                &larr; Prev Project
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Projects
+            </a>
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                Next Project &rarr;
+            </a>
+        </div>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+</body>
+</html>

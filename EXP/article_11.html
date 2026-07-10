@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / A11 | GHOST.ouo</title>
+
+    <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script type="module" src="../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../articles.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                返回文章列表
+            </a>
+            <span class="opacity-50">EXP / A11</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                AI 沒有讓我更輕鬆：<br>
+                <span class="text-gradient text-2xl md:text-4xl">整理變快，但檢查沒少</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">Thinking</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">AI Workflow</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Decision Making</span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.04.28</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                AI 工具深度融入工作流一段時間後，整體工作負擔並未減少。<strong class="text-white">整理速度提升，但檢查與判斷的工作量依然存在</strong>。本篇紀錄實際感受、未預期的副作用、被拉高的不完美忍受度，以及對「人 vs AI」這個比較模型的修正。
+            </p>
+            <figure class="my-10 mx-auto">
+                <img src="../PNG/article_11.1.webp"
+                     alt="暖燈下的圖書館閱讀空間"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    整理的速度提升了，但每一頁仍然需要確認
+                </figcaption>
+            </figure>
+
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 流程的實際變化：AI 省下了什麼？沒省下什麼？
+            </h3>
+
+            <p>
+                使用 AI 前後，工作流程的變化可以歸納為一個核心事實：<strong class="text-white">AI 節省的主要是「打字」這段機械性操作</strong>。後續所有需要判斷的環節&mdash;&mdash;邏輯檢核、引用與資料核實、語氣與節奏調整&mdash;&mdash;工作量完全不變。
+            </p>
+            <p>
+                AI 讓「從零到有」的速度變快了；「從有到好」的距離仍然要靠手動補完。第一版生成從手動變成 AI 生成，節省了時間；後續的檢核、核實、調整，依然需要手動完成。這是使用 AI 後最直接的體感：整理變快，但檢查沒少。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 核心矛盾：無法預測的輸出，才是最讓人煩躁的地方
+            </h3>
+
+            <p>
+                使用 AI 的過程中，最讓人煩躁的部分在於：<strong class="text-white">AI 的輸出結果難以預測</strong>。錯誤可以被修正，不可預測性只能接受。
+            </p>
+            <p>
+                同樣的提示詞，同樣的上下文，同樣的模型版本，兩次輸出的結果可能天差地別。有時候它給出精準、深刻、超出預期的回覆，讓你覺得「這工具真的太強了」；有時候它給出完全偏離主題、邏輯斷裂、甚至憑空捏造的回覆，讓你懷疑自己是不是用錯了什麼。
+            </p>
+            <p>
+                這種不確定性，讓 AI 呈現一種極兩極化的面貌：<strong class="text-white">看好的人聚焦於它的潛在驚喜；看壞的人則擔憂其可能帶來的風險</strong>。而這兩種觀點其實來自同一個事實：不可預測性。
+            </p>
+            <p>
+                對於需要穩定輸出的人來說，這種不可預測性是一個結構性問題。你只能把 AI 當成一個「大部分時候有用、永遠需要驗證」的輔助系統來使用。這是它的結構特性，使用時得一直盯著。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 副作用一：沒被迫使用的能力會退化
+            </h3>
+
+            <p>
+                AI 讓某些能力「不再被迫使用」。長期下來，這些能力的水位會下降。
+            </p>
+            <p>
+                仔細盤點後發現，以下幾個能力維度的變化最明顯：整體邏輯與前後關聯仍可掌握；短片段、斷句式表達正常；但<strong class="text-white">即時產出連續、用詞精準的長句變得明顯吃力</strong>。理解與組織外文長文時，傾向直接交給 AI 翻譯，而非自己處理。等待與延遲滿足的能力（耐心）下降。真人社交意願也隨之下降。
+            </p>
+            <p>
+                共通點是：每一項日常情境都從「需要主動處理」轉變為「可以一鍵完成」。大腦自然偏好低阻力路徑——這是結構問題，不能用意志力扛。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 副作用二：對不完美的忍受度下降
+            </h3>
+
+            <p>
+                AI 在清理與整理上多數時候是加速的。這會反過來逼使用者強迫自己把「過去的不完美」全部補齊。
+            </p>
+            <p>
+                以記帳為例：使用 AI 之前，心態是「記個大概、月底看一下花去哪、少幾筆沒差」。使用 AI 之後，心理預期變成「類別要一致、過去資料想補齊、想做圖表分析、想建完整資料庫」。工具把任務升級為系統工程，但生活節奏未能同步調整。痛苦不在記帳本身，而在被 AI 拉高的「資料完美度」標準。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 取捨框架：想要 / 需要 / 必要
+            </h3>
+
+            <p>
+                工具增加 &rarr; 選項增加 &rarr; 取捨成本上升。用一個三層分類降低決策負擔：
+            </p>
+            <ul class="list-disc pl-5 space-y-3 text-gray-300 font-light mb-6">
+                <li><strong class="text-white">必要：</strong>不做會出事、違約、欠人 &rarr; 立即處理</li>
+                <li><strong class="text-white">需要：</strong>能讓現在的事更好，但不做不會壞 &rarr; 排入計畫</li>
+                <li><strong class="text-white">想要：</strong>有趣、想試、不做不影響 &rarr; 看剩餘時間</li>
+            </ul>
+            <p class="text-gray-400">
+                沒有這個分類框架，每一個「看起來還不錯」的選項都會被預設當成必做項。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 再退一步：比較基準的問題
+            </h3>
+
+            <p>
+                使用 AI 久了，容易冒出一種焦慮：人類再怎麼提升，仍難以在完美度、速度或資料量上超越 AI。
+            </p>
+            <p>
+                這是<strong class="text-white">比較基準錯置</strong> &mdash; 拿人類去比 AI 擅長的指標。用速度、記憶量、資料量來比較，人類會輸。當前真實的競爭軸是「會用 AI 的人 vs 不會用 AI 的人」，這個差距才是真實的競爭樣貌。
+            </p>
+            <p>
+                抗替代能力集中在三項：
+            </p>
+            <ul class="list-disc pl-5 space-y-3 text-gray-300 font-light mb-6">
+                <li><strong class="text-white">問題定義能力</strong>：知道真正要解決的問題是什麼</li>
+                <li><strong class="text-white">不完整資訊下的決策</strong>：在資料不夠時仍能選方向、承擔結果</li>
+                <li><strong class="text-white">建立信任的能力</strong>：讓真人願意與你合作</li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 結論：選擇能力依然是核心
+            </h3>
+
+            <p>
+                AI 並未改變一個基本事實：<strong class="text-white">選擇能力仍是個人工作的核心</strong>。它只是把注意力從「執行」這個環節，轉移到「定義 + 判斷」這個環節。
+            </p>
+            <p>
+                工具普及不等於可以放棄核心能力。智慧型手機取代了傳統手機；判斷資訊真假、管理注意力、與人互動、專注完成工作，這些能力變得更重要。AI 是同樣的邏輯。
+            </p>
+            <p>
+                回到最開始的問題：AI 有沒有讓我更輕鬆？答案是否定的。它只是讓我「輕鬆的部分」和「不輕鬆的部分」重新分配了。而那些不輕鬆的部分&mdash;&mdash;判斷、驗證、承擔不可預測性的風險&mdash;&mdash;恰恰是目前無法外包的核心。
+            </p>
+
+            <hr class="border-white/10 my-12">
+
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="article_10.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; 上一篇
+            </a>
+            <a href="../articles.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                查看所有文章
+            </a>
+            <a href="#" class="text-gray-500 text-sm font-mono opacity-50 cursor-not-allowed" aria-disabled="true">
+                下一篇 &rarr;
+            </a>
+        </div>
+
+    </main>
+    <div id="footer-placeholder"></div>
+</body>
+</html>

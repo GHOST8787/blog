@@ -165,11 +165,11 @@
                 <span class="text-accent-purple">#</span> 工程上的幾個決定
             </h3>
 
-            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
-                <li><strong class="text-white">用 2 秒輪詢取代 MutationObserver</strong> &mdash; <span>頁面的卡片是非同步載入的，而 skills.google 有常駐動畫，配 debounce 的 MutationObserver 會被持續的 DOM 變動餓死、永遠不觸發。改成固定每 2 秒掃一次，搭配「沒變動就不寫入」，成本可忽略又穩定。</span></li>
-                <li><strong class="text-white">完成標記 sticky-true</strong> &mdash; <span>同一門課在不同頁面渲染出的狀態不一定一致，逛到沒掛狀態的頁面時，已完成的勾必須守住，不能被空狀態洗掉。</span></li>
-                <li><strong class="text-white">Skillshop 單獨歸類</strong> &mdash; <span>行銷學程前 5 門認證在另一個站，技術上抓不到，總表直接標「需手動確認」，免得讓人誤以為漏修。</span></li>
-                <li><strong class="text-white">隱藏已完成</strong> &mdash; <span>勾一個核取方塊就只留還沒做的課，計數先算完才隱藏，所以「已完成 / 總門數」的數字不受影響，偏好也記在 storage 裡。</span></li>
+            <ul class="list-none space-y-2 text-sm text-gray-400 font-light border-l-2 border-white/10 pl-5 my-6">
+                <li><strong class="text-gray-200">用 2 秒輪詢取代 MutationObserver</strong> &mdash; <span>頁面的卡片是非同步載入的，而 skills.google 有常駐動畫，配 debounce 的 MutationObserver 會被持續的 DOM 變動餓死、永遠不觸發。改成固定每 2 秒掃一次，搭配「沒變動就不寫入」，成本可忽略又穩定。</span></li>
+                <li><strong class="text-gray-200">完成標記 sticky-true</strong> &mdash; <span>同一門課在不同頁面渲染出的狀態不一定一致，逛到沒掛狀態的頁面時，已完成的勾必須守住，不能被空狀態洗掉。</span></li>
+                <li><strong class="text-gray-200">Skillshop 單獨歸類</strong> &mdash; <span>行銷學程前 5 門認證在另一個站，技術上抓不到，總表直接標「需手動確認」，免得讓人誤以為漏修。</span></li>
+                <li><strong class="text-gray-200">隱藏已完成</strong> &mdash; <span>勾一個核取方塊就只留還沒做的課，計數先算完才隱藏，所以「已完成 / 總門數」的數字不受影響，偏好也記在 storage 裡。</span></li>
             </ul>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
@@ -184,11 +184,11 @@
                 <span class="text-accent-purple">#</span> 技術環境與限制
             </h3>
 
-            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
-                <li><strong class="text-white">平台</strong> &mdash; <span>Chrome Manifest V3，content script ＋ action popup，無背景 service worker。</span></li>
-                <li><strong class="text-white">資料</strong> &mdash; <span>進度只存 <code class="text-accent-purple">chrome.storage.local</code>，換裝置不同步、清除瀏覽資料會一併清掉。</span></li>
-                <li><strong class="text-white">偵測範圍</strong> &mdash; <span>只認得 skills.google 上以 <code class="text-accent-purple">course_templates/{id}</code> 標示的課；Skillshop 認證與走 LINE 的總整課程要自己確認。</span></li>
-                <li><strong class="text-white">母清單時效</strong> &mdash; <span>清單於 2026-06-05 從計畫頁與 skills.google 收集，計畫若改課程內容需同步更新 <code class="text-accent-purple">master-list.js</code>。</span></li>
+            <ul class="list-none space-y-2 text-sm text-gray-400 font-light border-l-2 border-white/10 pl-5 my-6">
+                <li><strong class="text-gray-200">平台</strong> &mdash; <span>Chrome Manifest V3，content script ＋ action popup，無背景 service worker。</span></li>
+                <li><strong class="text-gray-200">資料</strong> &mdash; <span>進度只存 <code class="text-accent-purple">chrome.storage.local</code>，換裝置不同步、清除瀏覽資料會一併清掉。</span></li>
+                <li><strong class="text-gray-200">偵測範圍</strong> &mdash; <span>只認得 skills.google 上以 <code class="text-accent-purple">course_templates/{id}</code> 標示的課；Skillshop 認證與走 LINE 的總整課程要自己確認。</span></li>
+                <li><strong class="text-gray-200">母清單時效</strong> &mdash; <span>清單於 2026-06-05 從計畫頁與 skills.google 收集，計畫若改課程內容需同步更新 <code class="text-accent-purple">master-list.js</code>。</span></li>
             </ul>
 
             <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">

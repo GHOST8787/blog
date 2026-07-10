@@ -74,16 +74,18 @@
                 </p>
             </div>
 
-            <figure class="my-8">
-                <img src="../PNG/project_09.1.webp"
-                     alt="Claude Code 的好工具特徵、常見反模式、Subagent 治理與設定/執行層反模式"
+            <figure class="my-10 mx-auto">
+                <img src="../PNG/project_09.1.png"
+                     alt="Claude Code 工具治理與驗證閉環"
                      loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
-                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">好工具的特徵、工具常見反模式、Subagent 治理，以及設定層 / 執行層反模式</figcaption>
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    工具治理與驗證閉環 — 好工具設計、Subagent 用法與三階段演化
+                </figcaption>
             </figure>
 
             <section class="mb-16">
-                <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-3 border-b border-white/10 pb-4">
-                    <i class="fas fa-wrench text-accent-purple"></i> 工具設計：讓 Claude 少選錯
+                <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                    <span class="text-accent-purple">#</span> 工具設計：讓 Claude 少選錯
                 </h3>
                 
                 <p class="mb-6 text-gray-300">
@@ -121,91 +123,49 @@
             </section>
 
             <section class="mb-16">
-                <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-3 border-b border-white/10 pb-4">
-                    <i class="fas fa-sitemap text-accent-purple"></i> Subagents：隔離比並行更重要
+                <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                    <span class="text-accent-purple">#</span> Subagents：隔離比並行更重要
                 </h3>
 
                 <p class="mb-6 text-gray-300">
                     Subagent 的核心價值在於 <strong class="text-white">「隔離污染」</strong>。例如掃描龐大代碼庫時，交給 Subagent 執行，主線程僅接收摘要，確保全局 Context 的純淨度。
                 </p>
 
-                <div class="bg-white/5 p-6 rounded-2xl border border-white/10">
-                    <strong class="text-white block mb-4">配置時必須明確約束：</strong>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <div class="bg-[#0A0A0A] p-4 rounded-xl border border-white/5">
-                            <code class="text-accent-purple font-bold block mb-1">tools</code>
-                            <span class="text-xs text-gray-400">限制能用什麼，別給全域權限</span>
-                        </div>
-                        <div class="bg-[#0A0A0A] p-4 rounded-xl border border-white/5">
-                            <code class="text-accent-purple font-bold block mb-1">model</code>
-                            <span class="text-xs text-gray-400">探索任務用 Haiku 省成本</span>
-                        </div>
-                        <div class="bg-[#0A0A0A] p-4 rounded-xl border border-white/5">
-                            <code class="text-accent-purple font-bold block mb-1">maxTurns</code>
-                            <span class="text-xs text-gray-400">設定步數上限，防止跑飛</span>
-                        </div>
-                        <div class="bg-[#0A0A0A] p-4 rounded-xl border border-white/5">
-                            <code class="text-accent-purple font-bold block mb-1">worktree</code>
-                            <span class="text-xs text-gray-400">需要動文件時隔離檔案系統</span>
-                        </div>
-                    </div>
-                </div>
+                <p>配置時必須明確約束：</p>
+                <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
+                    <li><code class="text-accent-purple">tools</code> — 限制能用什麼，別給全域權限</li>
+                    <li><code class="text-accent-purple">model</code> — 探索任務用 Haiku 省成本</li>
+                    <li><code class="text-accent-purple">maxTurns</code> — 設定步數上限，防止跑飛</li>
+                    <li><code class="text-accent-purple">worktree</code> — 需要動文件時隔離檔案系統</li>
+                </ul>
             </section>
 
             <section class="mb-16">
-                <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-3 border-b border-white/10 pb-4">
-                    <i class="fas fa-terminal text-accent-purple"></i> 高頻指令的工程意義
+                <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                    <span class="text-accent-purple">#</span> 高頻指令的工程意義
                 </h3>
-                
+
                 <p class="mb-6 text-gray-300">這些指令的本質只有一件事：<strong class="text-white">主動管理上下文，別等系統自己處理。</strong></p>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="bg-white/5 p-5 rounded-xl border border-white/10 hover:border-accent-purple/30 transition-colors">
-                        <code class="text-accent-purple font-bold text-base block mb-2">/insight</code>
-                        <p class="text-sm text-gray-400 m-0">讓 Claude 提煉出「你們反覆提到但沒寫進契約的約定」，是迭代優化 <code>CLAUDE.md</code> 的最佳手段。</p>
-                    </div>
-                    <div class="bg-white/5 p-5 rounded-xl border border-white/10 hover:border-accent-purple/30 transition-colors">
-                        <code class="text-accent-purple font-bold text-base block mb-2">/rewind</code>
-                        <p class="text-sm text-gray-400 m-0">回到特定的 checkpoint 重新摘要。當 Agent 路線嚴重偏移，或想保留前半段共識時的急救指令。</p>
-                    </div>
-                    <div class="bg-white/5 p-5 rounded-xl border border-white/10 hover:border-accent-purple/30 transition-colors">
-                        <code class="text-accent-purple font-bold text-base block mb-2">--fork</code>
-                        <p class="text-sm text-gray-400 m-0">從當前上下文分支出平行宇宙，適合進行 A/B 架構設計比較，不污染原會話。</p>
-                    </div>
-                    <div class="bg-white/5 p-5 rounded-xl border border-white/10 hover:border-accent-purple/30 transition-colors">
-                        <code class="text-accent-purple font-bold text-base block mb-2">雙擊 ESC</code>
-                        <p class="text-sm text-gray-400 m-0">回到上一條輸入重新編輯。Claude 走偏時，直接修改上一句話重發，比重新開會話快得多。</p>
-                    </div>
-                </div>
+                <ul class="list-disc pl-5 space-y-3 text-gray-300 font-light mb-6">
+                    <li><code class="text-accent-purple">/insight</code> — 讓 Claude 提煉出「你們反覆提到但沒寫進契約的約定」，是迭代優化 <code>CLAUDE.md</code> 的最佳手段。</li>
+                    <li><code class="text-accent-purple">/rewind</code> — 回到特定的 checkpoint 重新摘要。當 Agent 路線嚴重偏移，或想保留前半段共識時的急救指令。</li>
+                    <li><code class="text-accent-purple">--fork</code> — 從當前上下文分支出平行宇宙，適合進行 A/B 架構設計比較，不污染原會話。</li>
+                    <li><strong class="text-white">雙擊 ESC</strong> — 回到上一條輸入重新編輯。Claude 走偏時，直接修改上一句話重發，比重新開會話快得多。</li>
+                </ul>
             </section>
 
             <section class="mb-10">
-                <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-3 border-b border-white/10 pb-4">
-                    <i class="fas fa-chart-line text-accent-purple"></i> 演化軌跡與驗證法則
+                <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                    <span class="text-accent-purple">#</span> 演化軌跡與驗證法則
                 </h3>
-                
-                <div class="relative pl-6 ml-3 border-l-2 border-accent-purple/30 space-y-8 mb-10">
-                    <div class="relative">
-                        <div class="absolute -left-[31px] top-1.5 w-3 h-3 rounded-full bg-accent-purple border-2 border-[#050505]"></div>
-                        <strong class="text-white block text-lg mb-1">1. ChatBot 階段</strong>
-                        <p class="text-sm text-gray-400 m-0">將其視為對話機器人，依賴人類大腦去補足缺失的脈絡。結果：上下文越來越亂。</p>
-                    </div>
-                    <div class="relative">
-                        <div class="absolute -left-[31px] top-1.5 w-3 h-3 rounded-full bg-accent-purple border-2 border-[#050505]"></div>
-                        <strong class="text-white block text-lg mb-1">2. 配置階段</strong>
-                        <p class="text-sm text-gray-400 m-0">開始撰寫 <code>CLAUDE.md</code>、添加外部工具。結果：規則越寫越長，模型開始選擇性忽略。</p>
-                    </div>
-                    <div class="relative">
-                        <div class="absolute -left-[31px] top-1.5 w-3 h-3 rounded-full bg-accent-purple border-2 border-[#050505]"></div>
-                        <strong class="text-white block text-lg mb-1">3. 工程化階段</strong>
-                        <p class="text-sm text-gray-400 m-0">焦點從「這功能怎麼用」轉變為「如何設計系統，讓 Agent 在約束下自主運作並自我驗證」。</p>
-                    </div>
-                </div>
 
-                <div class="bg-gradient-to-r from-accent-purple/10 to-transparent p-8 rounded-2xl border-l-4 border-accent-purple shadow-xl">
-                    <p class="text-white font-bold text-xl mb-3 flex items-center gap-2">
-                        <i class="fas fa-exclamation-triangle text-accent-purple"></i> 驗證閉環：終極法則
-                    </p>
+                <p class="mb-6 text-gray-300"><strong class="text-white">1. ChatBot 階段</strong> — 將其視為對話機器人，依賴人類大腦去補足缺失的脈絡。結果：上下文越來越亂。</p>
+                <p class="mb-6 text-gray-300"><strong class="text-white">2. 配置階段</strong> — 開始撰寫 <code>CLAUDE.md</code>、添加外部工具。結果：規則越寫越長，模型開始選擇性忽略。</p>
+                <p class="mb-10 text-gray-300"><strong class="text-white">3. 工程化階段</strong> — 焦點從「這功能怎麼用」轉變為「如何設計系統，讓 Agent 在約束下自主運作並自我驗證」。</p>
+
+                <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10">
+                    <p class="text-white font-bold mb-3">驗證閉環：終極法則</p>
                     <p class="text-gray-300 leading-relaxed mb-0">
                         「Claude 說完成了」絕對不等於完成。假如一個任務你無法明確定義 <strong class="text-white">「跑完哪支腳本才算通過」</strong>，那它就不適合直接交給 Agent 自主執行。驗收標準必須在 Prompt 或 Skill 階段就徹底鎖死。
                     </p>
