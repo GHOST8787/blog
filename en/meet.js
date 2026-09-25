@@ -60,10 +60,11 @@ const T = {
     lockedNote: 'The organizer locked this in. A calendar invite follows separately.',
     verdictBest: 'Most available right now',
     verdictLocked: 'Locked in',
-    lockBtn: 'Lock this time in',
+    lockBtn: 'Pause tallying',
     unlockBtn: 'Undo lock-in',
-    closeBtn: 'Close voting',
+    closeBtn: 'Delete poll',
     reopenBtn: 'Reopen',
+    deleteConfirm: 'Tap again to delete',
     deleteBtn: 'Delete',
     copyBtn: 'Link',
     copyShare: 'Copy share link',
@@ -300,16 +301,22 @@ function startHome() {
         $('mt-my-polls').innerHTML = list.map(renderPollRow).join('');
     }, err => showState(T.homeDenied + ' (' + err.code + ')'));
 
-    renderJoined();
+    // The list loads on demand. Someone may have replied to a lot of polls and each
+    // one costs a meta read, so fetching them all on page load is slow and wasteful.
+    const jb = $('mt-joined-btn');
+    if (jb) jb.classList.toggle('hidden', !!me.isAnonymous);
 }
 
 // Polls I replied to. Deleted polls are skipped.
+let joinedAttached = false;
 async function renderJoined() {
     const wrap = $('mt-joined-wrap');
-    if (!wrap || me.isAnonymous) return;      // anonymous uids change every time
+    if (!wrap || me.isAnonymous || joinedAttached) return;
+    joinedAttached = true;      // anonymous uids change every time
     onValue(ref(db, `meet/users/${me.uid}/joined`), async snap => {
+        wrap.classList.remove('hidden');
         const entries = Object.entries(snap.val() || {});
-        if (!entries.length) { wrap.classList.add('hidden'); return; }
+        if (!entries.length) { $('mt-joined').innerHTML = emptyJoined(); return; }
         const rows = await Promise.all(entries.map(async ([id, at]) => {
             const m = (await get(ref(db, `meet/polls/${id}/meta`))).val();
             if (!m) {
@@ -320,11 +327,26 @@ async function renderJoined() {
             return { id, meta: m, at: typeof at === 'number' ? at : 0 };
         }));
         const list = rows.filter(Boolean).sort((a, b) => b.at - a.at);
-        if (!list.length) { wrap.classList.add('hidden'); return; }
-        wrap.classList.remove('hidden');
-        $('mt-joined').innerHTML = list.map(renderJoinedRow).join('');
+        $('mt-joined').innerHTML = list.length ? list.map(renderJoinedRow).join('') : emptyJoined();
     }, err => console.warn('[meet] joined list failed', err.code));
 }
+
+function emptyJoined() {
+    return `<div class="mt-card rounded-xl px-5 py-4 font-mono text-[11px] text-gray-600">${T.joinedNone}</div>`;
+}
+
+// Button sits to the right of the user badge: the first press loads and opens the list,
+// after that it just toggles
+$('mt-joined-btn').addEventListener('click', () => {
+    const wrap = $('mt-joined-wrap');
+    if (wrap.classList.contains('hidden')) {
+        renderJoined();
+        wrap.classList.remove('hidden');
+        wrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    } else {
+        wrap.classList.add('hidden');
+    }
+});
 
 function renderJoinedRow(p) {
     const done = p.meta.state !== 'open';
@@ -387,6 +409,20 @@ function renderPollRow(p) {
     </div>`;
 }
 
+// Deleting a meeting touches three places: the meeting itself, my own list of meetings,
+// and activeCount if it was still open. The activeCount rule only allows a move of 1,
+// so the base has to be read fresh rather than taken from the screen.
+async function deletePollPayload(id) {
+    const m = (await get(ref(db, `meet/polls/${id}/meta`))).val();
+    const cur = (await get(ref(db, `meet/users/${me.uid}/activeCount`))).val() || 0;
+    const payload = {
+        [`meet/polls/${id}`]: null,
+        [`meet/users/${me.uid}/polls/${id}`]: null
+    };
+    if (m && m.state === 'open' && cur > 0) payload[`meet/users/${me.uid}/activeCount`] = cur - 1;
+    return payload;
+}
+
 $('mt-my-polls').addEventListener('click', async e => {
     const copy = e.target.closest('.js-copy');
     if (copy) {
@@ -400,14 +436,7 @@ $('mt-my-polls').addEventListener('click', async e => {
     if (del) {
         if (!window.confirm(T.confirmDelete)) return;
         const id = del.dataset.id;
-        const m = (await get(ref(db, `meet/polls/${id}/meta`))).val();
-        const cur = (await get(ref(db, `meet/users/${me.uid}/activeCount`))).val() || 0;
-        const payload = {
-            [`meet/polls/${id}`]: null,
-            [`meet/users/${me.uid}/polls/${id}`]: null
-        };
-        if (m && m.state === 'open' && cur > 0) payload[`meet/users/${me.uid}/activeCount`] = cur - 1;
-        try { await update(ref(db), payload); }
+        try { await update(ref(db), await deletePollPayload(id)); }
         catch (err) { window.alert(T.deleteFailed + err.message); }
         return;   // stop here, or the click falls through to js-row and opens the poll just deleted
     }
@@ -1108,7 +1137,8 @@ function renderVerdict() {
             return arr.length <= CAP ? arr.join(', ') : arr.slice(0, CAP).join(', ') + T.andMore(arr.length);
         };
         const lockBtn = `<button id="lock-btn" class="px-5 py-2.5 rounded-full ${meta.lockedSlot ? 'border border-white/15 text-gray-400' : 'bg-accent-purple text-black font-bold'} text-xs tracking-wide transition">${meta.lockedSlot ? T.unlockBtn : T.lockBtn}</button>`;
-        const closeBtn = `<button id="close-btn" class="px-4 py-2.5 rounded-full border border-white/15 text-gray-400 hover:text-white text-xs tracking-wide transition">${meta.state === 'open' ? T.closeBtn : T.reopenBtn}</button>`;
+        // This wipes the whole meeting and every reply, with no undo, so it is red and takes two presses
+        const closeBtn = `<button id="close-btn" class="px-4 py-2.5 rounded-full border border-red-400/40 text-red-300 hover:text-red-200 hover:border-red-400/70 text-xs tracking-wide transition">${T.closeBtn}</button>`;
 
         $('verdict').innerHTML = `<div class="flex flex-wrap items-start justify-between gap-4">
             <div class="min-w-[220px] flex-1">
@@ -1129,12 +1159,31 @@ function renderVerdict() {
                 await update(ref(db, `meet/polls/${pollId}/meta`), { lockedSlot: meta.lockedSlot ? null : sid });
             } catch (err) { window.alert(err.message); }
         };
-        $('close-btn').onclick = async () => {
-            const open = meta.state === 'open';
-            const cur = (await get(ref(db, `meet/users/${me.uid}/activeCount`))).val() || 0;
-            const payload = { [`meet/polls/${pollId}/meta/state`]: open ? 'closed' : 'open' };
-            payload[`meet/users/${me.uid}/activeCount`] = open ? Math.max(0, cur - 1) : cur + 1;
-            try { await update(ref(db), payload); } catch (err) { window.alert(err.message); }
+        const delBtn = $('close-btn');
+        delBtn.onclick = async () => {
+            // The first press swaps in a confirm label and backs out after 4 seconds,
+            // so a stray click cannot wipe the meeting
+            if (delBtn.dataset.armed !== '1') {
+                delBtn.dataset.armed = '1';
+                delBtn.textContent = T.deleteConfirm;
+                setTimeout(() => {
+                    if (delBtn.isConnected && delBtn.dataset.armed === '1') {
+                        delBtn.dataset.armed = '';
+                        delBtn.textContent = T.closeBtn;
+                    }
+                }, 4000);
+                return;
+            }
+            delBtn.disabled = true;
+            try {
+                await update(ref(db), await deletePollPayload(pollId));
+                location.href = 'meet.html';
+            } catch (err) {
+                delBtn.disabled = false;
+                delBtn.dataset.armed = '';
+                delBtn.textContent = T.closeBtn;
+                window.alert(T.deleteFailed + err.message);
+            }
         };
         return;
     }
