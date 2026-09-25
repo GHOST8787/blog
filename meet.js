@@ -41,7 +41,6 @@ const T = {
     deadlineLabel: '截止',
     noDeadline: '無截止',
     repliedFmt: (a, b) => `${a} / ${b} 人已回覆`,
-    lockedForYou: '回覆只有發起人看得到',
     titleRequired: '會議名稱不能空白',
     slotRequired: '至少要一個候選時段',
     quotaFull: `你同時進行中的會議已經有 ${MAX_POLLS} 場，關掉一場再開新的。`,
@@ -58,7 +57,6 @@ const T = {
     answeredFmt: (a, b) => `你回覆了 ${a} / ${b} 個時段`,
     myYes: '你選「可以」的：',
     nothingPicked: '尚未選',
-    privacyNote: '其他人回了什麼、哪個時段最多人可以，只有發起人看得到。',
     lockedNote: '發起人已定案，行事曆邀請會另外寄給你。',
     verdictBest: '目前最多人可以',
     verdictLocked: '已定案',
@@ -78,6 +76,9 @@ const T = {
     lockedFmt: r => `已定案 ${r}`,
     leadNone: '目前預計：還沒有人回覆',
     dupSlot: '這個時段已經有了，換一個。',
+    delSlot: '刪除這個時段',
+    delSlotConfirm: '再按一次刪除',
+    delSlotFailed: '刪不掉：',
     removeVoter: '移除',
     removeConfirm: '再按一次',
     removeFailed: '刪不掉',
@@ -91,6 +92,18 @@ const T = {
     deadlinePassed: '已經過了投票截止時間。',
     confirmDelete: '刪除這場會議與所有回覆，確定？',
     noPolls: '還沒有開過會議。',
+    submitBtn: '送出',
+    resubmitBtn: '更新我的回覆',
+    submitting: '送出中…',
+    pickSomething: '選好之後按送出',
+    unsaved: '有還沒送出的修改',
+    submittedAt: (t) => `已於 ${t} 送出`,
+    submittedLocked: '已送出。匿名投票送出後就不能改，要改請發起人把你那筆移掉。',
+    anonPartial: '已送出。答過的時段改不了，新的時段還可以補。',
+    canEdit: '已送出。你可以改完再按一次更新。',
+    tallyFmt: (y, n, x) => `${y} 可以 · ${n} 需提前通知 · ${x} 不行`,
+    joinedNone: '還沒回過任何會議。',
+    joinedDeleted: '這場已經被刪掉',
     nobody: '無',
     andMore: (n) => ` …共 ${n} 人`,
     totalPeople: '人',
@@ -120,8 +133,12 @@ const $poll = $('view-poll');
 // === 狀態 ===
 const pollId = new URLSearchParams(location.search).get('id');
 let me = null;
-let meta = null, slots = {}, votes = {}, participants = {}, slotOwners = {};
+let meta = null, slots = {}, votes = {}, participants = {}, slotOwners = {}, tally = {};
 let pinned = null;
+// 參與者按了但還沒送出的選擇。送出之前只動這裡，不寫資料庫。
+let draft = {};
+// 這個身分在這場已經送出過（匿名送出後就不能再改）
+let submittedOnce = false;
 
 // === 小工具 ===
 function esc(s) {
@@ -283,6 +300,49 @@ function startHome() {
         const list = rows.filter(Boolean).sort((a, b) => (b.meta.createdAt || 0) - (a.meta.createdAt || 0));
         $('mt-my-polls').innerHTML = list.map(renderPollRow).join('');
     }, err => showState(T.homeDenied + ' (' + err.code + ')'));
+
+    renderJoined();
+}
+
+// 我回過的會議：從 users/<uid>/joined 拿場次，會議被刪掉的不列
+async function renderJoined() {
+    const wrap = $('mt-joined-wrap');
+    if (!wrap || me.isAnonymous) return;      // 匿名 uid 每次都不同，留紀錄沒有意義
+    onValue(ref(db, `meet/users/${me.uid}/joined`), async snap => {
+        const entries = Object.entries(snap.val() || {});
+        if (!entries.length) { wrap.classList.add('hidden'); return; }
+        const rows = await Promise.all(entries.map(async ([id, at]) => {
+            const m = (await get(ref(db, `meet/polls/${id}/meta`))).val();
+            if (!m) {
+                // 會議已經被刪掉，順手把自己這筆參加紀錄清掉，免得列表點下去是死連結
+                update(ref(db), { [`meet/users/${me.uid}/joined/${id}`]: null }).catch(() => {});
+                return null;
+            }
+            return { id, meta: m, at: typeof at === 'number' ? at : 0 };
+        }));
+        const list = rows.filter(Boolean).sort((a, b) => b.at - a.at);
+        if (!list.length) { wrap.classList.add('hidden'); return; }
+        wrap.classList.remove('hidden');
+        $('mt-joined').innerHTML = list.map(renderJoinedRow).join('');
+    }, err => console.warn('[meet] joined list failed', err.code));
+}
+
+function renderJoinedRow(p) {
+    const done = p.meta.state !== 'open';
+    const cls = done
+        ? 'bg-accent-success/15 text-accent-success border border-accent-success/30'
+        : 'bg-accent-purple/15 text-accent-purple border border-accent-purple/30';
+    const when = p.at
+        ? `${fmtDate(p.at)} ${new Date(p.at).toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' })}`
+        : '—';
+    return `<a href="meet.html?id=${encodeURIComponent(p.id)}" class="block mt-card rounded-xl p-4 sm:p-5 hover:border-white/10 transition">
+        <div class="flex items-center gap-2 mb-1.5">
+            <span class="font-mono text-[10px] text-gray-600">#${esc(p.id.slice(-6))}</span>
+            <span class="font-mono text-[9px] px-1.5 py-0.5 rounded whitespace-nowrap ${cls}">${done ? T.closed : T.open}</span>
+        </div>
+        <div class="text-white font-medium mb-1">${esc(p.meta.title)}</div>
+        <div class="font-mono text-[11px] text-gray-500">${esc(p.meta.organizerName || '')} · ${T.submittedAt(when)}</div>
+    </a>`;
 }
 
 /* ===== 首頁卡片用的「目前預計時間」：票最多的時段，定案了就顯示定案那個 ===== */
@@ -350,6 +410,7 @@ $('mt-my-polls').addEventListener('click', async e => {
         if (m && m.state === 'open' && cur > 0) payload[`meet/users/${me.uid}/activeCount`] = cur - 1;
         try { await update(ref(db), payload); }
         catch (err) { window.alert('刪除失敗：' + err.message); }
+        return;   // 刪掉就停在首頁，不要再往下掉進 js-row 跳進剛刪掉的會議
     }
     const row = e.target.closest('.js-row');
     if (row) location.href = `meet.html?id=${encodeURIComponent(row.dataset.id)}`;
@@ -484,7 +545,7 @@ $('mt-name-save').addEventListener('click', async () => {
     const name = $('mt-name').value.trim();
     if (!name || !me || !pollId) return;
     try {
-        await update(ref(db, `meet/polls/${pollId}/private/participants/${me.uid}`), { name });
+        await update(ref(db, `meet/polls/${pollId}/private/participants/${me.uid}`), participantRecord(name));
         $('mt-name-msg').textContent = T.nameSaved;
         setTimeout(() => { $('mt-name-msg').textContent = ''; }, 1600);
     } catch (err) {
@@ -517,6 +578,9 @@ function startPoll() {
 
     onValue(ref(db, `meet/polls/${pollId}/slots`), snap => {
         slots = snap.val() || {};
+        // 發起人刪掉的時段要從草稿裡拿掉。留著的話 hasUnsaved() 永遠是 true，
+        // 送出時又會寫一張指向不存在時段的票，被 .validate 整包退掉。
+        Object.keys(draft).forEach(id => { if (!slots[id]) delete draft[id]; });
         renderAll();
     });
 }
@@ -525,7 +589,11 @@ let attached = null;
 function attachOrganizer() {
     if (attached === 'org') return;
     attached = 'org';
-    onValue(ref(db, `meet/polls/${pollId}/votes`), s => { votes = s.val() || {}; renderAll(); });
+    onValue(ref(db, `meet/polls/${pollId}/votes`), s => {
+        votes = s.val() || {};
+        renderAll();
+        syncTally();          // 發起人看得到全量票，順便把統計節點校正回真值
+    });
     onValue(ref(db, `meet/polls/${pollId}/private/organizerNote`), s => {
         if (orgNoteLoaded) return;
         orgNoteLoaded = true;
@@ -534,28 +602,64 @@ function attachOrganizer() {
     onValue(ref(db, `meet/polls/${pollId}/private/participants`), s => { participants = s.val() || {}; renderAll(); });
     onValue(ref(db, `meet/polls/${pollId}/private/slotOwners`), s => { slotOwners = s.val() || {}; renderAll(); });
 }
+// 參與者那筆記錄的完整內容。匿名的人第一次寫進去就是整包，不會只有半筆。
+function participantRecord(name) {
+    return { name, email: me.email || '', anon: !!me.isAnonymous };
+}
+
 function attachParticipant() {
     if (attached === 'part') return;
     attached = 'part';
-    // 讓發起人知道我是誰（這個節點參與者寫得進去、讀不回來）
+    // 匿名訪客先不登記。只點進來看一眼的人不該出現在發起人的名單上，
+    // 等他按了「儲存名字」或按了「送出」才建立這筆。登入身分有真名，照舊即時登記。
     const initialName = me.isAnonymous
         ? `${T.guest}${me.uid.slice(0, 4)}`
         : (me.displayName || (me.email || '').split('@')[0] || T.guest);
-    update(ref(db, `meet/polls/${pollId}/private/participants/${me.uid}`), {
-        name: initialName,
-        email: me.email || '',
-        anon: !!me.isAnonymous
-    }).catch(err => console.warn('[meet] register participant failed', err.code));
+    if (!me.isAnonymous) {
+        update(ref(db, `meet/polls/${pollId}/private/participants/${me.uid}`), participantRecord(initialName))
+            .catch(err => console.warn('[meet] register participant failed', err.code));
+    }
     $('mt-name').value = initialName;
     $('mt-identity').classList.remove('hidden');
     $('mt-identity').classList.add('flex');
-    update(ref(db, `meet/users/${me.uid}/joined`), { [pollId]: true })
-        .catch(err => console.warn('[meet] mark joined failed', err.code));
+    // 票數統計：所有登入者都讀得到，裡面只有數字
+    onValue(ref(db, `meet/polls/${pollId}/tally`), s => { tally = s.val() || {}; renderAll(); });
 
     onValue(ref(db, `meet/polls/${pollId}/votes/${me.uid}`), s => {
-        votes = { [me.uid]: s.val() || {} };
+        const mine = s.val() || {};
+        votes = { [me.uid]: mine };
+        // 資料庫裡已經有票，代表送出過；草稿以資料庫為準重新鋪一次
+        submittedOnce = Object.keys(mine).length > 0;
+        draft = { ...mine };
         renderAll();
     });
+}
+
+// 草稿跟已送出的差異，換算成 tally 每個時段的加減
+function tallyDelta() {
+    const committed = (votes[me.uid] || {});
+    const delta = {};
+    const bump = (slotId, key, n) => {
+        if (!delta[slotId]) delta[slotId] = { yes: 0, notice: 0, no: 0 };
+        delta[slotId][key] += n;
+    };
+    new Set([...Object.keys(committed), ...Object.keys(draft)]).forEach(slotId => {
+        const before = committed[slotId] || null;
+        const after = draft[slotId] || null;
+        if (before === after) return;
+        if (before) bump(slotId, before, -1);
+        if (after) bump(slotId, after, +1);
+    });
+    return delta;
+}
+
+function hasUnsaved() {
+    const committed = (votes[me.uid] || {});
+    const keys = new Set([...Object.keys(committed), ...Object.keys(draft)]);
+    for (const k of keys) {
+        if ((committed[k] || null) !== (draft[k] || null)) return true;
+    }
+    return false;
 }
 
 // 會議頁右下角的紫色分享鈕
@@ -652,7 +756,7 @@ function renderAll() {
     const replied = uids.filter(u => votes[u] && Object.keys(votes[u]).length).length;
     $('p-replied').innerHTML = org
         ? `<i class="fa-regular fa-user mr-1.5"></i>${T.repliedFmt(replied, uids.length)}`
-        : `<i class="fa-solid fa-lock mr-1.5"></i>${T.lockedForYou}`;
+        : '';
 
     $('p-copy').classList.toggle('hidden', !org);
     $('org-note-card').classList.toggle('hidden', !org);   // 分享網址只有發起人能複製
@@ -672,6 +776,25 @@ function bestSlotId() {
         if (y > ty || (y === ty && n > tn)) { ty = y; tn = n; best = s.id; }
     });
     return best;
+}
+
+// 刪掉一個候選時段要一起清乾淨：時段本身、提議人、統計、以及所有人對這個時段的票。
+// 定案在這個時段的話同時取消定案。
+function deleteSlotPayload(slotId) {
+    const payload = {
+        [`meet/polls/${pollId}/slots/${slotId}`]: null,
+        [`meet/polls/${pollId}/private/slotOwners/${slotId}`]: null,
+        [`meet/polls/${pollId}/tally/${slotId}`]: null
+    };
+    Object.keys(votes).forEach(uid => {
+        if (votes[uid] && votes[uid][slotId]) {
+            payload[`meet/polls/${pollId}/votes/${uid}/${slotId}`] = null;
+        }
+    });
+    if (meta && meta.lockedSlot === slotId) {
+        payload[`meet/polls/${pollId}/meta/lockedSlot`] = null;
+    }
+    return payload;
 }
 
 function renderBars() {
@@ -703,7 +826,10 @@ function renderBars() {
             <div class="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 mb-2.5">
                 <div><span class="text-sm text-white font-medium">${r.day}</span>
                     <span class="font-mono text-[11px] text-gray-500 ml-2">${r.time}</span>${by}${badge}</div>
-                <div class="font-mono text-sm ${isLocked ? 'text-accent-success' : (isBest ? 'text-accent-purple' : 'text-gray-400')}">${T.yesCount(c.yes, headcount)}</div>
+                <div class="flex items-center gap-3">
+                    <div class="font-mono text-sm ${isLocked ? 'text-accent-success' : (isBest ? 'text-accent-purple' : 'text-gray-400')}">${T.yesCount(c.yes, headcount)}</div>
+                    <button type="button" class="js-del-slot shrink-0 px-2 py-1 rounded-full border border-white/10 text-[10px] font-mono text-gray-600 hover:text-red-300 hover:border-red-400/30 transition" data-slot="${s.id}" title="${T.delSlot}"><i class="fa-regular fa-trash-can"></i></button>
+                </div>
             </div>
             <div class="bar mb-2">${segs}</div>
             <div class="flex flex-wrap gap-x-4 gap-y-1 font-mono text-[11px] text-gray-500">
@@ -767,9 +893,14 @@ document.addEventListener('click', e => { if (!e.target.closest('#slot-bars')) {
 
 // --- 參與者：三選一 ---
 function renderCards() {
-    const canVote = votingOpen();
+    const committed = votes[me.uid] || {};
+    const open = votingOpen();
     $('slot-cards').innerHTML = sortedSlots().map(s => {
-        const mine = voteOf(me.uid, s.id);
+        // 匿名身分：答過的那一格鎖住，沒答過的還可以補
+        const canVote = open && !(me.isAnonymous && committed[s.id]);
+        const mine = draft[s.id] || null;             // 畫面看草稿，不看資料庫
+        const t = tally[s.id] || {};
+        const counts = `<div class="font-mono text-[10px] text-gray-500 mt-2">${T.tallyFmt(t.yes || 0, t.notice || 0, t.no || 0)}</div>`;
         const r = fmtRange(s.start, s.end);
         const owner = slotOwners[s.id];
         const by = (owner && owner !== meta.organizer)
@@ -787,8 +918,28 @@ function renderCards() {
                 ${mine ? '' : '<span class="font-mono text-[10px] text-gray-600 shrink-0">尚未回覆</span>'}
             </div>
             <div class="flex gap-2">${picks}</div>
+            ${counts}
         </div>`;
     }).join('');
+    // 匿名而且每一格都答過了，才算整場鎖住
+    const allLocked = me.isAnonymous && sortedSlots().every(s => committed[s.id]);
+    renderSubmitBar(allLocked);
+}
+
+// 送出列：按鈕文字與狀態說明
+function renderSubmitBar(frozen) {
+    const btn = $('p-submit');
+    const msg = $('p-submit-msg');
+    if (!btn) return;
+    const dirty = hasUnsaved();
+    btn.textContent = submittedOnce ? T.resubmitBtn : T.submitBtn;
+    btn.classList.toggle('hidden', frozen);
+    btn.disabled = frozen || !votingOpen() || !dirty;
+    if (frozen) msg.textContent = T.submittedLocked;
+    else if (me.isAnonymous && submittedOnce && !dirty) msg.textContent = T.anonPartial;
+    else if (dirty) msg.textContent = T.unsaved;
+    else if (submittedOnce) msg.textContent = T.canEdit;
+    else msg.textContent = T.pickSomething;
 }
 
 $('slot-cards').addEventListener('click', async e => {
@@ -796,15 +947,90 @@ $('slot-cards').addEventListener('click', async e => {
     if (!btn || btn.disabled) return;
     if (!me) { showAuthModal(); return; }
     const slotId = btn.dataset.slot;
-    const val = (voteOf(me.uid, slotId) === btn.dataset.pick) ? null : btn.dataset.pick;
+    // 只改草稿，按送出才寫資料庫
+    if (draft[slotId] === btn.dataset.pick) delete draft[slotId];
+    else draft[slotId] = btn.dataset.pick;
+    renderCards();
+});
+
+// --- 送出：一次 multi-path update，票、統計、紀錄同一筆寫進去 ---
+$('p-submit').addEventListener('click', async () => {
+    if (!me) { showAuthModal(); return; }
+    const btn = $('p-submit');
+    const msg = $('p-submit-msg');
+    const delta = tallyDelta();
+    if (!Object.keys(delta).length) return;
+
+    btn.disabled = true;
+    msg.textContent = T.submitting;
+
+    const payload = {};
+    // 只寫真的有變動的時段。匿名的人那條規則是 !data.exists()，
+    // 把沒動過的票原值再寫一次會被擋，整包 update 一起掛掉。
+    const committed = votes[me.uid] || {};
+    new Set([...Object.keys(committed), ...Object.keys(draft)]).forEach(slotId => {
+        const before = committed[slotId] || null;
+        const after = draft[slotId] || null;
+        if (before === after) return;
+        payload[`meet/polls/${pollId}/votes/${me.uid}/${slotId}`] = after;
+    });
+    // 統計加減，規則只准每個數字 ±1
+    Object.entries(delta).forEach(([slotId, d]) => {
+        ['yes', 'notice', 'no'].forEach(k => {
+            if (!d[k]) return;
+            const cur = (tally[slotId] && tally[slotId][k]) || 0;
+            payload[`meet/polls/${pollId}/tally/${slotId}/${k}`] = Math.max(0, cur + d[k]);
+        });
+    });
+    // 參加紀錄只有非匿名身分寫得進去
+    if (!me.isAnonymous) {
+        payload[`meet/users/${me.uid}/joined/${pollId}`] = Date.now();
+    } else {
+        // 匿名的人到這一刻才算真的留下東西，這時候才登記給發起人看
+        const typed = ($('mt-name').value || '').trim();
+        const rec = participantRecord(typed || `${T.guest}${me.uid.slice(0, 4)}`);
+        Object.entries(rec).forEach(([k, v]) => {
+            payload[`meet/polls/${pollId}/private/participants/${me.uid}/${k}`] = v;
+        });
+    }
+
     try {
-        await update(ref(db, `meet/polls/${pollId}/votes/${me.uid}`), { [slotId]: val });
+        await update(ref(db), payload);
+        submittedOnce = true;
+        msg.textContent = T.submittedAt(new Date().toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' }));
+        renderCards();
     } catch (err) {
-        console.error('[meet] vote failed', err);
+        console.error('[meet] submit failed', err);
+        msg.textContent = '';
+        btn.disabled = false;
         window.alert(T.voteFailed + err.message);
     }
 });
 
+
+// 發起人專用：拿全量 votes 重算統計，跟資料庫不一致才寫回。
+// 這同時補回「tally 上線前就存在的票」，也能修掉被灌大的數字。
+async function syncTally() {
+    if (!isOrganizer() || !meta) return;
+    const want = {};
+    Object.keys(slots).forEach(id => { want[id] = { yes: 0, notice: 0, no: 0 }; });
+    Object.entries(votes).forEach(([uid, v]) => {
+        if (uid === meta.organizer) return;
+        Object.entries(v || {}).forEach(([slotId, pick]) => {
+            if (want[slotId] && want[slotId][pick] !== undefined) want[slotId][pick]++;
+        });
+    });
+    const payload = {};
+    Object.entries(want).forEach(([slotId, w]) => {
+        ['yes', 'notice', 'no'].forEach(k => {
+            const cur = (tally[slotId] && tally[slotId][k]) || 0;
+            if (cur !== w[k]) payload[`meet/polls/${pollId}/tally/${slotId}/${k}`] = w[k];
+        });
+    });
+    if (!Object.keys(payload).length) return;
+    try { await update(ref(db), payload); }
+    catch (err) { console.warn('[meet] sync tally failed', err.code); }
+}
 // --- 結論區 ---
 // --- 參與者管理（只有發起人看得到） ---
 function renderVoters() {
@@ -841,10 +1067,15 @@ $('voter-list').addEventListener('click', async e => {
     const uid = btn.dataset.uid;
     btn.disabled = true;
     try {
-        await update(ref(db), {
+        // 連他提議過的時段一起刪掉，避免匿名亂提議之後留一堆孤兒選項
+        const payload = {
             [`meet/polls/${pollId}/votes/${uid}`]: null,
             [`meet/polls/${pollId}/private/participants/${uid}`]: null
+        };
+        Object.keys(slotOwners).forEach(slotId => {
+            if (slotOwners[slotId] === uid) Object.assign(payload, deleteSlotPayload(slotId));
         });
+        await update(ref(db), payload);
     } catch (err) {
         btn.disabled = false;
         btn.dataset.armed = '';
@@ -906,8 +1137,7 @@ function renderVerdict() {
         ? `<div class="text-xl font-bold text-white mb-2">${r.day} ${r.time}</div>
            <p class="text-xs text-gray-400">${T.lockedNote}</p>`
         : `<div class="text-sm text-gray-300 mb-2">${T.answeredFmt(answered, all.length)}</div>
-           <p class="text-xs text-gray-500">${T.myYes}${esc(myYes.join('、') || T.nothingPicked)}</p>
-           <p class="text-[11px] text-gray-600 font-mono mt-3"><i class="fa-solid fa-lock mr-1.5"></i>${T.privacyNote}</p>`;
+           <p class="text-xs text-gray-500">${T.myYes}${esc(myYes.join('、') || T.nothingPicked)}</p>`;
     $('verdict').innerHTML = `<div class="font-mono text-[10px] text-accent-purple uppercase tracking-wider mb-2">${meta.lockedSlot ? T.verdictLocked : '你的回覆'}</div>${body}`;
 }
 
@@ -915,6 +1145,22 @@ function renderVerdict() {
 $('new-time').addEventListener('change', () => {
     $('new-end').value = addMinutes($('new-time').value, (meta && meta.durationMin) || 60);
 });
+
+// add-slot-msg 的預設提示，換時間時還原回去
+const ADD_SLOT_HINT = $('add-slot-msg').textContent;
+function setAddSlotMsg(text, isError) {
+    const el = $('add-slot-msg');
+    el.textContent = text;
+    el.classList.toggle('text-red-400', !!isError);
+    el.classList.toggle('text-gray-600', !isError);
+}
+
+// 改任何一個時間欄位就把重複警告清掉
+['new-date', 'new-time', 'new-end'].forEach(id => {
+    const el = $(id);
+    if (el) el.addEventListener('input', () => setAddSlotMsg(ADD_SLOT_HINT, false));
+});
+
 $('add-slot').addEventListener('click', async () => {
     const d = $('new-date').value, t = $('new-time').value, te = $('new-end').value;
     if (!d || !t || !te) return;
@@ -922,19 +1168,60 @@ $('add-slot').addEventListener('click', async () => {
     let endMs = new Date(`${d}T${te}`).getTime();
     if (endMs <= start) endMs += 86400000;
     if (Object.values(slots).some(s2 => s2.start === start && s2.end === endMs)) {
-        $('add-slot-msg').textContent = T.dupSlot;
+        setAddSlotMsg(T.dupSlot, true);
         return;
     }
     const slotId = push(ref(db, `meet/polls/${pollId}/slots`)).key;
     const payload = {
         [`meet/polls/${pollId}/slots/${slotId}`]: { start, end: endMs, createdAt: serverTimestamp() },
-        [`meet/polls/${pollId}/private/slotOwners/${slotId}`]: me.uid,
-        [`meet/polls/${pollId}/votes/${me.uid}/${slotId}`]: 'yes'
+        [`meet/polls/${pollId}/private/slotOwners/${slotId}`]: me.uid
     };
-    try { await update(ref(db), payload); }
+    // 提議時段也算留下東西了，匿名的人在這裡一併登記，
+    // 否則發起人在比例條上只會看到「由 a1b2c3 提議」這種 uid 片段
+    if (me.isAnonymous) {
+        const typed = ($('mt-name').value || '').trim();
+        const rec = participantRecord(typed || `${T.guest}${me.uid.slice(0, 4)}`);
+        Object.entries(rec).forEach(([k, v]) => {
+            payload[`meet/polls/${pollId}/private/participants/${me.uid}/${k}`] = v;
+        });
+    }
+    try {
+        await update(ref(db), payload);
+        // 自己提的時段預設幫你勾「可以」，但一樣要按送出才算數
+        draft[slotId] = 'yes';
+        renderCards();
+    }
     catch (err) {
         console.error('[meet] add slot failed', err);
         $('add-slot-msg').textContent = '加入失敗：' + err.message;
+    }
+});
+
+// 發起人刪候選時段（兩段式確認）
+$('slot-bars').addEventListener('click', async e => {
+    const btn = e.target.closest('.js-del-slot');
+    if (!btn) return;
+    e.stopPropagation();
+    if (btn.dataset.armed !== '1') {
+        btn.dataset.armed = '1';
+        btn.innerHTML = T.delSlotConfirm;
+        btn.classList.add('text-red-300', 'border-red-400/30');
+        setTimeout(() => {
+            if (btn.isConnected && btn.dataset.armed === '1') {
+                btn.dataset.armed = '';
+                btn.innerHTML = '<i class="fa-regular fa-trash-can"></i>';
+                btn.classList.remove('text-red-300', 'border-red-400/30');
+            }
+        }, 4000);
+        return;
+    }
+    btn.disabled = true;
+    try { await update(ref(db), deleteSlotPayload(btn.dataset.slot)); }
+    catch (err) {
+        btn.disabled = false;
+        btn.dataset.armed = '';
+        console.error('[meet] delete slot failed', err);
+        window.alert(T.delSlotFailed + err.message);
     }
 });
 

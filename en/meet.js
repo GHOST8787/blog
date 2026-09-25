@@ -41,7 +41,6 @@ const T = {
     deadlineLabel: 'Closes',
     noDeadline: 'No deadline',
     repliedFmt: (a, b) => `${a} / ${b} replied`,
-    lockedForYou: 'Replies are visible to the organizer only',
     titleRequired: 'Meeting name is required',
     slotRequired: 'Add at least one candidate time',
     quotaFull: `You already have ${MAX_POLLS} meetings running. Close one to start another.`,
@@ -58,7 +57,6 @@ const T = {
     answeredFmt: (a, b) => `You answered ${a} of ${b} times`,
     myYes: 'Marked as works: ',
     nothingPicked: 'nothing yet',
-    privacyNote: 'What others picked, and which time leads, is visible to the organizer only.',
     lockedNote: 'The organizer locked this in. A calendar invite follows separately.',
     verdictBest: 'Most available right now',
     verdictLocked: 'Locked in',
@@ -78,6 +76,9 @@ const T = {
     lockedFmt: r => `Locked ${r}`,
     leadNone: 'Best so far: no replies yet',
     dupSlot: 'That slot is already on the list.',
+    delSlot: 'Delete this slot',
+    delSlotConfirm: 'Tap again to delete',
+    delSlotFailed: 'Could not delete: ',
     removeVoter: 'Remove',
     removeConfirm: 'Tap again',
     removeFailed: 'Failed',
@@ -91,6 +92,18 @@ const T = {
     deadlinePassed: 'The voting deadline has passed.',
     confirmDelete: 'Delete this meeting and every reply. Are you sure?',
     noPolls: 'No meetings yet.',
+    submitBtn: 'Submit',
+    resubmitBtn: 'Update my reply',
+    submitting: 'Submitting…',
+    pickSomething: 'Pick your times, then hit Submit',
+    unsaved: 'You have unsubmitted changes',
+    submittedAt: (t) => `Submitted ${t}`,
+    submittedLocked: 'Submitted. Anonymous replies are final — ask the organizer to remove yours if you need to change it.',
+    anonPartial: 'Submitted. Answered slots are locked; new slots can still be filled in.',
+    canEdit: 'Submitted. Change anything and hit update again.',
+    tallyFmt: (y, n, x) => `${y} yes · ${n} needs notice · ${x} no`,
+    joinedNone: 'You have not replied to any meeting yet.',
+    joinedDeleted: 'This poll has been deleted',
     nobody: 'nobody',
     andMore: (n) => ` …${n} in total`,
     totalPeople: 'people',
@@ -128,8 +141,12 @@ const $poll = $('view-poll');
 // === State ===
 const pollId = new URLSearchParams(location.search).get('id');
 let me = null;
-let meta = null, slots = {}, votes = {}, participants = {}, slotOwners = {};
+let meta = null, slots = {}, votes = {}, participants = {}, slotOwners = {}, tally = {};
 let pinned = null;
+// What the participant has picked but not submitted yet. Nothing hits the database until Submit.
+let draft = {};
+// This identity has already submitted in this poll (anonymous submissions are final)
+let submittedOnce = false;
 
 // === Helpers ===
 function esc(s) {
@@ -282,6 +299,49 @@ function startHome() {
         const list = rows.filter(Boolean).sort((a, b) => (b.meta.createdAt || 0) - (a.meta.createdAt || 0));
         $('mt-my-polls').innerHTML = list.map(renderPollRow).join('');
     }, err => showState(T.homeDenied + ' (' + err.code + ')'));
+
+    renderJoined();
+}
+
+// Polls I replied to. Deleted polls are skipped.
+async function renderJoined() {
+    const wrap = $('mt-joined-wrap');
+    if (!wrap || me.isAnonymous) return;      // anonymous uids change every time
+    onValue(ref(db, `meet/users/${me.uid}/joined`), async snap => {
+        const entries = Object.entries(snap.val() || {});
+        if (!entries.length) { wrap.classList.add('hidden'); return; }
+        const rows = await Promise.all(entries.map(async ([id, at]) => {
+            const m = (await get(ref(db, `meet/polls/${id}/meta`))).val();
+            if (!m) {
+                // The poll is gone, so clear my own joined record rather than leave a dead link
+                update(ref(db), { [`meet/users/${me.uid}/joined/${id}`]: null }).catch(() => {});
+                return null;
+            }
+            return { id, meta: m, at: typeof at === 'number' ? at : 0 };
+        }));
+        const list = rows.filter(Boolean).sort((a, b) => b.at - a.at);
+        if (!list.length) { wrap.classList.add('hidden'); return; }
+        wrap.classList.remove('hidden');
+        $('mt-joined').innerHTML = list.map(renderJoinedRow).join('');
+    }, err => console.warn('[meet] joined list failed', err.code));
+}
+
+function renderJoinedRow(p) {
+    const done = p.meta.state !== 'open';
+    const cls = done
+        ? 'bg-accent-success/15 text-accent-success border border-accent-success/30'
+        : 'bg-accent-purple/15 text-accent-purple border border-accent-purple/30';
+    const when = p.at
+        ? `${fmtDate(p.at)} ${new Date(p.at).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}`
+        : '—';
+    return `<a href="meet.html?id=${encodeURIComponent(p.id)}" class="block mt-card rounded-xl p-4 sm:p-5 hover:border-white/10 transition">
+        <div class="flex items-center gap-2 mb-1.5">
+            <span class="font-mono text-[10px] text-gray-600">#${esc(p.id.slice(-6))}</span>
+            <span class="font-mono text-[9px] px-1.5 py-0.5 rounded whitespace-nowrap ${cls}">${done ? T.closed : T.open}</span>
+        </div>
+        <div class="text-white font-medium mb-1">${esc(p.meta.title)}</div>
+        <div class="font-mono text-[11px] text-gray-500">${esc(p.meta.organizerName || '')} · ${T.submittedAt(when)}</div>
+    </a>`;
 }
 
 /* ===== Best time shown on the home cards: the slot with the most yes votes, or the locked one ===== */
@@ -349,6 +409,7 @@ $('mt-my-polls').addEventListener('click', async e => {
         if (m && m.state === 'open' && cur > 0) payload[`meet/users/${me.uid}/activeCount`] = cur - 1;
         try { await update(ref(db), payload); }
         catch (err) { window.alert(T.deleteFailed + err.message); }
+        return;   // stop here, or the click falls through to js-row and opens the poll just deleted
     }
     const row = e.target.closest('.js-row');
     if (row) location.href = `meet.html?id=${encodeURIComponent(row.dataset.id)}`;
@@ -482,7 +543,7 @@ $('mt-name-save').addEventListener('click', async () => {
     const name = $('mt-name').value.trim();
     if (!name || !me || !pollId) return;
     try {
-        await update(ref(db, `meet/polls/${pollId}/private/participants/${me.uid}`), { name });
+        await update(ref(db, `meet/polls/${pollId}/private/participants/${me.uid}`), participantRecord(name));
         $('mt-name-msg').textContent = T.nameSaved;
         setTimeout(() => { $('mt-name-msg').textContent = ''; }, 1600);
     } catch (err) {
@@ -515,6 +576,10 @@ function startPoll() {
 
     onValue(ref(db, `meet/polls/${pollId}/slots`), snap => {
         slots = snap.val() || {};
+        // Drop slots the organizer deleted from the draft. Keeping them makes hasUnsaved()
+        // permanently true and makes submit write a vote for a slot that no longer exists,
+        // which .validate rejects, taking the whole update down with it.
+        Object.keys(draft).forEach(id => { if (!slots[id]) delete draft[id]; });
         renderAll();
     });
 }
@@ -523,7 +588,11 @@ let attached = null;
 function attachOrganizer() {
     if (attached === 'org') return;
     attached = 'org';
-    onValue(ref(db, `meet/polls/${pollId}/votes`), s => { votes = s.val() || {}; renderAll(); });
+    onValue(ref(db, `meet/polls/${pollId}/votes`), s => {
+        votes = s.val() || {};
+        renderAll();
+        syncTally();          // the organizer can read every vote, so fix the tally node here
+    });
     onValue(ref(db, `meet/polls/${pollId}/private/organizerNote`), s => {
         if (orgNoteLoaded) return;
         orgNoteLoaded = true;
@@ -532,27 +601,65 @@ function attachOrganizer() {
     onValue(ref(db, `meet/polls/${pollId}/private/participants`), s => { participants = s.val() || {}; renderAll(); });
     onValue(ref(db, `meet/polls/${pollId}/private/slotOwners`), s => { slotOwners = s.val() || {}; renderAll(); });
 }
+// The full participant record. An anonymous guest writes the whole thing at once,
+// so the node is never created half-filled.
+function participantRecord(name) {
+    return { name, email: me.email || '', anon: !!me.isAnonymous };
+}
+
 function attachParticipant() {
     if (attached === 'part') return;
     attached = 'part';
+    // Anonymous guests are not registered yet. Someone who only opened the page
+    // should not show up on the organizer's list; the record is created when they save a
+    // name or hit submit. Signed-in users have a real name, so they register right away.
     const initialName = me.isAnonymous
         ? `${T.guest}${me.uid.slice(0, 4)}`
         : (me.displayName || (me.email || '').split('@')[0] || T.guest);
-    update(ref(db, `meet/polls/${pollId}/private/participants/${me.uid}`), {
-        name: initialName,
-        email: me.email || '',
-        anon: !!me.isAnonymous
-    }).catch(err => console.warn('[meet] register participant failed', err.code));
+    if (!me.isAnonymous) {
+        update(ref(db, `meet/polls/${pollId}/private/participants/${me.uid}`), participantRecord(initialName))
+            .catch(err => console.warn('[meet] register participant failed', err.code));
+    }
     $('mt-name').value = initialName;
     $('mt-identity').classList.remove('hidden');
     $('mt-identity').classList.add('flex');
-    update(ref(db, `meet/users/${me.uid}/joined`), { [pollId]: true })
-        .catch(err => console.warn('[meet] mark joined failed', err.code));
+    // Vote counts: readable by any signed-in user, numbers only
+    onValue(ref(db, `meet/polls/${pollId}/tally`), s => { tally = s.val() || {}; renderAll(); });
 
     onValue(ref(db, `meet/polls/${pollId}/votes/${me.uid}`), s => {
-        votes = { [me.uid]: s.val() || {} };
+        const mine = s.val() || {};
+        votes = { [me.uid]: mine };
+        submittedOnce = Object.keys(mine).length > 0;
+        draft = { ...mine };
         renderAll();
     });
+}
+
+// Difference between the draft and what was submitted, as per-slot tally deltas
+function tallyDelta() {
+    const committed = (votes[me.uid] || {});
+    const delta = {};
+    const bump = (slotId, key, n) => {
+        if (!delta[slotId]) delta[slotId] = { yes: 0, notice: 0, no: 0 };
+        delta[slotId][key] += n;
+    };
+    new Set([...Object.keys(committed), ...Object.keys(draft)]).forEach(slotId => {
+        const before = committed[slotId] || null;
+        const after = draft[slotId] || null;
+        if (before === after) return;
+        if (before) bump(slotId, before, -1);
+        if (after) bump(slotId, after, +1);
+    });
+    return delta;
+}
+
+function hasUnsaved() {
+    const committed = (votes[me.uid] || {});
+    const keys = new Set([...Object.keys(committed), ...Object.keys(draft)]);
+    for (const k of keys) {
+        if ((committed[k] || null) !== (draft[k] || null)) return true;
+    }
+    return false;
 }
 
 // Purple share button at the bottom-right of the poll header
@@ -649,7 +756,7 @@ function renderAll() {
     const replied = uids.filter(u => votes[u] && Object.keys(votes[u]).length).length;
     $('p-replied').innerHTML = org
         ? `<i class="fa-regular fa-user mr-1.5"></i>${T.repliedFmt(replied, uids.length)}`
-        : `<i class="fa-solid fa-lock mr-1.5"></i>${T.lockedForYou}`;
+        : '';
 
     $('p-copy').classList.toggle('hidden', !org);
     $('org-note-card').classList.toggle('hidden', !org);   // only the organizer may copy the share link
@@ -669,6 +776,25 @@ function bestSlotId() {
         if (y > ty || (y === ty && n > tn)) { ty = y; tn = n; best = s.id; }
     });
     return best;
+}
+
+// Deleting a slot clears everything tied to it: the slot, its proposer, the tally and every vote on it.
+// If the poll was locked on this slot, unlock it too.
+function deleteSlotPayload(slotId) {
+    const payload = {
+        [`meet/polls/${pollId}/slots/${slotId}`]: null,
+        [`meet/polls/${pollId}/private/slotOwners/${slotId}`]: null,
+        [`meet/polls/${pollId}/tally/${slotId}`]: null
+    };
+    Object.keys(votes).forEach(uid => {
+        if (votes[uid] && votes[uid][slotId]) {
+            payload[`meet/polls/${pollId}/votes/${uid}/${slotId}`] = null;
+        }
+    });
+    if (meta && meta.lockedSlot === slotId) {
+        payload[`meet/polls/${pollId}/meta/lockedSlot`] = null;
+    }
+    return payload;
 }
 
 function renderBars() {
@@ -700,7 +826,10 @@ function renderBars() {
             <div class="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 mb-2.5">
                 <div><span class="text-sm text-white font-medium">${r.day}</span>
                     <span class="font-mono text-[11px] text-gray-500 ml-2">${r.time}</span>${by}${badge}</div>
-                <div class="font-mono text-sm ${isLocked ? 'text-accent-success' : (isBest ? 'text-accent-purple' : 'text-gray-400')}">${T.yesCount(c.yes, headcount)}</div>
+                <div class="flex items-center gap-3">
+                    <div class="font-mono text-sm ${isLocked ? 'text-accent-success' : (isBest ? 'text-accent-purple' : 'text-gray-400')}">${T.yesCount(c.yes, headcount)}</div>
+                    <button type="button" class="js-del-slot shrink-0 px-2 py-1 rounded-full border border-white/10 text-[10px] font-mono text-gray-600 hover:text-red-300 hover:border-red-400/30 transition" data-slot="${s.id}" title="${T.delSlot}"><i class="fa-regular fa-trash-can"></i></button>
+                </div>
             </div>
             <div class="bar mb-2">${segs}</div>
             <div class="flex flex-wrap gap-x-4 gap-y-1 font-mono text-[11px] text-gray-500">
@@ -764,9 +893,14 @@ document.addEventListener('click', e => { if (!e.target.closest('#slot-bars')) {
 
 // --- Participant cards ---
 function renderCards() {
-    const canVote = votingOpen();
+    const committed = votes[me.uid] || {};
+    const open = votingOpen();
     $('slot-cards').innerHTML = sortedSlots().map(s => {
-        const mine = voteOf(me.uid, s.id);
+        // Anonymous: slots already answered are locked, new ones can still be filled in
+        const canVote = open && !(me.isAnonymous && committed[s.id]);
+        const mine = draft[s.id] || null;             // the UI follows the draft, not the database
+        const t = tally[s.id] || {};
+        const counts = `<div class="font-mono text-[10px] text-gray-500 mt-2">${T.tallyFmt(t.yes || 0, t.notice || 0, t.no || 0)}</div>`;
         const r = fmtRange(s.start, s.end);
         const owner = slotOwners[s.id];
         const by = (owner && owner !== meta.organizer)
@@ -784,8 +918,28 @@ function renderCards() {
                 ${mine ? '' : `<span class="font-mono text-[10px] text-gray-600 shrink-0">${T.notAnswered}</span>`}
             </div>
             <div class="flex gap-2">${picks}</div>
+            ${counts}
         </div>`;
     }).join('');
+    // Fully locked only when an anonymous voter has answered every slot
+    const allLocked = me.isAnonymous && sortedSlots().every(s => committed[s.id]);
+    renderSubmitBar(allLocked);
+}
+
+// Submit bar: button label and status line
+function renderSubmitBar(frozen) {
+    const btn = $('p-submit');
+    const msg = $('p-submit-msg');
+    if (!btn) return;
+    const dirty = hasUnsaved();
+    btn.textContent = submittedOnce ? T.resubmitBtn : T.submitBtn;
+    btn.classList.toggle('hidden', frozen);
+    btn.disabled = frozen || !votingOpen() || !dirty;
+    if (frozen) msg.textContent = T.submittedLocked;
+    else if (me.isAnonymous && submittedOnce && !dirty) msg.textContent = T.anonPartial;
+    else if (dirty) msg.textContent = T.unsaved;
+    else if (submittedOnce) msg.textContent = T.canEdit;
+    else msg.textContent = T.pickSomething;
 }
 
 $('slot-cards').addEventListener('click', async e => {
@@ -793,15 +947,89 @@ $('slot-cards').addEventListener('click', async e => {
     if (!btn || btn.disabled) return;
     if (!me) { showAuthModal(); return; }
     const slotId = btn.dataset.slot;
-    const val = (voteOf(me.uid, slotId) === btn.dataset.pick) ? null : btn.dataset.pick;
+    // Draft only. Nothing is written until Submit.
+    if (draft[slotId] === btn.dataset.pick) delete draft[slotId];
+    else draft[slotId] = btn.dataset.pick;
+    renderCards();
+});
+
+// --- Submit: one multi-path update carrying votes, tally and the joined record ---
+$('p-submit').addEventListener('click', async () => {
+    if (!me) { showAuthModal(); return; }
+    const btn = $('p-submit');
+    const msg = $('p-submit-msg');
+    const delta = tallyDelta();
+    if (!Object.keys(delta).length) return;
+
+    btn.disabled = true;
+    msg.textContent = T.submitting;
+
+    const payload = {};
+    // Only write slots that actually changed. The anonymous rule is !data.exists(),
+    // so re-writing an untouched vote at its current value is denied and takes the
+    // whole multi-path update down with it.
+    const committed = votes[me.uid] || {};
+    new Set([...Object.keys(committed), ...Object.keys(draft)]).forEach(slotId => {
+        const before = committed[slotId] || null;
+        const after = draft[slotId] || null;
+        if (before === after) return;
+        payload[`meet/polls/${pollId}/votes/${me.uid}/${slotId}`] = after;
+    });
+    Object.entries(delta).forEach(([slotId, d]) => {
+        ['yes', 'notice', 'no'].forEach(k => {
+            if (!d[k]) return;
+            const cur = (tally[slotId] && tally[slotId][k]) || 0;
+            payload[`meet/polls/${pollId}/tally/${slotId}/${k}`] = Math.max(0, cur + d[k]);
+        });
+    });
+    if (!me.isAnonymous) {
+        payload[`meet/users/${me.uid}/joined/${pollId}`] = Date.now();
+    } else {
+        // An anonymous guest has now actually left something, so register them here
+        const typed = ($('mt-name').value || '').trim();
+        const rec = participantRecord(typed || `${T.guest}${me.uid.slice(0, 4)}`);
+        Object.entries(rec).forEach(([k, v]) => {
+            payload[`meet/polls/${pollId}/private/participants/${me.uid}/${k}`] = v;
+        });
+    }
+
     try {
-        await update(ref(db, `meet/polls/${pollId}/votes/${me.uid}`), { [slotId]: val });
+        await update(ref(db), payload);
+        submittedOnce = true;
+        msg.textContent = T.submittedAt(new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }));
+        renderCards();
     } catch (err) {
-        console.error('[meet] vote failed', err);
+        console.error('[meet] submit failed', err);
+        msg.textContent = '';
+        btn.disabled = false;
         window.alert(T.voteFailed + err.message);
     }
 });
 
+
+// Organizer only: recompute the tally from every vote and write back what differs.
+// This backfills votes cast before the tally node existed and corrects inflated numbers.
+async function syncTally() {
+    if (!isOrganizer() || !meta) return;
+    const want = {};
+    Object.keys(slots).forEach(id => { want[id] = { yes: 0, notice: 0, no: 0 }; });
+    Object.entries(votes).forEach(([uid, v]) => {
+        if (uid === meta.organizer) return;
+        Object.entries(v || {}).forEach(([slotId, pick]) => {
+            if (want[slotId] && want[slotId][pick] !== undefined) want[slotId][pick]++;
+        });
+    });
+    const payload = {};
+    Object.entries(want).forEach(([slotId, w]) => {
+        ['yes', 'notice', 'no'].forEach(k => {
+            const cur = (tally[slotId] && tally[slotId][k]) || 0;
+            if (cur !== w[k]) payload[`meet/polls/${pollId}/tally/${slotId}/${k}`] = w[k];
+        });
+    });
+    if (!Object.keys(payload).length) return;
+    try { await update(ref(db), payload); }
+    catch (err) { console.warn('[meet] sync tally failed', err.code); }
+}
 // --- Verdict ---
 // --- Participant admin (organizer only) ---
 function renderVoters() {
@@ -838,10 +1066,15 @@ $('voter-list').addEventListener('click', async e => {
     const uid = btn.dataset.uid;
     btn.disabled = true;
     try {
-        await update(ref(db), {
+        // Also remove the slots they proposed, so a spammy anonymous voter leaves nothing behind
+        const payload = {
             [`meet/polls/${pollId}/votes/${uid}`]: null,
             [`meet/polls/${pollId}/private/participants/${uid}`]: null
+        };
+        Object.keys(slotOwners).forEach(slotId => {
+            if (slotOwners[slotId] === uid) Object.assign(payload, deleteSlotPayload(slotId));
         });
+        await update(ref(db), payload);
     } catch (err) {
         btn.disabled = false;
         btn.dataset.armed = '';
@@ -903,8 +1136,7 @@ function renderVerdict() {
         ? `<div class="text-xl font-bold text-white mb-2">${r.day} ${r.time}</div>
            <p class="text-xs text-gray-400">${T.lockedNote}</p>`
         : `<div class="text-sm text-gray-300 mb-2">${T.answeredFmt(answered, all.length)}</div>
-           <p class="text-xs text-gray-500">${T.myYes}${esc(myYes.join(', ') || T.nothingPicked)}</p>
-           <p class="text-[11px] text-gray-600 font-mono mt-3"><i class="fa-solid fa-lock mr-1.5"></i>${T.privacyNote}</p>`;
+           <p class="text-xs text-gray-500">${T.myYes}${esc(myYes.join(', ') || T.nothingPicked)}</p>`;
     $('verdict').innerHTML = `<div class="font-mono text-[10px] text-accent-purple uppercase tracking-wider mb-2">${meta.lockedSlot ? T.verdictLocked : T.yourReply}</div>${body}`;
 }
 
@@ -912,6 +1144,22 @@ function renderVerdict() {
 $('new-time').addEventListener('change', () => {
     $('new-end').value = addMinutes($('new-time').value, (meta && meta.durationMin) || 60);
 });
+
+// add-slot-msg 的預設提示，換時間時還原回去
+const ADD_SLOT_HINT = $('add-slot-msg').textContent;
+function setAddSlotMsg(text, isError) {
+    const el = $('add-slot-msg');
+    el.textContent = text;
+    el.classList.toggle('text-red-400', !!isError);
+    el.classList.toggle('text-gray-600', !isError);
+}
+
+// Editing any time field clears the duplicate warning
+['new-date', 'new-time', 'new-end'].forEach(id => {
+    const el = $(id);
+    if (el) el.addEventListener('input', () => setAddSlotMsg(ADD_SLOT_HINT, false));
+});
+
 $('add-slot').addEventListener('click', async () => {
     const d = $('new-date').value, t = $('new-time').value, te = $('new-end').value;
     if (!d || !t || !te) return;
@@ -919,19 +1167,60 @@ $('add-slot').addEventListener('click', async () => {
     let endMs = new Date(`${d}T${te}`).getTime();
     if (endMs <= start) endMs += 86400000;
     if (Object.values(slots).some(s2 => s2.start === start && s2.end === endMs)) {
-        $('add-slot-msg').textContent = T.dupSlot;
+        setAddSlotMsg(T.dupSlot, true);
         return;
     }
     const slotId = push(ref(db, `meet/polls/${pollId}/slots`)).key;
     const payload = {
         [`meet/polls/${pollId}/slots/${slotId}`]: { start, end: endMs, createdAt: serverTimestamp() },
-        [`meet/polls/${pollId}/private/slotOwners/${slotId}`]: me.uid,
-        [`meet/polls/${pollId}/votes/${me.uid}/${slotId}`]: 'yes'
+        [`meet/polls/${pollId}/private/slotOwners/${slotId}`]: me.uid
     };
-    try { await update(ref(db), payload); }
+    // Proposing a slot counts as leaving something, so register an anonymous guest here too.
+    // Otherwise the organizer only sees "proposed by a1b2c3" on the bar.
+    if (me.isAnonymous) {
+        const typed = ($('mt-name').value || '').trim();
+        const rec = participantRecord(typed || `${T.guest}${me.uid.slice(0, 4)}`);
+        Object.entries(rec).forEach(([k, v]) => {
+            payload[`meet/polls/${pollId}/private/participants/${me.uid}/${k}`] = v;
+        });
+    }
+    try {
+        await update(ref(db), payload);
+        // A slot you proposed is pre-picked as "yes", but it still needs Submit
+        draft[slotId] = 'yes';
+        renderCards();
+    }
     catch (err) {
         console.error('[meet] add slot failed', err);
         $('add-slot-msg').textContent = T.addFailed + err.message;
+    }
+});
+
+// Organizer deletes a candidate slot (two-step confirm)
+$('slot-bars').addEventListener('click', async e => {
+    const btn = e.target.closest('.js-del-slot');
+    if (!btn) return;
+    e.stopPropagation();
+    if (btn.dataset.armed !== '1') {
+        btn.dataset.armed = '1';
+        btn.innerHTML = T.delSlotConfirm;
+        btn.classList.add('text-red-300', 'border-red-400/30');
+        setTimeout(() => {
+            if (btn.isConnected && btn.dataset.armed === '1') {
+                btn.dataset.armed = '';
+                btn.innerHTML = '<i class="fa-regular fa-trash-can"></i>';
+                btn.classList.remove('text-red-300', 'border-red-400/30');
+            }
+        }, 4000);
+        return;
+    }
+    btn.disabled = true;
+    try { await update(ref(db), deleteSlotPayload(btn.dataset.slot)); }
+    catch (err) {
+        btn.disabled = false;
+        btn.dataset.armed = '';
+        console.error('[meet] delete slot failed', err);
+        window.alert(T.delSlotFailed + err.message);
     }
 });
 

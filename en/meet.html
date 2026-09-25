@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meet | GHOST.ouo</title>
-    <meta name="description" content="Start a meeting poll, share the link, everyone marks the times they can make. Replies are visible to the organizer only.">
+    <meta name="description" content="Start a meeting poll, share the link, everyone marks the times they can make.">
     <meta property="og:title" content="Meet | GHOST.ouo">
     <meta property="og:description" content="Start a meeting poll, share the link, everyone marks the times they can make.">
     <meta property="og:type" content="website">
@@ -114,7 +114,7 @@
                 MEETING POLL
             </div>
             <h1 class="text-4xl md:text-6xl font-extrabold mb-4 text-gradient leading-tight">One link. Everyone’s time.</h1>
-            <p class="text-gray-400 text-sm md:text-base max-w-xl mx-auto">Everyone marks the times they can make. Replies go to the organizer only.</p>
+            <p class="text-gray-400 text-sm md:text-base max-w-xl mx-auto">Everyone marks the times they can make.</p>
         </header>
 
         <!-- Sign-in bar -->
@@ -152,6 +152,12 @@
             <button id="mt-new-btn" class="w-full mt-5 py-4 rounded-2xl border border-dashed border-white/10 text-gray-500 hover:text-accent-purple hover:border-accent-purple/30 transition text-sm font-mono">
                 <i class="fa-solid fa-plus mr-2"></i>Start a new meeting
             </button>
+
+            <!-- Polls I replied to -->
+            <div id="mt-joined-wrap" class="mt-10 hidden">
+                <h2 class="font-mono text-xs text-gray-400 uppercase tracking-wider mb-3">Polls I replied to</h2>
+                <div id="mt-joined" class="space-y-3"></div>
+            </div>
 
             <!-- Create form -->
             <div id="mt-create" class="hidden mt-card rounded-2xl p-5 sm:p-7 space-y-6 mt-6">
@@ -293,9 +299,14 @@
             <div id="participant-view" class="mt-card rounded-2xl overflow-hidden mb-5 hidden">
                 <div class="px-5 py-4 border-b border-white/5">
                     <h3 class="font-mono text-xs text-gray-400 uppercase tracking-wider mb-1">Pick the times that work</h3>
-                    <p class="text-[11px] text-gray-600 font-mono"><i class="fa-solid fa-lock mr-1.5"></i>Only the organizer sees your answers. Other participants see nothing.</p>
                 </div>
                 <div id="slot-cards" class="divide-y divide-white/5"></div>
+                <div class="px-5 py-4 border-t border-white/5 flex flex-wrap items-center justify-between gap-3">
+                    <span id="p-submit-msg" class="font-mono text-[11px] text-gray-600"></span>
+                    <button id="p-submit" class="px-6 py-2.5 rounded-full bg-accent-purple text-black text-sm font-bold tracking-wide hover:opacity-90 transition disabled:opacity-40 disabled:cursor-not-allowed shrink-0" disabled>
+                        Submit
+                    </button>
+                </div>
             </div>
 
             <!-- Propose a time -->
