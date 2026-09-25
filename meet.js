@@ -974,17 +974,27 @@ $('p-submit').addEventListener('click', async () => {
         if (before === after) return;
         payload[`meet/polls/${pollId}/votes/${me.uid}/${slotId}`] = after;
     });
-    // 統計加減，規則只准每個數字 ±1
+    // 統計加減。規則只准每個數字跟現值差 ±1，所以基準一定要跟伺服器上的一樣——
+    // 畫面上那份快取可能在別人投票或發起人校正之後就落後了，差超過 1 整包會被拒。
+    let base = tally;
+    try {
+        base = (await get(ref(db, `meet/polls/${pollId}/tally`))).val() || {};
+        tally = base;
+    } catch (e) {
+        console.warn('[meet] 讀不到最新統計，改用畫面上的快取', e.code);
+    }
     Object.entries(delta).forEach(([slotId, d]) => {
         ['yes', 'notice', 'no'].forEach(k => {
             if (!d[k]) return;
-            const cur = (tally[slotId] && tally[slotId][k]) || 0;
+            const cur = (base[slotId] && base[slotId][k]) || 0;
             payload[`meet/polls/${pollId}/tally/${slotId}/${k}`] = Math.max(0, cur + d[k]);
         });
     });
     // 參加紀錄只有非匿名身分寫得進去
     if (!me.isAnonymous) {
-        payload[`meet/users/${me.uid}/joined/${pollId}`] = Date.now();
+        // 用伺服器時間，不要用這台機器的鐘。規則是 newData.val() <= now，
+        // 裝置的鐘只要快幾秒就會整包被拒。
+        payload[`meet/users/${me.uid}/joined/${pollId}`] = serverTimestamp();
     } else {
         // 匿名的人到這一刻才算真的留下東西，這時候才登記給發起人看
         const typed = ($('mt-name').value || '').trim();

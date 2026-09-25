@@ -975,15 +975,27 @@ $('p-submit').addEventListener('click', async () => {
         if (before === after) return;
         payload[`meet/polls/${pollId}/votes/${me.uid}/${slotId}`] = after;
     });
+    // Tally deltas. The rule only allows each number to move by 1 from its current value,
+    // so the base has to match the server: the cached copy on screen falls behind as soon as
+    // someone else votes or the organizer reconciles, and being off by more than 1 is denied.
+    let base = tally;
+    try {
+        base = (await get(ref(db, `meet/polls/${pollId}/tally`))).val() || {};
+        tally = base;
+    } catch (e) {
+        console.warn('[meet] could not read the latest tally, falling back to the cached copy', e.code);
+    }
     Object.entries(delta).forEach(([slotId, d]) => {
         ['yes', 'notice', 'no'].forEach(k => {
             if (!d[k]) return;
-            const cur = (tally[slotId] && tally[slotId][k]) || 0;
+            const cur = (base[slotId] && base[slotId][k]) || 0;
             payload[`meet/polls/${pollId}/tally/${slotId}/${k}`] = Math.max(0, cur + d[k]);
         });
     });
     if (!me.isAnonymous) {
-        payload[`meet/users/${me.uid}/joined/${pollId}`] = Date.now();
+        // Server time, not this machine's clock. The rule is newData.val() <= now, so a
+        // device running even a few seconds fast would have the whole update denied.
+        payload[`meet/users/${me.uid}/joined/${pollId}`] = serverTimestamp();
     } else {
         // An anonymous guest has now actually left something, so register them here
         const typed = ($('mt-name').value || '').trim();
