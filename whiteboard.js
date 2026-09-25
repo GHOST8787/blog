@@ -186,6 +186,24 @@ async function renderDoneItem(item, uid) {
             </div>
         `;
     }
+
+    // 文章連結與工具連結分開兩顆，整列就不再是單一 a
+    const doneLink = (url, label) => {
+        const ext = /^https?:\/\//i.test(url);
+        return `<a href="${escapeHtml(url)}"${ext ? ' target="_blank" rel="noopener"' : ''} class="done-link">${label}</a>`;
+    };
+    if (item.linkUrl && item.toolUrl) {
+        return `
+            <div class="done-row">
+                <div class="check"><i class="fas fa-check"></i></div>
+                <div class="text">${display}
+                    ${doneLink(item.linkUrl, '→ 開啟文章 ↗')}<span class="done-sep">·</span>${doneLink(item.toolUrl, '→ 開啟工具 ↗')}
+                </div>
+                <div class="meta">${meta}</div>
+                ${heartHtml}
+            </div>
+        `;
+    }
     let label = '→ 開啟連結 ↗';
     if (isInternalLink(item.linkUrl)) {
         const title = await getTitleFromHtml(item.linkUrl);

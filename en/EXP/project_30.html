@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / P30 | GHOST.ouo</title>
+    <link rel="canonical" href="https://ghost8787.github.io/blog/en/EXP/project_30.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_30.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_30.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/project_30.html">
+
+    <link rel="icon" type="image/png" href="../../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script src="../../i18n.js" defer></script>
+    <script type="module" src="../../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                Back to Projects
+            </a>
+            <span class="opacity-50">EXP / P30</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-4 leading-tight">
+                A Public Wish Board:<br>
+                <span class="text-gradient text-2xl md:text-4xl">Whiteboard</span>
+            </h1>
+
+            <p class="text-lg text-gray-500 font-light mb-6 leading-relaxed">
+                Opening up a to-do list only I could see, and letting readers vote on the order
+            </p>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">Engineering</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Firebase</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Tooling</span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.09.25</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
+                How the wish board on this site came about: the original idea, how the data got split up, where I got stuck, and why it is still running.
+            </p>
+
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">Background</div>
+                <p class="m-0 mb-3">
+                    Writing code is a hobby for me. And a hobby that only ever serves its owner feels like a waste &mdash; I would like it to carry some use and some value. The other thing I wanted was a channel: whoever lands on this site should have somewhere to say &ldquo;I want to read that one&rdquo;.
+                </p>
+                <p class="m-0">
+                    So Whiteboard happened. On the evening of 2026-05-09 I put up an empty shell: a hero, two sections, one button in the bottom-right corner and a submit dialog, with no behaviour behind any of it. The next day I filled in the whole core in one sitting.
+                </p>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> What I set out to build
+            </h3>
+
+            <p>
+                The idea was plain: a public wall where any signed-in visitor can post an idea, everyone else hearts the ones they want, and whatever I finish sinks to the bottom as a record you can scroll back through. Three states, one direction of travel, nothing more.
+            </p>
+
+            <p>
+                The one thing worth thinking through up front was spam. Captchas, rate limits, keyword filters &mdash; each of those catches part of it and each adds maintenance, and a site at this traffic level has no use for the full set. So I compressed it into one sentence: anyone may submit, and whether it goes public is my call.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Architecture: three nodes are three states
+            </h3>
+
+            <p>
+                The data lives in Firebase Realtime Database &mdash; a Google-hosted database the browser talks to directly, with permissions declared in its own Security Rules file, node by node, saying who may read and who may write. This site has no backend, so that single file carries the entire permission model.
+            </p>
+
+            <p>
+                My first draft kept everything under one tree and hid the pending items behind a field. That road is closed: read permission cascades downward, so opening the parent opens everything beneath it. The rewrite splits the data into three separate nodes, which turns approval into moving a record from one node to the next.
+            </p>
+
+            <figure class="my-10">
+                <img src="../../PNG/project_30.2.en.svg"
+                     alt="Whiteboard three data partitions: pending, public, done, with their read and write rules"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    Each partition carries its own rules; whichever node a record sits in is its state
+                </figcaption>
+            </figure>
+
+            <p>
+                With that split there is no status field left to maintain anywhere in the flow. The pending node reads to the owner alone, so a submission stays invisible until it is approved &mdash; invisible to the person who sent it, too.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> How the tool itself is put together
+            </h3>
+
+            <p>
+                One fixed button sits in the bottom-right corner; it opens a dialog with a one-line title and an optional few sentences of detail. Both fields carry a length cap checked twice, in the page and in the database rules &mdash; the first catches slips, the second catches anyone calling the API around the interface.
+            </p>
+
+            <p>
+                Hearts are one per account, press again to take it back. Two fields and one rule do the work: a total that the rule only lets move by one in either direction, and a per-person cell that the rule only lets its own owner write. The count changes on screen the moment you press, and rolls back with the icon if the write fails.
+            </p>
+
+            <figure class="my-10">
+                <img src="../../PNG/project_30.1.webp"
+                     alt="Whiteboard home: the wish pool on top, the shipped list below"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    The wish pool on top; each shipped row carries a number, a completion date, and links to the article and the tool
+                </figcaption>
+            </figure>
+
+            <p>
+                The pool is laid out as a bento grid where votes decide the size of a card: every threshold crossed bumps it up a width, the smallest taking a quarter of a row and the top one able to eat most of a row plus an extra row of height, with another frame added past the top threshold. The wall keeps reshaping itself as people vote, and I maintain no ordering config on my side.
+            </p>
+
+            <p>
+                Last comes a review page only I can see, with four actions: pending list, approve, reject, graduate. A submitter's contact address travels with the record from pending all the way to shipped, so there is someone to write back to.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Where it got stuck
+            </h3>
+
+            <h4 class="text-xl font-bold text-white mt-10 mb-4">
+                Sign-in broke, and it took two fixes
+            </h4>
+
+            <p>
+                The first version used Firebase's built-in popup sign-in. On a local Live Server everything worked; on GitHub Pages the popup refused to close and the page threw one line, &ldquo;The requested action is invalid&rdquo;, with no stack and no code.
+            </p>
+
+            <p>
+                The cause is a header called <strong class="text-white">COOP</strong>. It severs the reference between a page and the windows it opens so neither can drive the other, and GitHub Pages sends it by default. With the reference gone, the popup finishes signing in with no way to hand the result back, and no way to close itself.
+            </p>
+
+            <p>
+                That day I routed around it with redirect, which navigates the whole page away and back &mdash; it works, and it feels bad. The real fix landed three weeks later: Google Identity Services issues a credential inside the page, and the same page exchanges it for an identity the database recognises, with no second window at any point.
+            </p>
+
+            <p class="text-gray-400">
+                This one is untestable locally. Production and localhost send different headers, which makes them two different runtimes.
+            </p>
+
+            <h4 class="text-xl font-bold text-white mt-10 mb-4">
+                Two database connections collided
+            </h4>
+
+            <p>
+                The heart button on the home page had already opened a Firebase connection, and the whiteboard code opening a second one collided with it, because the default connection allows one instance per site. The fix is to pass a name at initialisation so it becomes an independent named connection &mdash; same config, two instances that leave each other alone.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Finished, and still in use
+            </h3>
+
+            <p>
+                From the empty shell on 05-09 to wrapping up on 05-10, the core took a day; an English version followed, and June brought the sign-in flow it runs today. It is still on the site, I still keep my own to-dos in it, and I will keep adding to it as things come up.
+            </p>
+
+            <p>
+                This was my first time building something that takes submissions from strangers, so there are certainly things I have not thought through. The fastest way to reach me is to post on the board itself &mdash; I see all of it. If you would rather send a note or read the code, the whole site is public on <a href="https://github.com/GHOST8787/blog" target="_blank" rel="noopener noreferrer" class="underline decoration-gray-600 underline-offset-4 hover:text-white transition-colors">GitHub</a>, and an issue or a star both reach me.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Links
+            </h3>
+
+            <ul class="space-y-2 text-sm text-gray-400 list-none pl-0">
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="../../whiteboard.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        Whiteboard &mdash; open it and drop an idea in
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="project_31.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        Meet &mdash; the second tool on the same setup
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="https://developers.google.com/identity/gsi/web/guides/overview" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        Google Identity Services &mdash; official guide
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Opener-Policy" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        Cross-Origin-Opener-Policy &mdash; MDN
+                    </a>
+                </li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Tech stack
+            </h3>
+
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
+                <li><strong class="text-white">Frontend</strong>: vanilla JavaScript and Tailwind, one file, no framework and no bundler</li>
+                <li><strong class="text-white">Hosting</strong>: GitHub Pages</li>
+                <li><strong class="text-white">Data and permissions</strong>: Firebase Realtime Database with Security Rules; owner status comes from matching one fixed account</li>
+                <li><strong class="text-white">Sign-in</strong>: Google Identity Services, in-page, no popup</li>
+                <li><strong class="text-white">Live updates</strong>: listeners on the public and shipped nodes redraw the page whenever the data moves</li>
+                <li><strong class="text-white">Votes</strong>: a transaction for the total, plus a per-person cell recording who has voted</li>
+                <li><strong class="text-white">Shared</strong>: same Firebase project and same rules file as Meet, one top-level node each</li>
+            </ul>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="project_25.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Previous
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                All Projects
+            </a>
+            <a href="project_31.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                Next &rarr;
+            </a>
+        </div>
+
+    </main>
+    <div id="footer-placeholder"></div>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 440" width="920" height="440" role="img" aria-label="Meet 一場會議的節點分層與讀取權限">
+  <defs>
+    <marker id="mtArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#BF94FF"/>
+    </marker>
+    <style>
+      .mono { font-family: 'JetBrains Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace; }
+      .sans { font-family: 'Plus Jakarta Sans', 'Noto Sans TC', system-ui, sans-serif; }
+    </style>
+  </defs>
+
+  <rect width="920" height="440" fill="#050505"/>
+
+  <text class="mono" x="32" y="38" fill="#BF94FF" font-size="12" letter-spacing="2.2">MEET / 一場會議的節點分層</text>
+  <text class="mono" x="32" y="60" fill="#6B7280" font-size="11">讀取權限會往下傳，隔離只能靠切開節點來做</text>
+
+  <!-- 讀者欄 -->
+  <rect x="32" y="92" width="150" height="286" rx="12" fill="#0A0A0C" stroke="#1F1F26" stroke-width="1"/>
+  <text class="mono" x="52" y="118" fill="#6B7280" font-size="10" letter-spacing="1.6">誰在讀</text>
+  <text class="sans" x="52" y="152" fill="#FFFFFF" font-size="13" font-weight="700">參與者</text>
+  <text class="mono" x="52" y="172" fill="#6B7280" font-size="10">開網址就進來</text>
+  <text class="mono" x="52" y="188" fill="#6B7280" font-size="10">可以匿名</text>
+  <text class="sans" x="52" y="244" fill="#BF94FF" font-size="13" font-weight="700">發起人</text>
+  <text class="mono" x="52" y="264" fill="#6B7280" font-size="10">Google 登入</text>
+  <text class="mono" x="52" y="280" fill="#6B7280" font-size="10">一個人一場會議</text>
+
+  <!-- 四塊 -->
+  <rect x="220" y="92" width="300" height="76" rx="12" fill="#0A0A0C" stroke="#1F1F26" stroke-width="1"/>
+  <text class="sans" x="240" y="122" fill="#FFFFFF" font-size="14.5" font-weight="700">基本資訊</text>
+  <text class="mono" x="240" y="146" fill="#9CA3AF" font-size="11">標題、會議長度、地點、截止時間</text>
+
+  <rect x="220" y="182" width="300" height="76" rx="12" fill="#0A0A0C" stroke="#1F1F26" stroke-width="1"/>
+  <text class="sans" x="240" y="212" fill="#FFFFFF" font-size="14.5" font-weight="700">候選時段</text>
+  <text class="mono" x="240" y="236" fill="#9CA3AF" font-size="11">大家要投票的那幾個時間</text>
+
+  <rect x="220" y="272" width="300" height="76" rx="12" fill="#140F1F" stroke="#3A2F52" stroke-width="1"/>
+  <text class="sans" x="240" y="302" fill="#FFFFFF" font-size="14.5" font-weight="700">投票　一人一格</text>
+  <text class="mono" x="240" y="326" fill="#BF94FF" font-size="11">格子的名字就是那個人的身分編號</text>
+
+  <rect x="220" y="362" width="300" height="60" rx="12" fill="#0A0A0C" stroke="#1F1F26" stroke-width="1"/>
+  <text class="sans" x="240" y="390" fill="#FFFFFF" font-size="14.5" font-weight="700">私密區</text>
+  <text class="mono" x="240" y="410" fill="#9CA3AF" font-size="11">顯示名稱、匿名標記、發起人備註</text>
+
+  <!-- 權限線 -->
+  <path d="M 182 130 L 212 130" stroke="#BF94FF" stroke-width="1.4" marker-end="url(#mtArrow)"/>
+  <path d="M 182 220 L 212 220" stroke="#BF94FF" stroke-width="1.4" marker-end="url(#mtArrow)"/>
+  <path d="M 182 310 L 212 310" stroke="#BF94FF" stroke-width="1.4" marker-end="url(#mtArrow)"/>
+  <path d="M 182 392 L 212 392" stroke="#BF94FF" stroke-width="1.4" marker-end="url(#mtArrow)"/>
+
+  <text class="mono" x="540" y="124" fill="#9CA3AF" font-size="11">參與者　✓　　發起人　✓</text>
+  <text class="mono" x="540" y="146" fill="#6B7280" font-size="10">任何登入者都讀得到</text>
+
+  <text class="mono" x="540" y="214" fill="#9CA3AF" font-size="11">參與者　✓　　發起人　✓</text>
+  <text class="mono" x="540" y="236" fill="#6B7280" font-size="10">任何登入者都讀得到</text>
+
+  <text class="mono" x="540" y="304" fill="#BF94FF" font-size="11">參與者　只有自己那一格　　發起人　整包</text>
+  <text class="mono" x="540" y="326" fill="#6B7280" font-size="10">要整包 votes？401 Permission denied</text>
+
+  <text class="mono" x="540" y="392" fill="#9CA3AF" font-size="11">參與者　✗　　發起人　✓</text>
+  <text class="mono" x="540" y="412" fill="#6B7280" font-size="10">這個子樹只認發起人</text>
+
+  <!-- 計數器 -->
+  <rect x="540" y="60" width="348" height="0" fill="none"/>
+  <text class="mono" x="540" y="60" fill="#6B7280" font-size="10">另有一個計數器擋住「一個帳號同時幾場會議」的上限</text>
+</svg>

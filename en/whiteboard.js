@@ -168,6 +168,24 @@ async function renderDoneItem(item, uid) {
             </div>
         `;
     }
+
+    // Article link and tool link split in two, so the row is no longer a single anchor
+    const doneLink = (url, label) => {
+        const ext = /^https?:\/\//i.test(url);
+        return `<a href="${escapeHtml(url)}"${ext ? ' target="_blank" rel="noopener"' : ''} class="done-link">${label}</a>`;
+    };
+    if (item.linkUrl && item.toolUrl) {
+        return `
+            <div class="done-row">
+                <div class="check"><i class="fas fa-check"></i></div>
+                <div class="text">${display}
+                    ${doneLink(item.linkUrl, '→ Read article ↗')}<span class="done-sep">·</span>${doneLink(item.toolUrl, '→ Open tool ↗')}
+                </div>
+                <div class="meta">${meta}</div>
+                ${heartHtml}
+            </div>
+        `;
+    }
     let label = '→ Open link ↗';
     if (isInternalLink(item.linkUrl)) {
         const title = await getTitleFromHtml(item.linkUrl);

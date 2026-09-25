@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meet | GHOST.ouo</title>
+    <meta name="description" content="Start a meeting poll, share the link, everyone marks the times they can make. Replies are visible to the organizer only.">
+    <meta property="og:title" content="Meet | GHOST.ouo">
+    <meta property="og:description" content="Start a meeting poll, share the link, everyone marks the times they can make.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ghost8787.github.io/blog/en/meet.html">
+    <meta property="og:image" content="https://ghost8787.github.io/blog/PNG/pixelS2.png">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:locale:alternate" content="zh_TW">
+    <link rel="canonical" href="https://ghost8787.github.io/blog/en/meet.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/meet.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/meet.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/meet.html">
+    <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../style.css">
+    <script>
+        window.siteRoot = '';
+    </script>
+    <script src="../i18n.js" defer></script>
+    <script type="module" src="../main.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../tailwind.config.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async></script>
+    <script type="module" src="meet.js"></script>
+
+    <style>
+        /* Proportional bar (organizer result view) */
+        .bar { display:flex; height:16px; border-radius:999px; overflow:hidden;
+               background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.06); }
+        .seg { height:100%; cursor:pointer; transition:filter .15s ease; }
+        .seg:hover { filter:brightness(1.35); }
+        .seg.on { box-shadow:inset 0 0 0 1px rgba(255,255,255,.35); }
+        .seg-yes { background:#4ADE80; }
+        .seg-notice { background:#FBBF24; }
+        .seg-no { background:#6B7280; }
+        .seg-pend { background:rgba(255,255,255,.10); }
+
+        .slot-row { transition:background .15s ease; }
+        .slot-row:hover { background:rgba(255,255,255,.015); }
+        .slot-row.is-best { background:rgba(191,148,255,.06); }
+        .slot-row.is-locked { background:rgba(74,222,128,.06); }
+
+        /* Name tooltip */
+        #tip { position:fixed; z-index:60; pointer-events:none; opacity:0; transform:translateY(4px);
+               transition:opacity .12s ease, transform .12s ease; background:#101014;
+               border:1px solid rgba(255,255,255,.12); border-radius:12px;
+               box-shadow:0 18px 40px rgba(0,0,0,.6); padding:12px 14px; max-width:320px; }
+        #tip.show { opacity:1; transform:translateY(0); }
+        #tip .names { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:2px 10px;
+                      max-height:220px; overflow:auto; margin-top:8px; }
+        #tip .names.few { grid-template-columns:repeat(2, minmax(0,1fr)); }
+
+        /* Participant three-way pick */
+        .pick { flex:1; min-width:0; padding:10px 6px; border-radius:11px; font-size:12px;
+                border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.02); color:#6b7280;
+                display:flex; align-items:center; justify-content:center; gap:6px; cursor:pointer;
+                transition:background .15s ease, border-color .15s ease, color .15s ease; white-space:nowrap; }
+        .pick:hover { border-color:rgba(255,255,255,.18); color:#d1d5db; }
+        .pick.on-yes { background:rgba(74,222,128,.15); border-color:rgba(74,222,128,.45); color:#4ADE80; font-weight:600; }
+        .pick.on-notice { background:rgba(251,191,36,.14); border-color:rgba(251,191,36,.45); color:#FBBF24; font-weight:600; }
+        .pick.on-no { background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.22); color:#e5e7eb; font-weight:600; }
+        .pick[disabled] { opacity:.45; cursor:not-allowed; }
+
+        .mt-card { background:#0A0A0A; border:1px solid rgba(255,255,255,.06); }
+        .mt-input { background:#0d0d0f; border:1px solid rgba(255,255,255,.08); color:#e5e7eb;
+                    color-scheme: dark; }
+        .mt-input:focus { outline:none; border-color:rgba(191,148,255,.5); }
+        /* Native date / time picker icons must stay visible on the dark background */
+        .mt-input[type="date"], .mt-input[type="time"] { cursor:pointer; }
+        .mt-input::-webkit-calendar-picker-indicator {
+            cursor:pointer; padding-left:6px; opacity:.9;
+        }
+        .mt-input::-webkit-calendar-picker-indicator:hover { opacity:1; }
+        .avatar { width:28px; height:28px; border-radius:999px; display:inline-flex;
+                  align-items:center; justify-content:center; font-size:11px; font-weight:700; color:#0b0b0b; }
+    </style>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white">
+
+    <!-- Background decoration -->
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-600/10 rounded-full blur-[120px] animate-pulse-slow" style="animation-delay: 2s;"></div>
+    </div>
+
+    <!-- Name tooltip -->
+    <div id="tip">
+        <div class="flex items-center justify-between gap-4">
+            <span id="tip-title" class="text-xs font-bold text-white"></span>
+            <span id="tip-count" class="font-mono text-[10px] text-gray-500"></span>
+        </div>
+        <div id="tip-names" class="names font-mono text-[11px] text-gray-300"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 sm:px-8 lg:px-10 pt-24 md:pt-32 pb-24">
+
+        <!-- Hero -->
+        <header class="text-center mb-10">
+            <div class="inline-block px-3 py-1 rounded-full bg-accent-purple/10 border border-accent-purple/20 text-accent-purple text-[10px] font-bold uppercase tracking-wider mb-6">
+                MEETING POLL
+            </div>
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-4 text-gradient leading-tight">One link. Everyone’s time.</h1>
+            <p class="text-gray-400 text-sm md:text-base max-w-xl mx-auto">Everyone marks the times they can make. Replies go to the organizer only.</p>
+        </header>
+
+        <!-- Sign-in bar -->
+        <div class="flex flex-col items-center justify-center gap-2 mb-10">
+            <div id="mt-login-prompt" class="hidden flex-col items-center gap-2">
+                <span class="text-gray-500 text-xs font-mono">Sign in with Google to create polls and vote</span>
+                <div id="mt-gis-btn"></div>
+                <button id="mt-anon-btn" class="hidden text-xs font-mono text-gray-500 hover:text-accent-purple transition underline underline-offset-4">Vote anonymously instead</button>
+            </div>
+            <div id="mt-user-badge" class="hidden items-center gap-2 px-4 py-2 bg-accent-purple/10 border border-accent-purple/20 rounded-full text-sm text-accent-purple">
+                <span id="mt-user-email" class="font-mono text-xs">—</span>
+                <span id="mt-role-badge" class="font-mono text-[9px] px-2 py-0.5 rounded border border-white/10 text-gray-400"></span>
+                <button id="mt-logout-btn" class="text-gray-500 hover:text-white text-xs ml-1 border-l border-white/10 pl-2">Sign out</button>
+            </div>
+        </div>
+
+        <!-- Loading / error -->
+        <div id="mt-state" class="text-center text-gray-500 font-mono text-sm py-10">Loading...</div>
+
+        <!-- ===== A. My meetings (no ?id=) ===== -->
+        <section id="view-home" class="hidden">
+            <div class="mt-card rounded-2xl p-5 sm:p-6 mb-6">
+                <div class="flex items-center justify-between mb-3">
+                    <h2 class="font-mono text-xs text-gray-400 uppercase tracking-wider">Meetings running now</h2>
+                    <span class="font-mono text-sm"><span id="mt-quota-used" class="text-accent-purple font-bold">—</span><span class="text-gray-600"> / 10</span></span>
+                </div>
+                <div class="h-1.5 rounded-full bg-white/5 overflow-hidden">
+                    <div id="mt-quota-bar" class="h-full rounded-full bg-accent-purple transition-all" style="width:0%"></div>
+                </div>
+                <p class="text-[11px] text-gray-600 font-mono mt-3">Closing a meeting frees one slot.</p>
+            </div>
+
+            <div id="mt-my-polls" class="space-y-3"></div>
+
+            <button id="mt-new-btn" class="w-full mt-5 py-4 rounded-2xl border border-dashed border-white/10 text-gray-500 hover:text-accent-purple hover:border-accent-purple/30 transition text-sm font-mono">
+                <i class="fa-solid fa-plus mr-2"></i>Start a new meeting
+            </button>
+
+            <!-- Create form -->
+            <div id="mt-create" class="hidden mt-card rounded-2xl p-5 sm:p-7 space-y-6 mt-6">
+                <div>
+                    <label class="block font-mono text-[10px] text-gray-500 uppercase tracking-wider mb-2">Meeting name</label>
+                    <input id="c-title" type="text" maxlength="80" placeholder="e.g. Q4 product planning" class="mt-input w-full rounded-xl px-4 py-3 text-sm">
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block font-mono text-[10px] text-gray-500 uppercase tracking-wider mb-2">Length</label>
+                        <select id="c-duration" class="mt-input w-full rounded-xl px-4 py-3 text-sm">
+                            <option value="30">30 min</option>
+                            <option value="60" selected>60 min</option>
+                            <option value="90">90 min</option>
+                            <option value="240">Half day</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-mono text-[10px] text-gray-500 uppercase tracking-wider mb-2">Voting deadline (optional)</label>
+                        <input id="c-deadline" type="date" class="mt-input w-full rounded-xl px-4 py-3 text-sm font-mono">
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-mono text-[10px] text-gray-500 uppercase tracking-wider mb-2">Place / link</label>
+                    <input id="c-place" type="text" maxlength="120" placeholder="Defaults to Microsoft Teams when left blank" class="mt-input w-full rounded-xl px-4 py-3 text-sm">
+                </div>
+                <div>
+                    <label class="block font-mono text-[10px] text-gray-500 uppercase tracking-wider mb-2">Note (optional)</label>
+                    <textarea id="c-note" rows="3" maxlength="500" class="mt-input w-full rounded-xl px-4 py-3 text-sm resize-none"></textarea>
+                </div>
+                <div>
+                    <label class="block font-mono text-[10px] text-gray-500 uppercase tracking-wider mb-2">My private note (only you can see it)</label>
+                    <textarea id="c-private" rows="3" maxlength="2000" class="mt-input w-full rounded-xl px-4 py-3 text-sm resize-none"></textarea>
+                    <p class="font-mono text-[10px] text-gray-600 mt-2">Participants never see this field; it is your own record</p>
+                </div>
+
+
+                <div>
+                    <label class="block font-mono text-[10px] text-gray-500 uppercase tracking-wider mb-2">Paste from the office tool (optional)</label>
+                    <div class="flex gap-2">
+                        <input id="c-code" type="text" placeholder="Paste a slot code starting with MT1." class="mt-input flex-1 min-w-0 rounded-xl px-4 py-3 text-sm font-mono">
+                        <button id="c-code-apply" type="button" class="shrink-0 px-5 rounded-xl border border-white/10 text-xs font-mono text-gray-400 hover:text-accent-purple hover:border-accent-purple/30 transition">Fill in</button>
+                    </div>
+                    <div id="c-code-msg" class="font-mono text-[10px] mt-2"></div>
+                </div>
+
+                <div>
+                    <label class="block font-mono text-[10px] text-gray-500 uppercase tracking-wider mb-3">Candidate times</label>
+                    <div id="c-slots" class="space-y-2"></div>
+                    <button id="c-add-slot" class="mt-3 w-full py-3 rounded-xl border border-dashed border-white/10 text-gray-500 hover:text-accent-purple hover:border-accent-purple/30 transition text-xs font-mono">
+                        <i class="fa-solid fa-plus mr-1.5"></i>Add another time
+                    </button>
+                </div>
+
+                <div class="space-y-3 border-t border-white/5 pt-5">
+                    <label class="flex items-start gap-3 cursor-pointer">
+                        <input id="c-guest-slots" type="checkbox" checked class="mt-0.5 w-4 h-4">
+                        <span class="text-sm text-gray-300">Let participants add their own times
+                            <span class="block text-[11px] text-gray-600 font-mono mt-0.5">Turn this off to keep them to your list</span>
+                        </span>
+                    </label>
+                </div>
+
+                <div id="c-error" class="text-xs text-red-400 font-mono"></div>
+                <div class="flex gap-3">
+                    <button id="c-submit" class="flex-1 py-4 rounded-full bg-accent-purple text-black font-bold text-sm tracking-wide hover:shadow-[0_0_24px_rgba(191,148,255,.5)] transition disabled:opacity-50">Create and get the link</button>
+                    <button id="c-cancel" class="px-6 border border-white/10 text-gray-400 rounded-full text-sm hover:border-white/30 transition">Cancel</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== B. Poll page (?id=) ===== -->
+        <section id="view-poll" class="hidden">
+            <div class="mt-card rounded-2xl p-5 sm:p-7 mb-5">
+                <div class="flex flex-wrap items-start justify-between gap-4 mb-5">
+                    <div class="min-w-[200px]">
+                        <div id="p-id" class="font-mono text-[10px] text-gray-500 uppercase tracking-wider mb-2">—</div>
+                        <h2 id="p-title" class="text-2xl font-bold text-white mb-2">—</h2>
+                        <p id="p-note" class="text-gray-400 text-sm max-w-xl"></p>
+                    </div>
+                    <div class="text-right shrink-0">
+                        <div class="font-mono text-[10px] text-gray-500 mb-1">Organizer</div>
+                        <div class="flex items-center gap-2 justify-end">
+                            <span id="p-org-avatar" class="avatar" style="background:#BF94FF">—</span>
+                            <span id="p-org-name" class="text-sm text-gray-300">—</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-wrap items-center gap-x-6 gap-y-3 text-xs font-mono text-gray-500 border-t border-white/5 pt-4">
+                    <span id="p-duration"></span>
+                    <span id="p-place"></span>
+                    <span id="p-deadline"></span>
+                    <span id="p-replied"></span>
+                    <button id="p-copy" type="button" class="ml-auto shrink-0 px-4 py-2 rounded-full text-[11px] font-mono transition" style="background:rgba(191,148,255,.14);border:1px solid rgba(191,148,255,.38);color:#BF94FF"><i class="fa-regular fa-copy mr-1.5"></i>Copy share link</button>
+                </div>
+            </div>
+
+            <!-- Display name (participants choose what the organizer sees) -->
+            <div id="mt-identity" class="mt-card rounded-2xl p-4 sm:p-5 mb-5 hidden flex-wrap items-center gap-3">
+                <span class="font-mono text-[10px] text-gray-500 uppercase tracking-wider shrink-0">Display name</span>
+                <input id="mt-name" type="text" maxlength="40" class="mt-input rounded-lg px-3 py-2 text-sm flex-1 min-w-[160px]">
+                <button id="mt-name-save" class="px-4 py-2 rounded-full border border-white/10 text-xs font-mono text-gray-400 hover:text-white transition shrink-0">Save</button>
+                <span id="mt-name-msg" class="font-mono text-[10px] text-gray-600"></span>
+            </div>
+
+            <!-- Organizer: proportional bars -->
+            <div id="org-note-card" class="mt-card rounded-2xl p-4 sm:p-5 mb-5 hidden">
+                <div class="flex items-center justify-between gap-3 mb-3">
+                    <span class="font-mono text-[10px] text-gray-500 uppercase tracking-wider">My private note</span>
+                    <span class="font-mono text-[10px] text-gray-600"><i class="fa-solid fa-lock mr-1.5"></i>Only you can see it</span>
+                </div>
+                <textarea id="org-note" rows="3" maxlength="2000" class="mt-input w-full rounded-xl px-4 py-3 text-sm resize-none"></textarea>
+                <div class="flex items-center gap-3 mt-3">
+                    <button id="org-note-save" type="button" class="px-4 py-2 rounded-full border border-white/10 text-xs font-mono text-gray-400 hover:text-white transition">Save</button>
+                    <span id="org-note-msg" class="font-mono text-[10px] text-gray-600"></span>
+                </div>
+            </div>
+
+            <div id="organizer-view" class="mt-card rounded-2xl overflow-hidden mb-5 hidden">
+                <div class="flex flex-wrap items-center justify-between gap-2 px-5 py-4 border-b border-white/5">
+                    <h3 class="font-mono text-xs text-gray-400 uppercase tracking-wider">Results (visible to you only)</h3>
+                    <span class="font-mono text-[10px] text-gray-600"><i class="fa-solid fa-hand-pointer mr-1"></i>Hover a block for names, tap on mobile</span>
+                </div>
+                <div id="slot-bars" class="divide-y divide-white/5"></div>
+                <div class="px-5 py-4 border-t border-white/5 flex items-center justify-between gap-3">
+                    <h4 class="font-mono text-[11px] text-gray-500 uppercase tracking-wider">Participants (<span id="voter-count">0</span>)</h4>
+                    <span class="font-mono text-[10px] text-gray-600">Removing someone lets them vote again</span>
+                </div>
+                <div id="voter-list" class="divide-y divide-white/5"></div>
+                <div class="px-5 py-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-[11px] font-mono text-gray-500 border-t border-white/5">
+                    <span><span class="inline-block w-3 h-3 rounded-sm align-middle mr-1.5" style="background:#4ADE80"></span>Works</span>
+                    <span><span class="inline-block w-3 h-3 rounded-sm align-middle mr-1.5" style="background:#FBBF24"></span>Needs notice</span>
+                    <span><span class="inline-block w-3 h-3 rounded-sm align-middle mr-1.5" style="background:#6B7280"></span>Can't</span>
+                    <span><span class="inline-block w-3 h-3 rounded-sm align-middle mr-1.5" style="background:rgba(255,255,255,.12)"></span>No reply</span>
+                </div>
+            </div>
+
+            <!-- Participant: three-way pick -->
+            <div id="participant-view" class="mt-card rounded-2xl overflow-hidden mb-5 hidden">
+                <div class="px-5 py-4 border-b border-white/5">
+                    <h3 class="font-mono text-xs text-gray-400 uppercase tracking-wider mb-1">Pick the times that work</h3>
+                    <p class="text-[11px] text-gray-600 font-mono"><i class="fa-solid fa-lock mr-1.5"></i>Only the organizer sees your answers. Other participants see nothing.</p>
+                </div>
+                <div id="slot-cards" class="divide-y divide-white/5"></div>
+            </div>
+
+            <!-- Propose a time -->
+            <div id="add-slot-card" class="mt-card rounded-2xl p-5 mb-5 hidden">
+                <div class="flex flex-wrap items-end gap-3">
+                    <div class="flex-1 min-w-[180px]">
+                        <label class="block font-mono text-[10px] text-gray-500 uppercase tracking-wider mb-2">Propose another time</label>
+                        <div class="flex flex-wrap gap-2">
+                            <input id="new-date" type="date" class="mt-input rounded-lg px-3 py-2 text-sm font-mono">
+                            <input id="new-time" type="time" value="14:00" class="mt-input rounded-lg px-3 py-2 text-sm font-mono">
+                            <span class="text-gray-600 font-mono text-sm self-center">to</span>
+                            <input id="new-end" type="time" value="15:00" class="mt-input rounded-lg px-3 py-2 text-sm font-mono">
+                        </div>
+                    </div>
+                    <button id="add-slot" class="px-5 py-2.5 rounded-full bg-accent-purple text-black font-bold text-xs tracking-wide hover:shadow-[0_0_20px_rgba(191,148,255,.5)] transition">
+                        <i class="fa-solid fa-plus mr-1.5"></i>Add
+                    </button>
+                </div>
+                <p id="add-slot-msg" class="text-[11px] text-gray-600 font-mono mt-3">Length follows the meeting length set by the organizer.</p>
+            </div>
+
+            <div id="verdict" class="rounded-2xl p-5 border border-accent-purple/25 bg-accent-purple/[0.06]"></div>
+
+            <div class="mt-6 text-center">
+                <a href="meet.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                    <i class="fa-solid fa-arrow-left mr-1.5"></i>Back to my meetings
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Sign-in modal -->
+    <div id="mt-auth-modal" class="modal-bg" role="dialog" aria-labelledby="mt-auth-title" aria-hidden="true">
+        <div class="modal text-center">
+            <div class="w-14 h-14 mx-auto mb-4 rounded-full bg-accent-purple/10 border border-accent-purple/30 flex items-center justify-center">
+                <i class="fas fa-lock text-accent-purple text-xl"></i>
+            </div>
+            <h2 id="mt-auth-title" class="text-2xl font-bold mb-2 text-gradient">Sign in required</h2>
+            <p class="text-gray-400 text-sm mb-6">
+                Voting and creating meetings both need a Google sign-in.
+                <span class="block text-gray-500 text-xs mt-2 font-mono">It identifies you to the organizer, who sees your name and email</span>
+            </p>
+            <div class="flex flex-col items-center gap-3">
+                <div id="mt-gis-btn-modal" class="flex justify-center"></div>
+                <button id="mt-auth-cancel" class="text-gray-500 text-sm hover:text-white transition-colors">Maybe later</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+</body>
+</html>
