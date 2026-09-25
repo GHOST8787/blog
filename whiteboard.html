@@ -18,16 +18,20 @@
     <link rel="icon" type="image/png" href="PNG/pixelS2.png">
     <link rel="apple-touch-icon" href="PNG/pixelS2.png">
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet"></noscript>
 
     <link rel="stylesheet" href="style.css">
     <script src="i18n.js" defer></script>
     <script type="module" src="main.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="tailwind.config.js"></script>
+    <script src="theme.js"></script>
     <script src="https://accounts.google.com/gsi/client" async></script>
     <script type="module" src="whiteboard.js"></script>
+    <!-- 預編譯的 Tailwind。原本是 cdn.tailwindcss.com 的同步 script，
+         會卡住 HTML 解析約 600ms。改檔後要跑 pnpm run build:css 重新產生。 -->
+    <link rel="stylesheet" href="tw.css">
 </head>
 
 <body class="font-sans selection:bg-accent-purple/30 selection:text-white">
@@ -41,23 +45,16 @@
 
     <div id="navbar-placeholder"></div>
 
-    <main class="relative z-10 max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 pt-24 md:pt-32 pb-24">
+    <main class="relative z-10 max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 pt-24 md:pt-28 pb-24">
 
-        <!-- Hero -->
-        <header class="text-center mb-11">
-            <div class="inline-block px-3 py-1 rounded-full bg-accent-purple/10 border border-accent-purple/20 text-accent-purple text-[10px] font-bold uppercase tracking-wider mb-6">
-                IDEA WHITEBOARD
+        <!-- 頁首壓成一列：左邊標題、右邊帳號，不再置中佔掉整個首屏 -->
+        <header class="flex flex-wrap sm:flex-nowrap items-end justify-between gap-x-6 gap-y-3 mb-8">
+            <div class="min-w-0">
+                <div class="font-mono text-[10px] text-accent-purple uppercase tracking-wider mb-1.5">IDEA WHITEBOARD</div>
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-gradient leading-tight">the cool stuff u want.</h1>
+                <p class="text-gray-500 text-xs sm:text-sm mt-1">貼上想法、按愛心投票。</p>
             </div>
-            <h1 class="text-4xl md:text-6xl font-extrabold mb-4 text-gradient leading-tight">
-                the cool stuff u want.
-            </h1>
-            <p class="text-gray-400 text-sm md:text-base max-w-xl mx-auto">
-                貼上想法、按愛心投票。
-            </p>
-        </header>
-
-        <!-- Login bar（Google Identity Services 頁面內登入）-->
-        <div id="wb-auth-bar" class="flex flex-col items-center justify-center gap-2 mb-12">
+            <div id="wb-auth-bar" class="min-w-0 flex flex-wrap items-end justify-start sm:justify-end gap-2">
             <div id="wb-login-prompt" class="hidden flex-col items-center gap-2">
                 <span class="text-gray-500 text-xs font-mono">登入後即可投稿與按愛心</span>
                 <div id="wb-gis-btn"></div>
@@ -67,7 +64,8 @@
                 <a id="wb-admin-link" href="whiteboard-admin.html" class="hidden text-xs ml-2 text-gray-400 hover:text-white border-l border-white/10 pl-2">Admin</a>
                 <button id="wb-logout-btn" class="text-gray-500 hover:text-white text-xs ml-2 border-l border-white/10 pl-2" aria-label="登出">登出</button>
             </div>
-        </div>
+            </div>
+        </header>
 
         <!-- 上區：許願池 -->
         <div class="section-head">
@@ -117,7 +115,7 @@
             </div>
 
             <div class="flex gap-3">
-                <button id="wb-modal-submit" class="flex-1 bg-accent-purple text-black font-bold py-3 rounded-full hover:shadow-[0_0_20px_rgba(191,148,255,.5)] transition-all disabled:opacity-50 disabled:cursor-not-allowed">送審</button>
+                <button id="wb-modal-submit" class="flex-1 bg-accent-purple text-black font-bold py-3 rounded-full hover:shadow-[0_0_20px_rgb(var(--c-purple)/.5)] transition-all disabled:opacity-50 disabled:cursor-not-allowed">送審</button>
                 <button id="wb-modal-cancel" class="px-6 border border-white/10 text-gray-400 rounded-full hover:border-white/30 transition-all">取消</button>
             </div>
 

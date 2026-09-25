@@ -1,0 +1,8 @@
+{
+  "name": "ghost-blog",
+  "private": true,
+  "description": "GHOST.ouo 部落格。純靜態站，這支 package.json 只放 Tailwind 的 build 指令，沒有執行期相依。",
+  "scripts": {
+    "build:css": "pnpm dlx tailwindcss@3 -i tools/tailwind-input.css -o tw.css --minify"
+  }
+}

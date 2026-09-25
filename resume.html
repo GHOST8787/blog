@@ -14,14 +14,15 @@
     <link rel="icon" type="image/png" href="PNG/pixelS2.png">
     <link rel="apple-touch-icon" href="PNG/pixelS2.png">
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet"></noscript>
 
     <link rel="stylesheet" href="style.css">
     <script src="i18n.js" defer></script>
     <script type="module" src="main.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="tailwind.config.js"></script>
+    <script src="theme.js"></script>
     <script src="resume.js" defer></script>
 
     <style>
@@ -29,8 +30,8 @@
         .resume-row{
             display:flex; align-items:center; gap:14px;
             padding:14px 18px;
-            background:rgba(191,148,255,.04);
-            border:1px solid rgba(191,148,255,.14);
+            background:rgb(var(--c-purple)/.04);
+            border:1px solid rgb(var(--c-purple)/.14);
             border-radius:10px;
             margin-bottom:10px;
             transition:all .3s;
@@ -38,26 +39,29 @@
             cursor:pointer;
         }
         .resume-row:hover{
-            border-color:rgba(191,148,255,.4);
-            box-shadow:0 0 20px rgba(191,148,255,.12);
+            border-color:rgb(var(--c-purple)/.4);
+            box-shadow:0 0 20px rgb(var(--c-purple)/.12);
             transform:translateX(4px);
         }
         .resume-row .lock{
             width:28px; height:28px; border-radius:50%;
-            background:rgba(191,148,255,.15); color:#BF94FF;
+            background:rgb(var(--c-purple)/.15); color:rgb(var(--c-purple));
             display:flex; align-items:center; justify-content:center;
             font-size:12px; flex-shrink:0;
         }
-        .resume-row .text{ flex:1; color:#ddd; font-size:.95rem; font-weight:600; }
+        .resume-row .text{ flex:1; color:var(--c-ndd); font-size:.95rem; font-weight:600; }
         .resume-row .meta{
             font-family:'JetBrains Mono',monospace; font-size:10px;
-            color:#BF94FF; letter-spacing:.05em; white-space:nowrap;
+            color:rgb(var(--c-purple)); letter-spacing:.05em; white-space:nowrap;
         }
         .resume-row .arrow{
-            color:#666; font-size:11px;
+            color:var(--c-dim); font-size:11px;
         }
-        .resume-row:hover .arrow{ color:#BF94FF; }
+        .resume-row:hover .arrow{ color:rgb(var(--c-purple)); }
     </style>
+    <!-- 預編譯的 Tailwind。原本是 cdn.tailwindcss.com 的同步 script，
+         會卡住 HTML 解析約 600ms。改檔後要跑 pnpm run build:css 重新產生。 -->
+    <link rel="stylesheet" href="tw.css">
 </head>
 
 <body class="font-sans selection:bg-accent-purple/30 selection:text-white">

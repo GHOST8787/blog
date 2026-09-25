@@ -8,18 +8,22 @@
     <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
     <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="../tailwind.config.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="../theme.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
 
     <link rel="stylesheet" href="../style.css">
 
     <script> window.siteRoot = '../'; </script>
     <script type="module" src="../main.js" defer></script>
+    <!-- 預編譯的 Tailwind。原本是 cdn.tailwindcss.com 的同步 script，
+         會卡住 HTML 解析約 600ms。改檔後要跑 pnpm run build:css 重新產生。 -->
+    <link rel="stylesheet" href="../tw.css">
 </head>
 
-<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-bg">
 
     <div class="fixed inset-0 z-0 pointer-events-none">
         <div class="absolute inset-0 dot-pattern opacity-50"></div>
@@ -148,7 +152,7 @@
                 <span class="text-accent-purple">#</span> 改寫前
             </h3>
 
-            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 text-gray-400 leading-relaxed">
+            <div class="my-6 p-6 bg-[var(--c-e3)] rounded-xl border border-white/10 text-gray-400 leading-relaxed">
                 <p class="mt-0">使用 AI 的過程中，最讓人煩躁的部分在於：<strong class="text-gray-300">AI 的輸出結果難以預測</strong>。錯誤可以被修正，不可預測性只能接受。</p>
                 <p>同樣的提示詞，同樣的上下文，同樣的模型版本，兩次輸出的結果可能天差地別。有時候它給出精準、深刻、超出預期的回覆，讓你覺得「這工具真的太強了」；有時候它給出完全偏離主題、邏輯斷裂、甚至憑空捏造的回覆，讓你懷疑自己是不是用錯了什麼。</p>
                 <p>這種不確定性，讓 AI 呈現一種極兩極化的面貌：<strong class="text-gray-300">看好的人聚焦於它的潛在驚喜；看壞的人則擔憂其可能帶來的風險</strong>。而這兩種觀點其實來自同一個事實：不可預測性。</p>
@@ -159,7 +163,7 @@
                 <span class="text-accent-purple">#</span> 改寫後
             </h3>
 
-            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border-l-4 border-accent-purple text-gray-300 leading-relaxed">
+            <div class="my-6 p-6 bg-[var(--c-e3)] rounded-xl border-l-4 border-accent-purple text-gray-300 leading-relaxed">
                 <p class="mt-0">同樣的提示詞，同樣的上下文，同樣的模型版本，兩次輸出的結果可能天差地別。</p>
                 <p>上一次它給出精準、深刻、超出預期的回覆，你覺得這工具真的太強了。下一次它給出完全偏離主題、邏輯斷裂、甚至憑空捏造的回覆，你開始懷疑自己是不是用錯了什麼。中間你什麼都沒改。</p>
                 <p class="mb-0">錯誤可以被修正，不可預測性只能接受。對需要穩定輸出的人來說這是結構性問題，你只能把 AI 當成一個大部分時候有用、永遠需要驗證的輔助系統來用，一直盯著。</p>

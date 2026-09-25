@@ -12,19 +12,23 @@
     <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
     <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="../tailwind.config.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="../theme.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
 
     <link rel="stylesheet" href="../style.css">
 
     <script> window.siteRoot = '../'; </script>
     <script src="../i18n.js" defer></script>
     <script type="module" src="../main.js" defer></script>
+    <!-- 預編譯的 Tailwind。原本是 cdn.tailwindcss.com 的同步 script，
+         會卡住 HTML 解析約 600ms。改檔後要跑 pnpm run build:css 重新產生。 -->
+    <link rel="stylesheet" href="../tw.css">
 </head>
 
-<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-bg">
 
     <div class="fixed inset-0 z-0 pointer-events-none">
         <div class="absolute inset-0 dot-pattern opacity-50"></div>
@@ -159,7 +163,7 @@
                 最終產出一份單純的 Google Sheets，結構分為兩層：
             </p>
 
-            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 my-8">
+            <div class="bg-surface p-6 rounded-2xl border border-white/5 my-8">
                 <h4 class="text-white font-bold mb-4 flex items-center gap-2 border-b border-white/10 pb-3">
                     <i class="fas fa-folder-tree text-accent-purple"></i> 工作表分頁（依地區）
                 </h4>
@@ -175,7 +179,7 @@
                 </div>
             </div>
 
-            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 my-8">
+            <div class="bg-surface p-6 rounded-2xl border border-white/5 my-8">
                 <h4 class="text-white font-bold mb-4 flex items-center gap-2 border-b border-white/10 pb-3">
                     <i class="fas fa-table-columns text-accent-purple"></i> 欄位 Schema（各分頁共用）
                 </h4>
@@ -246,7 +250,7 @@
 
             <hr class="border-white/10 my-16">
 
-            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 flex flex-col md:flex-row items-start md:items-center gap-6">
+            <div class="bg-surface p-6 rounded-2xl border border-white/5 flex flex-col md:flex-row items-start md:items-center gap-6">
                 <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center shrink-0 border border-white/10">
                     <i class="fas fa-book-open text-gray-400 text-xl"></i>
                 </div>

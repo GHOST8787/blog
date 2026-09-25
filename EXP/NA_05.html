@@ -8,10 +8,11 @@
     <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
     <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="../tailwind.config.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="../theme.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
 
     <link rel="stylesheet" href="../style.css">
 
@@ -19,9 +20,12 @@
         window.siteRoot = '../';
     </script>
     <script type="module" src="../main.js" defer></script>
+    <!-- 預編譯的 Tailwind。原本是 cdn.tailwindcss.com 的同步 script，
+         會卡住 HTML 解析約 600ms。改檔後要跑 pnpm run build:css 重新產生。 -->
+    <link rel="stylesheet" href="../tw.css">
 </head>
 
-<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-bg">
 
     <div class="fixed inset-0 z-0 pointer-events-none">
         <div class="absolute inset-0 dot-pattern opacity-50"></div>
@@ -88,7 +92,7 @@
                 我在用 AI 輔助開發的時候，主觀感受是快了不少。但我後來找到一份讓我重新校正這個判斷的研究。
             </p>
 
-            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/10 shadow-xl my-8">
+            <div class="bg-surface p-6 rounded-2xl border border-white/10 shadow-xl my-8">
                 <h4 class="text-white font-bold mb-4 flex items-center gap-2">
                     <i class="fas fa-flask text-accent-purple"></i> METR 2025 隨機對照試驗
                 </h4>
@@ -130,7 +134,7 @@
                 AI 回答問題的速度極快，解釋通常也結構清晰。但我注意到一個模式：用 AI 快速理解一個概念之後，真正要應用的時候，那個理解經常是空的。
             </p>
 
-            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/10 shadow-xl my-8">
+            <div class="bg-surface p-6 rounded-2xl border border-white/10 shadow-xl my-8">
                 <h4 class="text-white font-bold mb-4 flex items-center gap-2">
                     <i class="fas fa-brain text-accent-purple"></i> AI 輔助學習的記憶衰退數據
                 </h4>
@@ -213,7 +217,7 @@
 
             <hr class="border-white/10 my-12">
 
-            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/10 shadow-xl">
+            <div class="bg-surface p-6 rounded-2xl border border-white/10 shadow-xl">
                 <h4 class="text-white font-bold mb-4 flex items-center gap-2">
                     <i class="fas fa-bookmark text-accent-purple"></i> 本文數據來源
                 </h4>
@@ -237,7 +241,7 @@
                 </ul>
             </div>
 
-            <div class="bg-[#0A0A0A] p-4 rounded-xl border border-white/10 mt-6 text-xs text-gray-500">
+            <div class="bg-surface p-4 rounded-xl border border-white/10 mt-6 text-xs text-gray-500">
                 <strong class="text-gray-400">關於排除的數據：</strong>本文刻意排除網路上流傳的「IBM 95% AI 試點失敗率」數據——因其原始來源無法核實，屬於反覆轉引的二手資料。放進去只會傷害整篇文章的可信度。
             </div>
 

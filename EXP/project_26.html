@@ -8,18 +8,22 @@
     <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
     <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="../tailwind.config.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="../theme.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
 
     <link rel="stylesheet" href="../style.css">
 
     <script> window.siteRoot = '../'; </script>
     <script type="module" src="../main.js" defer></script>
+    <!-- 預編譯的 Tailwind。原本是 cdn.tailwindcss.com 的同步 script，
+         會卡住 HTML 解析約 600ms。改檔後要跑 pnpm run build:css 重新產生。 -->
+    <link rel="stylesheet" href="../tw.css">
 </head>
 
-<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-bg">
 
     <div class="fixed inset-0 z-0 pointer-events-none">
         <div class="absolute inset-0 dot-pattern opacity-50"></div>
@@ -141,7 +145,7 @@
                 三個模型在 <code class="text-accent-purple">low</code> 和 <code class="text-accent-purple">medium</code> 有一個共同行為：嚴格把工作限定在被要求的範圍內。中等複雜度的任務用 <code class="text-accent-purple">low</code>，就有思考不足的風險；文件把「提高 effort」列為正解，提示只是延遲受限時的補強。真的必須停在 <code class="text-accent-purple">low</code>，就補這句：
             </p>
 
-            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 text-sm text-gray-300 font-light leading-relaxed">
+            <div class="my-6 p-6 bg-[var(--c-e3)] rounded-xl border border-white/10 text-sm text-gray-300 font-light leading-relaxed">
                 <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">低 effort 補強提示（中譯）</div>
                 <p class="m-0">這個任務需要多步驟推理。回答之前，先把問題想透徹。</p>
             </div>
@@ -187,7 +191,7 @@
                 模型依兩個因素校準要想多深：effort 參數，加上查詢本身的複雜度。舊的 <code class="text-accent-purple">budget_tokens</code> 正在退場——Opus 4.6 與 Sonnet 4.6 還能用但已棄用，<strong class="text-white">Opus 4.7 之後、Fable 5、Mythos 5 設了直接回 400</strong>。遷移寫法是把思考預算換成自適應加 effort：
             </p>
 
-            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+            <div class="my-6 p-6 bg-[var(--c-e3)] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
 <pre class="m-0"><code># 舊寫法（4.7+ 會回 400）
 thinking={"type": "enabled", "budget_tokens": 10000}
 
@@ -233,7 +237,7 @@ output_config={"effort": "high"}   # max_tokens 當硬性上限</code></pre>
                 <li><strong class="text-white">Fable 5</strong> 比先前模型更積極派遣平行子代理，文件建議設計成非同步溝通，避免主流程阻塞等待。</li>
             </ul>
 
-            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 text-sm text-gray-300 font-light leading-relaxed space-y-3">
+            <div class="my-6 p-6 bg-[var(--c-e3)] rounded-xl border border-white/10 text-sm text-gray-300 font-light leading-relaxed space-y-3">
                 <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-1">Opus 4.8 子代理指引（中譯）</div>
                 <p class="m-0">你能在單一回應內直接完成的工作，不要開子代理。需要對多個項目分頭處理、或一次讀多個檔案時，在同一回合開出多個子代理。</p>
             </div>
@@ -254,7 +258,7 @@ output_config={"effort": "high"}   # max_tokens 當硬性上限</code></pre>
                 程式編寫有四段可直接複用的防呆片段，全部中譯如下：
             </p>
 
-            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 text-sm text-gray-300 font-light leading-relaxed space-y-3">
+            <div class="my-6 p-6 bg-[var(--c-e3)] rounded-xl border border-white/10 text-sm text-gray-300 font-light leading-relaxed space-y-3">
                 <p class="m-0"><span class="text-accent-purple font-mono mr-2">片段 1</span>過程中建立的暫存檔案或腳本，工作結束時全部清除。</p>
                 <p class="m-0"><span class="text-accent-purple font-mono mr-2">片段 2</span>避免過度工程化：範圍守在被要求的事情上；文件、防禦性程式碼、抽象層，只在被要求或明顯必要時才加。</p>
                 <p class="m-0"><span class="text-accent-purple font-mono mr-2">片段 3</span>寫高品質、通用的解法。禁止硬編碼特定測試的數值；解法要對所有合法輸入正確，通過測試只是自然結果。</p>

@@ -22,27 +22,29 @@
     <link rel="icon" type="image/png" href="PNG/pixelS2.png">
     <link rel="apple-touch-icon" href="PNG/pixelS2.png">
     <!-- 引入外部資源：Tailwind CSS、FontAwesome、Google Fonts -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
 
     <link rel="stylesheet" href="style.css">
     <script src="i18n.js" defer></script>
     <script type="module" src="main.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="tailwind.config.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+    <script src="theme.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet"></noscript>
     <style>
       /* ---- 證照牆 3D Coverflow（首頁公開展示）---- */
       .cert-cf-stage{ position:relative; height:300px; perspective:1300px; margin:0 auto; cursor:grab; touch-action:pan-y; }
       .cert-cf-stage.grabbing{ cursor:grabbing; }
       .cert-cf-track{ position:absolute; inset:0; transform-style:preserve-3d; }
       .cert-cf-item{ position:absolute; top:50%; left:50%; width:210px; height:262px; margin-left:-105px; margin-top:-131px; transition:transform .85s cubic-bezier(0.25,0.8,0.25,1), opacity .85s, filter .85s; will-change:transform,opacity; }
-      .cert-card{ width:210px; height:262px; border-radius:18px; background:linear-gradient(160deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); border:1px solid rgba(191,148,255,.18); padding:22px 18px; display:flex; flex-direction:column; align-items:center; text-align:center; backdrop-filter:blur(6px); user-select:none; }
-      .cert-card .ic{ width:54px; height:54px; border-radius:14px; margin-bottom:14px; display:flex; align-items:center; justify-content:center; font-size:22px; color:#BF94FF; background:rgba(191,148,255,.12); border:1px solid rgba(191,148,255,.25); }
-      .cert-card .nm{ font-size:.95rem; font-weight:700; line-height:1.35; margin-bottom:7px; color:#fff; }
-      .cert-card .mt{ font-family:'JetBrains Mono',monospace; font-size:.68rem; color:#9a9a9a; letter-spacing:.03em; margin-bottom:auto; }
-      .cert-card .clink{ margin-top:12px; font-size:.7rem; font-weight:600; color:#BF94FF; text-decoration:none; display:inline-flex; align-items:center; gap:6px; border:1px solid rgba(191,148,255,.3); border-radius:999px; padding:5px 13px; transition:all .25s; }
-      .cert-card .clink:hover{ background:#BF94FF; color:#000; }
+      .cert-card{ width:210px; height:262px; border-radius:18px; background:linear-gradient(160deg, rgb(var(--c-ink)/.06), rgb(var(--c-ink)/.02)); border:1px solid rgb(var(--c-purple)/.18); padding:22px 18px; display:flex; flex-direction:column; align-items:center; text-align:center; backdrop-filter:blur(6px); user-select:none; }
+      .cert-card .ic{ width:54px; height:54px; border-radius:14px; margin-bottom:14px; display:flex; align-items:center; justify-content:center; font-size:22px; color:rgb(var(--c-purple)); background:rgb(var(--c-purple)/.12); border:1px solid rgb(var(--c-purple)/.25); }
+      .cert-card .nm{ font-size:.95rem; font-weight:700; line-height:1.35; margin-bottom:7px; color:rgb(var(--c-ink)); }
+      .cert-card .mt{ font-family:'JetBrains Mono',monospace; font-size:.68rem; color:var(--c-n9a); letter-spacing:.03em; margin-bottom:auto; }
+      .cert-card .clink{ margin-top:12px; font-size:.7rem; font-weight:600; color:rgb(var(--c-purple)); text-decoration:none; display:inline-flex; align-items:center; gap:6px; border:1px solid rgb(var(--c-purple)/.3); border-radius:999px; padding:5px 13px; transition:all .25s; }
+      .cert-card .clink:hover{ background:rgb(var(--c-purple)); color:rgb(var(--c-ink-inv)); }
       .cert-card .clink.disabled{ opacity:.4; pointer-events:none; border-style:dashed; }
       @media (max-width:768px){
         .cert-cf-stage{ height:178px; }
@@ -54,6 +56,9 @@
         .cert-card .clink{ font-size:.6rem; padding:3px 9px; margin-top:6px; }
       }
     </style>
+    <!-- 預編譯的 Tailwind。原本是 cdn.tailwindcss.com 的同步 script，
+         會卡住 HTML 解析約 600ms。改檔後要跑 pnpm run build:css 重新產生。 -->
+    <link rel="stylesheet" href="tw.css">
 </head>
 
 <body class="font-sans selection:bg-accent-purple/30 selection:text-white">
@@ -96,10 +101,10 @@
                 </div>
 
                 <div class="flex flex-wrap gap-3 mt-8">
-                    <a href="whiteboard.html" class="px-5 py-2.5 bg-accent-purple text-black font-bold rounded-full text-xs tracking-wide hover:shadow-[0_0_20px_rgba(191,148,255,0.5)] transition-all cursor-pointer">
+                    <a href="whiteboard.html" class="px-5 py-2.5 bg-accent-purple text-black font-bold rounded-full text-xs tracking-wide hover:shadow-[0_0_20px_rgb(var(--c-purple)/0.5)] transition-all cursor-pointer">
                         Open Whiteboard <i class="fas fa-arrow-right ml-1 text-[10px]"></i>
                     </a>
-                    <a href="meet.html" class="px-5 py-2.5 border border-accent-purple/40 text-accent-purple font-bold rounded-full text-xs tracking-wide hover:bg-accent-purple/10 hover:shadow-[0_0_20px_rgba(191,148,255,0.25)] transition-all cursor-pointer">
+                    <a href="meet.html" class="px-5 py-2.5 border border-accent-purple/40 text-accent-purple font-bold rounded-full text-xs tracking-wide hover:bg-accent-purple/10 hover:shadow-[0_0_20px_rgb(var(--c-purple)/0.25)] transition-all cursor-pointer">
                         Open Meet <i class="fas fa-arrow-right ml-1 text-[10px]"></i>
                     </a>
                 </div>
@@ -113,7 +118,7 @@
                         group-hover:opacity-100 group-hover:scale-[1.2] group-hover:grayscale-0
                         transition-all duration-1000 ease-in-out">
 
-                <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent z-1 opacity-80"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-bg via-transparent to-transparent z-1 opacity-80"></div>
 
                 <div class="absolute bottom-4 right-4 z-10">
                     <span class="text-gray-400 text-[10px] font-mono uppercase tracking-[0.2em] backdrop-blur-md bg-black/30 px-3 py-1 rounded-full border border-white/10 group-hover:text-accent-purple group-hover:border-accent-purple/50 transition-all">
@@ -447,11 +452,11 @@
                     <span id="gh-total"><span class="font-mono text-gray-300">—</span> contributions in the last year</span>
                     <span class="flex items-center gap-1.5">
                         <span>Less</span>
-                        <span class="inline-block w-3 h-3 rounded" style="background:#1f1f2e"></span>
-                        <span class="inline-block w-3 h-3 rounded" style="background:#3d2e5c"></span>
-                        <span class="inline-block w-3 h-3 rounded" style="background:#6b4ba3"></span>
-                        <span class="inline-block w-3 h-3 rounded" style="background:#9d75d4"></span>
-                        <span class="inline-block w-3 h-3 rounded" style="background:#bf94ff"></span>
+                        <span class="inline-block w-3 h-3 rounded" style="background:var(--c-heat1)"></span>
+                        <span class="inline-block w-3 h-3 rounded" style="background:var(--c-heat2)"></span>
+                        <span class="inline-block w-3 h-3 rounded" style="background:var(--c-heat3)"></span>
+                        <span class="inline-block w-3 h-3 rounded" style="background:var(--c-heat4)"></span>
+                        <span class="inline-block w-3 h-3 rounded" style="background:var(--c-heat5)"></span>
                         <span>More</span>
                     </span>
                 </div>
@@ -460,7 +465,12 @@
                 </div>
                 <script>
                     (function () {
-                        var COLORS = ['#1f1f2e', '#3d2e5c', '#6b4ba3', '#9d75d4', '#bf94ff'];
+                        // fill 直接寫 var()，不要在畫的當下解析成 hex——
+                        // 解析成 hex 會把顏色釘死在當時的主題，切換深淺時格子不會跟著變，
+                        // 要重新整理才對得上。寫成 var() 就由瀏覽器跟著 data-theme 重算，
+                        // 也吃得到 theme.css 的 0.55s 過場。
+                        var COLORS = ['var(--c-heat1)', 'var(--c-heat2)', 'var(--c-heat3)',
+                                      'var(--c-heat4)', 'var(--c-heat5)'];
                         var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
                         fetch('https://github-contributions-api.jogruber.de/v4/GHOST8787?y=last')
@@ -703,7 +713,7 @@
                     </div>
                     <!-- email me 按鍵，待開啟 -->
                     <!-- <a href="mailto:your-email@example.com"  -->
-                    <button id="heart-trigger" aria-label="Send love to this blog" class="px-6 py-3 border border-accent-purple text-accent-purple font-mono font-bold rounded-xl text-xs hover:bg-accent-purple hover:text-black hover:shadow-[0_0_20px_rgba(191,148,255,0.5)] transition-all duration-100 cursor-pointer active:scale-90 flex items-center gap-2">
+                    <button id="heart-trigger" aria-label="Send love to this blog" class="px-6 py-3 border border-accent-purple text-accent-purple font-mono font-bold rounded-xl text-xs hover:bg-accent-purple hover:text-black hover:shadow-[0_0_20px_rgb(var(--c-purple)/0.5)] transition-all duration-100 cursor-pointer active:scale-90 flex items-center gap-2">
                         🖤 <span class="hidden sm:inline">Send Love</span>
                         <span id="heart-count" class="font-mono opacity-80">...</span>
                     </button>

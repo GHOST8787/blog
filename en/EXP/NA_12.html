@@ -8,19 +8,23 @@
     <link rel="icon" type="image/png" href="../../PNG/pixelS2.png">
     <link rel="apple-touch-icon" href="../../PNG/pixelS2.png">
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="../../tailwind.config.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="../../theme.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
 
     <link rel="stylesheet" href="../../style.css">
 
     <script> window.siteRoot = '../'; </script>
     <script src="../../i18n.js" defer></script>
     <script type="module" src="../../main.js" defer></script>
+    <!-- 預編譯的 Tailwind。原本是 cdn.tailwindcss.com 的同步 script，
+         會卡住 HTML 解析約 600ms。改檔後要跑 pnpm run build:css 重新產生。 -->
+    <link rel="stylesheet" href="../../tw.css">
 </head>
 
-<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-bg">
 
     <div class="fixed inset-0 z-0 pointer-events-none">
         <div class="absolute inset-0 dot-pattern opacity-50"></div>
@@ -93,7 +97,7 @@
                 His answer was one line.
             </p>
 
-            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 my-8">
+            <div class="bg-surface p-6 rounded-2xl border border-white/5 my-8">
                 <p class="text-white text-lg font-light leading-relaxed m-0">
                     "While you are still an employee, that trade is impossible."
                 </p>
@@ -115,7 +119,7 @@
                 He then took "trading skill for money" apart.
             </p>
 
-            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 my-8">
+            <div class="bg-surface p-6 rounded-2xl border border-white/5 my-8">
                 <p class="text-white text-lg font-light leading-relaxed m-0">
                     "Trading skill for money. You have skill. So here comes the question: who wants to trade with you."
                 </p>
@@ -157,7 +161,7 @@
                 I asked what the job actually looks like. All three of his answers were mundane.
             </p>
 
-            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 my-8 space-y-4">
+            <div class="bg-surface p-6 rounded-2xl border border-white/5 my-8 space-y-4">
                 <p class="text-white text-lg font-light leading-relaxed m-0">
                     "Pie in the sky, lie flavoured, served every single day."
                 </p>

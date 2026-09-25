@@ -12,18 +12,22 @@
     <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
     <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="../tailwind.config.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="../theme.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
 
     <link rel="stylesheet" href="../style.css">
 
     <script> window.siteRoot = '../'; </script>
     <script type="module" src="../main.js" defer></script>
+    <!-- 預編譯的 Tailwind。原本是 cdn.tailwindcss.com 的同步 script，
+         會卡住 HTML 解析約 600ms。改檔後要跑 pnpm run build:css 重新產生。 -->
+    <link rel="stylesheet" href="../tw.css">
 </head>
 
-<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-bg">
 
     <div class="fixed inset-0 z-0 pointer-events-none">
         <div class="absolute inset-0 dot-pattern opacity-50"></div>
@@ -189,7 +193,7 @@
                 原因是驗證規則只會在實際被寫入的那個節點與它的子節點上評估。建立一場會議的時候，寫入真正落在下面一層：
             </p>
 
-            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+            <div class="my-6 p-6 bg-[var(--c-e3)] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
 <pre class="m-0"><code>一場會議/基本資訊   ← 寫入實際落在這一層
 一場會議/           ← 規則掛在這一層，整條跳過</code></pre>
             </div>
@@ -209,7 +213,7 @@
                 用「我在畫面上看不到」來驗證權限，等於沒驗證。測試刻意繞過前端。我另外開一個參與者身分，拿它的憑證直接打資料庫的 REST 介面。
             </p>
 
-            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+            <div class="my-6 p-6 bg-[var(--c-e3)] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
 <pre class="m-0"><code>用參與者憑證要「發起人的私人備註」  → 401 Permission denied
 用同一個憑證要「全部人的投票」      → 401 Permission denied
 用同一個憑證寫「自己那一格」        → 成功</code></pre>
@@ -230,7 +234,7 @@
                 為了一個個人工具，這條線我選擇不接。改成只交換一串簽章過的文字，形狀大致是這樣（示意）：
             </p>
 
-            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+            <div class="my-6 p-6 bg-[var(--c-e3)] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
 <pre class="m-0"><code>&lt;版本前綴&gt;.&lt;內容&gt;.&lt;簽章&gt;
 
 內容 = 時段清單編成一串可貼的文字

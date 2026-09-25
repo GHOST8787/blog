@@ -12,10 +12,11 @@
     <link rel="icon" type="image/png" href="../../PNG/pixelS2.png">
     <link rel="apple-touch-icon" href="../../PNG/pixelS2.png">
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="../../tailwind.config.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="../../theme.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
 
     <link rel="stylesheet" href="../../style.css">
 
@@ -24,9 +25,12 @@
     </script>
     <script src="../../i18n.js" defer></script>
     <script type="module" src="../../main.js" defer></script>
+    <!-- 預編譯的 Tailwind。原本是 cdn.tailwindcss.com 的同步 script，
+         會卡住 HTML 解析約 600ms。改檔後要跑 pnpm run build:css 重新產生。 -->
+    <link rel="stylesheet" href="../../tw.css">
 </head>
 
-<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-bg">
 
     <div class="fixed inset-0 z-0 pointer-events-none">
         <div class="absolute inset-0 dot-pattern opacity-50"></div>
@@ -126,7 +130,7 @@
                 To speed up the dev cycle I brought in an AI assistant and constrained its behavior with custom Skills. The exercise exposed a real flaw in how current models handle global state.
             </p>
 
-            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/10 shadow-lg my-8 relative overflow-hidden">
+            <div class="bg-surface p-6 rounded-2xl border border-white/10 shadow-lg my-8 relative overflow-hidden">
                 <div class="absolute top-0 left-0 w-1 h-full bg-red-500/50"></div>
                 <h4 class="text-red-400 font-bold mb-4 flex items-center gap-2 text-lg">
                     <i class="fas fa-bug"></i> The Cost of Handing Over Global Control
@@ -206,7 +210,7 @@
             </p>
 
             <div class="space-y-6 mb-12">
-                <div class="bg-[#0A0A0A] p-6 rounded-xl border-l-4 border-white/20">
+                <div class="bg-surface p-6 rounded-xl border-l-4 border-white/20">
                     <h4 class="text-white font-bold mb-2 text-lg">1. VibeCoding Performance</h4>
                     <p class="text-sm text-gray-400 leading-relaxed m-0">
                         <strong>Verdict: high efficiency on architectural bootstrap, micro-decisions still need a human.</strong><br>
@@ -214,7 +218,7 @@
                     </p>
                 </div>
 
-                <div class="bg-[#0A0A0A] p-6 rounded-xl border-l-4 border-white/20">
+                <div class="bg-surface p-6 rounded-xl border-l-4 border-white/20">
                     <h4 class="text-white font-bold mb-2 text-lg">2. Agent Collaboration Boundaries</h4>
                     <p class="text-sm text-gray-400 leading-relaxed m-0">
                         <strong>Verdict: system-architecture control is non-transferable.</strong><br>
@@ -222,7 +226,7 @@
                     </p>
                 </div>
 
-                <div class="bg-[#0A0A0A] p-6 rounded-xl border-l-4 border-white/20">
+                <div class="bg-surface p-6 rounded-xl border-l-4 border-white/20">
                     <h4 class="text-white font-bold mb-2 text-lg">3. Open-Source Refactor</h4>
                     <p class="text-sm text-gray-400 leading-relaxed m-0">
                         <strong>Verdict: clean module separation and a closed loop on the workflow.</strong><br>
@@ -230,7 +234,7 @@
                     </p>
                 </div>
 
-                <div class="bg-[#0A0A0A] p-6 rounded-xl border-l-4 border-white/20">
+                <div class="bg-surface p-6 rounded-xl border-l-4 border-white/20">
                     <h4 class="text-white font-bold mb-2 text-lg">4. Data Pipeline Validation</h4>
                     <p class="text-sm text-gray-400 leading-relaxed m-0">
                         <strong>Verdict: data cleaning is the load-bearing wall.</strong><br>

@@ -12,10 +12,11 @@
     <link rel="icon" type="image/png" href="../../PNG/pixelS2.png">
     <link rel="apple-touch-icon" href="../../PNG/pixelS2.png">
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="../../tailwind.config.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="../../theme.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
 
     <link rel="stylesheet" href="../../style.css">
 
@@ -24,9 +25,12 @@
     </script>
     <script src="../../i18n.js" defer></script>
     <script type="module" src="../../main.js" defer></script>
+    <!-- 預編譯的 Tailwind。原本是 cdn.tailwindcss.com 的同步 script，
+         會卡住 HTML 解析約 600ms。改檔後要跑 pnpm run build:css 重新產生。 -->
+    <link rel="stylesheet" href="../../tw.css">
 </head>
 
-<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-bg">
 
     <div class="fixed inset-0 z-0 pointer-events-none">
         <div class="absolute inset-0 dot-pattern opacity-50"></div>
@@ -162,7 +166,7 @@
             <p>The original was full of global-variable pollution and outdated DOM API calls. To keep the system stable, a few engineering rules:</p>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
-                <div class="bg-[#0A0A0A] p-5 rounded-xl border border-white/10">
+                <div class="bg-surface p-5 rounded-xl border border-white/10">
                     <h4 class="text-white font-bold mb-3 text-sm">State Centralization</h4>
                     <pre class="bg-black/50 p-3 rounded text-xs text-green-400 overflow-x-auto m-0 font-mono"><code>const AppState = {
   chatname: "",
@@ -172,7 +176,7 @@
   unsent: 0
 };</code></pre>
                 </div>
-                <div class="bg-[#0A0A0A] p-5 rounded-xl border border-white/10">
+                <div class="bg-surface p-5 rounded-xl border border-white/10">
                     <h4 class="text-white font-bold mb-3 text-sm">Dynamic Instantiation</h4>
                     <pre class="bg-black/50 p-3 rounded text-xs text-blue-400 overflow-x-auto m-0 font-mono"><code>sortedKeys.forEach((member, i) => {
   let canvasId = `member_${i}`;
@@ -233,19 +237,19 @@
 
             <h4 class="text-lg font-bold text-white mb-4">Extension Dimensions</h4>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-400 font-light mb-12">
-                <div class="bg-[#0A0A0A] p-4 rounded-lg border border-white/5">
+                <div class="bg-surface p-4 rounded-lg border border-white/5">
                     <strong class="text-white block mb-1">1. Data export module</strong>
                     A standardized API for JSON and CSV export. Makes downstream data mining easy.
                 </div>
-                <div class="bg-[#0A0A0A] p-4 rounded-lg border border-white/5">
+                <div class="bg-surface p-4 rounded-lg border border-white/5">
                     <strong class="text-white block mb-1">2. Higher-dimension insights</strong>
                     Time-series analysis. Compute per-node active hours, response latency, and similar dynamic metrics.
                 </div>
-                <div class="bg-[#0A0A0A] p-4 rounded-lg border border-white/5">
+                <div class="bg-surface p-4 rounded-lg border border-white/5">
                     <strong class="text-white block mb-1">3. Cross-dataset comparison</strong>
                     Support multiple data inputs. Run parallel comparison visualizations across groups.
                 </div>
-                <div class="bg-[#0A0A0A] p-4 rounded-lg border border-white/5">
+                <div class="bg-surface p-4 rounded-lg border border-white/5">
                     <strong class="text-white block mb-1">4. Interaction upgrade</strong>
                     Canvas/SVG event listeners. Drill-down on data points, exploratory timeline scrubbing.
                 </div>

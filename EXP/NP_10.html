@@ -8,10 +8,11 @@
     <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
     <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="../tailwind.config.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="../theme.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
 
     <link rel="stylesheet" href="../style.css">
 
@@ -19,9 +20,12 @@
         window.siteRoot = '../';
     </script>
     <script type="module" src="../main.js" defer></script>
+    <!-- 預編譯的 Tailwind。原本是 cdn.tailwindcss.com 的同步 script，
+         會卡住 HTML 解析約 600ms。改檔後要跑 pnpm run build:css 重新產生。 -->
+    <link rel="stylesheet" href="../tw.css">
 </head>
 
-<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-bg">
 
     <div class="fixed inset-0 z-0 pointer-events-none">
         <div class="absolute inset-0 dot-pattern opacity-50"></div>
@@ -71,7 +75,7 @@
                 yt-digest 是我維護的一個線上服務：使用者丟一支 YouTube 影片進來，它產一份摘要報告。影片處理的重活跑在本機 daemon，雲端放的是 Next.js 前端、Firestore、Cloud Storage 和幾支 API，我預想它的雲端月費接近零元。Google Cloud 的帳單報表寫著：6 月 $19.22，8 月 $22.38，7 月 $0.00。這篇記錄我怎麼從報表上的用量往回推，推到哪裡有證據，推到哪裡證據斷了。
             </p>
 
-            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 my-8 text-sm text-gray-400">
+            <div class="bg-surface p-6 rounded-2xl border border-white/5 my-8 text-sm text-gray-400">
                 前情提要：這個服務的來歷寫在
                 <a href="project_12.html" class="text-accent-purple hover:underline">P12 YouTube 整理工具的兩個世代</a>，
                 報告品質怎麼把關寫在

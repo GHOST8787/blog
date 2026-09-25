@@ -12,10 +12,11 @@
     <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
     <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
     
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="../tailwind.config.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="../theme.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
     
     <link rel="stylesheet" href="../style.css">
     
@@ -24,9 +25,12 @@
     </script>
     <script src="../i18n.js" defer></script>
     <script type="module" src="../main.js" defer></script>
+    <!-- 預編譯的 Tailwind。原本是 cdn.tailwindcss.com 的同步 script，
+         會卡住 HTML 解析約 600ms。改檔後要跑 pnpm run build:css 重新產生。 -->
+    <link rel="stylesheet" href="../tw.css">
 </head>
 
-<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-bg">
 
     <div class="fixed inset-0 z-0 pointer-events-none">
         <div class="absolute inset-0 dot-pattern opacity-50"></div>
@@ -111,7 +115,7 @@
             </h3>
 
             <p>基於安全性考量，系統拒絕常規密碼登入。於本機終端機切換至金鑰所在目錄，執行 SSH 通訊協定以進入遠端 Ubuntu 伺服器環境：</p>
-            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+            <div class="my-6 p-6 bg-[var(--c-e3)] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
 <pre><code class="language-powershell">cd &lt;YOUR_LOCAL_KEY_PATH&gt;
 ssh -i &lt;YOUR_KEY.pem&gt; &lt;YOUR_VM_USER&gt;@&lt;YOUR_VM_IP&gt;</code></pre>
             </div>
@@ -121,7 +125,7 @@ ssh -i &lt;YOUR_KEY.pem&gt; &lt;YOUR_VM_USER&gt;@&lt;YOUR_VM_IP&gt;</code></pre>
             </h3>
 
             <p>透過 Node Package Manager (npm) 進行框架本體的安裝。為確保 AI 代理程序於終端機會話 (Session) 中斷後仍能持續於後台運作，必須將其註冊為 systemd 的背景服務：</p>
-            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+            <div class="my-6 p-6 bg-[var(--c-e3)] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
 <pre><code class="language-bash"># 1. 執行全域安裝
 sudo npm install -g clawdbot@latest
 
@@ -141,7 +145,7 @@ systemctl --user status clawdbot-gateway.service</code></pre>
             </h3>
 
             <p>在系統反覆部署與重啟的過程中，常遇服務啟動失敗的例外狀況。經查閱系統日誌，若確認錯誤碼為 <code class="text-accent-purple">Port 18789 is already in use</code>，即代表有殭屍程序 (Zombie Process) 或舊版實例佔用通訊埠。此時需介入進行強制清理程序：</p>
-            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+            <div class="my-6 p-6 bg-[var(--c-e3)] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
 <pre><code class="language-bash"># 1. 終止並卸載所有相關服務與殘留設定檔
 systemctl --user stop clawdbot-gateway.service
 systemctl --user stop openclaw-gateway.service 2>/dev/null
@@ -162,12 +166,12 @@ systemctl --user start clawdbot-gateway.service</code></pre>
             </h3>
 
             <p>基於網安原則，Clawdbot Gateway 預設僅綁定於伺服器的 Localhost 網卡，直接開放防火牆外部埠口將構成嚴重的資安漏洞。因此，採取 <strong>SSH 隧道 (Port Forwarding)</strong> 技術，於本機另開終端機建立加密通道，將遠端 18789 埠口安全映射至本機端：</p>
-            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+            <div class="my-6 p-6 bg-[var(--c-e3)] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
 <pre><code class="language-powershell">ssh -i &lt;YOUR_KEY.pem&gt; -N -L 18789:127.0.0.1:18789 &lt;YOUR_VM_USER&gt;@&lt;YOUR_VM_IP&gt;</code></pre>
             </div>
 
             <p>隨後返回 VM 終端機，提取 Dashboard 路由位址與權限驗證 Token：</p>
-            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+            <div class="my-6 p-6 bg-[var(--c-e3)] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
 <pre><code class="language-bash">clawdbot dashboard</code></pre>
             </div>
             
