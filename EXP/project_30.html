@@ -65,18 +65,17 @@
         </header>
 
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
-
             <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
-                想聊聊這個站上的許願板是怎麼來的：一開始的構想、架構怎麼切、中間卡在哪，還有為什麼它到現在還掛在那裡。
+                這個站上有一面許願板。任何人都能貼一個想法上去。其他人按愛心，票數高的排前面。這篇寫它怎麼來的。
             </p>
 
             <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
                 <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">前情提要</div>
                 <p class="m-0 mb-3">
-                    寫程式對我來說是興趣。既然是興趣，只有自己在用就有點可惜，我希望它能發揮一點用途跟價值。另一件想要的事情是一個溝通的管道——來看這個站的人，總該有個地方能跟我說「這個我想看」。
+                    寫程式是我的興趣。興趣只有自己在用，有點可惜。我想讓它對別人也有一點用處。另外我想要一個溝通的管道。來看這個站的人，應該有地方能跟我說「這個我想看」。
                 </p>
                 <p class="m-0">
-                    所以有了 Whiteboard。2026-05-09 那個晚上先搭了一個空殼：hero、兩個區塊、右下角一顆按鈕、一個投稿視窗，什麼功能都還沒有。隔天一整天把核心功能全部補完。
+                    Whiteboard 就是為了這兩件事做的。2026-05-09 晚上我先搭好空殼。只有版面沒有功能。隔天一整天把核心補完。
                 </p>
             </div>
 
@@ -85,23 +84,40 @@
             </h3>
 
             <p>
-                構想很單純：一面公開的牆，任何人登入都能貼一個想法上去，其他人按愛心決定它排多前面，我做掉的往下沉成一份可以回頭翻的紀錄。三個狀態、一條單向的路，沒有更多。
+                我要的是一面公開的牆。登入的人可以貼想法，其他人按愛心。我做完的往下沉成紀錄。三個狀態，一條單向的路。
+            </p>
+            <p>
+                開放投稿就要處理灌水。驗證碼、速率限制、關鍵字過濾，這些各自能擋掉一部分。維護成本也跟著增加。這個站的流量用不到那一整套。
+            </p>
+            <p>
+                所以我把規則縮成一句：任何人都能送，公開與否由我決定。
             </p>
 
-            <p>
-                唯一要先想清楚的是灌水。驗證碼、速率限制、關鍵字過濾，這些各自能擋掉一部分，維護成本也跟著長出來，而這個站的流量規模用不到那一整套。所以我把它簡化成一句話：任何人都能送，公開與否由我審核決定。
-            </p>
+            <figure class="my-10">
+                <img src="../PNG/project_30.1.webp"
+                     alt="Whiteboard 首頁：上半許願池，下半已實作清單"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    上半是許願池，下半「已實作」每列帶編號、完成日期，以及文章與工具兩顆連結
+                </figcaption>
+            </figure>
+
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 架構：三個節點就是三個狀態
             </h3>
 
             <p>
-                資料放在 Firebase Realtime Database，Google 代管、瀏覽器可以直接讀寫的資料庫，權限寫在它自己的 Security Rules 裡，逐個節點宣告誰能讀、誰能寫。這個站沒有後端，整套權限模型就靠這份檔案撐著。
+                資料放在 Firebase Realtime Database。它由 Google 代管，瀏覽器可以直接讀寫。權限寫在它自己的一份檔案裡，叫 Security Rules。逐個節點宣告誰能讀、誰能寫。
             </p>
-
             <p>
-                第一版我想的是全部放在同一棵樹底下，用欄位把待審的內容遮起來。這條路走不通——讀取權限會往下傳，父節點一旦開放，底下全部跟著開放。於是改成三個獨立節點，審核這個動作就等於把資料從一個節點搬到下一個。
+                這個站沒有後端。整套權限就靠這份檔案撐著。
+            </p>
+            <p>
+                第一版我把資料全部放在同一棵樹底下，想用一個欄位把待審的內容遮起來。這條路走不通。讀取權限會往下傳，父節點一開放，底下全部跟著開放。
+            </p>
+            <p>
+                改成三個獨立節點之後問題就沒了。審核這個動作，實際上就是把資料從一個節點搬到下一個。
             </p>
 
             <figure class="my-10">
@@ -114,7 +130,7 @@
             </figure>
 
             <p>
-                這樣切完之後，整套流程裡沒有一個叫做 status 的欄位要維護。待審區的讀取權限只認站長，所以送出去的東西在通過之前誰都看不到，連投稿的人自己也一樣。
+                這樣切完，整套流程沒有一個叫 status 的欄位要維護。待審區的讀取權限只認我一個人。送出去的東西在通過之前誰都看不到，投稿的人自己也一樣。
             </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
@@ -122,52 +138,47 @@
             </h3>
 
             <p>
-                右下角固定一顆按鈕，點開填一行標題再選填幾句說明。兩個欄位都有長度上限，前端跟資料庫規則各檢查一次，前者擋手滑、後者擋繞過畫面直接打 API 的人。
+                右下角固定一顆按鈕，點開填一行標題，說明選填。兩個欄位都有字數上限。前端檢查一次，資料庫規則再檢查一次。前者擋手滑，後者擋繞過畫面直接打 API 的人。
             </p>
-
             <p>
-                愛心是一個帳號一票，再按一次收回。做法是兩個欄位配一條規則：一個存總票數，規則只准一次加一或減一；另一個按人分格，規則只准本人寫自己那一格。按下去的當下畫面先變，寫入失敗再把數字跟圖示回滾。
+                愛心是一個帳號一票，再按一次收回。做法是兩個欄位配一條規則。一個存總票數，規則只准一次加一或減一。另一個按人分格，規則只准本人寫自己那一格。
             </p>
-
-            <figure class="my-10">
-                <img src="../PNG/project_30.1.webp"
-                     alt="Whiteboard 首頁：上半許願池、下半已實作清單"
-                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
-                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
-                    上半是許願池，下半「已實作」每列帶編號、完成日期，以及文章與工具兩顆連結
-                </figcaption>
-            </figure>
-
             <p>
-                許願池的版面是 bento，卡片大小由票數決定：每跨過一個門檻就跳一級寬度，最低的一級佔四分之一排，最高票那張可以吃掉大半排、並且往下多佔一列高度，超過門檻之後另外加一層外框。整面牆會隨著大家按愛心慢慢變形，我這邊不需要維護一份排序設定。
+                按下去的當下畫面先變。寫入失敗再把數字跟圖示退回去。
             </p>
-
             <p>
-                最後是一個只有我看得到的審核頁。待審清單、通過、駁回、畢業四個動作，投稿者的聯絡信箱一路從待審帶到已實作，這樣要回信找得到人。
+                許願池的版面是 bento，卡片大小由票數決定。每跨過一個門檻就跳一級寬度，最低的一級佔四分之一排，最高票那張吃掉大半排，還會多佔一列高度。整面牆會隨著大家按愛心慢慢變形，我這邊不用維護排序。
+            </p>
+            <p>
+                最後是一個只有我看得到的審核頁，四個動作：看待審清單、通過、駁回、畢業。投稿者的信箱一路從待審帶到已實作，要回信找得到人。
             </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 中間卡住的地方
             </h3>
 
+
             <h4 class="text-xl font-bold text-white mt-10 mb-4">
-                登入壞掉，而且修了兩次
+                登入壞掉，修了兩次
             </h4>
 
             <p>
-                第一版用 Firebase 內建的彈窗登入。本機開 Live Server 一切正常，推上 GitHub Pages 之後彈窗關不掉，畫面只丟出一句「The requested action is invalid」，沒有堆疊也沒有錯誤碼。
+                第一版用 Firebase 內建的彈窗登入。本機開 Live Server 一切正常。推上 GitHub Pages 之後彈窗關不掉，畫面只丟一句「The requested action is invalid」。沒有堆疊也沒有錯誤碼。
             </p>
-
             <p>
-                原因是 <strong class="text-white">COOP</strong> 這個標頭。它會切斷網頁與它開出來的視窗之間的引用關係、避免互相操控，GitHub Pages 預設就送。引用斷掉之後，彈窗完成登入沒辦法把結果傳回母頁面，也關不掉自己。
+                問題出在 COOP 這個標頭。它會切斷網頁跟它開出來的視窗之間的引用關係，避免兩邊互相操控。GitHub Pages 預設就送這個標頭。
             </p>
-
             <p>
-                當天我先改成 redirect 把它繞過去，頁面整個跳走再跳回來，能動但體驗很差。真正的解法是三週後才換上的：用 Google Identity Services 在頁面內取得憑證，再在同一頁換成資料庫認得的身分，全程不開新視窗。
+                引用斷掉之後，彈窗登入完成，結果傳不回母頁面，自己也關不掉。
             </p>
-
+            <p>
+                那天我先改成 redirect 擋一下。頁面整個跳走再跳回來，能動，但體驗很差。
+            </p>
+            <p>
+                真正的解法三週後才換上。用 Google Identity Services 在頁面內拿到憑證，再在同一頁換成資料庫認得的身分。全程不開新視窗。
+            </p>
             <p class="text-gray-400">
-                這條坑本機測不出來。線上跟本機送的標頭不同，等於兩個不同的執行環境。
+                這條坑本機測不出來。線上跟本機送的標頭不一樣，等於兩個執行環境。
             </p>
 
             <h4 class="text-xl font-bold text-white mt-10 mb-4">
@@ -175,7 +186,10 @@
             </h4>
 
             <p>
-                首頁的愛心按鈕早就開過一條 Firebase 連線，許願板的程式再開一次會撞名，因為預設連線同一個站只能有一個。解法是初始化的時候多帶一個名字，讓它變成一條獨立的具名連線，同一份設定、兩個互不干擾的實例。
+                首頁的愛心按鈕早就開了一條 Firebase 連線。許願板的程式再開一次會撞名，因為預設連線同一個站只能有一個。
+            </p>
+            <p>
+                解法是初始化的時候多帶一個名字。它就變成一條獨立的具名連線。同一份設定，兩個實例互不干擾。
             </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
@@ -183,11 +197,13 @@
             </h3>
 
             <p>
-                從 05-09 的空殼到 05-10 收工，核心功能是一天做完的；後來又補了英文版，六月把登入換成現在這套。它現在還掛在站上，我自己也還在用它記待辦，之後有想加的東西會繼續加。
+                05-09 空殼、05-10 收工，核心是一天做完的。後來補了英文版，六月把登入換成現在這套。
             </p>
-
             <p>
-                第一次做這種對外開放投稿的東西，一定有沒想周全的地方。有建議的話直接在許願板貼一則最快，我看得到；想直接丟意見或看程式碼的話，站的原始碼全部公開在 <a href="https://github.com/GHOST8787/blog" target="_blank" rel="noopener noreferrer" class="underline decoration-gray-600 underline-offset-4 hover:text-white transition-colors">GitHub</a>，開 issue 或給一顆 star 我都收得到。
+                它到現在還掛在站上。我自己也還在用它記待辦，想到要加什麼就加。
+            </p>
+            <p>
+                第一次做這種對外開放投稿的東西，一定有沒想周全的地方。有建議直接在許願板貼一則最快，我看得到。想丟意見或看程式碼，站的原始碼全部公開在 <a href="https://github.com/GHOST8787/blog" target="_blank" rel="noopener noreferrer" class="underline decoration-gray-600 underline-offset-4 hover:text-white transition-colors">GitHub</a>，開 issue 或給一顆 star 我都收得到。
             </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
@@ -197,27 +213,19 @@
             <ul class="space-y-2 text-sm text-gray-400 list-none pl-0">
                 <li>
                     <span class="text-accent-purple mr-2">&bull;</span>
-                    <a href="../whiteboard.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
-                        Whiteboard &mdash; 直接打開，丟一個想法進來
-                    </a>
+                    <a href="../whiteboard.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">Whiteboard &mdash; 直接打開，丟一個想法進來</a>
                 </li>
                 <li>
                     <span class="text-accent-purple mr-2">&bull;</span>
-                    <a href="project_31.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
-                        Meet &mdash; 同一套設定上的第二個工具
-                    </a>
+                    <a href="project_31.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">Meet &mdash; 同一套設定上的第二個工具</a>
                 </li>
                 <li>
                     <span class="text-accent-purple mr-2">&bull;</span>
-                    <a href="https://developers.google.com/identity/gsi/web/guides/overview" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
-                        Google Identity Services &mdash; 官方文件
-                    </a>
+                    <a href="https://developers.google.com/identity/gsi/web/guides/overview" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">Google Identity Services &mdash; 官方文件</a>
                 </li>
                 <li>
                     <span class="text-accent-purple mr-2">&bull;</span>
-                    <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Opener-Policy" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
-                        Cross-Origin-Opener-Policy &mdash; MDN
-                    </a>
+                    <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Opener-Policy" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">Cross-Origin-Opener-Policy &mdash; MDN</a>
                 </li>
             </ul>
 
@@ -234,7 +242,6 @@
                 <li><strong class="text-white">票數</strong>：transaction 加減，另一個欄位按人分格記錄投過的人</li>
                 <li><strong class="text-white">共用</strong>：跟 Meet 共用同一個 Firebase 專案與同一份權限檔，兩個工具各佔一個頂層節點</li>
             </ul>
-
         </article>
 
         <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
