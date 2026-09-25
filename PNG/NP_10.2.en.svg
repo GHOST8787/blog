@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 486" width="920" height="486" role="img" aria-label="Architecture before and after the fix: the waiting page polls the Hong Kong Firestore through Vercel's US region every 30 seconds; before the fix full documents including report text crossed regions, after it only queuedAt, createdAt and processingTimeMs come back">
+  <defs>
+    <marker id="arrowHot" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#BF94FF"/></marker>
+    <marker id="arrowDim" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6B7280"/></marker>
+  </defs>
+  <rect x="0" y="0" width="920" height="486" fill="#050505"/>
+  <text x="32.0" y="38.0" fill="#9CA3AF" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" text-anchor="start">WIRE VIEW / WHERE IT LEAKED</text>
+  <text x="32.0" y="56.0" fill="#6B7280" font-family="JetBrains Mono, monospace" font-size="11" font-weight="400" text-anchor="start">Same route before and after the fix, different payload on the way back</text>
+  <text x="32.0" y="84.0" fill="#BF94FF" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" text-anchor="start">Before · bare .get()</text>
+  <line x1="32" y1="266.0" x2="888" y2="266.0" stroke="#1F1F26" stroke-width="1"/>
+  <text x="32.0" y="290.0" fill="#BF94FF" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" text-anchor="start">After · .select()</text>
+  <line x1="260.0" y1="137.0" x2="328.0" y2="137.0" stroke="#6B7280" stroke-width="1.4" marker-end="url(#arrowDim)"/>
+  <rect x="259.0" y="106.0" width="70.0" height="15.0" fill="#050505"/>
+  <text x="294.0" y="115.0" fill="#6B7280" font-family="JetBrains Mono, monospace" font-size="10" font-weight="700" text-anchor="middle">every 30 s</text>
+  <rect x="270.1" y="120.0" width="47.8" height="14.0" fill="#050505"/>
+  <text x="294.0" y="128.0" fill="#6B7280" font-family="JetBrains Mono, monospace" font-size="9" font-weight="700" text-anchor="middle">polling</text>
+  <line x1="548.0" y1="137.0" x2="616.0" y2="137.0" stroke="#6B7280" stroke-width="1.4" marker-end="url(#arrowDim)"/>
+  <rect x="541.0" y="106.0" width="82.0" height="15.0" fill="#050505"/>
+  <text x="582.0" y="115.0" fill="#6B7280" font-family="JetBrains Mono, monospace" font-size="10" font-weight="700" text-anchor="middle">cross-region</text>
+  <rect x="555.4" y="120.0" width="53.2" height="14.0" fill="#050505"/>
+  <text x="582.0" y="128.0" fill="#6B7280" font-family="JetBrains Mono, monospace" font-size="9" font-weight="700" text-anchor="middle">HK to US</text>
+  <path d="M 728.0 174.0 V 216.0 H 440.0 V 178.0" fill="none" stroke="#BF94FF" stroke-width="2.4" marker-end="url(#arrowHot)"/>
+  <line x1="260.0" y1="343.0" x2="328.0" y2="343.0" stroke="#6B7280" stroke-width="1.4" marker-end="url(#arrowDim)"/>
+  <rect x="259.0" y="312.0" width="70.0" height="15.0" fill="#050505"/>
+  <text x="294.0" y="321.0" fill="#6B7280" font-family="JetBrains Mono, monospace" font-size="10" font-weight="700" text-anchor="middle">every 30 s</text>
+  <rect x="270.1" y="326.0" width="47.8" height="14.0" fill="#050505"/>
+  <text x="294.0" y="334.0" fill="#6B7280" font-family="JetBrains Mono, monospace" font-size="9" font-weight="700" text-anchor="middle">polling</text>
+  <line x1="548.0" y1="343.0" x2="616.0" y2="343.0" stroke="#6B7280" stroke-width="1.4" marker-end="url(#arrowDim)"/>
+  <rect x="541.0" y="312.0" width="82.0" height="15.0" fill="#050505"/>
+  <text x="582.0" y="321.0" fill="#6B7280" font-family="JetBrains Mono, monospace" font-size="10" font-weight="700" text-anchor="middle">cross-region</text>
+  <rect x="555.4" y="326.0" width="53.2" height="14.0" fill="#050505"/>
+  <text x="582.0" y="334.0" fill="#6B7280" font-family="JetBrains Mono, monospace" font-size="9" font-weight="700" text-anchor="middle">HK to US</text>
+  <path d="M 728.0 380.0 V 422.0 H 440.0 V 384.0" fill="none" stroke="#BF94FF" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arrowHot)"/>
+  <rect x="48.0" y="100.0" width="208" height="74" rx="8" fill="#0A0A0C" stroke="#1F1F26"/>
+  <text x="152.0" y="127.0" fill="#FFFFFF" font-family="Plus Jakarta Sans, sans-serif" font-size="14.0" font-weight="700" text-anchor="middle">Waiting page</text>
+  <text x="152.0" y="146.0" fill="#9CA3AF" font-family="JetBrains Mono, monospace" font-size="11.0" font-weight="400" text-anchor="middle">/v/[id]</text>
+  <text x="152.0" y="163.0" fill="#8B7BA8" font-family="JetBrains Mono, monospace" font-size="10.5" font-weight="700" text-anchor="middle">polls every 30 s</text>
+  <rect x="336.0" y="100.0" width="208" height="74" rx="8" fill="#140F1F" stroke="#3A2F52"/>
+  <text x="440.0" y="127.0" fill="#FFFFFF" font-family="Plus Jakarta Sans, sans-serif" font-size="14.0" font-weight="700" text-anchor="middle">Vercel, US region</text>
+  <text x="440.0" y="146.0" fill="#9CA3AF" font-family="JetBrains Mono, monospace" font-size="11.0" font-weight="400" text-anchor="middle">queue-position API</text>
+  <text x="440.0" y="163.0" fill="#BF94FF" font-family="JetBrains Mono, monospace" font-size="10.5" font-weight="700" text-anchor="middle">two .get(), no field list</text>
+  <rect x="624.0" y="100.0" width="208" height="74" rx="8" fill="#0A0A0C" stroke="#1F1F26"/>
+  <text x="728.0" y="127.0" fill="#FFFFFF" font-family="Plus Jakarta Sans, sans-serif" font-size="14.0" font-weight="700" text-anchor="middle">Firestore, Hong Kong</text>
+  <text x="728.0" y="146.0" fill="#9CA3AF" font-family="JetBrains Mono, monospace" font-size="11.0" font-weight="400" text-anchor="middle">videos collection</text>
+  <text x="728.0" y="163.0" fill="#8B7BA8" font-family="JetBrains Mono, monospace" font-size="10.5" font-weight="700" text-anchor="middle">this user's queued + done</text>
+  <rect x="48.0" y="306.0" width="208" height="74" rx="8" fill="#0A0A0C" stroke="#1F1F26"/>
+  <text x="152.0" y="333.0" fill="#FFFFFF" font-family="Plus Jakarta Sans, sans-serif" font-size="14.0" font-weight="700" text-anchor="middle">Waiting page</text>
+  <text x="152.0" y="352.0" fill="#9CA3AF" font-family="JetBrains Mono, monospace" font-size="11.0" font-weight="400" text-anchor="middle">/v/[id]</text>
+  <text x="152.0" y="369.0" fill="#8B7BA8" font-family="JetBrains Mono, monospace" font-size="10.5" font-weight="700" text-anchor="middle">polls every 30 s</text>
+  <rect x="336.0" y="306.0" width="208" height="74" rx="8" fill="#140F1F" stroke="#3A2F52"/>
+  <text x="440.0" y="333.0" fill="#FFFFFF" font-family="Plus Jakarta Sans, sans-serif" font-size="14.0" font-weight="700" text-anchor="middle">Vercel, US region</text>
+  <text x="440.0" y="352.0" fill="#9CA3AF" font-family="JetBrains Mono, monospace" font-size="11.0" font-weight="400" text-anchor="middle">queue-position API</text>
+  <text x="440.0" y="369.0" fill="#BF94FF" font-family="JetBrains Mono, monospace" font-size="10.5" font-weight="700" text-anchor="middle">two .select()</text>
+  <rect x="624.0" y="306.0" width="208" height="74" rx="8" fill="#0A0A0C" stroke="#1F1F26"/>
+  <text x="728.0" y="333.0" fill="#FFFFFF" font-family="Plus Jakarta Sans, sans-serif" font-size="14.0" font-weight="700" text-anchor="middle">Firestore, Hong Kong</text>
+  <text x="728.0" y="352.0" fill="#9CA3AF" font-family="JetBrains Mono, monospace" font-size="11.0" font-weight="400" text-anchor="middle">videos collection</text>
+  <text x="728.0" y="369.0" fill="#8B7BA8" font-family="JetBrains Mono, monospace" font-size="10.5" font-weight="700" text-anchor="middle">three fields only</text>
+  <text x="584.0" y="236.0" fill="#FFFFFF" font-family="Plus Jakarta Sans, sans-serif" font-size="14.0" font-weight="700" text-anchor="middle">Full documents return, chapters and transcripts included</text>
+  <text x="584.0" y="254.0" fill="#9CA3AF" font-family="JetBrains Mono, monospace" font-size="11.0" font-weight="400" text-anchor="middle">the math uses only queuedAt · createdAt · processingTimeMs</text>
+  <text x="584.0" y="442.0" fill="#FFFFFF" font-family="Plus Jakarta Sans, sans-serif" font-size="14.0" font-weight="700" text-anchor="middle">Only the three fields actually used</text>
+  <text x="584.0" y="460.0" fill="#9CA3AF" font-family="JetBrains Mono, monospace" font-size="11.0" font-weight="400" text-anchor="middle">queuedAt · createdAt · processingTimeMs · read count unchanged</text>
+</svg>

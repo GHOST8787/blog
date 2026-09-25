@@ -1,0 +1,122 @@
+{
+  "title": "WIRE VIEW / 問題出在哪一段",
+  "subtitle": "同一條路線，修整前後差在回程搬的東西",
+  "alt": "修整前後的架構對照：等待頁每 30 秒經 Vercel 美國節點查香港的 Firestore，修整前整份文件（含報告全文）跨區搬回，修整後只回 queuedAt、createdAt、processingTimeMs 三個欄位",
+  "viewBox": [
+    920,
+    486
+  ],
+  "groups": [
+    {
+      "index": 0,
+      "label": "修整前 · 裸 .get()"
+    },
+    {
+      "index": 1,
+      "label": "修整後 · .select()"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "wait-a",
+      "group": 0,
+      "col": 0,
+      "label": "使用者等待頁",
+      "sublabel": "/v/[id]",
+      "tag": "每 30 秒輪詢"
+    },
+    {
+      "id": "api-a",
+      "group": 0,
+      "col": 1,
+      "label": "Vercel 美國節點",
+      "sublabel": "queue-position API",
+      "tag": "兩個裸 .get()",
+      "hot": true
+    },
+    {
+      "id": "fs-a",
+      "group": 0,
+      "col": 2,
+      "label": "Firestore 香港",
+      "sublabel": "videos 集合",
+      "tag": "queued 全部 + done 全部"
+    },
+    {
+      "id": "wait-b",
+      "group": 1,
+      "col": 0,
+      "label": "使用者等待頁",
+      "sublabel": "/v/[id]",
+      "tag": "每 30 秒輪詢"
+    },
+    {
+      "id": "api-b",
+      "group": 1,
+      "col": 1,
+      "label": "Vercel 美國節點",
+      "sublabel": "queue-position API",
+      "tag": "兩處 .select()",
+      "hot": true
+    },
+    {
+      "id": "fs-b",
+      "group": 1,
+      "col": 2,
+      "label": "Firestore 香港",
+      "sublabel": "videos 集合",
+      "tag": "只回三個欄位"
+    }
+  ],
+  "flows": [
+    {
+      "from": "wait-a",
+      "to": "api-a",
+      "label": "每 30 秒",
+      "note": "輪詢"
+    },
+    {
+      "from": "api-a",
+      "to": "fs-a",
+      "label": "跨區查詢",
+      "note": "香港 → 美國"
+    },
+    {
+      "from": "fs-a",
+      "to": "api-a",
+      "route": "return",
+      "variant": "hot"
+    },
+    {
+      "from": "wait-b",
+      "to": "api-b",
+      "label": "每 30 秒",
+      "note": "輪詢"
+    },
+    {
+      "from": "api-b",
+      "to": "fs-b",
+      "label": "跨區查詢",
+      "note": "香港 → 美國"
+    },
+    {
+      "from": "fs-b",
+      "to": "api-b",
+      "route": "return",
+      "variant": "dashed"
+    }
+  ],
+  "bands": [
+    {
+      "group": 0,
+      "hot": true,
+      "title": "整份文件搬回來：queued 全部 + done 全部，含報告全文",
+      "note": "一份可到幾十 KB · 6 月 13.79 GiB · 8 月 14.35 GiB 跨區傳出"
+    },
+    {
+      "group": 1,
+      "title": "只回用到的三個欄位",
+      "note": "queuedAt · createdAt · processingTimeMs · 讀取筆數維持原樣"
+    }
+  ]
+}

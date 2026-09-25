@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 672" width="920" height="672" role="img" aria-label="Cost trace flowchart: a $22.38 bill against a near-zero expectation, about three quarters of it cross-region egress, two APIs polled every 30 seconds that return full documents, Vercel Hobby logs kept for only 12 hours so the culprit cannot be separated, select() added to the queue lookup, the admin list still to fix and the next bill as acceptance">
+  <defs>
+    <marker id="np103enarrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#BF94FF"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="920" height="672" fill="#050505"/>
+
+  <text x="32" y="40" fill="#9CA3AF" font-family="JetBrains Mono, monospace" font-size="13" letter-spacing="1.5">COST TRACE / SIX STEPS</text>
+  <text x="32" y="64" fill="#6B7280" font-family="Plus Jakarta Sans, sans-serif" font-size="12.5">From a bill that would not reconcile to two select() calls, every step tied to a checkable number or file</text>
+
+  <!-- 01 bill anomaly -->
+  <rect x="32" y="88" width="856" height="72" rx="10" fill="#0A0A0C" stroke="#1F1F26"/>
+  <text x="52" y="119" fill="#BF94FF" font-family="JetBrains Mono, monospace" font-size="12">01</text>
+  <text x="96" y="119" fill="#FFFFFF" font-family="Plus Jakarta Sans, sans-serif" font-size="14.5" font-weight="700">Expected near zero, August billed $22.38</text>
+  <text x="96" y="145" fill="#6B7280" font-family="JetBrains Mono, monospace" font-size="11">May $1.50 · Jun $19.22 · Jul $0.00 · Aug $22.38</text>
+  <line x1="460" y1="162" x2="460" y2="182" stroke="#BF94FF" stroke-width="1.4" marker-end="url(#np103enarrow)"/>
+
+  <!-- 02 line item -->
+  <rect x="32" y="184" width="856" height="72" rx="10" fill="#0A0A0C" stroke="#1F1F26"/>
+  <text x="52" y="215" fill="#BF94FF" font-family="JetBrains Mono, monospace" font-size="12">02</text>
+  <text x="96" y="215" fill="#FFFFFF" font-family="Plus Jakarta Sans, sans-serif" font-size="14.5" font-weight="700">About three quarters is Firestore cross-region egress</text>
+  <text x="96" y="241" fill="#6B7280" font-family="JetBrains Mono, monospace" font-size="11">APAC → Americas · Jun 13.79 GiB · Aug 14.35 GiB</text>
+  <line x1="460" y1="258" x2="460" y2="278" stroke="#BF94FF" stroke-width="1.4" marker-end="url(#np103enarrow)"/>
+
+  <!-- 03 spike days -->
+  <rect x="32" y="280" width="856" height="72" rx="10" fill="#0A0A0C" stroke="#1F1F26"/>
+  <text x="52" y="311" fill="#BF94FF" font-family="JetBrains Mono, monospace" font-size="12">03</text>
+  <text x="96" y="311" fill="#FFFFFF" font-family="Plus Jakarta Sans, sans-serif" font-size="14.5" font-weight="700">Two APIs poll every 30 s and return full documents</text>
+  <text x="96" y="337" fill="#6B7280" font-family="JetBrains Mono, monospace" font-size="11">/api/videos/[id]/queue-position · /api/admin/users</text>
+  <line x1="460" y1="354" x2="460" y2="374" stroke="#BF94FF" stroke-width="1.4" marker-end="url(#np103enarrow)"/>
+
+  <!-- 04 culprit (highlight) -->
+  <rect x="32" y="376" width="856" height="72" rx="10" fill="#140F1F" stroke="#3A2F52"/>
+  <text x="52" y="407" fill="#BF94FF" font-family="JetBrains Mono, monospace" font-size="12">04</text>
+  <text x="96" y="407" fill="#FFFFFF" font-family="Plus Jakarta Sans, sans-serif" font-size="14.5" font-weight="700">Where the evidence stops: no per-API split</text>
+  <text x="96" y="433" fill="#8B7BA8" font-family="JetBrains Mono, monospace" font-size="11">Vercel Hobby Observability shows at most 12 hours</text>
+  <line x1="460" y1="450" x2="460" y2="470" stroke="#BF94FF" stroke-width="1.4" marker-end="url(#np103enarrow)"/>
+
+  <!-- 05 counter-evidence -->
+  <rect x="32" y="472" width="856" height="72" rx="10" fill="#0A0A0C" stroke="#1F1F26"/>
+  <text x="52" y="503" fill="#BF94FF" font-family="JetBrains Mono, monospace" font-size="12">05</text>
+  <text x="96" y="503" fill="#FFFFFF" font-family="Plus Jakarta Sans, sans-serif" font-size="14.5" font-weight="700">Two .select() calls on the queue lookup</text>
+  <text x="96" y="529" fill="#6B7280" font-family="JetBrains Mono, monospace" font-size="11">commit f3b9254 · one file, +11 −2</text>
+  <line x1="460" y1="546" x2="460" y2="566" stroke="#BF94FF" stroke-width="1.4" marker-end="url(#np103enarrow)"/>
+
+  <!-- 06 fix -->
+  <rect x="32" y="568" width="856" height="72" rx="10" fill="#0A0A0C" stroke="#1F1F26"/>
+  <text x="52" y="599" fill="#BF94FF" font-family="JetBrains Mono, monospace" font-size="12">06</text>
+  <text x="96" y="599" fill="#FFFFFF" font-family="Plus Jakarta Sans, sans-serif" font-size="14.5" font-weight="700">Admin list still to fix; next bill is the check</text>
+  <text x="96" y="625" fill="#6B7280" font-family="JetBrains Mono, monospace" font-size="11">acceptance: full-September APAC → Americas transfer</text>
+</svg>

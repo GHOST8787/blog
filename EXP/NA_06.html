@@ -15,9 +15,7 @@
 
     <link rel="stylesheet" href="../style.css">
 
-    <script>
-        window.siteRoot = '../';
-    </script>
+    <script> window.siteRoot = '../'; </script>
     <script type="module" src="../main.js" defer></script>
 </head>
 
@@ -35,32 +33,25 @@
         <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
             <a href="../articles.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
                 <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
-                BACK TO ARTICLES
+                返回文章列表
             </a>
             <span class="opacity-50">EXP / NA_06 (draft)</span>
         </div>
 
         <header class="mb-12 border-b border-white/10 pb-12">
-
             <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
-                半年 AI 重度使用觀察：<br>
-                <span class="text-gradient text-2xl md:text-4xl">效率幻覺、理解盲區、與工具的正確定位</span>
+                論壇觀察（上）：<br>
+                <span class="text-gradient text-2xl md:text-4xl">暫停的方式，比暫停本身更值得談</span>
             </h1>
 
-            <div class="flex gap-3 mb-6">
-                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
-                    AI & Automation
-                </span>
-                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Observation
-                </span>
-                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Calibration
-                </span>
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">Thinking</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Platform</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Communication</span>
             </div>
 
             <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
-                <span><i class="far fa-calendar mr-2"></i>2026.04</span>
+                <span><i class="far fa-calendar mr-2"></i>2026.06.12</span>
                 <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
             </div>
         </header>
@@ -68,216 +59,189 @@
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
             <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
-                過去六個月，我同時訂閱了六種以上的 AI 服務——Claude MAX、Cursor、GPT Plus、Gemini，加上各種小工具。月支出大約六千台幣。這是實驗的成本。我想知道的是：這些工具到底在我的工作流裡佔什麼位置，邊界在哪裡。以下是觀察紀錄。
+                我平常會看一個匿名的社群論壇。某天點進去，整個論壇不見了&mdash;&mdash;看板、討論串全部進不去，首頁被換成一張頁：一句「沈澱、喘息中」，底下八個問題、一個留言框，最後一行小字連回主站。原本的內容全部讀不到，每個入口都被導去同一份問卷。讓我在意的，是它收掉自己的這個方式。
             </p>
+            <figure class="my-10 mx-auto">
+                <img src="../PNG/NA_06.1.webp"
+                     alt="黃昏海岸上的一只瓶中信"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    收掉自己的方式，比收掉本身更值得看
+                </figcaption>
+            </figure>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 效率幻覺：體感與實測的落差
-            </h3>
 
-            <p>
-                我在用 AI 輔助開發的時候，主觀感受是快了不少。但我後來找到一份讓我重新校正這個判斷的研究。
-            </p>
+            <p class="mb-6">它留下的八個問題，原話大概是這樣：</p>
 
-            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 shadow-xl my-8">
-                <h4 class="text-white font-bold mb-4 flex items-center gap-2">
-                    <i class="fas fa-flask text-accent-purple"></i> METR 2025 隨機對照試驗
-                </h4>
-                <ul class="list-none space-y-3 text-sm text-gray-400 font-light m-0 pl-0">
-                    <li class="flex justify-between items-center border-b border-white/5 pb-2"><span>受試者</span><span class="text-white font-mono">16 位資深開發者，平均 5 年專案經驗</span></li>
-                    <li class="flex justify-between items-center border-b border-white/5 pb-2"><span>任務規模</span><span class="text-white font-mono">246 個真實任務，來自 22,000+ 顆星 GitHub 專案</span></li>
-                    <li class="flex justify-between items-center border-b border-white/5 pb-2"><span>使用工具</span><span class="text-white font-mono">Cursor Pro + Claude 3.5 / 3.7 Sonnet</span></li>
-                    <li class="flex justify-between items-center border-b border-white/5 pb-2"><span>開發者預期</span><span class="text-green-400 font-mono">快 24%</span></li>
-                    <li class="flex justify-between items-center border-b border-white/5 pb-2"><span>實驗後主觀感受</span><span class="text-green-400 font-mono">覺得快了 20%</span></li>
-                    <li class="flex justify-between items-center"><span>實際完成時間</span><span class="text-red-400 font-mono">慢了 19%</span></li>
-                </ul>
-                <p class="text-xs text-gray-600 mt-4 mb-0 font-mono">
-                    來源：<a href="https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/" target="_blank" class="text-accent-purple/70 hover:text-accent-purple transition-colors">METR.org — Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity (2025.07)</a>
-                </p>
+            <div class="p-6 rounded-2xl border border-white/10 bg-[#0A0A0A] mb-8">
+                <ol class="list-decimal pl-5 space-y-3 text-gray-400 m-0 font-light text-base leading-relaxed">
+                    <li>你是什麼時候發現這個平台不見的？那一刻，你的第一個念頭是什麼？</li>
+                    <li>一個地方「一直都在」，它是預設值，還是需要付出成本？</li>
+                    <li>一個沒有廣告、不用實名、沒有演算法推播的地方，你覺得它靠什麼活著？</li>
+                    <li>它收的錢少到不像話，這樣的方式是基於什麼考量？</li>
+                    <li>大家平常也都會用別的平台。它們的「穩定」，和它的「穩定」，有什麼不同？</li>
+                    <li>如果開這個地方的人有名有姓、有臉、天天現身跟大家搏感情，你還會像現在這樣說話嗎？</li>
+                    <li>這次的事，你是自己發現的，還是透過其他人得知的？</li>
+                    <li>如果有話想對這個地方說（針對平台本身，而非經營者個人），可以留在這裡。</li>
+                </ol>
             </div>
 
-            <p>
-                研究者分析了螢幕錄影後發現原因：多出來的時間花在<strong class="text-white">撰寫提示詞、審查 AI 輸出、以及等待 AI 生成</strong>。最反直覺的一點在後面。這些開發者做完實驗，<strong class="text-white">仍然相信自己快了 20%</strong>，主觀感受和客觀數據之間，差了將近 40 個百分點。
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                下面一條一條談，文末附一段技術觀察&mdash;&mdash;我把這張頁面的原始碼翻出來，看它到底怎麼把一個好好的論壇換成這個樣子。
             </p>
 
-            <p>
-                這跟我自己的經驗吻合。我之前重構一個開源專案的時候，讓 AI 自由發揮的結果是：功能過度擴張、渲染層解耦失敗、控制流被破壞，變成修了 A 壞了 B 的無窮迴圈。最後我強制收回全局修改權限，改成只讓 AI 執行明確受限的子任務，速度反而穩定下來。<strong class="text-white">體感的快，在實測裡會被審查與等待的時間抵銷。</strong>
-            </p>
-
-            <div class="bg-white/5 p-5 rounded-xl border border-white/10 my-8 text-sm text-gray-400">
-                <p class="m-0">
-                    <strong class="text-white">補充：</strong>MIT Sloan 聯合 Microsoft 與 Accenture 的研究指出，AI 對初級工程師的產出提升約 27–39%，但對資深工程師僅 8–13%。你越熟悉自己的領域，AI 能給的邊際效益越低。這符合直覺。<strong class="text-white">AI 填補知識差距的效果明顯；面對已經存在的深度經驗，它的邊際貢獻很低。</strong>
-                </p>
-                <p class="text-xs text-gray-600 mt-3 mb-0 font-mono">
-                    來源：<a href="https://mitsloan.mit.edu/ideas-made-to-matter/how-generative-ai-affects-highly-skilled-workers" target="_blank" class="text-accent-purple/70 hover:text-accent-purple transition-colors">MIT Sloan Management Review (2026.01)</a>
-                </p>
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 一直都在，不等於要被供著
+            </h3>
+            <div class="border-l-2 border-accent-purple/30 pl-5 py-2 my-6">
+                <p class="text-gray-300 m-0">第二題：一個地方「一直都在」，它是預設值，還是需要付出成本？</p>
             </div>
-
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 理解幻覺：「覺得懂了」和「真的會了」的鴻溝
-            </h3>
-
             <p>
-                AI 回答問題的速度極快，解釋通常也結構清晰。但我注意到一個模式：用 AI 快速理解一個概念之後，真正要應用的時候，那個理解經常是空的。
+                一個東西一直都在的時候，沒人會去想它為什麼在；等它不在了，有需要的人自然會去找下一個。多數東西都有替代性。替代品的價值，在被需要的當下才被選擇，不需要使用者預先承諾去維持。所以回頭問使用者「我一直都在，你覺得是預設值還是成本」，這道題本身就有點微妙。
             </p>
 
-            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 shadow-xl my-8">
-                <h4 class="text-white font-bold mb-4 flex items-center gap-2">
-                    <i class="fas fa-brain text-accent-purple"></i> AI 輔助學習的記憶衰退數據
-                </h4>
-                <ul class="list-none space-y-3 text-sm text-gray-400 font-light m-0 pl-0">
-                    <li class="flex justify-between items-center border-b border-white/5 pb-2"><span>使用 AI 當天測驗</span><span class="text-green-400 font-mono">90 分</span></li>
-                    <li class="flex justify-between items-center border-b border-white/5 pb-2"><span>一週後重測（無複習）</span><span class="text-red-400 font-mono">60 分</span></li>
-                    <li class="flex justify-between items-center"><span>原因</span><span class="text-white text-xs">AI 跳過了大腦建立長期記憶所需的認知努力過程</span></li>
-                </ul>
-                <p class="text-xs text-gray-600 mt-4 mb-0 font-mono">
-                    來源：<a href="https://blogs.worldbank.org/en/education/is-ai-making-us-smarter-or-just-making-us-look-smart-" target="_blank" class="text-accent-purple/70 hover:text-accent-purple transition-colors">World Bank Education Blog (2025)</a>；<a href="https://www.nature.com/articles/s41586-024-07146-0" target="_blank" class="text-accent-purple/70 hover:text-accent-purple transition-colors">Nature (2024)</a>
-                </p>
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 一個平台能不能靠興趣活下去
+            </h3>
+            <div class="border-l-2 border-accent-purple/30 pl-5 py-2 my-6">
+                <p class="text-gray-300 m-0">第四題：它收的錢少到不像話，這樣的方式是基於什麼考量？</p>
             </div>
-
             <p>
-                這在學術上叫「理解幻覺 (Illusion of Understanding)」。AI 的濃縮版答案直接給你結論，跳過了建構心智模型的過程。短期內看起來像懂了，但那個知識沒有根，遇到變化就站不住。
+                這問題讓我想到 Wootalk，一個匿名隨機配對的聊天網站。
             </p>
             <p>
-                <strong class="text-white">AI 真正危險的地方在於：它讓你覺得自己懂了。</strong>直到你真的需要用到那個知識，空洞才會浮現。我目前的做法是：用 AI 建立初步輪廓，然後自己去驗證和重建一次。多一步，但那一步是真實的。
-            </p>
-
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 通用模型的邊界：你的 know-how 不在訓練資料裡
-            </h3>
-
-            <p>
-                每個 LLM 都有它被期待成為的樣子。大廠的模型是為了輔助自家產品生態而設計的，針對你的特定場景做的優化很有限。
+                它的來歷大概是這樣：創辦人說過，這是他閒暇做的，本來只想弄一個「24 小時都找得到人聊天」的地方，到今天都沒商業化。免費、免註冊、沒有廣告，也沒把使用者的對話拿去賣；伺服器從較貴的雲端搬去便宜很多的主機，成本壓下來，就這樣一直開著。它活下去的方式很簡單：繼續開著，繼續有人用。
             </p>
             <p>
-                這對獨立開發者和小團隊來說是一個結構性限制：<strong class="text-white">你辛苦累積的核心競爭力——對使用者的理解、領域裡說不清楚但很重要的判斷力——在通用模型裡根本不存在。</strong>你的 know-how 是你和競爭者之間的差距，而通用模型裡沒有這塊。它能加速你把程式碼寫出來；至於該寫什麼，得你自己決定。
-            </p>
-            <p>
-                我自己在做 side project 的時候，AI 在「怎麼做」這一層確實有用。至於「做什麼」和「為什麼做」這兩個對產品最關鍵的問題，AI 給的多半是泛論。最終的決策判斷，來自你對領域的理解。
+                這說明一件事：一個幾乎不收費的地方，也能持續運作多年。一個平台要不要賺、賺不賺得到，屬於經營者的選擇與本事。回到那道題的設計&mdash;&mdash;有商機的時候，經營者通常不會把它交給使用者一起想；沒有商機的時候，把它描述成一種犧牲或奉獻，會把討論從經營策略，帶往情感認同的方向。將經營者的選擇設計成一道需要使用者衡量的題目，反映了這道題的本質問題。
             </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 文生影片的結構性問題
+                <span class="text-accent-purple">#</span> 暫停的方式，與使用者的選擇權
             </h3>
-
             <p>
-                目前社群上有大量「用 AI 把 prompt 變成影片」的展示。我認真看了一輪之後，發現目前的文生影片工具有幾個無法迴避的技術瓶頸：
+                這次的做法，是把整個論壇功能換成一張新頁面，影響的範圍比單純發布公告大得多。
             </p>
-
-            <ul class="list-disc pl-5 space-y-3 text-gray-300 my-6 font-light">
-                <li><strong class="text-white">時間連貫性：</strong>物體和角色在幀與幀之間會變形，道具會在鏡頭間憑空傳送或消失。</li>
-                <li><strong class="text-white">運動真實感：</strong>人類動作容易落入怪異谷——腳會滑動、關節角度不自然、重量感缺失。</li>
-                <li><strong class="text-white">身份漂移：</strong>同一個角色的臉，在不同鏡頭之間會悄悄變成另一個人。模型對「同一角色」沒有持久的身份表徵。</li>
-            </ul>
-
             <p>
-                這些問題涉及模型架構層面的限制，微調參數解決不了。<strong class="text-white">目前文生影片產出的是「氛圍」層級的東西：畫面對了，內容承載不了。</strong>拿來快速製造視覺素材填充版面，堪用；要它取代影片製作的核心流程，目前還差得遠。
+                在論壇裡發一篇文，跟把整個公共空間換成一份問卷，是兩件事。發一篇文，使用者自己決定要不要點進來、要不要回；把整個門面換掉，每一個來的人都先撞上這八個問題，才找得到其他出口。原本能回話的地方，變成一個只能單向投遞的信箱；原本發文的地方，變成它想問的八個問題。使用者被放到一個比較被動的位置，這也是我對這種溝通方式有疑問的起點。
             </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 校正後的定位：AI 在我工作流裡的實際位置
+                <span class="text-accent-purple">#</span> 問題的引導性，與被留下的資料
             </h3>
-
             <p>
-                說了這些限制，不代表 AI 沒用。它在我的工作流裡確實佔有一席之地，只是那個位置和多數人想像的不同。根據半年的實際使用，以下是我認為有效的場景：
+                八個問題的句型幾乎一致：是預設值還是成本、很傻很佛不會賺還是不能賺、它的「穩定」和其他平台的「穩定」有什麼不同。這種句型看起來開放，選項本身已經把立場放了進去&mdash;&mdash;問你是預設值還是成本的當下，「這個地方值得被珍惜」這個前提，已經先替你決定好了。
+            </p>
+            <p>
+                我個人對開放的匿名空間沒有意見。如果只是擺一個空白的格子、沒有任何引導，誰想說什麼就說什麼，我認為完全沒問題。我在意的是引導式的問法：題目先替你把方向圈好，你只能在它畫的框裡走；你寫下的東西，又收進它的後台留底。一個把使用者圈進預設立場、再把回答留起來的設計，跟一個單純開放的空間，是兩種不同的東西。
             </p>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
-                <div class="bg-white/5 p-6 rounded-xl border border-white/10 hover:border-accent-purple/30 transition-colors">
-                    <h4 class="text-white font-bold mb-2 flex items-center gap-2 text-base m-0">
-                        <i class="fas fa-search text-accent-purple"></i> 快速建立輪廓
-                    </h4>
-                    <p class="text-sm text-gray-400 leading-relaxed mt-2 mb-0">
-                        碰到不熟的概念或技術時，用 AI 快速取得結構化的初步理解。這是起點，後面還是要自己驗證。
-                    </p>
-                </div>
-                <div class="bg-white/5 p-6 rounded-xl border border-white/10 hover:border-accent-purple/30 transition-colors">
-                    <h4 class="text-white font-bold mb-2 flex items-center gap-2 text-base m-0">
-                        <i class="fas fa-code text-accent-purple"></i> 受限子任務的執行
-                    </h4>
-                    <p class="text-sm text-gray-400 leading-relaxed mt-2 mb-0">
-                        明確定義輸入、輸出和邊界條件的任務。讓 AI 執行，人類驗收。全局架構決策不能交給它。
-                    </p>
-                </div>
-                <div class="bg-white/5 p-6 rounded-xl border border-white/10 hover:border-accent-purple/30 transition-colors">
-                    <h4 class="text-white font-bold mb-2 flex items-center gap-2 text-base m-0">
-                        <i class="fas fa-pen text-accent-purple"></i> 草稿起點
-                    </h4>
-                    <p class="text-sm text-gray-400 leading-relaxed mt-2 mb-0">
-                        用 AI 的輸出作為初稿，在上面修改比從零開始寫快。但最終版本的品質取決於你自己的判斷力。
-                    </p>
-                </div>
-                <div class="bg-white/5 p-6 rounded-xl border border-white/10 hover:border-accent-purple/30 transition-colors">
-                    <h4 class="text-white font-bold mb-2 flex items-center gap-2 text-base m-0">
-                        <i class="fas fa-magnifying-glass text-accent-purple"></i> 加速查找
-                    </h4>
-                    <p class="text-sm text-gray-400 leading-relaxed mt-2 mb-0">
-                        替代 Google 搜尋的部分場景。問一個具體問題、拿到結構化的回答，比翻十頁搜尋結果快。但需要交叉驗證。
-                    </p>
-                </div>
-            </div>
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 論壇的公共性：公版與個版
+            </h3>
+
+            <figure class="my-10 mx-auto max-w-s">
+                <img src="../PNG/NA_06.2.webp"
+                     alt="論壇的公共性：個版（部落格）與公版（論壇）的對照圖解"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    個版是你家的客廳；公版一旦長出一群人，就帶上了公共性
+                </figcaption>
+            </figure>
 
             <p>
-                共通點是：<strong class="text-white">AI 的角色是加速器。</strong>它能壓縮「從零到六十分」的時間；「從六十到九十分」那段路，進度條要自己推。
+                退一步看這個地方的定位。部落格是個版，是你家的客廳：牆上掛什麼、訪客留言區擺幾個問題，全憑你高興，沒有人能說你錯。論壇是另一回事。論壇是公版，一旦它開放給大眾、長出一群固定來的人，它就帶上了公共性。
+            </p>
+            <p>
+                這個分法不是我自己編的。傳播學裡有個經典概念叫「公共領域」（public sphere，哲學家 Habermas 提出）：一個讓人放下身分、平等討論的公共空間，它的重量來自參與的人。社會學家 Oldenburg 講的「第三空間」（third place），說的也是這個&mdash;&mdash;家與職場之外、讓人有歸屬感的聚會地，咖啡館、酒吧、論壇都算；這種地方的主角是來的人，開店的人比較像場地的看守。後來研究線上社群的學者還發現，待得夠久的成員，會對社群長出一種「心理所有權」，把它當成「我們的」地方，自發去維護它。
+            </p>
+            <p>
+                把這幾件事疊起來看：一個東西一旦被定義成論壇，它就預設了以使用者、以這群人的利益為先。把整個公共空間，換成一份以經營者處境為核心的問卷，是拿公版的位置，做個版的事。如果一開始就講明這是個人部落格、是經營者的個版，那以上全都不成立。個版跟公版，是兩種不同的承諾。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 經營者的情緒，與索取的方向
+            </h3>
+            <p>
+                做出一個這樣的地方，需要力氣，這點我認同，我也樂意用付費去支持它。我比較在意的是另一件事：經營者自己的情緒，為什麼要整個平台的人一起承接。把論壇換成一張告別頁，讓每個路過的人先面對經營者的處境，對部分使用者來說，會帶來一種額外的情緒負擔&mdash;&mdash;我姑且把它叫做「情緒房租」：你來用這個空間，順帶被收一筆沒打算付的情緒。
+            </p>
+            <p>
+                再往源頭看，價值有它自然流動的方向：別人主動來問你、需要你，你再開口。把一份問卷擺到所有人面前、等大家逐題回應，順序剛好是倒過來的。如果需要使用者的支持，直接提出「使用者付費」的選項即可。願意支持的人自然會付費，這樣的方式更直接且對等。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 對等的做法，其實更省力
+            </h3>
+            <p>
+                同樣一件事，有不收情緒租的做法，而且力氣更小。在論壇裡發一篇公告：這個平台需要暫停一段時間，原因如下。若有話想說，可以在下方留言。它本來就匿名，想回的人自然會回，想走的人正常走，每個人手上都還握著「要不要參與」這個選擇。
+            </p>
+            <p>
+                要收掉就說收掉，要更新就說更新，要問意見就開一份大家可以選擇填或不填的問卷。把決定講清楚，把選擇權留在對方手上，如此而已。
             </p>
 
             <hr class="border-white/10 my-12">
 
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 技術觀察：整個論壇如何被換成一張頁
+            </h3>
             <p>
-                半年過去，我沒有因為付了六千塊就產能翻倍。METR 的研究裡有一個細節讓我印象很深：即使數據顯示 AI 拖慢了速度，那些開發者還是不想停止使用。研究者問為什麼，回答是——<em class="text-gray-400">「用起來更愉快」</em>。
+                除了溝通方式，技術上的實作也值得看。我把這張頁面的原始碼翻出來，幾項特徵剛好印證了上面的觀察。
             </p>
 
-            <div class="mt-8 text-sm font-mono text-gray-500 border-l-2 border-accent-purple pl-4">
-                「雖然不能更快，但一定更快樂。」——這句話某種程度上說出了我們使用 AI 的真實動機。認清這一點不是壞事。工具的價值不一定要用效率來衡量，但你至少應該知道自己在為什麼買單。真正難的部分在於持續校正你對 AI 的期待。
+            <div class="space-y-5 mt-8">
+                <div class="bg-white/5 p-5 rounded-xl border-l-4 border-accent-purple/50">
+                    <strong class="text-white flex items-center gap-2 mb-2"><i class="fas fa-route text-accent-purple shrink-0"></i> 一、全站攔截（catch-all routing）</strong>
+                    <p class="text-sm text-gray-400 m-0 leading-relaxed">我試了五個原論壇一定會有的網址&mdash;&mdash;首頁、看板、最新討論、某篇文章、某個人的個人頁&mdash;&mdash;回來的內容大小到位元組都一樣，都是 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">9956 bytes</code>。不管打哪個網址，伺服器都回同一張頁面。原本的資料沒有消失，被一道吃掉所有路徑的規則統一導向這張頁。</p>
+                </div>
+                <div class="bg-white/5 p-5 rounded-xl border-l-4 border-accent-purple/50">
+                    <strong class="text-white flex items-center gap-2 mb-2"><i class="fas fa-cloud text-accent-purple shrink-0"></i> 二、邊緣運算部署</strong>
+                    <p class="text-sm text-gray-400 m-0 leading-relaxed">頁尾掛著 Cloudflare 的偵測程式，每個請求即時回源。配上「所有網址回同一頁，另有一個專收留言的 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">/api/leave</code>」，它最接近一支跑在 Cloudflare 邊緣節點上的程式（Workers 或 Pages Functions 那一類）。我用 GET 去敲 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">/api/leave</code>，回 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">405 Method Not Allowed</code>：這個窗口只收 POST 進去的留言，讀不出東西來。</p>
+                </div>
+                <div class="bg-white/5 p-5 rounded-xl border-l-4 border-accent-purple/50">
+                    <strong class="text-white flex items-center gap-2 mb-2"><i class="fas fa-shield-halved text-accent-purple shrink-0"></i> 三、Honeypot 反垃圾機制</strong>
+                    <p class="text-sm text-gray-400 m-0 leading-relaxed">表單裡的「公司」欄位被 CSS 推到畫面外，真人看不到。自動灌廣告的程式會把它填上，後端就用這格有沒有被填，來辨識並過濾機器人。這招叫 honeypot，蜜罐。截圖裡那句「公司（請留空）」，是寫給機器人看的誘餌標籤。</p>
+                </div>
+                <div class="bg-white/5 p-5 rounded-xl border-l-4 border-accent-purple/50">
+                    <strong class="text-white flex items-center gap-2 mb-2"><i class="fas fa-compass-drafting text-accent-purple shrink-0"></i> 四、完整的設計規格</strong>
+                    <p class="text-sm text-gray-400 m-0 leading-relaxed">CSS 註解裡留著一整套設計規格的痕跡：色票對應它自家的品牌紅、做了無障礙對比、輸入框字級至少 16px「避免 iOS 聚焦自動縮放」、按鈕點擊區至少 48px。還有這幾句，原封不動抄在這裡：「視覺方向 §5：深夜裡還亮著的一盞小燈」「六題之間的間距要大到讓每一題可以單獨被凝視」「頁尾主站一行：一扇安靜的側門」。連每道問題之間要留多大空白、好讓你逐題凝視，都被編號、寫進一份設計文件。</p>
+                </div>
             </div>
 
-            <hr class="border-white/10 my-12">
+            <p class="mt-10">
+                這四項疊在一起，是一份完整規劃過的設計成果&mdash;&mdash;從全站攔截、機器人過濾，到每一處凝視間距，都被仔細處理過。
+            </p>
 
-            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 shadow-xl">
-                <h4 class="text-white font-bold mb-4 flex items-center gap-2">
-                    <i class="fas fa-bookmark text-accent-purple"></i> 本文數據來源
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 說回我自己
+            </h3>
+            <p>
+                回到自己身上，我也在做這些事情&mdash;&mdash;寫網站，公開分享。你現在看到的這一頁，就是其中之一。理由很簡單，希望透過這樣的方式，找到一些志趣相投的人。
+            </p>
+
+            <div class="p-6 rounded-2xl border border-white/10 bg-[#0A0A0A] mt-12">
+                <h4 class="text-white font-bold mb-3 flex items-center gap-2 text-sm">
+                    <i class="fas fa-book-open text-accent-purple"></i> 附註
                 </h4>
-                <ul class="list-none space-y-3 text-sm text-gray-400 font-light m-0 pl-0">
-                    <li class="flex justify-between items-start border-b border-white/5 pb-2 gap-4">
-                        <a href="https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/" target="_blank" class="text-accent-purple/70 hover:text-accent-purple transition-colors shrink-0">METR 2025 RCT</a>
-                        <span class="text-right">AI 讓資深開發者慢 19%，但主觀感覺快 20%</span>
-                    </li>
-                    <li class="flex justify-between items-start border-b border-white/5 pb-2 gap-4">
-                        <a href="https://mitsloan.mit.edu/ideas-made-to-matter/how-generative-ai-affects-highly-skilled-workers" target="_blank" class="text-accent-purple/70 hover:text-accent-purple transition-colors shrink-0">MIT Sloan / MS / Accenture</a>
-                        <span class="text-right">AI 對初級工程師效果顯著，資深者有限</span>
-                    </li>
-                    <li class="flex justify-between items-start border-b border-white/5 pb-2 gap-4">
-                        <a href="https://www.nature.com/articles/s41586-024-07146-0" target="_blank" class="text-accent-purple/70 hover:text-accent-purple transition-colors shrink-0">Nature (2024)</a>
-                        <span class="text-right">AI 使用者普遍存在「理解幻覺」</span>
-                    </li>
-                    <li class="flex justify-between items-start gap-4">
-                        <a href="https://blogs.worldbank.org/en/education/is-ai-making-us-smarter-or-just-making-us-look-smart-" target="_blank" class="text-accent-purple/70 hover:text-accent-purple transition-colors shrink-0">World Bank (2025)</a>
-                        <span class="text-right">AI 輔助學習一週後成績跌 30%</span>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="bg-[#0A0A0A] p-4 rounded-xl border-l-2 border-red-500/50 border border-white/5 mt-6 text-xs text-gray-500">
-                <strong class="text-gray-400">關於排除的數據：</strong>本文刻意排除了網路上廣泛流傳的「IBM 95% AI 試點失敗率」——該數據原始來源無法核實，屬於被反覆轉引的二手引用。放進去只會傷害整篇文章的可信度。
+                <p class="text-sm text-gray-400 leading-relaxed m-0">
+                    起點是一個我平常就在看的匿名社群頁面。文中對技術手法的描述，可由該頁面公開的原始碼逐項對照（catch-all、Cloudflare、honeypot、設計規格註解皆出自原始碼）。不點名平台、不針對經營者個人，只討論這種做法本身。
+                </p>
             </div>
 
         </article>
 
         <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
-            <a href="article_13.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
-                &larr; Prev Article
+            <a href="article_10.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; 上一篇
             </a>
             <a href="../articles.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
-                View All Articles
+                查看所有文章
             </a>
-            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
-                Next Article &rarr;
+            <a href="NA_07.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                下一篇 &rarr;
             </a>
         </div>
 
     </main>
-
     <div id="footer-placeholder"></div>
-
 </body>
 </html>

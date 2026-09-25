@@ -14,12 +14,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="../../style.css">
-    <link rel="stylesheet" href="../../EXP/swipe_style.css">
 
     <script> window.siteRoot = '../'; </script>
     <script src="../../i18n.js" defer></script>
     <script type="module" src="../../main.js" defer></script>
-    <script src="../../EXP/swipe_app.js" defer></script>
 </head>
 
 <body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
@@ -44,8 +42,8 @@
         <header class="mb-12 border-b border-white/10 pb-12">
 
             <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
-                Turning a Survey into Cards You Swipe One at a Time<br>
-                <span class="text-gradient text-2xl md:text-4xl">Finish Swiping and a Mirror Appears: You vs Everyone</span>
+                The Bill Disagreed With My Estimate<br>
+                <span class="text-gradient text-2xl md:text-4xl">Tracing It to Two APIs Polled Every 30 Seconds</span>
             </h1>
 
             <div class="flex flex-wrap gap-3 mb-6">
@@ -53,211 +51,269 @@
                     Engineering
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Vanilla JS
+                    Firestore
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Interaction Design
+                    Cost
                 </span>
             </div>
 
             <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
-                <span><i class="far fa-calendar mr-2"></i>2026.06.25</span>
+                <span><i class="far fa-calendar mr-2"></i>2026.09.13</span>
                 <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
             </div>
         </header>
 
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
-            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
-                Plenty of people want to close a survey the moment they see one. The common explanation is "filling out surveys takes time", yet what truly puts people off tends to be three things stacked together: being interrupted by a topic that has nothing to do with them, questions long enough to have no visible end, and silence after they finish. This front-end module sets out to handle the latter two, making the act of answering shorter and lighter, and giving the respondent a reason at the end to come back and look at themselves.
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                yt-digest is a service I maintain: you hand it a YouTube video, it hands back a summary report. The heavy processing runs on a local daemon, and the cloud side holds a Next.js frontend, Firestore, Cloud Storage and a few APIs, so I expected the monthly cloud bill to sit near zero. The Google Cloud billing report said otherwise: June $19.22, August $22.38, July $0.00. This is how I worked back from the usage on that report, how far the evidence goes, and where it stops.
             </p>
 
-            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
-                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">Context</div>
-                <p class="m-0">
-                    This is an interactive web module: six question cards, answered by swiping (mouse drag or finger swipe, with left and right arrow keys supported too). A progress bar sits at the top; after six cards a result page appears, offering a light "type" first, then listing your choice against the share who agreed on each question, with the ones where you went against the majority flagged. The group data below is illustrative placeholder data, and a production version can wire up to live back-end stats.
-                </p>
+            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 my-8 text-sm text-gray-400">
+                Background: how this service came about is in
+                <a href="project_12.html" class="text-accent-purple hover:underline">P12, Two Generations of a YouTube Digest Tool</a>,
+                and how the report quality gets checked is in
+                <a href="project_25.html" class="text-accent-purple hover:underline">P25, Quality Control for AI Video Summaries</a>.
+                This one stays on the billing thread.
             </div>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> Why People Resent Filling Out Surveys
+                <span class="text-accent-purple">#</span> I expected zero, the report said $22.38
             </h3>
 
             <p>
-                Treating "it takes too long" as the main cause misses a more critical layer. The cause named again and again in survey research is the respondent's sense that the other side will do nothing with the feedback at all. Once a person settles on "filling this out changes nothing", the motivation to answer disappears, and what remains is closing the form. The feedback gap explains the steady decline in participation better than question length or sending frequency does.
-            </p>
-            <p>
-                Question count, in turn, decides answer quality. As questions pile up, people slide from "reading each one carefully" toward "skimming fast and picking one offhand". A return can look data-rich while its back half is all perfunctory straight-line answering. Put those two together and you get the most common survey failure: it goes out, it comes back, and what comes back is noise.
+                I exported the March–September billing report as CSV, grouped by month and SKU. Beyond the charge, I watched two usage numbers: data Firestore sent to the Americas, and read operations. The Firestore database was created on May 15, so May covers only half a month.
             </p>
 
-            <div class="my-8 p-8 bg-white/5 rounded-2xl border border-white/10 font-light">
-                <ul class="list-none space-y-5">
-                    <li class="flex items-start gap-3">
-                        <i class="fas fa-circle-question text-accent-purple mt-1.5 shrink-0"></i>
-                        <span>
-                            <strong class="text-white">The topic has nothing to do with me:</strong><br>
-                            What people get asked to fill out is often a set of questions with no overlap with their own life, lacking any motivation to answer from the first second.
-                        </span>
-                    </li>
-                    <li class="flex items-start gap-3">
-                        <i class="fas fa-list-ol text-accent-purple mt-1.5 shrink-0"></i>
-                        <span>
-                            <strong class="text-white">The questions are too long:</strong><br>
-                            A whole page of questions laid out at once makes people want to give up just from scrolling down; for those who push through, the back portion has already collapsed in quality.
-                        </span>
-                    </li>
-                    <li class="flex items-start gap-3">
-                        <i class="fas fa-ghost text-accent-purple mt-1.5 shrink-0"></i>
-                        <span>
-                            <strong class="text-white">Silence after finishing:</strong><br>
-                            The respondent gets no feedback at all and naturally reaches the conclusion "filling it out was pointless". This is the deepest layer of resentment.
-                        </span>
-                    </li>
-                </ul>
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm text-gray-300 border-collapse">
+                    <thead>
+                        <tr class="border-b border-white/10">
+                            <th class="text-left py-3 px-4 text-gray-500 font-mono text-xs uppercase">Month</th>
+                            <th class="text-left py-3 px-4 text-gray-500 font-mono text-xs uppercase">Charge</th>
+                            <th class="text-left py-3 px-4 text-gray-500 font-mono text-xs uppercase whitespace-nowrap">To Americas</th>
+                            <th class="text-left py-3 px-4 text-gray-500 font-mono text-xs uppercase whitespace-nowrap">Reads</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 px-4 text-white font-bold whitespace-nowrap">May</td>
+                            <td class="py-3 px-4 font-mono">$1.50</td>
+                            <td class="py-3 px-4 font-mono whitespace-nowrap">7.52 GiB</td>
+                            <td class="py-3 px-4 font-mono">465,255</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 px-4 text-white font-bold whitespace-nowrap">June</td>
+                            <td class="py-3 px-4 font-mono">$19.22</td>
+                            <td class="py-3 px-4 font-mono whitespace-nowrap">13.79 GiB</td>
+                            <td class="py-3 px-4 font-mono">755,628</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 px-4 text-white font-bold whitespace-nowrap">July</td>
+                            <td class="py-3 px-4 font-mono">$0.00</td>
+                            <td class="py-3 px-4 font-mono whitespace-nowrap">1.91 GiB</td>
+                            <td class="py-3 px-4 font-mono">416,134</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4 text-white font-bold whitespace-nowrap">August</td>
+                            <td class="py-3 px-4 font-mono">$22.38</td>
+                            <td class="py-3 px-4 font-mono whitespace-nowrap">14.35 GiB</td>
+                            <td class="py-3 px-4 font-mono">712,176</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> A Mutual-Fill Culture Props Up the Count and Trades Away Quality
-            </h3>
-
             <p>
-                In academia, pressure on response counts has bred a whole "mutual-fill" ecosystem: you fill out mine, I fill out yours, with neither side interested in the other's topic. This transactional obligation props up the response number at the cost of answer quality. When a respondent cannot make sense of the questions and only wants to repay the favor as fast as possible, they fill it in at random, and the study loses validity and population representativeness as a result. The more successful a mutual-fill platform becomes, the closer the data it delivers gets to noise, which is its structural contradiction. A return of two hundred responses may have half that simply cannot be used.
-            </p>
-            <p>
-                So the source of the resentment is quite concrete: interruption by an unfamiliar topic, overlong questions, and silence after finishing, three landmines stepped on at once. Getting people to answer in earnest means dismantling those three in reverse. This module handles the "process" and "feedback" pieces first; precise targeting of the topic is a question on another level.
-            </p>
-
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> Design Response One: Cut the Friction of Answering to a Minimum
-            </h3>
-
-            <p>
-                The first direction makes the act of "filling" itself lighter, through three concrete moves.
-            </p>
-
-            <div class="my-8 p-8 bg-white/5 rounded-2xl border border-white/10 font-light">
-                <ul class="list-none space-y-5">
-                    <li class="flex items-start gap-3">
-                        <i class="fas fa-layer-group text-accent-purple mt-1.5 shrink-0"></i>
-                        <span>
-                            <strong class="text-white">One at a time, easing the sea-of-questions feel:</strong><br>
-                            Questions stack as cards, with only the top one shown at a time and the rest shrunk underneath. What you see is always just the question in front of you, and the length of the whole survey stays hidden.
-                        </span>
-                    </li>
-                    <li class="flex items-start gap-3">
-                        <i class="fas fa-hand-pointer text-accent-purple mt-1.5 shrink-0"></i>
-                        <span>
-                            <strong class="text-white">Swiping in place of tapping:</strong><br>
-                            Right to agree, left to disagree, as natural as flipping cards on a phone. A drag counts only past a set distance and springs back short of it; while dragging, the card tilts and a color-coded label surfaces, giving instant feedback. Keyboard and buttons remain as backups.
-                        </span>
-                    </li>
-                    <li class="flex items-start gap-3">
-                        <i class="fas fa-bars-progress text-accent-purple mt-1.5 shrink-0"></i>
-                        <span>
-                            <strong class="text-white">Progress bar:</strong><br>
-                            A progress bar at the top triggers the instinct to "finish what was started". Each card swiped moves the bar forward a notch, turning answering into something with a visible finish line.
-                        </span>
-                    </li>
-                </ul>
-            </div>
-
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> Interactive Module: Swipe Survey
-            </h3>
-
-            <!-- ===== Swipe survey interactive module (logic in ../../EXP/swipe_app.js, styles in ../../EXP/swipe_style.css; question content falls back to the shared Chinese assets) ===== -->
-            <div id="sw-module" class="bg-[#0A0A0A] border border-white/10 rounded-3xl shadow-2xl p-6 md:p-10 my-12 relative z-20">
-
-                <!-- progress bar -->
-                <div class="flex justify-between items-baseline mb-3">
-                    <span class="text-accent-purple font-mono text-sm"><i class="fas fa-layer-group"></i> SWIPE_SURVEY</span>
-                    <span id="sw-progress-text" class="text-xs font-mono text-gray-500">Q 1 / 6</span>
-                </div>
-                <div class="sw-progress-track"><div class="sw-progress-fill" id="sw-progress-fill"></div></div>
-
-                <!-- card stack stage (cards injected by JS) -->
-                <div class="sw-stage" id="sw-stage"></div>
-
-                <!-- hint + fallback buttons -->
-                <div class="sw-hint" id="sw-hint">
-                    Swipe right to <span class="text-gray-200">agree</span>, left to <span class="text-gray-200">disagree</span> · or use the &larr; &rarr; keys
-                </div>
-                <div class="sw-pills" id="sw-pills">
-                    <button class="sw-pill no" id="sw-no">&larr; Disagree</button>
-                    <button class="sw-pill yes" id="sw-yes">Agree &rarr;</button>
-                </div>
-
-                <!-- result page (mirror): shown only after finishing -->
-                <div class="sw-result" id="sw-result">
-                    <div class="sw-type-label">Your result</div>
-                    <div class="sw-type-name" id="sw-type-name">&mdash;</div>
-                    <div class="sw-type-desc" id="sw-type-desc"></div>
-                    <div class="sw-mirror-title">You vs everyone: your choice on each question against the share who agreed</div>
-                    <div id="sw-mirror-rows"></div>
-                    <button class="sw-restart" id="sw-restart">Play again</button>
-                    <div class="sw-made">Front-end demo · group data is illustrative placeholder data</div>
-                </div>
-
-            </div>
-
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> Design Response Two: Give the Respondent a Mirror
-            </h3>
-
-            <p>
-                Once the process is lighter, the feedback gap is the piece that remains. The most effective fix is reciprocity: give the other side a little something first, and they treat answering in earnest as a return gift. Monetary incentives (prize draws, cash rewards) are one option, though they cost a lot and suit only some situations. The genuinely underrated one is giving the result back to the respondent.
-            </p>
-            <p>
-                A ready example is Harvard's Project Implicit association test: once you finish, it tells you "where your result falls in the overall population distribution". The move costs almost nothing, yet it gives the respondent a real reason to answer, that I get a mirror reflecting myself. The survey shifts from "hand over your data" to "I got something too".
-            </p>
-            <p>
-                This module's result page is the minimal implementation of that idea. After six cards, the screen offers a light type first as a closing hook, then sets "your choice" against "the share who agreed" question by question. The ones where you went against the majority are marked amber, letting the respondent see at a glance where they differ from others. Reciprocity and feedback both hold on this single page.
+                Both billed months sent more than 13 GiB to the Americas; July dropped to 1.91 GiB, roughly a seventh of August, and the bill went to zero. The charge tracks transfer volume, and that is the only relationship the table shows directly.
             </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> Where It Fits and What Comes Next
+                <span class="text-accent-purple">#</span> The charge has a name: data transfer
             </h3>
 
             <p>
-                Swipe cards suit light, attitude-leaning questions that "agree/disagree" can express. Settings that need rigorous measurement, seven-point Likert scales, matrix questions, research surveys that need precise gradations, still belong on a regular form, since swiping breaks measurement precision. Used in the right place, this module lowers the psychological barrier to answering, and leaves research rigor to regular tools to guard.
+                With the SKUs laid out, only two items carry a charge. Writes, deletes, storage and Cloud Storage all read $0.00:
             </p>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm text-gray-300 border-collapse">
+                    <thead>
+                        <tr class="border-b border-white/10">
+                            <th class="text-left py-3 px-4 text-gray-500 font-mono text-xs uppercase">SKU</th>
+                            <th class="text-left py-3 px-4 text-gray-500 font-mono text-xs uppercase whitespace-nowrap">June</th>
+                            <th class="text-left py-3 px-4 text-gray-500 font-mono text-xs uppercase whitespace-nowrap">August</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 px-4 font-mono text-xs">Cloud Firestore Internet Data Transfer Out from APAC to the Americas</td>
+                            <td class="py-3 px-4 font-mono whitespace-nowrap">$14.27</td>
+                            <td class="py-3 px-4 font-mono whitespace-nowrap">$16.91</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4 font-mono text-xs">Cloud Firestore Read Ops Hong Kong</td>
+                            <td class="py-3 px-4 font-mono whitespace-nowrap">$4.95</td>
+                            <td class="py-3 px-4 font-mono whitespace-nowrap">$5.47</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
             <p>
-                Right now the group data on the result page is hard-coded placeholder data, used only to show what the mirror looks like. The next step is wiring up a back end: write a record each time someone finishes, and change the result page's "share who agreed" into a real live query. That step turns this demo into something that can actually validate a need, and it is where this mirror starts to mean something.
+                Cross-region transfer is 74.2% of June and 75.6% of August; the rest is read operations. Both items list App Engine in the service column, and Firestore appears only inside the SKU name, so grouping by service alone points at the wrong place.
             </p>
 
-            <hr class="border-white/10 my-12">
+            <p>
+                The transfer route comes from the architecture. The Firestore database is located in Hong Kong (<code class="text-accent-purple bg-accent-purple/10 px-1 rounded">asia-east2</code>); the APIs run on Vercel, and the <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">X-Vercel-Id</code> response header shows the executing region as <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">iad1</code>, on the US east coast. Firebase's pricing page states that requests between Google Cloud regions carry additional internet egress charges.
+            </p>
 
-            <div class="mt-8 text-sm font-mono text-gray-500 border-l-2 border-accent-purple pl-4">
-                The root of survey resentment is mostly three things stacked: interruption by an unfamiliar topic, overlong questions, and no feedback after finishing. Turning answering into swipe cards lowers the friction of the process, and the mirror at the end gives the respondent a reason to look at themselves. Once a one-way extraction becomes a two-way exchange, the people willing to answer in earnest come back.
+            <p>
+                So the question narrowed to one sentence: which APIs repeatedly pull large amounts of data from Hong Kong into the US?
+            </p>
+
+            <figure class="my-10" data-image-slot="NP_10.1" style="display:none">
+                <img src="../../PNG/NP_10.1.svg"
+                     alt="Monthly cost bars from May to August with transfer to the Americas and read counts: 13.79 GiB in June and 14.35 GiB in August were billed, 7.52 GiB in May and 1.91 GiB in July were not"
+                     onload="this.closest('figure').style.display=''"
+                     onerror="this.closest('figure').remove()"
+                     class="w-full rounded-xl border border-white/10">
+                <figcaption class="mt-3 text-sm text-gray-500">Monthly charge, transfer to the Americas and read counts, all taken from the billing report.</figcaption>
+            </figure>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Two APIs in the code poll every 30 seconds
+            </h3>
+
+            <p>
+                Searching the repo for <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">setInterval</code> turns up four places that call an API every 30 seconds. Two of them hit <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">/api/daemon-status</code>, which reads a single <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">system/daemon</code> document per call; the other two pull whole batches of documents with <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">.get()</code> and bring them back in full. Both run on Vercel and both query the Hong Kong Firestore.
+            </p>
+
+            <p>
+                <strong class="text-white">The first is the waiting page's queue lookup.</strong> After submitting a video, the user waits on <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">/v/[id]</code>, which calls <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">/api/videos/[id]/queue-position</code> through <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">setInterval(fetchPos, 30_000)</code>, polling only while the video's status is <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">queued</code>. Each call reads the user's <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">users/{uid}/videos</code> three times:
+            </p>
+
+            <ol class="list-decimal pl-6 space-y-2 my-6">
+                <li>The target video itself, for its queue timestamp.</li>
+                <li>Every video with <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">status == "queued"</code>, to count how many sit ahead.</li>
+                <li>Every video with <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">status == "done"</code>, sorted by processing time from longest to shortest, with the top 10 averaged.</li>
+            </ol>
+
+            <p>
+                The math uses only <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">queuedAt</code>, <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">createdAt</code> and <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">processingTimeMs</code>. A video document also stores chapters, the original transcript and the Chinese transcript, and those fields crossed regions every 30 seconds; the more videos a user finishes, the more the third query carries.
+            </p>
+
+            <p>
+                <strong class="text-white">The second is the admin user list.</strong> The <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">/admin</code> page calls <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">/api/admin/users</code> through <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">setInterval(loadAll, 30000)</code>. That API reads every user, then pulls each user's <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">done</code> and <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">failed</code> videos, also as full-document <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">.get()</code> calls. Its only polling condition is an open admin tab.
+            </p>
+
+            <figure class="my-10">
+                <img src="../../PNG/NP_10.2.en.svg" alt="Queue lookup before and after the fix: the waiting page polls the Hong Kong Firestore through Vercel's US region every 30 seconds; before the fix full documents crossed regions, after it only queuedAt, createdAt and processingTimeMs come back" class="w-full rounded-xl border border-white/10">
+                <figcaption class="mt-3 text-sm text-gray-500">The queue lookup's route; before the fix full documents crossed regions, after it the two queries return only the fields they use.</figcaption>
+            </figure>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Where the evidence stops
+            </h3>
+
+            <p>
+                Both APIs fit "pull full documents from Hong Kong into the US every 30 seconds", but which one moved the 14 GiB in June and August cannot be separated today.
+            </p>
+
+            <p>
+                Separating them needs per-API call counts for June and August. I looked in Vercel Observability: the project is on the Hobby plan, the longest time range available is "Last 12 hours", and longer ranges require an upgrade. Call records from two months ago are gone.
+            </p>
+
+            <p>
+                One more line in the report does not fit. Firestore transfer within APAC went from 1.99 GiB in July to 7.68 GiB in August, more than threefold. That traffic does not travel the Vercel US route, neither polling API explains it, and it was not billed, so this post does not chase it.
+            </p>
+
+            <figure class="my-10">
+                <img src="../../PNG/NP_10.3.en.svg" alt="Cost trace flowchart: a $22.38 bill against a near-zero expectation, about three quarters of it cross-region egress, two APIs polled every 30 seconds that return full documents, Vercel Hobby logs kept for only 12 hours so the culprit cannot be separated, select() added to the queue lookup, the admin list still to fix and the next bill as acceptance" class="w-full rounded-xl border border-white/10">
+                <figcaption class="mt-3 text-sm text-gray-500">The six steps of the trace, each tied to a checkable number or file; step four is where the evidence stops.</figcaption>
+            </figure>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Fixing the queue lookup first
+            </h3>
+
+            <p>
+                Firestore's <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">.select()</code> returns only the fields you name. One line per query in the queue lookup, with the response payload and the arithmetic left as they were:
+            </p>
+
+            <div class="my-6 rounded-xl border border-white/10 bg-black/40 overflow-x-auto">
+                <div class="px-4 pt-3 pb-2 text-xs font-mono text-gray-500 border-b border-white/5">src/app/api/videos/[id]/queue-position/route.ts &middot; after</div>
+                <pre class="px-4 py-4 text-[13px] leading-relaxed font-mono text-gray-300"><code>const queuedSnap = await videosCol
+  .where("status", "==", "queued")
+  .select("queuedAt", "createdAt")
+  .get();
+
+const doneSnap = await videosCol
+  .where("status", "==", "done")
+  .select("processingTimeMs")
+  .get();</code></pre>
             </div>
 
-            <div class="mt-10 p-6 rounded-2xl border border-white/10 bg-[#0A0A0A]">
-                <h4 class="text-white font-bold mb-3 flex items-center gap-2 text-sm">
-                    <i class="fas fa-book text-accent-purple"></i> References
-                </h4>
-                <ul class="text-xs text-gray-500 leading-relaxed space-y-2 m-0 list-none pl-0">
-                    <li>Project Implicit, <a href="https://implicit.harvard.edu/" target="_blank" rel="noopener" class="text-gray-400 hover:text-white underline underline-offset-2 decoration-white/20">Implicit Association Test</a> (Harvard University). After the test it shows where your result falls in the distribution of the overall anonymous data, a public example of "giving the result back to the respondent".</li>
-                    <li>CMSWire, <a href="https://www.cmswire.com/customer-experience/your-customers-arent-quiettheyve-given-up-on-your-surveys/" target="_blank" rel="noopener" class="text-gray-400 hover:text-white underline underline-offset-2 decoration-white/20">Your Customers Aren&rsquo;t Quiet&mdash;They&rsquo;ve Given Up on Your Surveys</a>. It points out that people who stop answering surveys usually still hold opinions, and the deciding factor is doubt that their opinion will bring real change.</li>
-                </ul>
-            </div>
+            <p>
+                The change is commit <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">f3b9254</code>: one file, 11 insertions, 2 deletions, with a comment at both spots explaining the cost of removing <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">.select()</code>. On GitHub, the Vercel deployment status for that commit is success, dated 2026-09-05. The first read of the target video is still a full-document read; it is a single document and stayed as it was.
+            </p>
+
+            <p>
+                <strong class="text-white">This fix cuts transfer volume; the read count stays where it was.</strong> Firebase's pricing page charges for documents "read to satisfy a query", and <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">.select()</code> trims the fields each document carries back while the number of documents read stays the same.
+            </p>
+
+            <p>
+                The admin <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">/api/admin/users</code> still used full-document <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">.get()</code> as of 2026-09-13, and it is the next place to add <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">.select()</code>.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Acceptance waits for the next bill
+            </h3>
+
+            <p>
+                Through September 13, the report shows no "APAC to the Americas" line. That window includes September 1–5, before the fix went live, so it proves nothing about the fix. The acceptance metrics are cross-region transfer for all of September, and for the month after the admin list is fixed.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Polled endpoints need their own records
+            </h3>
+
+            <p>
+                A polled API's spend is a product of three numbers: bytes moved per call, how often it is called, and how many tabs are open at once. The first two live in the code; the third belongs to the users. Both APIs here drive a few numbers on screen and carried back full documents to do it.
+            </p>
+
+            <p>
+                On method, what I keep is the time gap. Bills arrive monthly, the platform keeps call records for 12 hours on Hobby, and by the time the bill shows up, the data that could name the culprit is gone. For any polled endpoint I write from now on, I will write those three numbers down and log call counts per route myself, so the next bill that does not reconcile has something to check against.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Environment
+            </h3>
+
+            <p>
+                Next.js App Router on Vercel (function region <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">iad1</code>), Firebase Firestore (<code class="text-accent-purple bg-accent-purple/10 px-1 rounded">asia-east2</code>), files on Cloud Storage, video processing on a local daemon. The change touches one file, <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">src/app/api/videos/[id]/queue-position/route.ts</code>.
+            </p>
+
+            <p class="text-sm text-gray-500 mt-8">
+                Sources (all verified 2026-09-13): charges, SKUs, transfer and read counts from the CSV export of the Google Cloud billing report for the "Firebase 付款" account (2026-03-01 to 2026-09-30, by month and SKU); database location and creation date from <code>firebase firestore:databases:get</code>; Vercel region from the live <code>X-Vercel-Id</code> header; Observability time ranges from the Vercel project dashboard; polling and queries from <code>src/app/v/[id]/page.tsx</code>, <code>src/app/admin/page.tsx</code>, <code>src/app/api/videos/[id]/queue-position/route.ts</code>, <code>src/app/api/admin/users/route.ts</code>, <code>src/lib/types.ts</code>; commit and deployment status from GitHub <code>GHOST8787/yt-digest</code>; read billing and cross-region egress from the <a href="https://firebase.google.com/docs/firestore/pricing" class="text-accent-purple hover:underline">Firebase pricing page</a>.
+            </p>
 
         </article>
 
         <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
             <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
-                &larr; Prev Project
+                &larr; Prev
             </a>
             <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
                 View All Projects
             </a>
             <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
-                Next Project &rarr;
+                Next &rarr;
             </a>
         </div>
 
     </main>
-
     <div id="footer-placeholder"></div>
-
 </body>
 </html>

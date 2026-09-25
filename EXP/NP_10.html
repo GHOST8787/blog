@@ -14,11 +14,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="swipe_style.css">
 
-    <script> window.siteRoot = '../'; </script>
+    <script>
+        window.siteRoot = '../';
+    </script>
     <script type="module" src="../main.js" defer></script>
-    <script src="swipe_app.js" defer></script>
 </head>
 
 <body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
@@ -43,8 +43,8 @@
         <header class="mb-12 border-b border-white/10 pb-12">
 
             <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
-                把問卷改成一張一張用滑的<br>
-                <span class="text-gradient text-2xl md:text-4xl">滑完跳出一面鏡子，照你 vs 大家</span>
+                帳單跟我預想的對不上：<br>
+                <span class="text-gradient text-2xl md:text-4xl">追到兩支每 30 秒輪詢的 API</span>
             </h1>
 
             <div class="flex flex-wrap gap-3 mb-6">
@@ -52,199 +52,253 @@
                     Engineering
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Vanilla JS
+                    Firestore
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Interaction Design
+                    Cost
                 </span>
             </div>
 
             <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
-                <span><i class="far fa-calendar mr-2"></i>2026.06.25</span>
+                <span><i class="far fa-calendar mr-2"></i>2026.09.13</span>
                 <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
             </div>
         </header>
 
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
-            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
-                很多人一看到問卷就想關掉。常見的解釋是「填問卷很花時間」，真正讓人反感的，通常是三件事疊加：被一個與自己無關的主題打擾、題目多到看不到盡頭，以及填完之後石沉大海。這個前端模組聚焦於後面兩件事：縮短作答過程、降低填答負擔，並在結尾提供填答者一個回來看自己結果的理由。
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                yt-digest 是我維護的一個線上服務：使用者丟一支 YouTube 影片進來，它產一份摘要報告。影片處理的重活跑在本機 daemon，雲端放的是 Next.js 前端、Firestore、Cloud Storage 和幾支 API，我預想它的雲端月費接近零元。Google Cloud 的帳單報表寫著：6 月 $19.22，8 月 $22.38，7 月 $0.00。這篇記錄我怎麼從報表上的用量往回推，推到哪裡有證據，推到哪裡證據斷了。
             </p>
 
-            <p class="text-sm text-gray-500 italic mb-10">
-                這是一個互動網頁模組：六張題目卡片，用滑動作答（滑鼠拖曳或手指滑動，也支援鍵盤左右鍵）。上方有進度條，滑完六題後出現結果頁，先給一個輕鬆的「型別」，再逐題列出你的選擇與大家同意的比例，跟多數人相反的題目會被標出來。下方的群體數據是示意用的假資料，正式版可接後端即時統計。
+            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 my-8 text-sm text-gray-400">
+                前情提要：這個服務的來歷寫在
+                <a href="project_12.html" class="text-accent-purple hover:underline">P12 YouTube 整理工具的兩個世代</a>，
+                報告品質怎麼把關寫在
+                <a href="project_25.html" class="text-accent-purple hover:underline">P25 替 AI 影片摘要把關</a>。
+                這篇只談帳單這條線。
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 預想是零元，報表寫著 $22.38
+            </h3>
+
+            <p>
+                我把 3 月到 9 月的帳單報表匯出成 CSV，按月份和 SKU 分組。金額之外，我多看兩個用量：Firestore 傳到美洲的資料量，和讀取次數。Firestore 資料庫在 5 月 15 日建立，所以 5 月只有半個月的資料。
             </p>
 
-            <figure class="my-10 mx-auto">
-                <img src="../PNG/NP_10.1.webp"
-                     alt="互動問卷前端模組流程"
-                     loading="lazy" class="w-full rounded-2xl opacity-90 hover:opacity-100 transition-opacity">
-                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
-                    互動問卷的三段流程 — 滑動作答 → 進度回饋 → 結果鏡子
-                </figcaption>
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm text-gray-300 border-collapse">
+                    <thead>
+                        <tr class="border-b border-white/10">
+                            <th class="text-left py-3 px-4 text-gray-500 font-mono text-xs uppercase">月份</th>
+                            <th class="text-left py-3 px-4 text-gray-500 font-mono text-xs uppercase">金額</th>
+                            <th class="text-left py-3 px-4 text-gray-500 font-mono text-xs uppercase whitespace-nowrap">傳到美洲</th>
+                            <th class="text-left py-3 px-4 text-gray-500 font-mono text-xs uppercase whitespace-nowrap">讀取次數</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 px-4 text-white font-bold whitespace-nowrap">5 月</td>
+                            <td class="py-3 px-4 font-mono">$1.50</td>
+                            <td class="py-3 px-4 font-mono whitespace-nowrap">7.52 GiB</td>
+                            <td class="py-3 px-4 font-mono">465,255</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 px-4 text-white font-bold whitespace-nowrap">6 月</td>
+                            <td class="py-3 px-4 font-mono">$19.22</td>
+                            <td class="py-3 px-4 font-mono whitespace-nowrap">13.79 GiB</td>
+                            <td class="py-3 px-4 font-mono">755,628</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 px-4 text-white font-bold whitespace-nowrap">7 月</td>
+                            <td class="py-3 px-4 font-mono">$0.00</td>
+                            <td class="py-3 px-4 font-mono whitespace-nowrap">1.91 GiB</td>
+                            <td class="py-3 px-4 font-mono">416,134</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4 text-white font-bold whitespace-nowrap">8 月</td>
+                            <td class="py-3 px-4 font-mono">$22.38</td>
+                            <td class="py-3 px-4 font-mono whitespace-nowrap">14.35 GiB</td>
+                            <td class="py-3 px-4 font-mono">712,176</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                收費的兩個月，傳到美洲的量都在 13 GiB 以上；7 月掉到 1.91 GiB，大約是 8 月的七分之一，帳單歸零。金額跟著傳輸量走，這是表上唯一能直接讀出來的關係。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 這筆錢的名字叫資料傳輸
+            </h3>
+
+            <p>
+                把 SKU 攤開，收費的項目只有兩個，其餘的寫入、刪除、儲存、Cloud Storage 全部是 $0.00：
+            </p>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm text-gray-300 border-collapse">
+                    <thead>
+                        <tr class="border-b border-white/10">
+                            <th class="text-left py-3 px-4 text-gray-500 font-mono text-xs uppercase">SKU</th>
+                            <th class="text-left py-3 px-4 text-gray-500 font-mono text-xs uppercase whitespace-nowrap">6 月</th>
+                            <th class="text-left py-3 px-4 text-gray-500 font-mono text-xs uppercase whitespace-nowrap">8 月</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 px-4 font-mono text-xs">Cloud Firestore Internet Data Transfer Out from APAC to the Americas</td>
+                            <td class="py-3 px-4 font-mono whitespace-nowrap">$14.27</td>
+                            <td class="py-3 px-4 font-mono whitespace-nowrap">$16.91</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4 font-mono text-xs">Cloud Firestore Read Ops Hong Kong</td>
+                            <td class="py-3 px-4 font-mono whitespace-nowrap">$4.95</td>
+                            <td class="py-3 px-4 font-mono whitespace-nowrap">$5.47</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                跨區傳輸在 6 月占 74.2%，8 月占 75.6%，剩下的是讀取次數。兩項的「服務」欄寫的都是 App Engine，Firestore 只出現在 SKU 名稱裡，只看服務分組的話會找錯地方。
+            </p>
+
+            <p>
+                這條傳輸路線來自架構。Firestore 資料庫的位置是香港（<code class="text-accent-purple bg-accent-purple/10 px-1 rounded">asia-east2</code>）；API 跑在 Vercel，回應標頭 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">X-Vercel-Id</code> 顯示執行的節點是 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">iad1</code>，在美國東岸。Firebase 的計費文件寫明，Google Cloud 跨區的請求要另外收網路傳出費。
+            </p>
+
+            <p>
+                於是問題收斂成一句話：哪些 API 會從美國反覆去香港撈大量資料？
+            </p>
+
+            <figure class="my-10" data-image-slot="NP_10.1" style="display:none">
+                <img src="../PNG/NP_10.1.svg"
+                     alt="五到八月每月費用長條圖，標出各月傳到美洲的資料量與讀取次數：6 月 13.79 GiB、8 月 14.35 GiB 收費，5 月 7.52 GiB、7 月 1.91 GiB 傳輸未收費"
+                     onload="this.closest('figure').style.display=''"
+                     onerror="this.closest('figure').remove()"
+                     class="w-full rounded-xl border border-white/10">
+                <figcaption class="mt-3 text-sm text-gray-500">每月費用、傳到美洲的資料量與讀取次數，數字取自帳單報表。</figcaption>
             </figure>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 為什麼大家對填問卷反感
+                <span class="text-accent-purple">#</span> 程式碼裡有兩支每 30 秒輪詢的 API
             </h3>
 
             <p>
-                把「填很久」當成主因，會錯過更關鍵的一層。在問卷研究裡被反覆指認的主因，是填答者覺得對方根本不會根據回饋做任何事。當一個人認定「我填了也不會改變什麼」，作答動機就消失了，剩下的只是把表單關掉。回饋斷層比題目長度或寄送頻率，更能解釋參與率持續下降的原因。
-            </p>
-            <p>
-                題目數量則決定了作答品質。題目一多，人會從「認真讀每一題」滑向「快速掃過、隨手選一個」。一份回收上來看起來資料量很大，後半段其實全是敷衍的直線式作答。這兩件事合起來，就是問卷最常見的失敗：發得出去、收得回來，收到的卻是雜訊。
+                在 repo 裡搜 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">setInterval</code>，每 30 秒呼叫 API 的地方有四處。其中兩處打的是 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">/api/daemon-status</code>，每次只讀 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">system/daemon</code> 一份文件；另外兩支會撈出整批文件，並用 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">.get()</code> 整份搬回來，兩支都跑在 Vercel、都去查香港的 Firestore。
             </p>
 
-            <div class="my-8 p-8 bg-white/5 rounded-2xl border border-white/10 font-light">
-                <ul class="list-none space-y-5">
-                    <li class="flex items-start gap-3">
-                        <i class="fas fa-circle-question text-accent-purple mt-1.5 shrink-0"></i>
-                        <span>
-                            <strong class="text-white">主題與我無關：</strong><br>
-                            被請去填的，常常是跟自己生活沒有交集的題目，從第一秒就缺乏作答動機。
-                        </span>
-                    </li>
-                    <li class="flex items-start gap-3">
-                        <i class="fas fa-list-ol text-accent-purple mt-1.5 shrink-0"></i>
-                        <span>
-                            <strong class="text-white">題目太長：</strong><br>
-                            整頁題目一次攤開，光是往下滑就讓人想放棄；撐著填完的人，後段品質也已經崩了。
-                        </span>
-                    </li>
-                    <li class="flex items-start gap-3">
-                        <i class="fas fa-ghost text-accent-purple mt-1.5 shrink-0"></i>
-                        <span>
-                            <strong class="text-white">填完石沉大海：</strong><br>
-                            填答者拿不到任何回饋，自然得出「填了也沒用」的結論。這是反感最深的一層。
-                        </span>
-                    </li>
-                </ul>
+            <p>
+                <strong class="text-white">第一支是等待頁的排隊查詢。</strong>使用者送出影片後停在 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">/v/[id]</code>，頁面用 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">setInterval(fetchPos, 30_000)</code> 呼叫 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">/api/videos/[id]/queue-position</code>，只在影片狀態是 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">queued</code> 時輪詢。每次呼叫對這個使用者的 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">users/{uid}/videos</code> 讀三次：
+            </p>
+
+            <ol class="list-decimal pl-6 space-y-2 my-6">
+                <li>讀目標影片本身，拿它的排隊時間。</li>
+                <li>撈出所有 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">status == "queued"</code> 的影片，算排在前面的有幾支。</li>
+                <li>撈出所有 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">status == "done"</code> 的影片，按處理時間由大到小排序，取前 10 支算平均。</li>
+            </ol>
+
+            <p>
+                計算用到的欄位只有 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">queuedAt</code>、<code class="text-accent-purple bg-accent-purple/10 px-1 rounded">createdAt</code>、<code class="text-accent-purple bg-accent-purple/10 px-1 rounded">processingTimeMs</code>。影片文件裡另外存著章節、原文逐字稿和中文逐字稿，這些欄位每 30 秒跟著跨區一次；使用者完成的影片越多，第三個查詢搬的量越大。
+            </p>
+
+            <p>
+                <strong class="text-white">第二支是後台的使用者列表。</strong><code class="text-accent-purple bg-accent-purple/10 px-1 rounded">/admin</code> 頁用 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">setInterval(loadAll, 30000)</code> 呼叫 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">/api/admin/users</code>。這支 API 先讀出所有使用者，再對每一個使用者撈 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">done</code> 和 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">failed</code> 的影片，同樣是整份 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">.get()</code>。它的輪詢條件只有一個：後台分頁開著。
+            </p>
+
+            <figure class="my-10">
+                <img src="../PNG/NP_10.2.svg" alt="排隊查詢修整前後的架構對照：等待頁每 30 秒經 Vercel 美國節點查香港的 Firestore，修整前整份文件跨區搬回，修整後只回 queuedAt、createdAt、processingTimeMs 三個欄位" class="w-full rounded-xl border border-white/10">
+                <figcaption class="mt-3 text-sm text-gray-500">排隊查詢的同一條路線，修整前整份文件跨區搬回，修整後兩個查詢只回用到的欄位。</figcaption>
+            </figure>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 證據斷在哪裡
+            </h3>
+
+            <p>
+                兩支 API 都符合「每 30 秒從美國去香港撈整份文件」，但 6 月和 8 月的 14 GiB 各自由誰搬的，現在分不出來。
+            </p>
+
+            <p>
+                要分開它們，需要 6 月和 8 月每支 API 的呼叫次數。我去 Vercel 的 Observability 找，專案用的是 Hobby 方案，時間範圍最長只能選「Last 12 hours」，更長的範圍要升級才開放。兩個月前的呼叫紀錄已經不在了。
+            </p>
+
+            <p>
+                帳單報表裡還有一項對不上。Firestore 傳到 APAC 內部的流量，7 月 1.99 GiB，8 月 7.68 GiB，也漲了三倍多。這段流量的目的地在 APAC 內，跟 Vercel 美國那條路分屬兩項 SKU，兩支輪詢 API 都解釋不了；它也沒有收費，所以這篇不往下追。
+            </p>
+
+            <figure class="my-10">
+                <img src="../PNG/NP_10.3.svg" alt="追查流程圖：帳單 $22.38 對不上預期、費用約四分之三是跨區傳輸、程式碼裡有兩支每 30 秒輪詢的 API、Vercel Hobby 紀錄只留 12 小時分不出元兇、排隊查詢已加 select()、後台列表待修並等下一期帳單驗收" class="w-full rounded-xl border border-white/10">
+                <figcaption class="mt-3 text-sm text-gray-500">追查的六步，每一步對到一個可查的數字或檔案；第四步是證據斷掉的地方。</figcaption>
+            </figure>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 先修掉排隊查詢
+            </h3>
+
+            <p>
+                Firestore 的 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">.select()</code> 讓查詢只回指定欄位。排隊查詢的兩個查詢各補一行，回應內容與計算邏輯保持原樣：
+            </p>
+
+            <div class="my-6 rounded-xl border border-white/10 bg-black/40 overflow-x-auto">
+                <div class="px-4 pt-3 pb-2 text-xs font-mono text-gray-500 border-b border-white/5">src/app/api/videos/[id]/queue-position/route.ts &middot; 修改後</div>
+                <pre class="px-4 py-4 text-[13px] leading-relaxed font-mono text-gray-300"><code>const queuedSnap = await videosCol
+  .where("status", "==", "queued")
+  .select("queuedAt", "createdAt")
+  .get();
+
+const doneSnap = await videosCol
+  .where("status", "==", "done")
+  .select("processingTimeMs")
+  .get();</code></pre>
             </div>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 互填文化撐起了數量，換來的是品質崩壞
-            </h3>
-
             <p>
-                在學術圈，問卷回收量的壓力催生出一整套「互填」生態：你幫我填、我幫你填，雙方對彼此的主題都沒有興趣。這種交易型的義務把回收數字撐了起來，代價是作答品質。當填答者看不懂題目、又只想盡快還掉這份人情，他會直接隨意填，研究因此失去效度與母體代表性。互填平台越成功，交付的資料就越接近雜訊，這是其結構上的矛盾。一份兩百筆的回收，可能有一半根本不能用。
-            </p>
-            <p>
-                因此，問卷反感的來源其實很具體：陌生主題的打擾、題目過長，以及填完後無聲無息，三個問題疊加。要讓人願意認真填，就得從這三點拆解。這個模組先處理「過程」與「回饋」兩塊，至於主題的精準投放，那是另一個層次的問題。
+                改動是 commit <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">f3b9254</code>，一支檔案，11 行新增、2 行刪除，兩處都留了註解說明拿掉 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">.select()</code> 的代價。GitHub 上這個 commit 的 Vercel 部署狀態是 success，時間 2026-09-05。第一次讀目標影片的那一行仍是整份讀取，只有一份文件，這次沒動。
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 設計回應一：把作答的摩擦降到最低
-            </h3>
-
             <p>
-                第一個方向是讓「填」這個動作本身變輕，靠三個具體做法。
+                <strong class="text-white">這次修的是傳輸量，讀取次數沒動。</strong>Firebase 的計費文件寫的是「為了滿足查詢而讀取的文件」都要計費，<code class="text-accent-purple bg-accent-purple/10 px-1 rounded">.select()</code> 減少的是每份文件搬回來的欄位，讀了幾份文件維持原樣。
             </p>
 
-            <div class="my-8 p-8 bg-white/5 rounded-2xl border border-white/10 font-light">
-                <ul class="list-none space-y-5">
-                    <li class="flex items-start gap-3">
-                        <i class="fas fa-layer-group text-accent-purple mt-1.5 shrink-0"></i>
-                        <span>
-                            <strong class="text-white">一次一張，降低題海感：</strong><br>
-                            題目以卡片堆疊，一次只露出最上面一張，後面的縮小墊在底下。看到的永遠只有眼前這題，整份問卷的長度被藏了起來。
-                        </span>
-                    </li>
-                    <li class="flex items-start gap-3">
-                        <i class="fas fa-hand-pointer text-accent-purple mt-1.5 shrink-0"></i>
-                        <span>
-                            <strong class="text-white">滑動取代點擊：</strong><br>
-                            往右同意、往左不同意，在手機上像翻牌一樣自然。拖到一定距離才算數，沒到就彈回；拖曳時卡片會傾斜，並浮現對應顏色的標籤，提供即時回饋。鍵盤與按鈕保留為備援。
-                        </span>
-                    </li>
-                    <li class="flex items-start gap-3">
-                        <i class="fas fa-bars-progress text-accent-purple mt-1.5 shrink-0"></i>
-                        <span>
-                            <strong class="text-white">進度條：</strong><br>
-                            頂部一條進度條，觸發人「想把開始的事做完」的本能。每滑掉一張，進度就往前一格，作答變成一件看得到終點的事。
-                        </span>
-                    </li>
-                </ul>
-            </div>
-
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> Interactive Module: 滑卡問卷
-            </h3>
-
-            <!-- ===== 滑卡問卷互動模組（邏輯在 swipe_app.js、樣式在 swipe_style.css）===== -->
-            <div id="sw-module" class="bg-[#0A0A0A] border border-white/10 rounded-3xl shadow-2xl p-6 md:p-10 my-12 relative z-20">
-
-                <!-- 進度列 -->
-                <div class="flex justify-between items-baseline mb-3">
-                    <span class="text-accent-purple font-mono text-sm"><i class="fas fa-layer-group"></i> SWIPE_SURVEY</span>
-                    <span id="sw-progress-text" class="text-xs font-mono text-gray-500">第 1 / 6 題</span>
-                </div>
-                <div class="sw-progress-track"><div class="sw-progress-fill" id="sw-progress-fill"></div></div>
-
-                <!-- 卡片堆疊舞台（JS 動態填入卡片） -->
-                <div class="sw-stage" id="sw-stage"></div>
-
-                <!-- 操作提示 + 備援按鈕 -->
-                <div class="sw-hint" id="sw-hint">
-                    往右滑 <span class="text-gray-200">同意</span>，往左滑 <span class="text-gray-200">不同意</span> · 也可用鍵盤 ← →
-                </div>
-                <div class="sw-pills" id="sw-pills">
-                    <button class="sw-pill no" id="sw-no">← 不同意</button>
-                    <button class="sw-pill yes" id="sw-yes">同意 →</button>
-                </div>
-
-                <!-- 結果頁（鏡子）：滑完才顯示 -->
-                <div class="sw-result" id="sw-result">
-                    <div class="sw-type-label">你的結果</div>
-                    <div class="sw-type-name" id="sw-type-name">—</div>
-                    <div class="sw-type-desc" id="sw-type-desc"></div>
-                    <div class="sw-mirror-title">你 vs 大家：每一題你的選擇，對上多數人的傾向</div>
-                    <div id="sw-mirror-rows"></div>
-                    <button class="sw-restart" id="sw-restart">再玩一次</button>
-                    <div class="sw-made">前端 demo · 群體數據為示意用的假資料</div>
-                </div>
-
-            </div>
-
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 設計回應二：給填答者一面鏡子
-            </h3>
-
             <p>
-                過程變輕之後，剩下回饋斷層這一塊。最有效的補法是互惠：先給對方一點東西，對方會把認真作答當成一種回禮。金錢誘因（抽獎、回饋金）是一種，但成本高，也不見得每個情境都適合。真正被低估的，是將結果回饋給填答者。
-            </p>
-            <p>
-                一個現成的例子是哈佛的 Project Implicit 內隱聯結測驗：你做完之後，它會告訴你「你的結果落在整體人口分布的哪個位置」。這招幾乎零成本，卻給了填答者一個真實的理由去填——我能拿到一面照自己的鏡子。問卷從「把資料交出去」變成「我也得到了一些東西」。
-            </p>
-            <p>
-                這個模組的結果頁就是這件事的最小實作。滑完六題，畫面先給一個輕鬆的型別當作收尾的鉤子，再逐題把「你的選擇」對上「大家同意的比例」。跟多數人相反的題目被標成琥珀色，讓填答者一眼看到自己在哪裡和別人不一樣。互惠與回饋在這一頁同時成立。
+                後台的 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">/api/admin/users</code> 到 2026-09-13 為止還是整份 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">.get()</code>，是下一個要補 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">.select()</code> 的地方。
             </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 適用範圍與下一步
+                <span class="text-accent-purple">#</span> 驗收要等下一期帳單
             </h3>
 
             <p>
-                滑卡適合輕量、態度傾向類的題目，靠「同意／不同意」就能表達。需要嚴謹測量的場合——李克特七點量表、矩陣題、需要精確刻度的研究問卷——還是該回到正規表單，滑動會破壞測量的精度。把這個模組用對地方，它降低的是填答的心理門檻，研究的嚴謹度交給正規工具去守。
+                9 月到 13 號為止，報表上沒有「APAC 到美洲」這一項。這段期間包含修正上線前的 9 月 1 日到 5 日，所以它證明不了修正有效。驗收的指標是整個 9 月、以及後台列表修掉之後那個月的跨區傳輸量。
             </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 輪詢端點要自己留紀錄
+            </h3>
+
             <p>
-                目前結果頁的群體數據是靜態的假資料，僅用於示範鏡子的呈現方式。下一步是接上後端：每滑完一份就寫一筆，結果頁的「大家同意比例」改成真實的即時查詢。那一步會把這個 demo 變成真的能驗證需求的東西，也是這面鏡子真正開始有意義的地方。
+                輪詢 API 的花費由三個數字相乘：單次搬多少資料、多久呼叫一次、同時開著幾個分頁。前兩個寫在程式碼裡，第三個由使用者決定。這次兩支 API 在畫面上都只負責幾個數字，搬回來的卻是整份文件。
             </p>
 
-            <hr class="border-white/10 my-12">
+            <p>
+                查法上留下的是時間差。帳單按月出，平台的呼叫紀錄在 Hobby 方案只留 12 小時，等看到帳單，能分辨元兇的資料早就沒了。往後寫任何會被輪詢的端點，我會先把這三個數字寫下來，並在自己的日誌裡按路由記呼叫次數，下次帳單對不上時才有東西可以對。
+            </p>
 
-            <div class="mt-8 text-sm font-mono text-gray-500 border-l-2 border-accent-purple pl-4">
-                問卷讓人反感的根源，多半來自三件事的疊加：陌生主題的打擾、題目過長，以及填完後缺乏回饋。把作答改成滑卡降低了過程的摩擦，結尾的鏡子給了填答者一個看自己的理由。當單向的抽取變成雙向的交換，願意認真填的人才會回來。
-            </div>
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 技術環境
+            </h3>
 
-            <div class="mt-10 p-6 rounded-2xl border border-white/10 bg-[#0A0A0A]">
-                <h4 class="text-white font-bold mb-3 flex items-center gap-2 text-sm">
-                    <i class="fas fa-book text-accent-purple"></i> 參考
-                </h4>
-                <ul class="text-xs text-gray-500 leading-relaxed space-y-2 m-0 list-none pl-0">
-                    <li>Project Implicit，<a href="https://implicit.harvard.edu/" target="_blank" rel="noopener" class="text-gray-400 hover:text-white underline underline-offset-2 decoration-white/20">Implicit Association Test</a>（哈佛大學）。做完測驗後會顯示你的結果落在整體匿名資料的分布位置，是「把結果回饋給填答者」的一個公開例子。</li>
-                    <li>CMSWire，<a href="https://www.cmswire.com/customer-experience/your-customers-arent-quiettheyve-given-up-on-your-surveys/" target="_blank" rel="noopener" class="text-gray-400 hover:text-white underline underline-offset-2 decoration-white/20">Your Customers Aren&rsquo;t Quiet&mdash;They&rsquo;ve Given Up on Your Surveys</a>。指出停止回覆問卷的人多半仍有意見，只是已經不相信自己的回饋會帶來實際改變。</li>
-                </ul>
-            </div>
+            <p>
+                Next.js App Router 部署在 Vercel（函式節點 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">iad1</code>），資料庫是 Firebase Firestore（<code class="text-accent-purple bg-accent-purple/10 px-1 rounded">asia-east2</code>），檔案放 Cloud Storage，影片處理交給本機 daemon。這次的改動範圍是 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">src/app/api/videos/[id]/queue-position/route.ts</code> 一支檔案。
+            </p>
+
+            <p class="text-sm text-gray-500 mt-8">
+                來源（皆於 2026-09-13 查證）：金額、SKU、傳輸量、讀取次數取自 Google Cloud 帳單報表「Firebase 付款」帳戶匯出的 CSV（2026-03-01 至 2026-09-30，按月份與 SKU 分組）；資料庫位置與建立日期取自 <code>firebase firestore:databases:get</code>；Vercel 節點取自線上回應標頭 <code>X-Vercel-Id</code>；Observability 時間範圍取自 Vercel 專案後台；輪詢與查詢取自 <code>src/app/v/[id]/page.tsx</code>、<code>src/app/admin/page.tsx</code>、<code>src/app/api/videos/[id]/queue-position/route.ts</code>、<code>src/app/api/admin/users/route.ts</code>、<code>src/lib/types.ts</code>；commit 與部署狀態取自 GitHub <code>GHOST8787/yt-digest</code>；讀取計費與跨區傳出費取自 <a href="https://firebase.google.com/docs/firestore/pricing" class="text-accent-purple hover:underline">Firebase 計費文件</a>。
+            </p>
 
         </article>
 
@@ -261,8 +315,6 @@
         </div>
 
     </main>
-
     <div id="footer-placeholder"></div>
-
 </body>
 </html>

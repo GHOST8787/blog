@@ -3,3 +3,6 @@
 .start-preview.ps1
 .stop-preview.ps1
 .playwright-mcp/
+
+# orphaned images kept locally only (38MB, not deployed)
+PNG/_unused/

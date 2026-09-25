@@ -1,0 +1,60 @@
+<svg viewBox="0 0 680 310" xmlns="http://www.w3.org/2000/svg" style="font-family:'Noto Sans TC','Inter','Segoe UI',sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <rect width="680" height="310" fill="#0a0e14"/>
+
+
+  <text x="340" y="28" text-anchor="middle" font-size="16" font-weight="700" fill="#e2e8f0">傳統架構的問題 → HCI 的動機</text>
+
+  <!-- LEFT: Traditional -->
+  <text x="145" y="56" text-anchor="middle" font-size="12" font-weight="600" fill="#5a7290">傳統：三樣分開買、分開管</text>
+
+  <rect x="50" y="70" width="86" height="66" rx="8" fill="rgba(52,211,153,0.08)" stroke="#34d399" stroke-width="0.6"/>
+  <text x="93" y="96" text-anchor="middle" font-size="13" font-weight="600" fill="#34d399">Server</text>
+  <text x="93" y="114" text-anchor="middle" font-size="10" fill="#5a7290">廠商 A</text>
+
+  <rect x="150" y="70" width="86" height="66" rx="8" fill="rgba(245,158,11,0.08)" stroke="#f59e0b" stroke-width="0.6"/>
+  <text x="193" y="96" text-anchor="middle" font-size="13" font-weight="600" fill="#f59e0b">Storage</text>
+  <text x="193" y="114" text-anchor="middle" font-size="10" fill="#5a7290">廠商 B</text>
+
+  <rect x="50" y="148" width="186" height="40" rx="8" fill="rgba(56,189,248,0.08)" stroke="#38bdf8" stroke-width="0.6"/>
+  <text x="143" y="173" text-anchor="middle" font-size="13" font-weight="600" fill="#38bdf8">Network 廠商 C</text>
+
+  <text x="143" y="212" text-anchor="middle" font-size="11" fill="#5a7290">擴展？三個都要分別擴</text>
+  <text x="143" y="228" text-anchor="middle" font-size="11" fill="#5a7290">管理？三套管理介面</text>
+  <text x="143" y="244" text-anchor="middle" font-size="11" fill="#5a7290">利用率？各自閒置</text>
+
+  <!-- Arrow -->
+  <line x1="280" y1="130" x2="360" y2="130" stroke="#f59e0b" stroke-width="2" marker-end="url(#a)"/>
+  <text x="320" y="120" text-anchor="middle" font-size="12" font-weight="600" fill="#f59e0b">合成一台</text>
+
+  <!-- RIGHT: HCI -->
+  <text x="500" y="56" text-anchor="middle" font-size="12" font-weight="600" fill="#5a7290">HCI：一個節點全包</text>
+
+  <rect x="380" y="70" width="240" height="160" rx="14" fill="rgba(52,211,153,0.05)" stroke="#34d399" stroke-width="0.8"/>
+  <text x="500" y="94" text-anchor="middle" font-size="14" font-weight="700" fill="#34d399">HCI 節點</text>
+
+  <!-- Inner blocks -->
+  <rect x="400" y="108" width="96" height="30" rx="5" fill="rgba(52,211,153,0.08)" stroke="#34d399" stroke-width="0.5"/>
+  <text x="448" y="128" text-anchor="middle" font-size="11" fill="#34d399">Server</text>
+
+  <rect x="504" y="108" width="96" height="30" rx="5" fill="rgba(245,158,11,0.08)" stroke="#f59e0b" stroke-width="0.5"/>
+  <text x="552" y="128" text-anchor="middle" font-size="11" fill="#f59e0b">Storage</text>
+
+  <rect x="400" y="146" width="96" height="30" rx="5" fill="rgba(56,189,248,0.08)" stroke="#38bdf8" stroke-width="0.5"/>
+  <text x="448" y="166" text-anchor="middle" font-size="11" fill="#38bdf8">Network</text>
+
+  <rect x="504" y="146" width="96" height="30" rx="5" fill="rgba(167,139,250,0.08)" stroke="#a78bfa" stroke-width="0.5"/>
+  <text x="552" y="166" text-anchor="middle" font-size="11" fill="#a78bfa">Hypervisor</text>
+
+  <text x="500" y="204" text-anchor="middle" font-size="11" font-weight="600" fill="#34d399">統一管理介面</text>
+
+  <text x="500" y="252" text-anchor="middle" font-size="11" fill="#5a7290">擴展？加一台節點</text>
+  <text x="500" y="268" text-anchor="middle" font-size="11" fill="#5a7290">管理？一個 Web UI</text>
+  <text x="500" y="284" text-anchor="middle" font-size="11" fill="#5a7290">利用率？軟體自動調度</text>
+
+  <text x="340" y="306" text-anchor="middle" font-size="11" fill="#5a7290">這就是 Day 2 要學的 HCI — 把三層硬體塞進同一個盒子裡</text>
+</svg>

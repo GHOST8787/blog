@@ -1,0 +1,51 @@
+<svg viewBox="0 0 680 440" xmlns="http://www.w3.org/2000/svg" style="font-family:'Noto Sans TC','Inter','Segoe UI',sans-serif">
+  <rect width="680" height="440" fill="#0a0e14"/>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#5a7290" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <rect width="680" height="440" fill="#0a0e14"/>
+
+  <text x="340" y="32" text-anchor="middle" font-size="16" font-weight="700" fill="#e2e8f0">AI 基礎架構五層堆疊</text>
+
+  <!-- Layer 1: Application -->
+  <rect x="140" y="60" width="400" height="52" rx="10" fill="rgba(167,139,250,0.1)" stroke="#a78bfa" stroke-width="0.8"/>
+  <text x="340" y="82" text-anchor="middle" font-size="14" font-weight="700" fill="#a78bfa">AI Application</text>
+  <text x="340" y="100" text-anchor="middle" font-size="11" fill="#8599b0">ChatBot、影像辨識、推薦系統、RAG</text>
+
+  <line x1="340" y1="112" x2="340" y2="130" stroke="#5a7290" stroke-width="0.8" marker-end="url(#a)"/>
+
+  <!-- Layer 2: Framework -->
+  <rect x="140" y="134" width="400" height="52" rx="10" fill="rgba(244,114,182,0.08)" stroke="#f472b6" stroke-width="0.8"/>
+  <text x="340" y="156" text-anchor="middle" font-size="14" font-weight="700" fill="#f472b6">AI Framework / Model</text>
+  <text x="340" y="174" text-anchor="middle" font-size="11" fill="#8599b0">PyTorch、TensorFlow、LLM（GPT、LLaMA）</text>
+
+  <line x1="340" y1="186" x2="340" y2="204" stroke="#5a7290" stroke-width="0.8" marker-end="url(#a)"/>
+
+  <!-- Layer 3: GPU -->
+  <rect x="140" y="208" width="400" height="52" rx="10" fill="rgba(52,211,153,0.08)" stroke="#34d399" stroke-width="0.8"/>
+  <text x="340" y="230" text-anchor="middle" font-size="14" font-weight="700" fill="#34d399">GPU / Accelerator</text>
+  <text x="340" y="248" text-anchor="middle" font-size="11" fill="#8599b0">NVIDIA A100 → H100 → H200 → B200 ｜ AMD Instinct</text>
+
+  <line x1="340" y1="260" x2="340" y2="278" stroke="#5a7290" stroke-width="0.8" marker-end="url(#a)"/>
+
+  <!-- Layer 4: Storage -->
+  <rect x="140" y="282" width="400" height="52" rx="10" fill="rgba(245,158,11,0.1)" stroke="#f59e0b" stroke-width="0.8"/>
+  <text x="340" y="304" text-anchor="middle" font-size="14" font-weight="700" fill="#f59e0b">High-Speed Storage</text>
+  <text x="340" y="322" text-anchor="middle" font-size="11" fill="#8599b0">NVMe SSD、平行檔案系統（Lustre、GPFS）</text>
+
+  <line x1="340" y1="334" x2="340" y2="352" stroke="#5a7290" stroke-width="0.8" marker-end="url(#a)"/>
+
+  <!-- Layer 5: Network -->
+  <rect x="140" y="356" width="400" height="52" rx="10" fill="rgba(56,189,248,0.08)" stroke="#38bdf8" stroke-width="0.8"/>
+  <text x="340" y="378" text-anchor="middle" font-size="14" font-weight="700" fill="#38bdf8">High-Speed Network</text>
+  <text x="340" y="396" text-anchor="middle" font-size="11" fill="#8599b0">InfiniBand、RoCE、400GbE</text>
+
+  <!-- Side annotations -->
+  <text x="116" y="234" text-anchor="end" font-size="10" fill="#34d399">最貴</text>
+  <text x="116" y="308" text-anchor="end" font-size="10" fill="#f59e0b">瓶頸常在這</text>
+
+  <!-- Bottom -->
+  <text x="340" y="432" text-anchor="middle" font-size="11" fill="#5a7290">GPU 是引擎，Storage 是燃料供給管線。管線不夠快，引擎再強也空轉</text>
+</svg>
