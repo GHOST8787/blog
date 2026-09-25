@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meet | GHOST.ouo</title>
-    <meta name="description" content="開一場會、丟出網址、大家回自己可以的時間。回覆只有發起人看得到。">
+    <meta name="description" content="開一場會、丟出網址、大家回自己可以的時間。">
     <meta property="og:title" content="Meet | GHOST.ouo">
     <meta property="og:description" content="開一場會、丟出網址、大家回自己可以的時間。">
     <meta property="og:type" content="website">
@@ -149,6 +149,12 @@
                 <i class="fa-solid fa-plus mr-2"></i>開一場新的會議
             </button>
 
+            <!-- 我回過的會議（送出過票的場次） -->
+            <div id="mt-joined-wrap" class="mt-10 hidden">
+                <h2 class="font-mono text-xs text-gray-400 uppercase tracking-wider mb-3">我回過的會議</h2>
+                <div id="mt-joined" class="space-y-3"></div>
+            </div>
+
             <!-- 建立表單 -->
             <div id="mt-create" class="hidden mt-card rounded-2xl p-5 sm:p-7 space-y-6 mt-6">
                 <div>
@@ -289,9 +295,14 @@
             <div id="participant-view" class="mt-card rounded-2xl overflow-hidden mb-5 hidden">
                 <div class="px-5 py-4 border-b border-white/5">
                     <h3 class="font-mono text-xs text-gray-400 uppercase tracking-wider mb-1">選你可以的時間</h3>
-                    <p class="text-[11px] text-gray-600 font-mono"><i class="fa-solid fa-lock mr-1.5"></i>你的回覆只有發起人看得到，其他人看不到你選什麼。</p>
                 </div>
                 <div id="slot-cards" class="divide-y divide-white/5"></div>
+                <div class="px-5 py-4 border-t border-white/5 flex flex-wrap items-center justify-between gap-3">
+                    <span id="p-submit-msg" class="font-mono text-[11px] text-gray-600"></span>
+                    <button id="p-submit" class="px-6 py-2.5 rounded-full bg-accent-purple text-black text-sm font-bold tracking-wide hover:opacity-90 transition disabled:opacity-40 disabled:cursor-not-allowed shrink-0" disabled>
+                        送出
+                    </button>
+                </div>
             </div>
 
             <!-- 提議新時段 -->
