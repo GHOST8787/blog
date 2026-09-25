@@ -14,10 +14,11 @@
     <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/articles.html">
     <link rel="icon" type="image/png" href="PNG/pixelS2.png">
     <link rel="apple-touch-icon" href="PNG/pixelS2.png">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="tailwind.config.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="theme.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
     <link rel="stylesheet" href="style.css">
     <script src="i18n.js" defer></script>
     <script type="module" src="main.js" defer></script>
@@ -31,9 +32,9 @@
             z-index: 30;
         }
         .ar-filter-trigger {
-            background: rgba(10, 10, 10, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #BF94FF;
+            background: rgb(var(--c-surface)/0.8);
+            border: 1px solid rgb(var(--c-ink)/0.2);
+            color: rgb(var(--c-purple));
             padding: 8px 16px;
             border-radius: 8px;
             cursor: pointer;
@@ -46,7 +47,7 @@
             user-select: none;
         }
         .ar-filter-trigger .ar-current {
-            color: #fff;
+            color: rgb(var(--c-ink));
             font-weight: 700;
             letter-spacing: 0.05em;
         }
@@ -57,8 +58,8 @@
         }
         .ar-filter:hover .ar-filter-trigger,
         .ar-filter.open .ar-filter-trigger {
-            background: rgba(191, 148, 255, 0.15);
-            border-color: #BF94FF;
+            background: rgb(var(--c-purple)/0.15);
+            border-color: rgb(var(--c-purple));
             color: white;
         }
         .ar-filter:hover .ar-caret,
@@ -70,8 +71,8 @@
             top: 100%;
             left: 0;
             margin-top: 8px;
-            background: rgba(5, 5, 5, 0.95);
-            border: 1px solid rgba(191, 148, 255, 0.3);
+            background: rgb(var(--c-bg)/0.95);
+            border: 1px solid rgb(var(--c-purple)/0.3);
             border-radius: 12px;
             padding: 8px;
             min-width: 200px;
@@ -82,7 +83,7 @@
             visibility: hidden;
             transform: translateY(-10px);
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.8);
+            box-shadow: 0 10px 30px -10px rgb(var(--c-ink-inv)/0.8);
         }
         .ar-filter:hover .ar-filter-menu,
         .ar-filter.open .ar-filter-menu {
@@ -98,18 +99,18 @@
             border-radius: 6px;
             cursor: pointer;
             font-size: 11px;
-            color: #888;
+            color: var(--c-dim2);
             transition: all 0.2s;
             border: 1px solid transparent;
             letter-spacing: 0.05em;
         }
         .ar-filter-option:hover {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgb(var(--c-ink)/0.05);
             color: white;
         }
         .ar-filter-option.active {
-            background: rgba(191, 148, 255, 0.1);
-            border-color: rgba(191, 148, 255, 0.3);
+            background: rgb(var(--c-purple)/0.1);
+            border-color: rgb(var(--c-purple)/0.3);
             color: white;
             font-weight: bold;
         }
@@ -121,6 +122,9 @@
             flex-shrink: 0;
         }
     </style>
+    <!-- 預編譯的 Tailwind。原本是 cdn.tailwindcss.com 的同步 script，
+         會卡住 HTML 解析約 600ms。改檔後要跑 pnpm run build:css 重新產生。 -->
+    <link rel="stylesheet" href="tw.css">
 </head>
 
 <body class="font-sans selection:bg-accent-purple/30 selection:text-white">
@@ -153,7 +157,7 @@
             </div>
             <div class="ar-filter-menu">
                 <div class="ar-filter-option active" data-filter="all" data-label="ALL">
-                    <div class="ar-filter-dot" style="color: #888"></div>
+                    <div class="ar-filter-dot" style="color: var(--c-dim2)"></div>
                     ALL
                 </div>
                 <div class="ar-filter-option" data-filter="lifestyle" data-label="LIFESTYLE">
@@ -165,7 +169,7 @@
                     THINKING
                 </div>
                 <div class="ar-filter-option" data-filter="ai-and-automation" data-label="AI & AUTOMATION">
-                    <div class="ar-filter-dot" style="color: #BF94FF"></div>
+                    <div class="ar-filter-dot" style="color: rgb(var(--c-purple))"></div>
                     AI &amp; AUTOMATION
                 </div>
                 <div class="ar-filter-option" data-filter="engineering" data-label="ENGINEERING">

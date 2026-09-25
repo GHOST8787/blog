@@ -19,8 +19,10 @@
     <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
     <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet"></noscript>
 
     <link rel="stylesheet" href="../style.css">
     <script>
@@ -28,33 +30,32 @@
     </script>
     <script src="../i18n.js" defer></script>
     <script type="module" src="../main.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="../tailwind.config.js"></script>
+    <script src="../theme.js"></script>
     <script src="https://accounts.google.com/gsi/client" async></script>
     <script type="module" src="meet.js"></script>
 
     <style>
         /* Proportional bar (organizer result view) */
         .bar { display:flex; height:16px; border-radius:999px; overflow:hidden;
-               background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.06); }
+               background:rgb(var(--c-ink)/.04); border:1px solid rgb(var(--c-ink)/.06); }
         .seg { height:100%; cursor:pointer; transition:filter .15s ease; }
         .seg:hover { filter:brightness(1.35); }
-        .seg.on { box-shadow:inset 0 0 0 1px rgba(255,255,255,.35); }
-        .seg-yes { background:#4ADE80; }
-        .seg-notice { background:#FBBF24; }
-        .seg-no { background:#6B7280; }
-        .seg-pend { background:rgba(255,255,255,.10); }
+        .seg.on { box-shadow:inset 0 0 0 1px rgb(var(--c-ink)/.35); }
+        .seg-yes { background:rgb(var(--c-success)); }
+        .seg-notice { background:rgb(var(--c-warn)); }
+        .seg-no { background:rgb(var(--c-g500)); }
+        .seg-pend { background:rgb(var(--c-ink)/.10); }
 
         .slot-row { transition:background .15s ease; }
-        .slot-row:hover { background:rgba(255,255,255,.015); }
-        .slot-row.is-best { background:rgba(191,148,255,.06); }
-        .slot-row.is-locked { background:rgba(74,222,128,.06); }
+        .slot-row:hover { background:rgb(var(--c-ink)/.015); }
+        .slot-row.is-best { background:rgb(var(--c-purple)/.06); }
+        .slot-row.is-locked { background:rgb(var(--c-success)/.06); }
 
         /* Name tooltip */
         #tip { position:fixed; z-index:60; pointer-events:none; opacity:0; transform:translateY(4px);
-               transition:opacity .12s ease, transform .12s ease; background:#101014;
-               border:1px solid rgba(255,255,255,.12); border-radius:12px;
-               box-shadow:0 18px 40px rgba(0,0,0,.6); padding:12px 14px; max-width:320px; }
+               transition:opacity .12s ease, transform .12s ease; background:var(--c-e4);
+               border:1px solid rgb(var(--c-ink)/.12); border-radius:12px;
+               box-shadow:0 18px 40px rgb(var(--c-ink-inv)/.6); padding:12px 14px; max-width:320px; }
         #tip.show { opacity:1; transform:translateY(0); }
         #tip .names { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:2px 10px;
                       max-height:220px; overflow:auto; margin-top:8px; }
@@ -62,19 +63,19 @@
 
         /* Participant three-way pick */
         .pick { flex:1; min-width:0; padding:10px 6px; border-radius:11px; font-size:12px;
-                border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.02); color:#6b7280;
+                border:1px solid rgb(var(--c-ink)/.08); background:rgb(var(--c-ink)/.02); color:rgb(var(--c-g500));
                 display:flex; align-items:center; justify-content:center; gap:6px; cursor:pointer;
                 transition:background .15s ease, border-color .15s ease, color .15s ease; white-space:nowrap; }
-        .pick:hover { border-color:rgba(255,255,255,.18); color:#d1d5db; }
-        .pick.on-yes { background:rgba(74,222,128,.15); border-color:rgba(74,222,128,.45); color:#4ADE80; font-weight:600; }
-        .pick.on-notice { background:rgba(251,191,36,.14); border-color:rgba(251,191,36,.45); color:#FBBF24; font-weight:600; }
-        .pick.on-no { background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.22); color:#e5e7eb; font-weight:600; }
+        .pick:hover { border-color:rgb(var(--c-ink)/.18); color:rgb(var(--c-g300)); }
+        .pick.on-yes { background:rgb(var(--c-success)/.15); border-color:rgb(var(--c-success)/.45); color:rgb(var(--c-success)); font-weight:600; }
+        .pick.on-notice { background:rgb(var(--c-warn)/.14); border-color:rgb(var(--c-warn)/.45); color:rgb(var(--c-warn)); font-weight:600; }
+        .pick.on-no { background:rgb(var(--c-ink)/.06); border-color:rgb(var(--c-ink)/.22); color:rgb(var(--c-g200)); font-weight:600; }
         .pick[disabled] { opacity:.45; cursor:not-allowed; }
 
-        .mt-card { background:#0A0A0A; border:1px solid rgba(255,255,255,.06); }
-        .mt-input { background:#0d0d0f; border:1px solid rgba(255,255,255,.08); color:#e5e7eb;
+        .mt-card { background:rgb(var(--c-surface)); border:1px solid rgb(var(--c-ink)/.06); }
+        .mt-input { background:var(--c-e2); border:1px solid rgb(var(--c-ink)/.08); color:rgb(var(--c-g200));
                     color-scheme: dark; }
-        .mt-input:focus { outline:none; border-color:rgba(191,148,255,.5); }
+        .mt-input:focus { outline:none; border-color:rgb(var(--c-purple)/.5); }
         /* Native date / time picker icons must stay visible on the dark background */
         .mt-input[type="date"], .mt-input[type="time"] { cursor:pointer; }
         .mt-input::-webkit-calendar-picker-indicator {
@@ -82,8 +83,11 @@
         }
         .mt-input::-webkit-calendar-picker-indicator:hover { opacity:1; }
         .avatar { width:28px; height:28px; border-radius:999px; display:inline-flex;
-                  align-items:center; justify-content:center; font-size:11px; font-weight:700; color:#0b0b0b; }
+                  align-items:center; justify-content:center; font-size:11px; font-weight:700; color:var(--c-e1); }
     </style>
+    <!-- 預編譯的 Tailwind。原本是 cdn.tailwindcss.com 的同步 script，
+         會卡住 HTML 解析約 600ms。改檔後要跑 pnpm run build:css 重新產生。 -->
+    <link rel="stylesheet" href="../tw.css">
 </head>
 
 <body class="font-sans selection:bg-accent-purple/30 selection:text-white">
@@ -106,49 +110,75 @@
 
     <div id="navbar-placeholder"></div>
 
-    <main class="relative z-10 max-w-4xl mx-auto px-6 sm:px-8 lg:px-10 pt-24 md:pt-32 pb-24">
+    <main class="relative z-10 max-w-4xl mx-auto px-6 sm:px-8 lg:px-10 pt-24 md:pt-28 pb-24">
 
-        <!-- Hero -->
-        <header class="text-center mb-10">
-            <div class="inline-block px-3 py-1 rounded-full bg-accent-purple/10 border border-accent-purple/20 text-accent-purple text-[10px] font-bold uppercase tracking-wider mb-6">
-                MEETING POLL
+        <!-- 頁首壓成一列：左邊標題、右邊帳號，不再置中佔掉整個首屏 -->
+        <header class="flex flex-wrap sm:flex-nowrap items-end justify-between gap-x-6 gap-y-3 mb-8">
+            <div class="min-w-0">
+                <div class="font-mono text-[10px] text-accent-purple uppercase tracking-wider mb-1.5">MEETING POLL</div>
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-gradient leading-tight">One link. Everyone’s time.</h1>
+                <p class="text-gray-500 text-xs sm:text-sm mt-1">Everyone marks the times they can make.</p>
             </div>
-            <h1 class="text-4xl md:text-6xl font-extrabold mb-4 text-gradient leading-tight">One link. Everyone’s time.</h1>
-            <p class="text-gray-400 text-sm md:text-base max-w-xl mx-auto">Everyone marks the times they can make.</p>
-        </header>
-
-        <!-- Sign-in bar -->
-        <div class="flex flex-col items-center justify-center gap-2 mb-10">
+            <div class="min-w-0 flex flex-wrap items-end justify-start sm:justify-end gap-2">
             <div id="mt-login-prompt" class="hidden flex-col items-center gap-2">
                 <span class="text-gray-500 text-xs font-mono">Sign in with Google to create polls and vote</span>
                 <div id="mt-gis-btn"></div>
                 <button id="mt-anon-btn" class="hidden text-xs font-mono text-gray-500 hover:text-accent-purple transition underline underline-offset-4">Vote anonymously instead</button>
             </div>
-            <div id="mt-user-badge" class="hidden items-center gap-2 px-4 py-2 bg-accent-purple/10 border border-accent-purple/20 rounded-full text-sm text-accent-purple">
-                <span id="mt-user-email" class="font-mono text-xs">—</span>
+            <div id="mt-user-badge" class="hidden max-w-full min-w-0 items-center gap-2 px-4 py-2 bg-accent-purple/10 border border-accent-purple/20 rounded-full text-sm text-accent-purple">
+                <span id="mt-user-email" class="font-mono text-xs truncate min-w-0">—</span>
                 <span id="mt-role-badge" class="font-mono text-[9px] px-2 py-0.5 rounded border border-white/10 text-gray-400"></span>
-                <button id="mt-logout-btn" class="text-gray-500 hover:text-white text-xs ml-1 border-l border-white/10 pl-2">Sign out</button>
-                <button id="mt-joined-btn" class="hidden text-gray-500 hover:text-white text-xs border-l border-white/10 pl-2">Polls I replied to</button>
+                <button id="mt-logout-btn" class="text-gray-500 hover:text-white text-xs ml-1 border-l border-white/10 pl-2 shrink-0 whitespace-nowrap">Sign out</button>
+                <button id="mt-joined-btn" class="hidden text-gray-500 hover:text-white text-xs border-l border-white/10 pl-2 shrink-0 whitespace-nowrap">Polls I replied to</button>
             </div>
-        </div>
+            </div>
+        </header>
 
         <!-- Loading / error -->
         <div id="mt-state" class="text-center text-gray-500 font-mono text-sm py-10">Loading...</div>
 
         <!-- ===== A. My meetings (no ?id=) ===== -->
         <section id="view-home" class="hidden">
-            <div class="mt-card rounded-2xl p-5 sm:p-6 mb-6">
-                <div class="flex items-center justify-between mb-3">
-                    <h2 class="font-mono text-xs text-gray-400 uppercase tracking-wider">Meetings running now</h2>
-                    <span class="font-mono text-sm"><span id="mt-quota-used" class="text-accent-purple font-bold">—</span><span class="text-gray-600"> / 10</span></span>
+            <!-- 配額卡壓成一列：原本三層直排佔 117px，併列後 50px -->
+            <div class="mt-card rounded-2xl px-5 py-3.5 mb-4">
+                <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+                    <h2 class="font-mono text-xs text-gray-400 uppercase tracking-wider shrink-0">Meetings running now</h2>
+                    <div class="h-1 w-24 rounded-full bg-white/5 overflow-hidden shrink-0">
+                        <div id="mt-quota-bar" class="h-full rounded-full bg-accent-purple transition-all" style="width:0%"></div>
+                    </div>
+                    <span class="font-mono text-sm shrink-0"><span id="mt-quota-used" class="text-accent-purple font-bold">—</span><span class="text-gray-600"> / 10</span></span>
+                    <p class="text-[10px] text-gray-600 font-mono ml-auto">
+                        <span id="mt-stale" class="hidden text-accent-purple mr-2"><i class="fa-solid fa-rotate fa-spin mr-1"></i>Refreshing</span>Closing a meeting frees one slot.</p>
                 </div>
-                <div class="h-1.5 rounded-full bg-white/5 overflow-hidden">
-                    <div id="mt-quota-bar" class="h-full rounded-full bg-accent-purple transition-all" style="width:0%"></div>
-                </div>
-                <p class="text-[11px] text-gray-600 font-mono mt-3">Closing a meeting frees one slot.</p>
             </div>
 
             <div id="mt-my-polls" class="space-y-3"></div>
+
+            <script>
+            /* Paint the cache without waiting for Firebase.
+               meet.js only reaches startHome() after three Firebase modules
+               (including the 191KB firebase-database.js) have downloaded and auth
+               has resolved - measured at 800-1400ms, while the HTML itself arrives
+               in about 3ms. This block imports nothing: it fills in last visit's
+               list as soon as the parser reaches it, and meet.js replaces the whole
+               thing once the real data lands. */
+            (function () {
+                try {
+                    if (new URLSearchParams(location.search).get('id')) return;  // Not on the voting page
+                    var uid = localStorage.getItem('mt-last-uid');
+                    if (!uid) return;
+                    var c = JSON.parse(localStorage.getItem('mt-home-v2-' + uid) || 'null');
+                    if (!c || typeof c.html !== 'string') return;
+                    document.getElementById('mt-my-polls').innerHTML = c.html;
+                    var n = c.active || 0;
+                    document.getElementById('mt-quota-used').textContent = n;
+                    document.getElementById('mt-quota-bar').style.width = Math.min(100, n / 10 * 100) + '%';
+                    document.getElementById('mt-stale').classList.remove('hidden');
+                    document.getElementById('mt-state').classList.add('hidden');
+                    document.getElementById('view-home').classList.remove('hidden');
+                } catch (e) { /* The cache only speeds things up; on failure fall through */ }
+            })();
+            </script>
 
             <button id="mt-new-btn" class="w-full mt-5 py-4 rounded-2xl border border-dashed border-white/10 text-gray-500 hover:text-accent-purple hover:border-accent-purple/30 transition text-sm font-mono">
                 <i class="fa-solid fa-plus mr-2"></i>Start a new meeting
@@ -224,7 +254,7 @@
 
                 <div id="c-error" class="text-xs text-red-400 font-mono"></div>
                 <div class="flex gap-3">
-                    <button id="c-submit" class="flex-1 py-4 rounded-full bg-accent-purple text-black font-bold text-sm tracking-wide hover:shadow-[0_0_24px_rgba(191,148,255,.5)] transition disabled:opacity-50">Create and get the link</button>
+                    <button id="c-submit" class="flex-1 py-4 rounded-full bg-accent-purple text-black font-bold text-sm tracking-wide hover:shadow-[0_0_24px_rgb(var(--c-purple)/.5)] transition disabled:opacity-50">Create and get the link</button>
                     <button id="c-cancel" class="px-6 border border-white/10 text-gray-400 rounded-full text-sm hover:border-white/30 transition">Cancel</button>
                 </div>
             </div>
@@ -242,7 +272,7 @@
                     <div class="text-right shrink-0">
                         <div class="font-mono text-[10px] text-gray-500 mb-1">Organizer</div>
                         <div class="flex items-center gap-2 justify-end">
-                            <span id="p-org-avatar" class="avatar" style="background:#BF94FF">—</span>
+                            <span id="p-org-avatar" class="avatar" style="background:rgb(var(--c-purple))">—</span>
                             <span id="p-org-name" class="text-sm text-gray-300">—</span>
                         </div>
                     </div>
@@ -252,7 +282,7 @@
                     <span id="p-place"></span>
                     <span id="p-deadline"></span>
                     <span id="p-replied"></span>
-                    <button id="p-copy" type="button" class="ml-auto shrink-0 px-4 py-2 rounded-full text-[11px] font-mono transition" style="background:rgba(191,148,255,.14);border:1px solid rgba(191,148,255,.38);color:#BF94FF"><i class="fa-regular fa-copy mr-1.5"></i>Copy share link</button>
+                    <button id="p-copy" type="button" class="ml-auto shrink-0 px-4 py-2 rounded-full text-[11px] font-mono transition" style="background:rgb(var(--c-purple)/.14);border:1px solid rgb(var(--c-purple)/.38);color:rgb(var(--c-purple))"><i class="fa-regular fa-copy mr-1.5"></i>Copy share link</button>
                 </div>
             </div>
 
@@ -289,10 +319,10 @@
                 </div>
                 <div id="voter-list" class="divide-y divide-white/5"></div>
                 <div class="px-5 py-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-[11px] font-mono text-gray-500 border-t border-white/5">
-                    <span><span class="inline-block w-3 h-3 rounded-sm align-middle mr-1.5" style="background:#4ADE80"></span>Works</span>
-                    <span><span class="inline-block w-3 h-3 rounded-sm align-middle mr-1.5" style="background:#FBBF24"></span>Needs notice</span>
-                    <span><span class="inline-block w-3 h-3 rounded-sm align-middle mr-1.5" style="background:#6B7280"></span>Can't</span>
-                    <span><span class="inline-block w-3 h-3 rounded-sm align-middle mr-1.5" style="background:rgba(255,255,255,.12)"></span>No reply</span>
+                    <span><span class="inline-block w-3 h-3 rounded-sm align-middle mr-1.5" style="background:rgb(var(--c-success))"></span>Works</span>
+                    <span><span class="inline-block w-3 h-3 rounded-sm align-middle mr-1.5" style="background:rgb(var(--c-warn))"></span>Needs notice</span>
+                    <span><span class="inline-block w-3 h-3 rounded-sm align-middle mr-1.5" style="background:rgb(var(--c-g500))"></span>Can't</span>
+                    <span><span class="inline-block w-3 h-3 rounded-sm align-middle mr-1.5" style="background:rgb(var(--c-ink)/.12)"></span>No reply</span>
                 </div>
             </div>
 
@@ -322,7 +352,7 @@
                             <input id="new-end" type="time" value="15:00" class="mt-input rounded-lg px-3 py-2 text-sm font-mono">
                         </div>
                     </div>
-                    <button id="add-slot" class="px-5 py-2.5 rounded-full bg-accent-purple text-black font-bold text-xs tracking-wide hover:shadow-[0_0_20px_rgba(191,148,255,.5)] transition">
+                    <button id="add-slot" class="px-5 py-2.5 rounded-full bg-accent-purple text-black font-bold text-xs tracking-wide hover:shadow-[0_0_20px_rgb(var(--c-purple)/.5)] transition">
                         <i class="fa-solid fa-plus mr-1.5"></i>Add
                     </button>
                 </div>

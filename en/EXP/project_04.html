@@ -12,10 +12,11 @@
     <link rel="icon" type="image/png" href="../../PNG/pixelS2.png">
     <link rel="apple-touch-icon" href="../../PNG/pixelS2.png">
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="../../tailwind.config.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="../../theme.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
 
     <link rel="stylesheet" href="../../style.css">
     <link rel="stylesheet" href="../../EXP/tarot_style.css">
@@ -24,9 +25,12 @@
     <script src="../../i18n.js" defer></script>
     <script type="module" src="../../main.js" defer></script>
     <script src="../../EXP/tarot_app.js" defer></script>
+    <!-- 預編譯的 Tailwind。原本是 cdn.tailwindcss.com 的同步 script，
+         會卡住 HTML 解析約 600ms。改檔後要跑 pnpm run build:css 重新產生。 -->
+    <link rel="stylesheet" href="../../tw.css">
 </head>
 
-<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-bg">
 
     <div class="fixed inset-0 z-0 pointer-events-none">
         <div class="absolute inset-0 dot-pattern opacity-50"></div>
@@ -132,7 +136,7 @@
                 From a systems analysis angle, tarot is <strong>a framework for subconscious projection and association</strong>. Pulling visual symbols with high symbolic density forces the brain's associative network into retrieval. The hidden internal state surfaces as something readable.
             </p>
 
-            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 my-8 shadow-lg">
+            <div class="bg-surface p-6 rounded-2xl border border-white/5 my-8 shadow-lg">
                 <h4 class="text-white font-bold mb-4 flex items-center gap-2 border-b border-white/10 pb-3">
                     <i class="fas fa-database text-accent-purple"></i> Base Dataset (78 Nodes)
                 </h4>
@@ -220,12 +224,12 @@
                 <span class="text-accent-purple">#</span> Interactive Module: Prompt Generator
             </h3>
 
-            <div class="bg-[#0A0A0A] border border-white/10 rounded-3xl shadow-2xl p-6 md:p-10 flex flex-col gap-8 my-12 relative z-20">
+            <div class="bg-surface border border-white/10 rounded-3xl shadow-2xl p-6 md:p-10 flex flex-col gap-8 my-12 relative z-20">
 
                 <div id="controls-area" class="flex flex-col sm:flex-row gap-4 justify-between items-center bg-white/5 p-4 rounded-2xl border border-white/10 relative z-30">
                     <div class="flex items-center gap-2 w-full sm:w-auto">
                         <i class="fas fa-filter text-accent-purple"></i>
-                        <select id="deck-filter" class="bg-[#0F0F0F] border border-white/10 text-sm text-gray-300 rounded-lg p-2 focus:border-accent-purple outline-none"></select>
+                        <select id="deck-filter" class="bg-[var(--c-e3)] border border-white/10 text-sm text-gray-300 rounded-lg p-2 focus:border-accent-purple outline-none"></select>
                     </div>
                     <div id="topic-buttons" class="flex items-center gap-2 overflow-x-auto w-full sm:w-auto scrollbar-hide"></div>
                     <button id="shuffle-btn" class="p-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-gray-400 hover:text-white transition-all shrink-0">
@@ -233,7 +237,7 @@
                     </button>
                 </div>
 
-                <div class="relative w-full h-[420px] rounded-2xl bg-[#050505] border border-white/10 shadow-inner overflow-hidden flex flex-col items-center justify-center">
+                <div class="relative w-full h-[420px] rounded-2xl bg-bg border border-white/10 shadow-inner overflow-hidden flex flex-col items-center justify-center">
                     <div class="absolute inset-0 bg-[radial-gradient(circle_at_bottom,_var(--tw-gradient-stops))] from-accent-purple/15 via-transparent to-transparent opacity-80 pointer-events-none"></div>
 
                     <p id="deck-status" class="absolute top-6 left-1/2 -translate-x-1/2 text-xs font-mono text-gray-500 animate-pulse pointer-events-none z-0">AWAITING_EXTRACTION</p>
@@ -241,7 +245,7 @@
                     <div id="spread-area" class="absolute inset-0 w-full h-full pt-12 pb-6"></div>
                 </div>
 
-                <div class="bg-[#050505] rounded-2xl border border-white/10 p-6 grid grid-cols-1 md:grid-cols-3 gap-8 relative z-30">
+                <div class="bg-bg rounded-2xl border border-white/10 p-6 grid grid-cols-1 md:grid-cols-3 gap-8 relative z-30">
 
                     <div id="card-display-slot" class="col-span-1 h-72 md:h-80 border-2 border-dashed border-white/10 rounded-xl flex flex-col items-center justify-center text-gray-600 bg-white/5 transition-all">
                         <i class="fas fa-microchip text-3xl mb-3 opacity-20"></i>
@@ -255,7 +259,7 @@
                                 <i class="fas fa-copy"></i> Copy
                             </button>
                         </div>
-                        <textarea id="prompt-output" readonly class="w-full flex-1 bg-[#0A0A0A] border border-white/10 rounded-xl p-5 text-gray-400 font-mono text-sm leading-relaxed resize-none focus:outline-none focus:border-accent-purple transition-colors" placeholder="[System on standby]&#10;Complete the draw above first. The structured AI prompt will be synthesized automatically."></textarea>
+                        <textarea id="prompt-output" readonly class="w-full flex-1 bg-surface border border-white/10 rounded-xl p-5 text-gray-400 font-mono text-sm leading-relaxed resize-none focus:outline-none focus:border-accent-purple transition-colors" placeholder="[System on standby]&#10;Complete the draw above first. The structured AI prompt will be synthesized automatically."></textarea>
                     </div>
 
                 </div>

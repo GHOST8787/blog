@@ -8,19 +8,23 @@
     <link rel="icon" type="image/png" href="../../PNG/pixelS2.png">
     <link rel="apple-touch-icon" href="../../PNG/pixelS2.png">
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="../../tailwind.config.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="../../theme.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
 
     <link rel="stylesheet" href="../../style.css">
 
     <script> window.siteRoot = '../'; </script>
     <script src="../../i18n.js" defer></script>
     <script type="module" src="../../main.js" defer></script>
+    <!-- 預編譯的 Tailwind。原本是 cdn.tailwindcss.com 的同步 script，
+         會卡住 HTML 解析約 600ms。改檔後要跑 pnpm run build:css 重新產生。 -->
+    <link rel="stylesheet" href="../../tw.css">
 </head>
 
-<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-bg">
 
     <div class="fixed inset-0 z-0 pointer-events-none">
         <div class="absolute inset-0 dot-pattern opacity-50"></div>
@@ -70,7 +74,7 @@
                 yt-digest is a service I maintain: you hand it a YouTube video, it hands back a summary report. The heavy processing runs on a local daemon, and the cloud side holds a Next.js frontend, Firestore, Cloud Storage and a few APIs, so I expected the monthly cloud bill to sit near zero. The Google Cloud billing report said otherwise: June $19.22, August $22.38, July $0.00. This is how I worked back from the usage on that report, how far the evidence goes, and where it stops.
             </p>
 
-            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 my-8 text-sm text-gray-400">
+            <div class="bg-surface p-6 rounded-2xl border border-white/5 my-8 text-sm text-gray-400">
                 Background: how this service came about is in
                 <a href="project_12.html" class="text-accent-purple hover:underline">P12, Two Generations of a YouTube Digest Tool</a>,
                 and how the report quality gets checked is in

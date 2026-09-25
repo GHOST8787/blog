@@ -212,7 +212,10 @@ onAuthStateChanged(auth, (user) => {
     boot();
 });
 
-$('mt-logout-btn').addEventListener('click', () => signOut(auth));
+$('mt-logout-btn').addEventListener('click', () => {
+    if (me) dropCache(me.uid);   // 換人登入不要看到上一個人的清單
+    signOut(auth);
+});
 
 function onGoogleCredential(response) {
     const cred = GoogleAuthProvider.credential(response.credential);
@@ -276,30 +279,51 @@ function startHome() {
     showState('');
     renderCreateSlots();
 
+    // Paint what we saw last time first, so the page is never blank,
+    // and flag it as refreshing while the server answer is on its way
+    const cached = readCache(me.uid);
+    if (cached) {
+        paintQuota(cached.active || 0);
+        paintPolls(cached.list);
+        setStale(true);
+    } else {
+        // No cache for this account. The inline script may have painted the
+        // previous account's list, so clear it.
+        $('mt-my-polls').innerHTML = '';
+        setStale(false);
+    }
+
+    let liveActive = cached ? (cached.active || 0) : 0;
     onValue(ref(db, `meet/users/${me.uid}/activeCount`), snap => {
-        const n = snap.val() || 0;
-        $('mt-quota-used').textContent = n;
-        $('mt-quota-bar').style.width = Math.min(100, n / MAX_POLLS * 100) + '%';
+        liveActive = snap.val() || 0;
+        paintQuota(liveActive);
     });
 
     onValue(ref(db, `meet/users/${me.uid}/polls`), async snap => {
         showState('');            // A successful read clears any earlier permission error
         const ids = Object.keys(snap.val() || {});
-        if (!ids.length) {
-            $('mt-my-polls').innerHTML =
-                `<div class="text-center text-gray-600 font-mono text-sm py-8">${T.noPolls}</div>`;
-            return;
-        }
+        // Fire all three reads together. They used to be three sequential
+        // awaits, which cost three round trips per meeting.
         const rows = await Promise.all(ids.map(async id => {
-            const m = (await get(ref(db, `meet/polls/${id}/meta`))).val();
-            const v = (await get(ref(db, `meet/polls/${id}/votes`))).val() || {};
-            const s = (await get(ref(db, `meet/polls/${id}/slots`))).val() || {};
+            let m, v, s;
+            try {
+                const r = await Promise.all([
+                    get(ref(db, `meet/polls/${id}/meta`)),
+                    get(ref(db, `meet/polls/${id}/votes`)),
+                    get(ref(db, `meet/polls/${id}/slots`)),
+                ]);
+                m = r[0].val(); v = r[1].val() || {}; s = r[2].val() || {};
+            } catch (e) {
+                return null;      // Skip this one rather than failing the whole list
+            }
             return m ? { id, meta: m, voters: Object.keys(v).length, slots: Object.keys(s).length,
                          lead: leadingSlot(s, v, m.lockedSlot, m.organizer) } : null;
         }));
         const list = rows.filter(Boolean).sort((a, b) => (b.meta.createdAt || 0) - (a.meta.createdAt || 0));
-        $('mt-my-polls').innerHTML = list.map(renderPollRow).join('');
-    }, err => showState(T.homeDenied + ' (' + err.code + ')'));
+        paintPolls(list);
+        setStale(false);
+        writeCache(me.uid, list, liveActive);
+    }, err => { setStale(false); showState(T.homeDenied + ' (' + err.code + ')'); });
 
     // The list loads on demand. Someone may have replied to a lot of polls and each
     // one costs a meta read, so fetching them all on page load is slow and wasteful.
@@ -367,6 +391,62 @@ function renderJoinedRow(p) {
 }
 
 /* ===== Best time shown on the home cards: the slot with the most yes votes, or the locked one ===== */
+/* ---- Home list cache ----
+   The web RTDB SDK has no disk persistence (that is Android / iOS only),
+   so the in-memory cache dies with the tab. Keep our own copy of the last
+   list we rendered: paint it immediately on the next visit, then replace
+   the whole thing once the server answers. */
+const CACHE_VER = 2;                       // 改過快取格式就加一，舊的自然失效
+const cacheKey = uid => `mt-home-v${CACHE_VER}-${uid}`;
+const LAST_UID_KEY = 'mt-last-uid';        // meet.html 的 inline script 靠這個知道要讀誰的快取
+
+function readCache(uid) {
+    try {
+        const o = JSON.parse(localStorage.getItem(cacheKey(uid)) || 'null');
+        return o && Array.isArray(o.list) ? o : null;
+    } catch (e) { return null; }   // Corrupt entry: treat as empty rather than blocking the page
+}
+function writeCache(uid, list, active) {
+    // html is for the inline script, which has no renderPollRow and can only
+    // drop a ready-made string into place
+    try {
+        localStorage.setItem(LAST_UID_KEY, uid);
+        localStorage.setItem(cacheKey(uid), JSON.stringify({
+            at: Date.now(), list, active, html: list.map(renderPollRow).join('')
+        }));
+    }
+    catch (e) { /* Private window or quota full - the cache only speeds things up */ }
+}
+function dropCache(uid) {
+    try {
+        localStorage.removeItem(cacheKey(uid));
+        // Clear last-uid too, or the inline script keeps painting the previous
+        // person's list after they sign out
+        if (localStorage.getItem(LAST_UID_KEY) === uid) localStorage.removeItem(LAST_UID_KEY);
+    } catch (e) { }
+}
+/* Drop a deleted poll from the cache straight away, so the next visit
+   does not flash a meeting that no longer exists */
+function forgetFromCache(uid, pollId) {
+    const c = readCache(uid);
+    if (!c) return;
+    writeCache(uid, c.list.filter(p => p.id !== pollId), Math.max(0, (c.active || 0) - 1));
+}
+
+function setStale(on) {
+    const el = $('mt-stale');
+    if (el) el.classList.toggle('hidden', !on);
+}
+function paintPolls(list) {
+    $('mt-my-polls').innerHTML = list.length
+        ? list.map(renderPollRow).join('')
+        : `<div class="text-center text-gray-600 font-mono text-sm py-8">${T.noPolls}</div>`;
+}
+function paintQuota(n) {
+    $('mt-quota-used').textContent = n;
+    $('mt-quota-bar').style.width = Math.min(100, n / MAX_POLLS * 100) + '%';
+}
+
 function leadingSlot(slotsObj, votesObj, lockedId, organizerUid) {
     const ids = Object.keys(slotsObj || {});
     if (!ids.length) return null;
@@ -390,8 +470,8 @@ function renderPollRow(p) {
     const dl = p.meta.deadline ? `${T.deadlineLabel} ${fmtDate(p.meta.deadline)}` : T.noDeadline;
     const lead = p.lead
         ? (() => { const r = fmtRange(p.lead.slot.start, p.lead.slot.end); const txt = `${r.day} ${r.time}`;
-                   return `<div class="font-mono text-[11px] mt-1.5 ${p.lead.locked ? 'text-accent-success' : 'text-accent-purple'}"><i class="fa-regular fa-calendar-check mr-1.5"></i>${p.lead.locked ? T.lockedFmt(txt) : T.leadFmt(txt)}</div>`; })()
-        : `<div class="font-mono text-[11px] mt-1.5 text-gray-600"><i class="fa-regular fa-calendar mr-1.5"></i>${T.leadNone}</div>`;
+                   return `<div class="font-mono text-[11px] ${p.lead.locked ? 'text-accent-success' : 'text-accent-purple'}"><i class="fa-regular fa-calendar-check mr-1.5"></i>${p.lead.locked ? T.lockedFmt(txt) : T.leadFmt(txt)}</div>`; })()
+        : `<div class="font-mono text-[11px] text-gray-600"><i class="fa-regular fa-calendar mr-1.5"></i>${T.leadNone}</div>`;
     return `<div class="js-row cursor-pointer mt-card rounded-xl p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4 hover:border-white/10 transition" data-id="${p.id}">
         <div class="min-w-[180px]">
             <div class="flex items-center gap-2 mb-1.5">
@@ -399,12 +479,14 @@ function renderPollRow(p) {
                 <span class="font-mono text-[9px] px-1.5 py-0.5 rounded whitespace-nowrap ${cls}">${done ? T.closed : T.open}</span>
             </div>
             <div class="text-white font-medium mb-1">${esc(p.meta.title)}</div>
-            <div class="font-mono text-[11px] text-gray-500">${p.voters} replied · ${p.slots} times · ${dl}</div>
             ${lead}
         </div>
-        <div class="flex items-center gap-2 shrink-0">
+        <div class="flex flex-col items-start sm:items-end gap-2 shrink-0">
+            <div class="flex items-center gap-2">
             <button class="js-copy px-3 py-2 rounded-lg border border-white/10 text-[11px] font-mono text-gray-400 hover:text-white transition" data-id="${p.id}"><i class="fa-regular fa-copy mr-1"></i>${T.copyBtn}</button>
             <button class="js-del px-3 py-2 rounded-lg border border-white/10 text-[11px] font-mono text-gray-600 hover:text-red-400 transition" data-id="${p.id}"><i class="fa-regular fa-trash-can"></i></button>
+            </div>
+            <div class="font-mono text-[11px] text-gray-500">${p.voters} replied · ${p.slots} times · ${dl}</div>
         </div>
     </div>`;
 }
@@ -436,7 +518,10 @@ $('mt-my-polls').addEventListener('click', async e => {
     if (del) {
         if (!window.confirm(T.confirmDelete)) return;
         const id = del.dataset.id;
-        try { await update(ref(db), await deletePollPayload(id)); }
+        try {
+            await update(ref(db), await deletePollPayload(id));
+            forgetFromCache(me.uid, id);
+        }
         catch (err) { window.alert(T.deleteFailed + err.message); }
         return;   // stop here, or the click falls through to js-row and opens the poll just deleted
     }

@@ -12,19 +12,23 @@
     <link rel="icon" type="image/png" href="../../PNG/pixelS2.png">
     <link rel="apple-touch-icon" href="../../PNG/pixelS2.png">
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="../../tailwind.config.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="../../theme.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
 
     <link rel="stylesheet" href="../../style.css">
 
     <script> window.siteRoot = '../'; </script>
     <script src="../../i18n.js" defer></script>
     <script type="module" src="../../main.js" defer></script>
+    <!-- 預編譯的 Tailwind。原本是 cdn.tailwindcss.com 的同步 script，
+         會卡住 HTML 解析約 600ms。改檔後要跑 pnpm run build:css 重新產生。 -->
+    <link rel="stylesheet" href="../../tw.css">
 </head>
 
-<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-bg">
 
     <div class="fixed inset-0 z-0 pointer-events-none">
         <div class="absolute inset-0 dot-pattern opacity-50"></div>
@@ -100,7 +104,7 @@
             </h3>
 
             <p>Password login is disabled for security. From your local terminal, switch to the directory holding the key and SSH into the remote Ubuntu server:</p>
-            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+            <div class="my-6 p-6 bg-[var(--c-e3)] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
 <pre><code class="language-powershell">cd &lt;YOUR_LOCAL_KEY_PATH&gt;
 ssh -i &lt;YOUR_KEY.pem&gt; &lt;YOUR_VM_USER&gt;@&lt;YOUR_VM_IP&gt;</code></pre>
             </div>
@@ -110,7 +114,7 @@ ssh -i &lt;YOUR_KEY.pem&gt; &lt;YOUR_VM_USER&gt;@&lt;YOUR_VM_IP&gt;</code></pre>
             </h3>
 
             <p>Install the framework via npm. To keep the AI agent process alive after the terminal session ends, register it as a systemd user service:</p>
-            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+            <div class="my-6 p-6 bg-[var(--c-e3)] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
 <pre><code class="language-bash"># 1. Global install
 sudo npm install -g clawdbot@latest
 
@@ -130,7 +134,7 @@ systemctl --user status clawdbot-gateway.service</code></pre>
             </h3>
 
             <p>Across repeated deploys and restarts, the service occasionally refused to start. Reading the system logs, the error code <code class="text-accent-purple">Port 18789 is already in use</code> meant a zombie process or stale instance was holding the port. Force-cleanup procedure:</p>
-            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+            <div class="my-6 p-6 bg-[var(--c-e3)] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
 <pre><code class="language-bash"># 1. Stop and unload all related services and leftover unit files
 systemctl --user stop clawdbot-gateway.service
 systemctl --user stop openclaw-gateway.service 2>/dev/null
@@ -151,12 +155,12 @@ systemctl --user start clawdbot-gateway.service</code></pre>
             </h3>
 
             <p>For security, Clawdbot Gateway binds to localhost on the server. Opening the firewall to the outside world directly would be a serious hole. The cleaner move: <strong>SSH tunneling (port forwarding)</strong>. From a second local terminal, build an encrypted tunnel and map the remote 18789 port to your local machine:</p>
-            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+            <div class="my-6 p-6 bg-[var(--c-e3)] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
 <pre><code class="language-powershell">ssh -i &lt;YOUR_KEY.pem&gt; -N -L 18789:127.0.0.1:18789 &lt;YOUR_VM_USER&gt;@&lt;YOUR_VM_IP&gt;</code></pre>
             </div>
 
             <p>Back on the VM terminal, grab the dashboard URL and auth token:</p>
-            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+            <div class="my-6 p-6 bg-[var(--c-e3)] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
 <pre><code class="language-bash">clawdbot dashboard</code></pre>
             </div>
 

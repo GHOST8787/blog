@@ -12,10 +12,11 @@
     <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
     <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="../tailwind.config.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="../theme.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
 
     <link rel="stylesheet" href="../style.css">
 
@@ -24,9 +25,12 @@
     </script>
     <script src="../i18n.js" defer></script>
     <script type="module" src="../main.js" defer></script>
+    <!-- 預編譯的 Tailwind。原本是 cdn.tailwindcss.com 的同步 script，
+         會卡住 HTML 解析約 600ms。改檔後要跑 pnpm run build:css 重新產生。 -->
+    <link rel="stylesheet" href="../tw.css">
 </head>
 
-<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-bg">
 
     <div class="fixed inset-0 z-0 pointer-events-none">
         <div class="absolute inset-0 dot-pattern opacity-50"></div>
@@ -142,49 +146,49 @@
                 </div>
 
                 <div class="relative pl-8">
-                    <div class="absolute w-4 h-4 bg-gray-600 rounded-full -left-[9px] top-1 border-2 border-[#050505]"></div>
+                    <div class="absolute w-4 h-4 bg-gray-600 rounded-full -left-[9px] top-1 border-2 border-bg"></div>
                     <h4 class="text-white font-bold text-lg mb-2 font-mono tracking-wide">07:40 <span class="text-gray-500 font-sans font-normal text-sm ml-2">廚房</span></h4>
                     <p class="text-sm text-gray-400 font-light leading-relaxed">走到廚房，咖啡機在刷牙時就開始運轉。早餐是固定的幾種組合輪流，省下每天早上做決定的力氣。</p>
                 </div>
 
                 <div class="relative pl-8">
-                    <div class="absolute w-4 h-4 bg-gray-600 rounded-full -left-[9px] top-1 border-2 border-[#050505]"></div>
+                    <div class="absolute w-4 h-4 bg-gray-600 rounded-full -left-[9px] top-1 border-2 border-bg"></div>
                     <h4 class="text-white font-bold text-lg mb-2 font-mono tracking-wide">08:30 <span class="text-gray-500 font-sans font-normal text-sm ml-2">房間工作位</span></h4>
                     <p class="text-sm text-gray-400 font-light leading-relaxed">回到房間，升降桌升起、螢幕亮起、環境音自動播放。接下來幾個小時專心工作，房子裡其他事都有系統照顧。</p>
                 </div>
 
                 <div class="relative pl-8">
-                    <div class="absolute w-4 h-4 bg-gray-600 rounded-full -left-[9px] top-1 border-2 border-[#050505]"></div>
+                    <div class="absolute w-4 h-4 bg-gray-600 rounded-full -left-[9px] top-1 border-2 border-bg"></div>
                     <h4 class="text-white font-bold text-lg mb-2 font-mono tracking-wide">12:30 <span class="text-gray-500 font-sans font-normal text-sm ml-2">餐桌與客廳</span></h4>
                     <p class="text-sm text-gray-400 font-light leading-relaxed">下樓吃午餐，飯後在客廳沙發放空半小時，讓上午的工作從腦子裡退場。</p>
                 </div>
 
                 <div class="relative pl-8">
-                    <div class="absolute w-4 h-4 bg-gray-600 rounded-full -left-[9px] top-1 border-2 border-[#050505]"></div>
+                    <div class="absolute w-4 h-4 bg-gray-600 rounded-full -left-[9px] top-1 border-2 border-bg"></div>
                     <h4 class="text-white font-bold text-lg mb-2 font-mono tracking-wide">15:00 <span class="text-gray-500 font-sans font-normal text-sm ml-2">頂樓露台</span></h4>
                     <p class="text-sm text-gray-400 font-light leading-relaxed">工作告一段落就往上走。在露台吹風、給植物澆水、順手看一眼太陽能板跟水塔的數字。離螢幕越遠，腦子冷卻得越快。</p>
                 </div>
 
                 <div class="relative pl-8">
-                    <div class="absolute w-4 h-4 bg-gray-600 rounded-full -left-[9px] top-1 border-2 border-[#050505]"></div>
+                    <div class="absolute w-4 h-4 bg-gray-600 rounded-full -left-[9px] top-1 border-2 border-bg"></div>
                     <h4 class="text-white font-bold text-lg mb-2 font-mono tracking-wide">17:30 <span class="text-gray-500 font-sans font-normal text-sm ml-2">B1 出門</span></h4>
                     <p class="text-sm text-gray-400 font-light leading-relaxed">需要採買的日子，從 B1 牽車出門。回來時包裹已由系統掃描歸位，冰箱缺的東西列在清單上。</p>
                 </div>
 
                 <div class="relative pl-8">
-                    <div class="absolute w-4 h-4 bg-gray-600 rounded-full -left-[9px] top-1 border-2 border-[#050505]"></div>
+                    <div class="absolute w-4 h-4 bg-gray-600 rounded-full -left-[9px] top-1 border-2 border-bg"></div>
                     <h4 class="text-white font-bold text-lg mb-2 font-mono tracking-wide">19:00 <span class="text-gray-500 font-sans font-normal text-sm ml-2">三樓或房間</span></h4>
                     <p class="text-sm text-gray-400 font-light leading-relaxed">有約的晚上在三樓聚會，聊到幾點都行；沒約的晚上待在房間看書寫東西。兩種都算理想。</p>
                 </div>
 
                 <div class="relative pl-8">
-                    <div class="absolute w-4 h-4 bg-gray-600 rounded-full -left-[9px] top-1 border-2 border-[#050505]"></div>
+                    <div class="absolute w-4 h-4 bg-gray-600 rounded-full -left-[9px] top-1 border-2 border-bg"></div>
                     <h4 class="text-white font-bold text-lg mb-2 font-mono tracking-wide">22:00 <span class="text-gray-500 font-sans font-normal text-sm ml-2">浴室</span></h4>
                     <p class="text-sm text-gray-400 font-light leading-relaxed">洗澡。浴室永遠是乾的、熱水永遠是穩的——這件事本身就值得寫進規格。</p>
                 </div>
 
                 <div class="relative pl-8">
-                    <div class="absolute w-4 h-4 bg-gray-600 rounded-full -left-[9px] top-1 border-2 border-[#050505]"></div>
+                    <div class="absolute w-4 h-4 bg-gray-600 rounded-full -left-[9px] top-1 border-2 border-bg"></div>
                     <h4 class="text-white font-bold text-lg mb-2 font-mono tracking-wide">23:00 <span class="text-gray-500 font-sans font-normal text-sm ml-2">全棟休眠</span></h4>
                     <p class="text-sm text-gray-400 font-light leading-relaxed">燈光逐層關閉，保全與感測網路接手。一天結束。</p>
                 </div>
@@ -213,7 +217,7 @@
 
             <hr class="border-white/10 my-12">
 
-            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 shadow-xl">
+            <div class="bg-surface p-6 rounded-2xl border border-white/5 shadow-xl">
                 <h4 class="text-white font-bold mb-4 flex items-center gap-2">
                     <i class="fas fa-lightbulb text-accent-purple"></i> 系統結論
                 </h4>

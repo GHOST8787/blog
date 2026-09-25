@@ -12,10 +12,11 @@
     <link rel="icon" type="image/png" href="../../PNG/pixelS2.png">
     <link rel="apple-touch-icon" href="../../PNG/pixelS2.png">
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="../../tailwind.config.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="../../theme.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
 
     <link rel="stylesheet" href="../../style.css">
 
@@ -24,9 +25,12 @@
     </script>
     <script src="../../i18n.js" defer></script>
     <script type="module" src="../../main.js" defer></script>
+    <!-- 預編譯的 Tailwind。原本是 cdn.tailwindcss.com 的同步 script，
+         會卡住 HTML 解析約 600ms。改檔後要跑 pnpm run build:css 重新產生。 -->
+    <link rel="stylesheet" href="../../tw.css">
 </head>
 
-<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-bg">
 
     <div class="fixed inset-0 z-0 pointer-events-none">
         <div class="absolute inset-0 dot-pattern opacity-50"></div>
@@ -71,7 +75,7 @@
 
             <p class="mb-6">The eight questions it left behind, roughly in their original wording:</p>
 
-            <div class="p-6 rounded-2xl border border-white/10 bg-[#0A0A0A] mb-8">
+            <div class="p-6 rounded-2xl border border-white/10 bg-surface mb-8">
                 <ol class="list-decimal pl-5 space-y-3 text-gray-400 m-0 font-light text-base leading-relaxed">
                     <li>When did you notice this place was gone? In that moment, what was your first thought?</li>
                     <li>A place that has &ldquo;always been there&rdquo;&mdash;do you see it as a default, or as a cost?</li>
@@ -222,7 +226,7 @@
                 Meeting those people is a kind of good fortune, and that is enough to be content with; short of that, I keep pushing my own abilities outward and keep looking ahead. The drive to make these things has grown from within me the whole way through&mdash;that is my own takeaway after reading those eight questions.
             </p>
 
-            <div class="p-6 rounded-2xl border border-white/10 bg-[#0A0A0A] mt-12">
+            <div class="p-6 rounded-2xl border border-white/10 bg-surface mt-12">
                 <h4 class="text-white font-bold mb-3 flex items-center gap-2 text-sm">
                     <i class="fas fa-book-open text-accent-purple"></i> Note
                 </h4>

@@ -12,20 +12,24 @@
     <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
     <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
     
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="../theme.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
     
     <link rel="stylesheet" href="../style.css">
-    <script src="../tailwind.config.js"></script>
     <script>
         window.siteRoot = '../';
     </script>
     <script src="../i18n.js" defer></script>
     <script type="module" src="../main.js" defer></script>
+    <!-- 預編譯的 Tailwind。原本是 cdn.tailwindcss.com 的同步 script，
+         會卡住 HTML 解析約 600ms。改檔後要跑 pnpm run build:css 重新產生。 -->
+    <link rel="stylesheet" href="../tw.css">
 </head>
 
-<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-bg">
 
     <div class="fixed inset-0 z-0 pointer-events-none">
         <div class="absolute inset-0 dot-pattern opacity-50"></div>
@@ -96,7 +100,7 @@
             </h3>
 
             <p>Gog 技能需要一個獨立的命令列工具，請在 VM 終端機執行以下指令安裝與配置：</p>
-            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+            <div class="my-6 p-6 bg-[var(--c-e3)] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
 <pre><code class="language-bash"># 1. 安裝 Gog CLI
 cd /tmp
 curl -fsSL https://api.github.com/repos/steipete/gogcli/releases/latest \
@@ -123,12 +127,12 @@ clawdbot skills install steipete/gog</code></pre>
             </ul>
             
             <p>將下載的憑證透過 SCP 上傳到 VM：</p>
-            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+            <div class="my-6 p-6 bg-[var(--c-e3)] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
 <pre><code class="language-powershell">scp -i &lt;YOUR_KEY.pem&gt; client_secret.json &lt;YOUR_VM_USER&gt;@&lt;YOUR_VM_IP&gt;:~/</code></pre>
             </div>
 
             <p>在 VM 中完成授權配置：</p>
-            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+            <div class="my-6 p-6 bg-[var(--c-e3)] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
 <pre><code class="language-bash">gog auth credentials ~/client_secret.json
 gog auth add &lt;YOUR_EMAIL&gt; --services gmail,calendar,drive,contacts,sheets,docs</code></pre>
             </div>
@@ -139,13 +143,13 @@ gog auth add &lt;YOUR_EMAIL&gt; --services gmail,calendar,drive,contacts,sheets,
             </h3>
 
             <p>回到 Control UI 聊天室，你可以直接用自然語言測試，例如：</p>
-            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+            <div class="my-6 p-6 bg-[var(--c-e3)] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
 <pre><code class="language-text">> "Check my latest emails"
 > "Show me my calendar for today"</code></pre>
             </div>
 
             <p>如果你想在 VM 終端機直接下指令，也可以這樣用：</p>
-            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+            <div class="my-6 p-6 bg-[var(--c-e3)] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
 <pre><code class="language-bash"># 搜尋最新 5 封信
 gog gmail search 'newer_than:1d' --max 5
 
@@ -164,7 +168,7 @@ gog calendar events primary --from $(date -I) --to $(date -I)</code></pre>
                 <li><strong class="text-white">除錯起手式：</strong>如果遇到機器人不理人，請先查看服務狀態與日誌：</li>
             </ul>
 
-            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+            <div class="my-6 p-6 bg-[var(--c-e3)] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
 <pre><code class="language-bash"># 查看服務狀態
 systemctl --user status clawdbot-gateway.service
 
@@ -174,7 +178,7 @@ journalctl --user -u clawdbot-gateway.service -n 50</code></pre>
 
             <hr class="border-white/10 my-12">
             
-            <div class="bg-[#0A0A0A] p-6 rounded-2xl border border-white/5 shadow-xl">
+            <div class="bg-surface p-6 rounded-2xl border border-white/5 shadow-xl">
                 <h4 class="text-white font-bold mb-4 flex items-center gap-2">
                     <i class="fas fa-lightbulb text-accent-purple"></i> Conclusion
                 </h4>

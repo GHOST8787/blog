@@ -15,10 +15,11 @@
     <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/projects.html">
     <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
     <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="../tailwind.config.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="../theme.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
     <link rel="stylesheet" href="../style.css">
     <script>
         window.siteRoot = '';
@@ -29,9 +30,9 @@
     <style>
         .pj-filter { position: relative; width: fit-content; font-family: 'JetBrains Mono', monospace; z-index: 30; }
         .pj-filter-trigger {
-            background: rgba(10, 10, 10, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #BF94FF;
+            background: rgb(var(--c-surface)/0.8);
+            border: 1px solid rgb(var(--c-ink)/0.2);
+            color: rgb(var(--c-purple));
             padding: 8px 16px;
             border-radius: 8px;
             cursor: pointer;
@@ -43,11 +44,11 @@
             transition: all 0.3s ease;
             user-select: none;
         }
-        .pj-filter-trigger .pj-current { color: #fff; font-weight: 700; letter-spacing: 0.05em; }
+        .pj-filter-trigger .pj-current { color: rgb(var(--c-ink)); font-weight: 700; letter-spacing: 0.05em; }
         .pj-filter-trigger .pj-caret { font-size: 10px; opacity: 0.6; transition: transform 0.3s ease; }
         .pj-filter:hover .pj-filter-trigger, .pj-filter.open .pj-filter-trigger {
-            background: rgba(191, 148, 255, 0.15);
-            border-color: #BF94FF;
+            background: rgb(var(--c-purple)/0.15);
+            border-color: rgb(var(--c-purple));
             color: white;
         }
         .pj-filter:hover .pj-caret, .pj-filter.open .pj-caret { transform: rotate(180deg); }
@@ -56,8 +57,8 @@
             top: 100%;
             left: 0;
             margin-top: 8px;
-            background: rgba(5, 5, 5, 0.95);
-            border: 1px solid rgba(191, 148, 255, 0.3);
+            background: rgb(var(--c-bg)/0.95);
+            border: 1px solid rgb(var(--c-purple)/0.3);
             border-radius: 12px;
             padding: 8px;
             min-width: 180px;
@@ -68,7 +69,7 @@
             visibility: hidden;
             transform: translateY(-10px);
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.8);
+            box-shadow: 0 10px 30px -10px rgb(var(--c-ink-inv)/0.8);
         }
         .pj-filter:hover .pj-filter-menu, .pj-filter.open .pj-filter-menu { opacity: 1; visibility: visible; transform: translateY(0); }
         .pj-filter-option {
@@ -79,16 +80,19 @@
             border-radius: 6px;
             cursor: pointer;
             font-size: 11px;
-            color: #888;
+            color: var(--c-dim2);
             transition: all 0.2s;
             border: 1px solid transparent;
             letter-spacing: 0.05em;
         }
-        .pj-filter-option:hover { background: rgba(255, 255, 255, 0.05); color: white; }
-        .pj-filter-option.active { background: rgba(191, 148, 255, 0.1); border-color: rgba(191, 148, 255, 0.3); color: white; font-weight: bold; }
+        .pj-filter-option:hover { background: rgb(var(--c-ink)/0.05); color: white; }
+        .pj-filter-option.active { background: rgb(var(--c-purple)/0.1); border-color: rgb(var(--c-purple)/0.3); color: white; font-weight: bold; }
         .pj-filter-dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; box-shadow: 0 0 5px currentColor; flex-shrink: 0; }
-        .empty-state { color: #666; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.05em; }
+        .empty-state { color: var(--c-dim); font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.05em; }
     </style>
+    <!-- 預編譯的 Tailwind。原本是 cdn.tailwindcss.com 的同步 script，
+         會卡住 HTML 解析約 600ms。改檔後要跑 pnpm run build:css 重新產生。 -->
+    <link rel="stylesheet" href="../tw.css">
 </head>
 
 <body class="font-sans selection:bg-accent-purple/30 selection:text-white">
@@ -121,7 +125,7 @@
             </div>
             <div class="pj-filter-menu">
                 <div class="pj-filter-option active" data-filter="all" data-label="ALL">
-                    <div class="pj-filter-dot" style="color: #888"></div>
+                    <div class="pj-filter-dot" style="color: var(--c-dim2)"></div>
                     ALL
                 </div>
                 <div class="pj-filter-option" data-filter="engineering" data-label="ENGINEERING">
@@ -129,11 +133,11 @@
                     ENGINEERING
                 </div>
                 <div class="pj-filter-option" data-filter="ai-and-automation" data-label="AI & AUTOMATION">
-                    <div class="pj-filter-dot" style="color: #BF94FF"></div>
+                    <div class="pj-filter-dot" style="color: rgb(var(--c-purple))"></div>
                     AI &amp; AUTOMATION
                 </div>
                 <div class="pj-filter-option" data-filter="open-source" data-label="OPEN SOURCE">
-                    <div class="pj-filter-dot" style="color: #FBBF24"></div>
+                    <div class="pj-filter-dot" style="color: rgb(var(--c-warn))"></div>
                     OPEN SOURCE
                 </div>
             </div>

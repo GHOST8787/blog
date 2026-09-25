@@ -8,10 +8,11 @@
     <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
     <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="../tailwind.config.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="../theme.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
 
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="swipe_style.css">
@@ -19,9 +20,12 @@
     <script> window.siteRoot = '../'; </script>
     <script type="module" src="../main.js" defer></script>
     <script src="swipe_app.js" defer></script>
+    <!-- 預編譯的 Tailwind。原本是 cdn.tailwindcss.com 的同步 script，
+         會卡住 HTML 解析約 600ms。改檔後要跑 pnpm run build:css 重新產生。 -->
+    <link rel="stylesheet" href="../tw.css">
 </head>
 
-<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-bg">
 
     <div class="fixed inset-0 z-0 pointer-events-none">
         <div class="absolute inset-0 dot-pattern opacity-50"></div>
@@ -171,7 +175,7 @@
             </h3>
 
             <!-- ===== 滑卡問卷互動模組（邏輯在 swipe_app.js、樣式在 swipe_style.css）===== -->
-            <div id="sw-module" class="bg-[#0A0A0A] border border-white/10 rounded-3xl shadow-2xl p-6 md:p-10 my-12 relative z-20">
+            <div id="sw-module" class="bg-surface border border-white/10 rounded-3xl shadow-2xl p-6 md:p-10 my-12 relative z-20">
 
                 <!-- 進度列 -->
                 <div class="flex justify-between items-baseline mb-3">
@@ -236,7 +240,7 @@
                 問卷讓人反感的根源，多半來自三件事的疊加：陌生主題的打擾、題目過長，以及填完後缺乏回饋。把作答改成滑卡降低了過程的摩擦，結尾的鏡子給了填答者一個看自己的理由。當單向的抽取變成雙向的交換，願意認真填的人才會回來。
             </div>
 
-            <div class="mt-10 p-6 rounded-2xl border border-white/10 bg-[#0A0A0A]">
+            <div class="mt-10 p-6 rounded-2xl border border-white/10 bg-surface">
                 <h4 class="text-white font-bold mb-3 flex items-center gap-2 text-sm">
                     <i class="fas fa-book text-accent-purple"></i> 參考
                 </h4>

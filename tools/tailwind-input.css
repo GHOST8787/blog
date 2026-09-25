@@ -1,0 +1,6 @@
+/* Tailwind 預編譯的進入點。
+   實際顏色與字型設定在 ../tailwind.config.js，值全部指向 theme.css 的 CSS 變數。
+   改完任何 class 要重跑：pnpm run build:css（在 blog/ 目錄下） */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

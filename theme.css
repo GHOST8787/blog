@@ -1,0 +1,127 @@
+/* ===== 主題色票 =====
+   深色的每個數值都照改動前的現況搬過來，所以深色輸出完全不變。
+   淡色取樣自參考圖：#F6F6FD 淺面板底、#FFFFFF 卡片、#5A5CEA 主色按鈕、
+   #E4E5F9 進度條未填、#1D224A 深藍（拿來當主文字，取代純黑）。
+   顏色一律存成 "R G B" 三個通道，tailwind.config.js 再組成
+   rgb(var(--x) / <alpha-value>)，這樣 /10 這種透明度修飾子才會生效。 */
+:root {
+    --c-bg:       5 5 5;          /* #050505 */
+    --c-surface:  10 10 10;       /* #0A0A0A */
+    --c-border:   rgba(255, 255, 255, 0.05);
+
+    --c-ink:      255 255 255;    /* 覆寫 white：2980 處 text-white 走這裡 */
+    --c-ink-inv:  0 0 0;          /* 覆寫 black：紫底按鈕上的字 */
+
+    --c-g200:     229 231 235;    /* #E5E7EB */
+    --c-g300:     209 213 219;    /* #D1D5DB */
+    --c-g400:     156 163 175;    /* #9CA3AF */
+    --c-g500:     107 114 128;    /* #6B7280 */
+    --c-g600:     75 85 99;       /* #4B5563 */
+    --c-g700:     55 65 81;       /* #374151 */
+
+    --c-purple:   191 148 255;    /* #BF94FF */
+    --c-blue:     59 130 246;     /* #3B82F6 */
+    --c-cyan:     6 182 212;      /* #06B6D4 */
+    --c-success:  74 222 128;     /* #4ADE80 */
+    --c-warn:     251 191 36;     /* #FBBF24 新增，之前 accent-warn 沒定義過 */
+    --c-danger:   248 113 113;    /* #F87171 新增 */
+    --c-fill:     191 148 255;    /* 深色的填色就是主色本身 */
+
+    /* 以下是第 2 步從 style.css 主體抽出來的，深色值全部照原本寫死的值填 */
+    --c-body:     226 232 240;    /* #E2E8F0 內文 */
+    --c-glass:    rgba(15, 15, 15, 0.8);      /* 導覽列磨砂底 */
+    --c-overlay:  rgba(0, 0, 0, 0.8);         /* 彈窗遮罩 */
+    --c-scroll:   #222;           /* 捲軸 */
+    --c-scroll-hi:#333;
+    --c-dim:      #666;           /* 由深到淺的三階弱化文字，維持原本各自的值 */
+    --c-dim2:     #888;
+    --c-dim3:     #aaa;
+    --c-sep:      #3a3a3a;        /* 分隔符號 */
+    --c-heart:    255 107 138;    /* #ff6b8a 愛心 hover */
+    --c-heart-on: 255 77 109;     /* #ff4d6d 已按讚 */
+    --c-heart-bg: 255 80 120;     /* 愛心的底色與邊框用這支調透明度 */
+    --c-reject:   255 100 100;    /* 退回按鈕 */
+    --c-reject-fg:255 100 100;
+
+    /* 第 3 步：HTML 裡用到的深色層級與中性灰，深色值照原本寫死的值填 */
+    --c-e1: #0B0B0B;  --c-e2: #0D0D0F;  --c-e3: #0F0F0F;  --c-e4: #101014;
+    --c-e5: #1A1A1A;  --c-e6: #1F1F2E;  --c-e7: #2A2A2A;
+    --c-n55: #555;    --c-n99: #999;    --c-n9a: #9A9A9A;
+    --c-ncc: #CCC;    --c-ndd: #DDD;    --c-ne5: #E5E5E5;
+
+    /* 首頁貢獻熱力圖的五階，由淡到濃。原本寫死在 index.html 的 JS 陣列裡 */
+    --c-heat1: #16161C;  --c-heat2: #665187;  --c-heat3: #8B6EBA;
+    --c-heat4: #A883DF;  --c-heat5: #BF94FF;
+}
+
+:root[data-theme="light"] {
+    --c-bg:       246 246 253;    /* #F6F6FD */
+    --c-surface:  255 255 255;    /* #FFFFFF */
+    --c-border:   rgba(29, 34, 74, 0.10);
+
+    --c-ink:      29 34 74;       /* #1D224A */
+    --c-ink-inv:  255 255 255;
+
+    /* 灰階整組翻轉：深色版越亮＝越顯眼，淡色版越深＝越顯眼，
+       所以 g200 在這裡最深、g600 最淺，層級順序維持不變。 */
+    --c-g200:     58 63 102;      /* #3A3F66 */
+    --c-g300:     74 79 119;      /* #4A4F77 */
+    --c-g400:     91 96 135;      /* #5B6087 */
+    --c-g500:     108 113 148;    /* #6C7194 */
+    --c-g600:     118 123 158;    /* #767B9E */
+    --c-g700:     134 139 172;    /* #868BAC */
+
+    --c-purple:   90 92 234;      /* #5A5CEA */
+    --c-blue:     29 78 216;      /* #1D4ED8 */
+    --c-cyan:     14 116 144;     /* #0E7490 */
+    --c-success:  21 128 61;      /* #15803D */
+    --c-warn:     180 83 9;       /* #B45309 */
+    --c-danger:   185 28 28;      /* #B91C1C */
+    --c-fill:     228 229 249;    /* #E4E5F9 */
+
+    --c-body:     29 34 74;
+    --c-glass:    rgba(255, 255, 255, 0.85);
+    --c-overlay:  rgba(29, 34, 74, 0.45);
+    --c-scroll:   #D3D5E6;
+    --c-scroll-hi:#BCBFD8;
+    --c-dim:      #767B9E;
+    --c-dim2:     #6C7194;
+    --c-dim3:     #4A4F77;
+    --c-sep:      #C6C9DC;
+    --c-heart:    217 58 92;
+    --c-heart-on: 196 43 77;
+    --c-heart-bg: 217 58 92;
+    --c-reject:   190 60 60;
+    --c-reject-fg:170 45 45;
+
+    --c-e1: #FBFBFE;  --c-e2: #F8F8FC;  --c-e3: #F0F1FA;  --c-e4: #EDEEF8;
+    --c-e5: #E8E9F5;  --c-e6: #E2E3F2;  --c-e7: #D9DAEC;
+    --c-n55: #A0A4BE; --c-n99: #6C7194; --c-n9a: #6C7194;
+    --c-ncc: #4A4F77; --c-ndd: #3A3F66; --c-ne5: #2E3358;
+
+    --c-heat1: #EBECF2;  --c-heat2: #D2D3F1;  --c-heat3: #B5B6EF;
+    --c-heat4: #9192ED;  --c-heat5: #5B5CEA;
+}
+
+
+/* 切換鈕的圖示：深色時顯示太陽（按了會變亮），淡色時顯示月亮。
+   純 CSS 判斷，導覽列是 JS 之後注入的也不用重畫。 */
+.theme-i-moon { display: none; }
+:root[data-theme="light"] .theme-i-sun { display: none; }
+:root[data-theme="light"] .theme-i-moon { display: inline; }
+
+/* 切換主題時才套用的過場。平常不掛在全站，免得干擾各元件自己的 hover 動畫。
+   toggleTheme() 會先加上這個 class，過場結束再拿掉。 */
+:root.theme-anim,
+:root.theme-anim *,
+:root.theme-anim *::before,
+:root.theme-anim *::after {
+    transition: background-color .55s ease, border-color .55s ease, color .55s ease,
+                fill .55s ease, stroke .55s ease, box-shadow .55s ease,
+                background-image .55s ease !important;
+}
+/* 系統設定為減少動態效果時直接跳過過場 */
+@media (prefers-reduced-motion: reduce) {
+    :root.theme-anim, :root.theme-anim *,
+    :root.theme-anim *::before, :root.theme-anim *::after { transition: none !important; }
+}
