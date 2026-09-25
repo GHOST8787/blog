@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / P31 | GHOST.ouo</title>
+    <link rel="canonical" href="https://ghost8787.github.io/blog/EXP/project_31.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_31.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_31.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/project_31.html">
+
+    <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script type="module" src="../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                返回專案列表
+            </a>
+            <span class="opacity-50">EXP / P31</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-4 leading-tight">
+                快速敲定會議小工具：<br>
+                <span class="text-gradient text-2xl md:text-4xl">Meet</span>
+            </h1>
+
+            <p class="text-lg text-gray-500 font-light mb-6 leading-relaxed">
+                節省約會議時間，零後端的會議時間投票小工具實作
+            </p>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">Engineering</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Firebase</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">工具實作</span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.09.25</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
+                約一場五個人的會議，真正花時間的是群組裡來回問「你哪天可以」。這篇記錄我怎麼把這件事壓成一個網址：一開始的構想、權限怎麼設計、中間撞到什麼。
+            </p>
+
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">前情提要</div>
+                <p class="m-0 mb-3">
+                    工作上偶爾要約一場會議，市面上的服務我用過幾套，兩件事一直讓我不想繼續用下去。第一件是帳號：要投票先辦一個，回答的人為了回一次時間得加入另一個平台，資料也留在對方的系統裡。第二件是配額：免費方案把同時進行的問卷數抓得很緊，超過就是月費，而介面上那一整排欄位，我這個情境從頭到尾用不到幾個。
+                </p>
+                <p class="m-0">
+                    真正需要的動作只有三個：開一場、投一次、看結果。所以自己做了 Meet，掛在自己的網域上，資料進自己的資料庫。這篇寫的是 2026-09-24 那一版定稿的設計。
+                </p>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 一開始想做成什麼樣子
+            </h3>
+
+            <p>
+                構想只有一句話：發起人填完表單拿到一個網址，丟進群組，收到的人點開就能投，投完就走。參與者不辦帳號、不裝東西、不留在任何平台上。
+            </p>
+
+            <p>
+                配額那一點我用另一個方式處理。同時進行中的會議自己設一個上限，收掉一場就放回一個名額——這樣它永遠待在免費額度裡面，也順便逼自己把開完的會議收乾淨。
+            </p>
+
+            <p>
+                還有一條是自己加的：<span class="text-gray-200">參與者只看得到自己的答案，發起人看得到全部</span>。投票這件事只要能互相偷看就會互相影響，所以這條從一開始就當成硬性要求。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 架構：權限從資料結構開始設計
+            </h3>
+
+            <p>
+                這是整個專案最花時間、也最值得留下來的部分。有後端的站，「誰能看到什麼」寫在 API 裡：請求進來先確認身分，再決定回哪些欄位。Meet 的前端是 GitHub Pages 上的靜態檔案，瀏覽器直接對資料庫讀寫，中間沒有一層可以藏判斷。
+            </p>
+
+            <p>
+                資料放在 Firebase Realtime Database，它自己帶一份權限檔叫 Security Rules，逐個節點宣告誰能讀、誰能寫。第一版我想的是全部塞在同一個子樹底下，靠規則把幾個欄位擋掉。這條路走不通——讀取權限會往下傳，父節點一旦開放，底下全部跟著開放。於是做法從「把某個欄位擋起來」換成改資料結構本身。
+            </p>
+
+            <figure class="my-10">
+                <img src="../PNG/project_31.2.svg"
+                     alt="Meet 一場會議的節點分層：基本資訊、候選時段、投票一人一格、私密區，以及各自的讀取權限"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    一場會議切成四塊，隔離靠節點的邊界，權限跟著結構走
+                </figcaption>
+            </figure>
+
+            <p>
+                關鍵在第三塊：投票以「每個人一格」的方式存，格子的名字就是那個人的身分編號，所以參與者讀得到自己那一格、發起人讀得到整包。顯示名稱、匿名標記、發起人的私人備註全部收進私密區，這個子樹只認發起人。
+            </p>
+
+            <blockquote class="not-italic border-l-4 border-accent-purple/50 bg-white/5 pl-5 pr-4 py-4 rounded-r-xl my-8">
+                <p class="text-gray-200 m-0 leading-relaxed">權限在資料結構這一層就決定完了，比任何事後補上的檢查都早一步。</p>
+            </blockquote>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 工具本身怎麼設計
+            </h3>
+
+            <p>
+                發起人用 Google 登入後，填標題、會議長度、地點或連結、候選時段、回覆截止時間，按下建立就拿到網址。收到網址的人點開直接進投票畫面，每個時段三種狀態：可以、需要提前通知、不行；想留名字就留，不想留的按一下「匿名投票」也能送出。
+            </p>
+
+            <figure class="my-10">
+                <img src="../PNG/project_31.1.webp"
+                     alt="Meet 首頁：配額進度條與進行中的會議清單"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    發起人首頁：進行中的會議佔掉一個名額，每列顯示回覆人數與目前預計時間
+                </figcaption>
+            </figure>
+
+            <p>
+                發起人回到同一頁，看到的是四色比例條、回覆人數，以及每個人各自選了什麼。某個人的答案要整份拿掉也可以，移除之後他回來就像沒投過，能重投一次。
+            </p>
+
+            <p>
+                另外接了一條路進來。公司電腦上有一支自己寫的小工具，讀行事曆、算共同空檔；我讓它把算好的時段編成一串可貼的文字，複製之後貼進 Meet 的建立表單就展開成候選時段，省掉手動輸入。兩邊完全不連線，中間只有剪貼簿。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 中間卡住的地方
+            </h3>
+
+            <h4 class="text-xl font-bold text-white mt-10 mb-4">
+                一條靜默失效的上限
+            </h4>
+
+            <p>
+                同時開幾場會議的上限，第一版我把檢查掛在「一場會議」那一層的驗證規則上。語法合法、Console 沒有警告、正常測試也看不出異常，一直到刻意去撞上限才發現它從頭到尾沒有被執行過。
+            </p>
+
+            <p>
+                原因是驗證規則只會在<strong class="text-white">實際被寫入的那個節點與它的子節點</strong>上評估，而建立一場會議的時候，寫入真正落在下面一層：
+            </p>
+
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre class="m-0"><code>一場會議/基本資訊   ← 寫入實際落在這一層
+一場會議/           ← 規則掛在這一層，整條跳過</code></pre>
+            </div>
+
+            <p>
+                把計數檢查往下搬一層，規則跟寫入路徑對齊，上限才開始生效。Security Rules 有自己的評估範圍，一條規則可以完全合法，同時在你以為它會跑的地方被跳過。
+            </p>
+
+            <h4 class="text-xl font-bold text-white mt-10 mb-4">
+                畫面上看不到，跟真的讀不到是兩件事
+            </h4>
+
+            <p>
+                用「我在畫面上看不到」來驗證權限等於沒驗證，所以測試刻意繞過前端：另外開一個參與者身分，拿它的憑證直接打資料庫的 REST 介面。
+            </p>
+
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre class="m-0"><code>用參與者憑證要「發起人的私人備註」  → 401 Permission denied
+用同一個憑證要「全部人的投票」      → 401 Permission denied
+用同一個憑證寫「自己那一格」        → 成功</code></pre>
+            </div>
+
+            <p class="text-gray-400">
+                這個測試的價值在於它跟畫面無關。有人自己寫 client 去打同一個 API，資料庫給的答案是同一個。
+            </p>
+
+            <h4 class="text-xl font-bold text-white mt-10 mb-4">
+                公司那條線要接到哪裡為止
+            </h4>
+
+            <p>
+                最直覺的做法是讓公司那支工具直接把時段寫進 Meet 的資料庫，代價是公司機器上得存一份能通過規則的憑證。為了一個個人工具，這條線我選擇不接，改成只交換一串簽章過的文字，形狀大致是這樣（示意）：
+            </p>
+
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre class="m-0"><code>&lt;版本前綴&gt;.&lt;內容&gt;.&lt;簽章&gt;
+
+內容 = 時段清單編成一串可貼的文字
+簽章 = 用共用金鑰對「內容」算 HMAC-SHA256，取前面幾個 byte</code></pre>
+            </div>
+
+            <p>
+                HMAC 是用一把共用金鑰對一段資料算出驗證指紋，Meet 在瀏覽器重算一次，對得起來就表示這串字在傳遞過程中沒被改過。裡面只有時段本身，與會者、主旨、忙閒明細留在公司電腦上。
+            </p>
+
+            <p>
+                這個設計有一個明知故犯的限制：<strong class="text-white">金鑰放在瀏覽器裡</strong>，打開開發者工具就找得到。所以它守的是複製時少了一段、貼到錯的欄位、手動改掉幾個字元、格式在傳遞中壞掉這幾件事。要讓參與者拿不到金鑰，驗證得搬到伺服器上，那個版本會失去現在零後端、零成本、純靜態的形狀。先定義清楚要防什麼，再決定防到哪裡。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 做完了，也還在用
+            </h3>
+
+            <p>
+                從使用的人那一側看，整件事剩下三步：開一場、勾時段、回來看結果。群組裡少掉一輪「你週三可以嗎」，回答的人也不必為了回一次時間去加入另一個平台。我自己每次要約會議都還是開它，之後想到什麼會繼續加。
+            </p>
+
+            <p>
+                比較值得帶走的是底下那個想法，它跟 <a href="project_30.html" class="underline decoration-gray-600 underline-offset-4 hover:text-white transition-colors">Whiteboard</a> 是同一條：純靜態站做得到權限控管，前提是權限從資料結構開始設計。參與者看不到別人的答案，靠的是每個人一格，這件事在資料庫那一層就成立，跟介面畫了什麼無關。
+            </p>
+
+            <p>
+                有想到更好的做法、或是覺得哪裡有漏洞，都歡迎跟我說。程式碼公開在 <a href="https://github.com/GHOST8787/blog" target="_blank" rel="noopener noreferrer" class="underline decoration-gray-600 underline-offset-4 hover:text-white transition-colors">GitHub</a>，開 issue、丟 PR 或給一顆 star 我都收得到；想直接許願也可以去 <a href="../whiteboard.html" class="underline decoration-gray-600 underline-offset-4 hover:text-white transition-colors">許願板</a> 貼一則。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 參考連結
+            </h3>
+
+            <ul class="space-y-2 text-sm text-gray-400 list-none pl-0">
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="../meet.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        Meet &mdash; 直接打開工具
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="project_30.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        Whiteboard &mdash; 同一套設定上的第一個工具
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="https://firebase.google.com/docs/database/security/core-syntax" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        Realtime Database Security Rules &mdash; 官方文件
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="https://github.com/GHOST8787/blog" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        GitHub &mdash; GHOST8787/blog
+                    </a>
+                </li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 技術棧
+            </h3>
+
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
+                <li><strong class="text-white">前端</strong>：原生 JavaScript ＋ Tailwind，無框架無打包工具</li>
+                <li><strong class="text-white">部署</strong>：GitHub Pages</li>
+                <li><strong class="text-white">資料庫與權限</strong>：Firebase Realtime Database ＋ Security Rules</li>
+                <li><strong class="text-white">登入</strong>：Google Identity Services，頁內登入不開彈窗</li>
+                <li><strong class="text-white">匿名投票</strong>：Firebase 匿名驗證，登入狀態只留在記憶體</li>
+                <li><strong class="text-white">跨系統傳遞</strong>：base64url ＋ HMAC-SHA256，瀏覽器端用 Web Crypto API 驗章</li>
+                <li><strong class="text-white">共用</strong>：跟 Whiteboard 共用同一個 Firebase 專案與同一份權限檔，兩個工具各佔一個頂層節點</li>
+            </ul>
+
+            <p class="text-gray-400 text-sm">
+                GitHub Pages 的 COOP 標頭會干擾 Google 的彈窗登入流程，所以這裡走頁內登入，拿到憑證後在同一頁換成資料庫認得的身分。整套跑在 Firebase 的免費方案上，<a href="https://firebase.google.com/pricing" target="_blank" rel="noopener noreferrer" class="underline decoration-gray-600 underline-offset-4 hover:text-white transition-colors">官方定價頁</a>（2026-09-25 查證）列出的免費額度對這個用量還有很大空間。
+            </p>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="project_30.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; 上一篇
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                查看所有專案
+            </a>
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                下一篇 &rarr;
+            </a>
+        </div>
+
+    </main>
+    <div id="footer-placeholder"></div>
+</body>
+</html>

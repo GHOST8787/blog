@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 400" width="920" height="400" role="img" aria-label="Whiteboard 三段式資料分區架構圖">
+  <defs>
+    <marker id="wbArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#BF94FF"/>
+    </marker>
+    <style>
+      .mono { font-family: 'JetBrains Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace; }
+      .sans { font-family: 'Plus Jakarta Sans', 'Noto Sans TC', system-ui, sans-serif; }
+    </style>
+  </defs>
+
+  <rect width="920" height="400" fill="#050505"/>
+
+  <text class="mono" x="32" y="38" fill="#BF94FF" font-size="12" letter-spacing="2.2">WHITEBOARD / 三段式資料分區</text>
+  <text class="mono" x="32" y="60" fill="#6B7280" font-size="11">狀態不是欄位，是節點位置；權限跟著位置走</text>
+
+  <text class="mono" x="40" y="104" fill="#9CA3AF" font-size="11">任何登入者投稿</text>
+  <path d="M 118 99 L 160 99" stroke="#BF94FF" stroke-width="1.6" marker-end="url(#wbArrow)"/>
+
+  <!-- 待審區 -->
+  <rect x="40" y="120" width="240" height="160" rx="12" fill="#0A0A0C" stroke="#1F1F26" stroke-width="1"/>
+  <text class="sans" x="60" y="152" fill="#FFFFFF" font-size="14.5" font-weight="700">待審區</text>
+  <text class="mono" x="60" y="182" fill="#6B7280" font-size="11">寫入</text>
+  <text class="mono" x="104" y="182" fill="#9CA3AF" font-size="11">任何登入者，只能新增</text>
+  <text class="mono" x="60" y="204" fill="#6B7280" font-size="11">讀取</text>
+  <text class="mono" x="104" y="204" fill="#9CA3AF" font-size="11">只有站長</text>
+  <line x1="60" y1="222" x2="260" y2="222" stroke="#1F1F26" stroke-width="1"/>
+  <text class="mono" x="60" y="244" fill="#6B7280" font-size="11">送出後停在這裡，</text>
+  <text class="mono" x="60" y="262" fill="#6B7280" font-size="11">投稿的人自己也看不到</text>
+
+  <path d="M 288 200 L 332 200" stroke="#BF94FF" stroke-width="1.6" marker-end="url(#wbArrow)"/>
+  <text class="mono" x="286" y="188" fill="#BF94FF" font-size="10">審核通過</text>
+
+  <!-- 已公開（重點卡） -->
+  <rect x="340" y="120" width="240" height="160" rx="12" fill="#140F1F" stroke="#3A2F52" stroke-width="1"/>
+  <text class="sans" x="360" y="152" fill="#FFFFFF" font-size="14.5" font-weight="700">已公開　許願池</text>
+  <text class="mono" x="360" y="182" fill="#6B7280" font-size="11">寫入</text>
+  <text class="mono" x="404" y="182" fill="#9CA3AF" font-size="11">站長；票數欄位開放 ±1</text>
+  <text class="mono" x="360" y="204" fill="#6B7280" font-size="11">讀取</text>
+  <text class="mono" x="404" y="204" fill="#9CA3AF" font-size="11">所有人</text>
+  <line x1="360" y1="222" x2="560" y2="222" stroke="#3A2F52" stroke-width="1"/>
+  <text class="mono" x="360" y="244" fill="#BF94FF" font-size="11">票數決定卡片多大，</text>
+  <text class="mono" x="360" y="262" fill="#BF94FF" font-size="11">一個帳號一票</text>
+
+  <path d="M 588 200 L 632 200" stroke="#BF94FF" stroke-width="1.6" marker-end="url(#wbArrow)"/>
+  <text class="mono" x="592" y="188" fill="#BF94FF" font-size="10">做完了</text>
+
+  <!-- 已實作 -->
+  <rect x="640" y="120" width="240" height="160" rx="12" fill="#0A0A0C" stroke="#1F1F26" stroke-width="1"/>
+  <text class="sans" x="660" y="152" fill="#FFFFFF" font-size="14.5" font-weight="700">已實作</text>
+  <text class="mono" x="660" y="182" fill="#6B7280" font-size="11">寫入</text>
+  <text class="mono" x="704" y="182" fill="#9CA3AF" font-size="11">站長</text>
+  <text class="mono" x="660" y="204" fill="#6B7280" font-size="11">讀取</text>
+  <text class="mono" x="704" y="204" fill="#9CA3AF" font-size="11">所有人</text>
+  <line x1="660" y1="222" x2="860" y2="222" stroke="#1F1F26" stroke-width="1"/>
+  <text class="mono" x="660" y="244" fill="#6B7280" font-size="11">帶完成日期，</text>
+  <text class="mono" x="660" y="262" fill="#6B7280" font-size="11">文章與工具兩顆連結</text>
+
+  <!-- 計數器 -->
+  <rect x="40" y="308" width="840" height="56" rx="12" fill="#0A0A0C" stroke="#1F1F26" stroke-width="1"/>
+  <text class="sans" x="60" y="334" fill="#FFFFFF" font-size="13" font-weight="700">計數器</text>
+  <text class="mono" x="130" y="334" fill="#9CA3AF" font-size="11">發號用的流水號，決定卡片上那個 #001</text>
+  <text class="mono" x="60" y="352" fill="#6B7280" font-size="11">整套流程沒有一個叫 status 的欄位要維護——搬到哪一個節點，就是哪一個狀態</text>
+</svg>

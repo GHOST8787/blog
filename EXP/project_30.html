@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / P30 | GHOST.ouo</title>
+    <link rel="canonical" href="https://ghost8787.github.io/blog/EXP/project_30.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_30.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_30.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/project_30.html">
+
+    <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script type="module" src="../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                返回專案列表
+            </a>
+            <span class="opacity-50">EXP / P30</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-4 leading-tight">
+                公開許願板小工具：<br>
+                <span class="text-gradient text-2xl md:text-4xl">Whiteboard</span>
+            </h1>
+
+            <p class="text-lg text-gray-500 font-light mb-6 leading-relaxed">
+                把只有自己看得到的待辦清單攤開，讓看的人投票決定順序
+            </p>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">Engineering</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Firebase</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">工具實作</span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.09.25</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
+                想聊聊這個站上的許願板是怎麼來的：一開始的構想、架構怎麼切、中間卡在哪，還有為什麼它到現在還掛在那裡。
+            </p>
+
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">前情提要</div>
+                <p class="m-0 mb-3">
+                    寫程式對我來說是興趣。既然是興趣，只有自己在用就有點可惜，我希望它能發揮一點用途跟價值。另一件想要的事情是一個溝通的管道——來看這個站的人，總該有個地方能跟我說「這個我想看」。
+                </p>
+                <p class="m-0">
+                    所以有了 Whiteboard。2026-05-09 那個晚上先搭了一個空殼：hero、兩個區塊、右下角一顆按鈕、一個投稿視窗，什麼功能都還沒有。隔天一整天把核心功能全部補完。
+                </p>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 一開始想做成什麼樣子
+            </h3>
+
+            <p>
+                構想很單純：一面公開的牆，任何人登入都能貼一個想法上去，其他人按愛心決定它排多前面，我做掉的往下沉成一份可以回頭翻的紀錄。三個狀態、一條單向的路，沒有更多。
+            </p>
+
+            <p>
+                唯一要先想清楚的是灌水。驗證碼、速率限制、關鍵字過濾，這些各自能擋掉一部分，維護成本也跟著長出來，而這個站的流量規模用不到那一整套。所以我把它簡化成一句話：任何人都能送，公開與否由我審核決定。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 架構：三個節點就是三個狀態
+            </h3>
+
+            <p>
+                資料放在 Firebase Realtime Database，Google 代管、瀏覽器可以直接讀寫的資料庫，權限寫在它自己的 Security Rules 裡，逐個節點宣告誰能讀、誰能寫。這個站沒有後端，整套權限模型就靠這份檔案撐著。
+            </p>
+
+            <p>
+                第一版我想的是全部放在同一棵樹底下，用欄位把待審的內容遮起來。這條路走不通——讀取權限會往下傳，父節點一旦開放，底下全部跟著開放。於是改成三個獨立節點，審核這個動作就等於把資料從一個節點搬到下一個。
+            </p>
+
+            <figure class="my-10">
+                <img src="../PNG/project_30.2.svg"
+                     alt="Whiteboard 三段式資料分區：待審區、已公開、已實作，各自的讀寫權限與搬移方向"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    三個分區各有自己的讀寫規則，搬到哪一個節點就是哪一個狀態
+                </figcaption>
+            </figure>
+
+            <p>
+                這樣切完之後，整套流程裡沒有一個叫做 status 的欄位要維護。待審區的讀取權限只認站長，所以送出去的東西在通過之前誰都看不到，連投稿的人自己也一樣。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 工具本身怎麼設計
+            </h3>
+
+            <p>
+                右下角固定一顆按鈕，點開填一行標題再選填幾句說明。兩個欄位都有長度上限，前端跟資料庫規則各檢查一次，前者擋手滑、後者擋繞過畫面直接打 API 的人。
+            </p>
+
+            <p>
+                愛心是一個帳號一票，再按一次收回。做法是兩個欄位配一條規則：一個存總票數，規則只准一次加一或減一；另一個按人分格，規則只准本人寫自己那一格。按下去的當下畫面先變，寫入失敗再把數字跟圖示回滾。
+            </p>
+
+            <figure class="my-10">
+                <img src="../PNG/project_30.1.webp"
+                     alt="Whiteboard 首頁：上半許願池、下半已實作清單"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    上半是許願池，下半「已實作」每列帶編號、完成日期，以及文章與工具兩顆連結
+                </figcaption>
+            </figure>
+
+            <p>
+                許願池的版面是 bento，卡片大小由票數決定：每跨過一個門檻就跳一級寬度，最低的一級佔四分之一排，最高票那張可以吃掉大半排、並且往下多佔一列高度，超過門檻之後另外加一層外框。整面牆會隨著大家按愛心慢慢變形，我這邊不需要維護一份排序設定。
+            </p>
+
+            <p>
+                最後是一個只有我看得到的審核頁。待審清單、通過、駁回、畢業四個動作，投稿者的聯絡信箱一路從待審帶到已實作，這樣要回信找得到人。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 中間卡住的地方
+            </h3>
+
+            <h4 class="text-xl font-bold text-white mt-10 mb-4">
+                登入壞掉，而且修了兩次
+            </h4>
+
+            <p>
+                第一版用 Firebase 內建的彈窗登入。本機開 Live Server 一切正常，推上 GitHub Pages 之後彈窗關不掉，畫面只丟出一句「The requested action is invalid」，沒有堆疊也沒有錯誤碼。
+            </p>
+
+            <p>
+                原因是 <strong class="text-white">COOP</strong> 這個標頭。它會切斷網頁與它開出來的視窗之間的引用關係、避免互相操控，GitHub Pages 預設就送。引用斷掉之後，彈窗完成登入沒辦法把結果傳回母頁面，也關不掉自己。
+            </p>
+
+            <p>
+                當天我先改成 redirect 把它繞過去，頁面整個跳走再跳回來，能動但體驗很差。真正的解法是三週後才換上的：用 Google Identity Services 在頁面內取得憑證，再在同一頁換成資料庫認得的身分，全程不開新視窗。
+            </p>
+
+            <p class="text-gray-400">
+                這條坑本機測不出來。線上跟本機送的標頭不同，等於兩個不同的執行環境。
+            </p>
+
+            <h4 class="text-xl font-bold text-white mt-10 mb-4">
+                兩條資料庫連線撞在一起
+            </h4>
+
+            <p>
+                首頁的愛心按鈕早就開過一條 Firebase 連線，許願板的程式再開一次會撞名，因為預設連線同一個站只能有一個。解法是初始化的時候多帶一個名字，讓它變成一條獨立的具名連線，同一份設定、兩個互不干擾的實例。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 做完了，也還在用
+            </h3>
+
+            <p>
+                從 05-09 的空殼到 05-10 收工，核心功能是一天做完的；後來又補了英文版，六月把登入換成現在這套。它現在還掛在站上，我自己也還在用它記待辦，之後有想加的東西會繼續加。
+            </p>
+
+            <p>
+                第一次做這種對外開放投稿的東西，一定有沒想周全的地方。有建議的話直接在許願板貼一則最快，我看得到；想直接丟意見或看程式碼的話，站的原始碼全部公開在 <a href="https://github.com/GHOST8787/blog" target="_blank" rel="noopener noreferrer" class="underline decoration-gray-600 underline-offset-4 hover:text-white transition-colors">GitHub</a>，開 issue 或給一顆 star 我都收得到。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 參考連結
+            </h3>
+
+            <ul class="space-y-2 text-sm text-gray-400 list-none pl-0">
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="../whiteboard.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        Whiteboard &mdash; 直接打開，丟一個想法進來
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="project_31.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        Meet &mdash; 同一套設定上的第二個工具
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="https://developers.google.com/identity/gsi/web/guides/overview" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        Google Identity Services &mdash; 官方文件
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Opener-Policy" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        Cross-Origin-Opener-Policy &mdash; MDN
+                    </a>
+                </li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 技術棧
+            </h3>
+
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
+                <li><strong class="text-white">前端</strong>：原生 JavaScript ＋ Tailwind，單一檔案，無框架無打包工具</li>
+                <li><strong class="text-white">部署</strong>：GitHub Pages</li>
+                <li><strong class="text-white">資料庫與權限</strong>：Firebase Realtime Database ＋ Security Rules，站長身分靠比對一組固定帳號來判斷</li>
+                <li><strong class="text-white">登入</strong>：Google Identity Services，頁內登入不開彈窗</li>
+                <li><strong class="text-white">即時更新</strong>：監聽已公開與已實作兩個節點，資料一變畫面就跟著重畫</li>
+                <li><strong class="text-white">票數</strong>：transaction 加減，另一個欄位按人分格記錄投過的人</li>
+                <li><strong class="text-white">共用</strong>：跟 Meet 共用同一個 Firebase 專案與同一份權限檔，兩個工具各佔一個頂層節點</li>
+            </ul>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="project_29.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; 上一篇
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                查看所有專案
+            </a>
+            <a href="project_31.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                下一篇 &rarr;
+            </a>
+        </div>
+
+    </main>
+    <div id="footer-placeholder"></div>
+</body>
+</html>

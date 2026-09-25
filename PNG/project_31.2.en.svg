@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 440" width="920" height="440" role="img" aria-label="Meet node layout and read permissions for one poll">
+  <defs>
+    <marker id="mtArrowEn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#BF94FF"/>
+    </marker>
+    <style>
+      .mono { font-family: 'JetBrains Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace; }
+      .sans { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+    </style>
+  </defs>
+
+  <rect width="920" height="440" fill="#050505"/>
+
+  <text class="mono" x="32" y="38" fill="#BF94FF" font-size="12" letter-spacing="2.2">MEET / NODE LAYOUT OF ONE POLL</text>
+  <text class="mono" x="32" y="60" fill="#6B7280" font-size="11">Read permission cascades down, so isolation comes from splitting nodes, not hiding fields</text>
+
+  <rect x="32" y="92" width="160" height="286" rx="12" fill="#0A0A0C" stroke="#1F1F26" stroke-width="1"/>
+  <text class="mono" x="52" y="118" fill="#6B7280" font-size="10" letter-spacing="1.6">WHO READS</text>
+  <text class="sans" x="52" y="152" fill="#FFFFFF" font-size="13" font-weight="700">Participant</text>
+  <text class="mono" x="52" y="172" fill="#6B7280" font-size="10">opens the link</text>
+  <text class="mono" x="52" y="188" fill="#6B7280" font-size="10">may stay anonymous</text>
+  <text class="sans" x="52" y="244" fill="#BF94FF" font-size="13" font-weight="700">Organizer</text>
+  <text class="mono" x="52" y="264" fill="#6B7280" font-size="10">signs in with Google</text>
+  <text class="mono" x="52" y="280" fill="#6B7280" font-size="10">one per poll</text>
+
+  <rect x="230" y="92" width="290" height="76" rx="12" fill="#0A0A0C" stroke="#1F1F26" stroke-width="1"/>
+  <text class="sans" x="250" y="122" fill="#FFFFFF" font-size="14.5" font-weight="700">Basics</text>
+  <text class="mono" x="250" y="146" fill="#9CA3AF" font-size="11">title, length, place, deadline</text>
+
+  <rect x="230" y="182" width="290" height="76" rx="12" fill="#0A0A0C" stroke="#1F1F26" stroke-width="1"/>
+  <text class="sans" x="250" y="212" fill="#FFFFFF" font-size="14.5" font-weight="700">Candidate slots</text>
+  <text class="mono" x="250" y="236" fill="#9CA3AF" font-size="11">the times being voted on</text>
+
+  <rect x="230" y="272" width="290" height="76" rx="12" fill="#140F1F" stroke="#3A2F52" stroke-width="1"/>
+  <text class="sans" x="250" y="302" fill="#FFFFFF" font-size="14.5" font-weight="700">Votes &#183; one cell each</text>
+  <text class="mono" x="250" y="326" fill="#BF94FF" font-size="11">the cell is named after the person</text>
+
+  <rect x="230" y="362" width="290" height="60" rx="12" fill="#0A0A0C" stroke="#1F1F26" stroke-width="1"/>
+  <text class="sans" x="250" y="390" fill="#FFFFFF" font-size="14.5" font-weight="700">Private area</text>
+  <text class="mono" x="250" y="410" fill="#9CA3AF" font-size="11">names, anonymous flag, organizer note</text>
+
+  <path d="M 192 130 L 222 130" stroke="#BF94FF" stroke-width="1.4" marker-end="url(#mtArrowEn)"/>
+  <path d="M 192 220 L 222 220" stroke="#BF94FF" stroke-width="1.4" marker-end="url(#mtArrowEn)"/>
+  <path d="M 192 310 L 222 310" stroke="#BF94FF" stroke-width="1.4" marker-end="url(#mtArrowEn)"/>
+  <path d="M 192 392 L 222 392" stroke="#BF94FF" stroke-width="1.4" marker-end="url(#mtArrowEn)"/>
+
+  <text class="mono" x="540" y="124" fill="#9CA3AF" font-size="11">participant &#10003;&#160;&#160;&#160;organizer &#10003;</text>
+  <text class="mono" x="540" y="146" fill="#6B7280" font-size="10">any signed-in user can read it</text>
+
+  <text class="mono" x="540" y="214" fill="#9CA3AF" font-size="11">participant &#10003;&#160;&#160;&#160;organizer &#10003;</text>
+  <text class="mono" x="540" y="236" fill="#6B7280" font-size="10">any signed-in user can read it</text>
+
+  <text class="mono" x="540" y="304" fill="#BF94FF" font-size="11">participant: own cell&#160;&#160;&#160;organizer: all of it</text>
+  <text class="mono" x="540" y="326" fill="#6B7280" font-size="10">asking for the whole votes node &#8594; 401 Permission denied</text>
+
+  <text class="mono" x="540" y="392" fill="#9CA3AF" font-size="11">participant &#10007;&#160;&#160;&#160;organizer &#10003;</text>
+  <text class="mono" x="540" y="412" fill="#6B7280" font-size="10">this subtree recognises the organizer alone</text>
+
+  <text class="mono" x="540" y="60" fill="#6B7280" font-size="10">A separate counter enforces the cap on concurrent polls per account</text>
+</svg>

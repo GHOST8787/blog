@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / P31 | GHOST.ouo</title>
+    <link rel="canonical" href="https://ghost8787.github.io/blog/en/EXP/project_31.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_31.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_31.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/project_31.html">
+
+    <link rel="icon" type="image/png" href="../../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../../PNG/pixelS2.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../tailwind.config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script src="../../i18n.js" defer></script>
+    <script type="module" src="../../main.js" defer></script>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-[#050505]">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                Back to Projects
+            </a>
+            <span class="opacity-50">EXP / P31</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-4 leading-tight">
+                Settling a Meeting Time:<br>
+                <span class="text-gradient text-2xl md:text-4xl">Meet</span>
+            </h1>
+
+            <p class="text-lg text-gray-500 font-light mb-6 leading-relaxed">
+                A backend-free meeting time poll, built to stop the scheduling thread
+            </p>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">Engineering</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Firebase</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Tooling</span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.09.25</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
+                Booking a meeting for five people, the time actually goes into the thread asking &ldquo;which day works for you&rdquo;. This is how I compressed that into a single URL: the original idea, how the permissions were designed, and what I ran into.
+            </p>
+
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">Background</div>
+                <p class="m-0 mb-3">
+                    I book a meeting now and then, and I have used a few of the scheduling services out there. Two things kept putting me off. One is the account: voting means signing up first, so someone answering a single question has to join another platform, and the data stays in that company's system. The other is the quota: free tiers keep a tight cap on how many polls can run at once, past which it is a monthly fee &mdash; and of the full row of fields in the interface, this situation uses barely any.
+                </p>
+                <p class="m-0">
+                    The actions I actually need come to three: open one, vote once, read the result. So I built Meet, on my own domain, with the data in my own database. What follows is the design as it was finalised on 2026-09-24.
+                </p>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> What I set out to build
+            </h3>
+
+            <p>
+                The idea fits in a sentence: the organizer fills a form, gets a URL, drops it in the group chat, and whoever opens it votes and leaves. Participants sign up for nothing, install nothing, and stay on no platform.
+            </p>
+
+            <p>
+                The quota I handled from the other end. I set my own cap on how many polls can run at once, and closing one frees a slot &mdash; which keeps the whole thing inside the free tier and pushes me to tidy up finished meetings.
+            </p>
+
+            <p>
+                One more rule I added myself: <span class="text-gray-200">a participant sees their own answer, the organizer sees all of them</span>. Voting is the kind of thing where peeking at each other changes the answers, so this was a hard requirement from day one.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Architecture: permissions start at the data shape
+            </h3>
+
+            <p>
+                This took the longest and is the part most worth keeping. On a site with a backend, &ldquo;who sees what&rdquo; lives in the API: the request comes in, the identity is checked, and that decides which fields go back. Meet's frontend is static files on GitHub Pages, the browser reads and writes the database directly, and there is no layer in between to hide a decision in.
+            </p>
+
+            <p>
+                The data sits in Firebase Realtime Database, which carries its own permission file called Security Rules, declaring node by node who may read and who may write. My first draft kept everything under one subtree and used the rules to block a few fields. That road is closed: read permission cascades downward, so opening the parent opens everything beneath it. The approach moved from hiding a field to changing the shape of the data.
+            </p>
+
+            <figure class="my-10">
+                <img src="../../PNG/project_31.2.en.svg"
+                     alt="Meet node layout for one poll: basics, candidate slots, votes one cell each, private area, and their read permissions"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    One poll splits into four blocks; isolation comes from node boundaries and permission follows the structure
+                </figcaption>
+            </figure>
+
+            <p>
+                The third block is the one that matters: votes are stored one cell per person, each cell named after that person's identity, so a participant reads their own cell while the organizer reads the whole thing. Display names, the anonymous flag and the organizer's private notes all go into the private area, a subtree that recognises the organizer alone.
+            </p>
+
+            <blockquote class="not-italic border-l-4 border-accent-purple/50 bg-white/5 pl-5 pr-4 py-4 rounded-r-xl my-8">
+                <p class="text-gray-200 m-0 leading-relaxed">Permission is settled at the data-shape layer, one step ahead of any check bolted on afterwards.</p>
+            </blockquote>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> How the tool itself is put together
+            </h3>
+
+            <p>
+                The organizer signs in with Google, fills in a title, meeting length, place or link, candidate slots and a reply deadline, and hits create to get a URL. Anyone who opens that URL lands straight in the voting view, with three states per slot: yes, needs notice, no. Leave your name if you want; a tap on &ldquo;vote anonymously&rdquo; submits without it.
+            </p>
+
+            <figure class="my-10">
+                <img src="../../PNG/project_31.1.webp"
+                     alt="Meet home: the quota bar and the list of running polls"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    Organizer home: each running poll takes a slot, and every row shows replies so far and the leading time
+                </figcaption>
+            </figure>
+
+            <p>
+                Back on the same page, the organizer gets a four-colour bar, the reply count, and what each person picked. Someone's answer can be dropped entirely; once removed, they come back as though they had never voted and can vote again.
+            </p>
+
+            <p>
+                There is also a second way in. On my work machine sits a small tool of my own that reads calendars and works out the shared free slots; it encodes them into one pasteable string, and pasting that into Meet's create form expands it back into candidate slots, which saves typing them out. The two sides never talk to each other &mdash; the clipboard is the only thing between them.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Where it got stuck
+            </h3>
+
+            <h4 class="text-xl font-bold text-white mt-10 mb-4">
+                A cap that failed silently
+            </h4>
+
+            <p>
+                For the cap on concurrent polls, my first version hung the check on the validation rule at the &ldquo;one poll&rdquo; level. The syntax was legal, the console was quiet, ordinary testing showed nothing odd &mdash; and then I deliberately pushed past the cap and found the rule had never run at all.
+            </p>
+
+            <p>
+                Validation rules evaluate only on <strong class="text-white">the node actually being written and its descendants</strong>, and creating a poll lands the write one level further down:
+            </p>
+
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre class="m-0"><code>one poll/basics   &lt;- the write actually lands here
+one poll/         &lt;- the rule hangs here, skipped entirely</code></pre>
+            </div>
+
+            <p>
+                Moving the count check down one level, so the rule lines up with the write path, is what made the cap start working. Security Rules have their own evaluation scope; a rule can be perfectly legal and still be skipped exactly where you assumed it would run.
+            </p>
+
+            <h4 class="text-xl font-bold text-white mt-10 mb-4">
+                Not seeing it on screen differs from not being able to read it
+            </h4>
+
+            <p>
+                Verifying permissions by &ldquo;I cannot see it on screen&rdquo; verifies nothing, so the tests go around the frontend on purpose: spin up a second participant identity and hit the database's REST interface with its credential.
+            </p>
+
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre class="m-0"><code>participant credential asks for the organizer's private note  -&gt; 401 Permission denied
+same credential asks for everyone's votes                     -&gt; 401 Permission denied
+same credential writes its own cell                           -&gt; OK</code></pre>
+            </div>
+
+            <p class="text-gray-400">
+                The value of this test is that it has nothing to do with the screen. Someone writing their own client against the same API gets the same answer from the database.
+            </p>
+
+            <h4 class="text-xl font-bold text-white mt-10 mb-4">
+                How far to run the line from the work network
+            </h4>
+
+            <p>
+                The obvious move is to let that work-machine tool write the slots straight into Meet's database, at the cost of keeping a credential that passes the rules on a company machine. For a personal tool I chose to leave that line unconnected, and to exchange one signed string instead, shaped roughly like this (illustrative):
+            </p>
+
+            <div class="my-6 p-6 bg-[#0F0F0F] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre class="m-0"><code>&lt;version prefix&gt;.&lt;payload&gt;.&lt;signature&gt;
+
+payload   = the slot list encoded into one pasteable string
+signature = HMAC-SHA256 over the payload with a shared key, first few bytes</code></pre>
+            </div>
+
+            <p>
+                HMAC computes a verification fingerprint over some data with a shared key; Meet recomputes it in the browser, and a match means the string survived the trip unaltered. The payload holds the slots alone &mdash; attendees, subject and busy details stay on the work machine.
+            </p>
+
+            <p>
+                The design carries one limitation I went in with eyes open: <strong class="text-white">the key sits in the browser</strong>, findable with the developer tools. So what it guards against is a copy that lost a chunk, a paste into the wrong field, a few characters edited by hand, a format mangled in transit. Keeping the key away from participants would mean moving verification onto a server, and that version loses the backend-free, zero-cost, fully static shape this one has. Define what you are guarding against first, then decide how far to go.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Finished, and still in use
+            </h3>
+
+            <p>
+                From the user's side the whole thing comes down to three steps: open one, tick the slots, come back for the result. The group chat loses a round of &ldquo;does Wednesday work&rdquo;, and answering takes no new platform. I still open it every time I need to book something, and I will keep adding to it.
+            </p>
+
+            <p>
+                The idea underneath is the part worth taking away, and it is the same one as <a href="project_30.html" class="underline decoration-gray-600 underline-offset-4 hover:text-white transition-colors">Whiteboard</a>: a purely static site can enforce permissions, as long as the permissions are designed into the data shape. Participants cannot see each other's answers because everyone gets their own cell, and that holds at the database layer, whatever the interface happens to draw.
+            </p>
+
+            <p>
+                If you see a better way to do any of this, or a hole in it, I would like to hear. The code is public on <a href="https://github.com/GHOST8787/blog" target="_blank" rel="noopener noreferrer" class="underline decoration-gray-600 underline-offset-4 hover:text-white transition-colors">GitHub</a> &mdash; an issue, a PR or a star all reach me &mdash; and requests are welcome on the <a href="../../whiteboard.html" class="underline decoration-gray-600 underline-offset-4 hover:text-white transition-colors">wish board</a>.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Links
+            </h3>
+
+            <ul class="space-y-2 text-sm text-gray-400 list-none pl-0">
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="../../meet.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        Meet &mdash; open the tool
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="project_30.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        Whiteboard &mdash; the first tool on the same setup
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="https://firebase.google.com/docs/database/security/core-syntax" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        Realtime Database Security Rules &mdash; official docs
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="https://github.com/GHOST8787/blog" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        GitHub &mdash; GHOST8787/blog
+                    </a>
+                </li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Tech stack
+            </h3>
+
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
+                <li><strong class="text-white">Frontend</strong>: vanilla JavaScript and Tailwind, no framework and no bundler</li>
+                <li><strong class="text-white">Hosting</strong>: GitHub Pages</li>
+                <li><strong class="text-white">Data and permissions</strong>: Firebase Realtime Database with Security Rules</li>
+                <li><strong class="text-white">Sign-in</strong>: Google Identity Services, in-page, no popup</li>
+                <li><strong class="text-white">Anonymous voting</strong>: Firebase anonymous auth, session kept in memory only</li>
+                <li><strong class="text-white">Cross-system transfer</strong>: base64url with HMAC-SHA256, verified in the browser via the Web Crypto API</li>
+                <li><strong class="text-white">Shared</strong>: same Firebase project and same rules file as Whiteboard, one top-level node each</li>
+            </ul>
+
+            <p class="text-gray-400 text-sm">
+                The COOP header on GitHub Pages interferes with Google's popup sign-in flow, so this one signs in inside the page and exchanges the credential for an identity the database recognises. The whole thing runs on Firebase's free tier, whose published <a href="https://firebase.google.com/pricing" target="_blank" rel="noopener noreferrer" class="underline decoration-gray-600 underline-offset-4 hover:text-white transition-colors">pricing page</a> (checked 2026-09-25) leaves plenty of headroom at this usage.
+            </p>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="project_30.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Previous
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                All Projects
+            </a>
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                Next &rarr;
+            </a>
+        </div>
+
+    </main>
+    <div id="footer-placeholder"></div>
+</body>
+</html>
