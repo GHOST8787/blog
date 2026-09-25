@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 486" width="920" height="486" role="img" aria-label="修整前後的架構對照：等待頁每 30 秒經 Vercel 美國節點查香港的 Firestore，修整前整份文件（含報告全文）跨區搬回，修整後只回 queuedAt、createdAt、processingTimeMs 三個欄位">
+  <defs>
+    <marker id="arrowHot" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#BF94FF"/></marker>
+    <marker id="arrowDim" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6B7280"/></marker>
+  </defs>
+  <rect x="0" y="0" width="920" height="486" fill="#050505"/>
+  <text x="32.0" y="38.0" fill="#9CA3AF" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" text-anchor="start">WIRE VIEW / 問題出在哪一段</text>
+  <text x="32.0" y="56.0" fill="#6B7280" font-family="JetBrains Mono, monospace" font-size="11" font-weight="400" text-anchor="start">同一條路線，修整前後差在回程搬的東西</text>
+  <text x="32.0" y="84.0" fill="#BF94FF" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" text-anchor="start">修整前 · 裸 .get()</text>
+  <line x1="32" y1="266.0" x2="888" y2="266.0" stroke="#1F1F26" stroke-width="1"/>
+  <text x="32.0" y="290.0" fill="#BF94FF" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" text-anchor="start">修整後 · .select()</text>
+  <line x1="260.0" y1="137.0" x2="328.0" y2="137.0" stroke="#6B7280" stroke-width="1.4" marker-end="url(#arrowDim)"/>
+  <rect x="265.0" y="106.0" width="58.0" height="15.0" fill="#050505"/>
+  <text x="294.0" y="115.0" fill="#6B7280" font-family="JetBrains Mono, monospace" font-size="10" font-weight="700" text-anchor="middle">每 30 秒</text>
+  <rect x="278.2" y="120.0" width="31.6" height="14.0" fill="#050505"/>
+  <text x="294.0" y="128.0" fill="#6B7280" font-family="JetBrains Mono, monospace" font-size="9" font-weight="700" text-anchor="middle">輪詢</text>
+  <line x1="548.0" y1="137.0" x2="616.0" y2="137.0" stroke="#6B7280" stroke-width="1.4" marker-end="url(#arrowDim)"/>
+  <rect x="553.0" y="106.0" width="58.0" height="15.0" fill="#050505"/>
+  <text x="582.0" y="115.0" fill="#6B7280" font-family="JetBrains Mono, monospace" font-size="10" font-weight="700" text-anchor="middle">跨區查詢</text>
+  <rect x="547.3" y="120.0" width="69.4" height="14.0" fill="#050505"/>
+  <text x="582.0" y="128.0" fill="#6B7280" font-family="JetBrains Mono, monospace" font-size="9" font-weight="700" text-anchor="middle">香港 → 美國</text>
+  <path d="M 728.0 174.0 V 216.0 H 440.0 V 178.0" fill="none" stroke="#BF94FF" stroke-width="2.4" marker-end="url(#arrowHot)"/>
+  <line x1="260.0" y1="343.0" x2="328.0" y2="343.0" stroke="#6B7280" stroke-width="1.4" marker-end="url(#arrowDim)"/>
+  <rect x="265.0" y="312.0" width="58.0" height="15.0" fill="#050505"/>
+  <text x="294.0" y="321.0" fill="#6B7280" font-family="JetBrains Mono, monospace" font-size="10" font-weight="700" text-anchor="middle">每 30 秒</text>
+  <rect x="278.2" y="326.0" width="31.6" height="14.0" fill="#050505"/>
+  <text x="294.0" y="334.0" fill="#6B7280" font-family="JetBrains Mono, monospace" font-size="9" font-weight="700" text-anchor="middle">輪詢</text>
+  <line x1="548.0" y1="343.0" x2="616.0" y2="343.0" stroke="#6B7280" stroke-width="1.4" marker-end="url(#arrowDim)"/>
+  <rect x="553.0" y="312.0" width="58.0" height="15.0" fill="#050505"/>
+  <text x="582.0" y="321.0" fill="#6B7280" font-family="JetBrains Mono, monospace" font-size="10" font-weight="700" text-anchor="middle">跨區查詢</text>
+  <rect x="547.3" y="326.0" width="69.4" height="14.0" fill="#050505"/>
+  <text x="582.0" y="334.0" fill="#6B7280" font-family="JetBrains Mono, monospace" font-size="9" font-weight="700" text-anchor="middle">香港 → 美國</text>
+  <path d="M 728.0 380.0 V 422.0 H 440.0 V 384.0" fill="none" stroke="#BF94FF" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arrowHot)"/>
+  <rect x="48.0" y="100.0" width="208" height="74" rx="8" fill="#0A0A0C" stroke="#1F1F26"/>
+  <text x="152.0" y="127.0" fill="#FFFFFF" font-family="Plus Jakarta Sans, sans-serif" font-size="14.0" font-weight="700" text-anchor="middle">使用者等待頁</text>
+  <text x="152.0" y="146.0" fill="#9CA3AF" font-family="JetBrains Mono, monospace" font-size="11.0" font-weight="400" text-anchor="middle">/v/[id]</text>
+  <text x="152.0" y="163.0" fill="#8B7BA8" font-family="JetBrains Mono, monospace" font-size="10.5" font-weight="700" text-anchor="middle">每 30 秒輪詢</text>
+  <rect x="336.0" y="100.0" width="208" height="74" rx="8" fill="#140F1F" stroke="#3A2F52"/>
+  <text x="440.0" y="127.0" fill="#FFFFFF" font-family="Plus Jakarta Sans, sans-serif" font-size="14.0" font-weight="700" text-anchor="middle">Vercel 美國節點</text>
+  <text x="440.0" y="146.0" fill="#9CA3AF" font-family="JetBrains Mono, monospace" font-size="11.0" font-weight="400" text-anchor="middle">queue-position API</text>
+  <text x="440.0" y="163.0" fill="#BF94FF" font-family="JetBrains Mono, monospace" font-size="10.5" font-weight="700" text-anchor="middle">兩個 .get() 未指定欄位</text>
+  <rect x="624.0" y="100.0" width="208" height="74" rx="8" fill="#0A0A0C" stroke="#1F1F26"/>
+  <text x="728.0" y="127.0" fill="#FFFFFF" font-family="Plus Jakarta Sans, sans-serif" font-size="14.0" font-weight="700" text-anchor="middle">Firestore 香港</text>
+  <text x="728.0" y="146.0" fill="#9CA3AF" font-family="JetBrains Mono, monospace" font-size="11.0" font-weight="400" text-anchor="middle">videos 集合</text>
+  <text x="728.0" y="163.0" fill="#8B7BA8" font-family="JetBrains Mono, monospace" font-size="10.5" font-weight="700" text-anchor="middle">該使用者 queued + done</text>
+  <rect x="48.0" y="306.0" width="208" height="74" rx="8" fill="#0A0A0C" stroke="#1F1F26"/>
+  <text x="152.0" y="333.0" fill="#FFFFFF" font-family="Plus Jakarta Sans, sans-serif" font-size="14.0" font-weight="700" text-anchor="middle">使用者等待頁</text>
+  <text x="152.0" y="352.0" fill="#9CA3AF" font-family="JetBrains Mono, monospace" font-size="11.0" font-weight="400" text-anchor="middle">/v/[id]</text>
+  <text x="152.0" y="369.0" fill="#8B7BA8" font-family="JetBrains Mono, monospace" font-size="10.5" font-weight="700" text-anchor="middle">每 30 秒輪詢</text>
+  <rect x="336.0" y="306.0" width="208" height="74" rx="8" fill="#140F1F" stroke="#3A2F52"/>
+  <text x="440.0" y="333.0" fill="#FFFFFF" font-family="Plus Jakarta Sans, sans-serif" font-size="14.0" font-weight="700" text-anchor="middle">Vercel 美國節點</text>
+  <text x="440.0" y="352.0" fill="#9CA3AF" font-family="JetBrains Mono, monospace" font-size="11.0" font-weight="400" text-anchor="middle">queue-position API</text>
+  <text x="440.0" y="369.0" fill="#BF94FF" font-family="JetBrains Mono, monospace" font-size="10.5" font-weight="700" text-anchor="middle">兩處 .select()</text>
+  <rect x="624.0" y="306.0" width="208" height="74" rx="8" fill="#0A0A0C" stroke="#1F1F26"/>
+  <text x="728.0" y="333.0" fill="#FFFFFF" font-family="Plus Jakarta Sans, sans-serif" font-size="14.0" font-weight="700" text-anchor="middle">Firestore 香港</text>
+  <text x="728.0" y="352.0" fill="#9CA3AF" font-family="JetBrains Mono, monospace" font-size="11.0" font-weight="400" text-anchor="middle">videos 集合</text>
+  <text x="728.0" y="369.0" fill="#8B7BA8" font-family="JetBrains Mono, monospace" font-size="10.5" font-weight="700" text-anchor="middle">只回三個欄位</text>
+  <text x="584.0" y="236.0" fill="#FFFFFF" font-family="Plus Jakarta Sans, sans-serif" font-size="14.0" font-weight="700" text-anchor="middle">整份文件搬回來：含章節與中英逐字稿</text>
+  <text x="584.0" y="254.0" fill="#9CA3AF" font-family="JetBrains Mono, monospace" font-size="11.0" font-weight="400" text-anchor="middle">計算只用到 queuedAt · createdAt · processingTimeMs</text>
+  <text x="584.0" y="442.0" fill="#FFFFFF" font-family="Plus Jakarta Sans, sans-serif" font-size="14.0" font-weight="700" text-anchor="middle">只回用到的三個欄位</text>
+  <text x="584.0" y="460.0" fill="#9CA3AF" font-family="JetBrains Mono, monospace" font-size="11.0" font-weight="400" text-anchor="middle">queuedAt · createdAt · processingTimeMs · 讀取筆數維持原樣</text>
+</svg>

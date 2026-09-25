@@ -171,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <span class="sw-you ${youAgree ? 'agree' : 'disagree'}">${youAgree ? '你同意' : '你不同意'}</span>
         </div>
         <div class="sw-bar"><span></span></div>
-        <div class="sw-crowd">${crowdPct}% 的人同意這題${isOdd ? ' · 你跟多數人相反' : ''}</div>`;
+        <div class="sw-crowd">多數人${crowdMajorityAgree ? '同意' : '不同意'}這題${isOdd ? ' · 你跟多數人相反' : ''}</div>`;
       els.mirrorRows.appendChild(row);
       setTimeout(() => { row.querySelector('.sw-bar > span').style.width = crowdPct + '%'; }, 120 + i * 90);
     });

@@ -1,0 +1,82 @@
+<svg viewBox="0 0 680 420" xmlns="http://www.w3.org/2000/svg" style="font-family:'Noto Sans TC','Inter','Segoe UI',sans-serif">
+  <rect width="680" height="420" fill="#0a0e14"/>
+  <text x="340" y="32" text-anchor="middle" font-size="16" font-weight="700" fill="#e2e8f0">虛擬機與 Hypervisor：一台實體機跑多台虛擬機</text>
+
+  <!-- ===== LEFT: Type 1 Bare-metal ===== -->
+  <text x="170" y="66" text-anchor="middle" font-size="14" font-weight="700" fill="#34d399">Type 1（Bare-metal）</text>
+  <text x="170" y="84" text-anchor="middle" font-size="11" fill="#5a7290">直接裝在硬體上，企業用</text>
+
+  <!-- Hardware -->
+  <rect x="50" y="320" width="240" height="40" rx="6" fill="rgba(148,163,184,0.06)" stroke="#64748b" stroke-width="0.6"/>
+  <text x="170" y="345" text-anchor="middle" font-size="12" font-weight="600" fill="#cbd5e1">實體硬體（Server）</text>
+
+  <!-- Hypervisor directly on hardware -->
+  <rect x="50" y="264" width="240" height="44" rx="6" fill="rgba(52,211,153,0.1)" stroke="#34d399" stroke-width="0.8"/>
+  <text x="170" y="283" text-anchor="middle" font-size="13" font-weight="700" fill="#34d399">Hypervisor</text>
+  <text x="170" y="300" text-anchor="middle" font-size="10" fill="#5a7290">ESXi / Hyper-V / KVM</text>
+
+  <!-- VMs on top -->
+  <rect x="56" y="150" width="68" height="100" rx="6" fill="rgba(167,139,250,0.08)" stroke="#a78bfa" stroke-width="0.5"/>
+  <text x="90" y="176" text-anchor="middle" font-size="11" font-weight="600" fill="#a78bfa">VM 1</text>
+  <text x="90" y="194" text-anchor="middle" font-size="9" fill="#5a7290">Linux</text>
+  <rect x="66" y="206" width="48" height="14" rx="3" fill="rgba(148,163,184,0.06)" stroke="#3a4a5e" stroke-width="0.4"/>
+  <text x="90" y="216" text-anchor="middle" font-size="8" fill="#64748b">App</text>
+  <rect x="66" y="224" width="48" height="14" rx="3" fill="rgba(148,163,184,0.06)" stroke="#3a4a5e" stroke-width="0.4"/>
+  <text x="90" y="234" text-anchor="middle" font-size="8" fill="#64748b">App</text>
+
+  <rect x="136" y="150" width="68" height="100" rx="6" fill="rgba(167,139,250,0.08)" stroke="#a78bfa" stroke-width="0.5"/>
+  <text x="170" y="176" text-anchor="middle" font-size="11" font-weight="600" fill="#a78bfa">VM 2</text>
+  <text x="170" y="194" text-anchor="middle" font-size="9" fill="#5a7290">Windows</text>
+  <rect x="146" y="206" width="48" height="14" rx="3" fill="rgba(148,163,184,0.06)" stroke="#3a4a5e" stroke-width="0.4"/>
+  <text x="170" y="216" text-anchor="middle" font-size="8" fill="#64748b">App</text>
+  <rect x="146" y="224" width="48" height="14" rx="3" fill="rgba(148,163,184,0.06)" stroke="#3a4a5e" stroke-width="0.4"/>
+  <text x="170" y="234" text-anchor="middle" font-size="8" fill="#64748b">App</text>
+
+  <rect x="216" y="150" width="68" height="100" rx="6" fill="rgba(167,139,250,0.08)" stroke="#a78bfa" stroke-width="0.5"/>
+  <text x="250" y="176" text-anchor="middle" font-size="11" font-weight="600" fill="#a78bfa">VM 3</text>
+  <text x="250" y="194" text-anchor="middle" font-size="9" fill="#5a7290">Linux</text>
+  <rect x="226" y="206" width="48" height="14" rx="3" fill="rgba(148,163,184,0.06)" stroke="#3a4a5e" stroke-width="0.4"/>
+  <text x="250" y="216" text-anchor="middle" font-size="8" fill="#64748b">DB</text>
+  <rect x="226" y="224" width="48" height="14" rx="3" fill="rgba(148,163,184,0.06)" stroke="#3a4a5e" stroke-width="0.4"/>
+  <text x="250" y="234" text-anchor="middle" font-size="8" fill="#64748b">App</text>
+
+  <!-- Label: no OS between -->
+  <text x="170" y="112" text-anchor="middle" font-size="10" fill="#34d399">↑ 中間沒有作業系統</text>
+  <text x="170" y="128" text-anchor="middle" font-size="10" fill="#34d399">Hypervisor 直接控制硬體</text>
+
+  <!-- ===== RIGHT: Type 2 Hosted ===== -->
+  <text x="510" y="66" text-anchor="middle" font-size="14" font-weight="700" fill="#f59e0b">Type 2（Hosted）</text>
+  <text x="510" y="84" text-anchor="middle" font-size="11" fill="#5a7290">裝在 OS 之上，開發測試用</text>
+
+  <!-- Hardware -->
+  <rect x="390" y="320" width="240" height="40" rx="6" fill="rgba(148,163,184,0.06)" stroke="#64748b" stroke-width="0.6"/>
+  <text x="510" y="345" text-anchor="middle" font-size="12" font-weight="600" fill="#cbd5e1">實體硬體（PC / 筆電）</text>
+
+  <!-- Host OS -->
+  <rect x="390" y="264" width="240" height="44" rx="6" fill="rgba(56,189,248,0.08)" stroke="#38bdf8" stroke-width="0.6"/>
+  <text x="510" y="283" text-anchor="middle" font-size="13" font-weight="600" fill="#38bdf8">Host OS</text>
+  <text x="510" y="300" text-anchor="middle" font-size="10" fill="#5a7290">Windows / macOS / Linux</text>
+
+  <!-- Hypervisor on top of OS -->
+  <rect x="390" y="216" width="240" height="36" rx="6" fill="rgba(245,158,11,0.1)" stroke="#f59e0b" stroke-width="0.7"/>
+  <text x="510" y="239" text-anchor="middle" font-size="12" font-weight="600" fill="#f59e0b">Hypervisor（VirtualBox / VMware Workstation）</text>
+
+  <!-- VMs -->
+  <rect x="400" y="150" width="100" height="54" rx="6" fill="rgba(167,139,250,0.08)" stroke="#a78bfa" stroke-width="0.5"/>
+  <text x="450" y="176" text-anchor="middle" font-size="11" font-weight="600" fill="#a78bfa">VM 1</text>
+  <text x="450" y="194" text-anchor="middle" font-size="9" fill="#5a7290">Linux</text>
+
+  <rect x="520" y="150" width="100" height="54" rx="6" fill="rgba(167,139,250,0.08)" stroke="#a78bfa" stroke-width="0.5"/>
+  <text x="570" y="176" text-anchor="middle" font-size="11" font-weight="600" fill="#a78bfa">VM 2</text>
+  <text x="570" y="194" text-anchor="middle" font-size="9" fill="#5a7290">Windows</text>
+
+  <!-- Label -->
+  <text x="510" y="118" text-anchor="middle" font-size="10" fill="#f59e0b">↑ 多了一層 Host OS</text>
+  <text x="510" y="134" text-anchor="middle" font-size="10" fill="#f59e0b">效能比 Type 1 低</text>
+
+  <!-- Divider -->
+  <line x1="340" y1="96" x2="340" y2="370" stroke="#2a3a4e" stroke-width="0.5" stroke-dasharray="4 3"/>
+
+  <!-- Bottom note -->
+  <text x="340" y="400" text-anchor="middle" font-size="11" fill="#5a7290">企業生產環境用 Type 1（效能接近實體機）｜開發者本機測試用 Type 2</text>
+</svg>

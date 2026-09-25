@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 640" width="920" height="640" role="img" aria-label="llm_classifier 判官路由決策流程圖：session 判過就沿用上次的決定，沒判過先呼叫判官，裁決不合 schema 一律走強模型，合格式依 p_solve 門檻分流到弱模型或強模型">
+  <defs>
+    <marker id="np093arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#BF94FF"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="920" height="640" fill="#050505"/>
+
+  <text x="32" y="40" fill="#9CA3AF" font-family="JetBrains Mono, monospace" font-size="13" letter-spacing="1.5">JUDGE ROUTE / 判官路由的決策流</text>
+  <text x="32" y="64" fill="#6B7280" font-family="Plus Jakarta Sans, sans-serif" font-size="12.5">同一段文字、同一條路由，去向由裁決和門檻決定</text>
+
+  <!-- A: request in -->
+  <rect x="32" y="88" width="330" height="64" rx="10" fill="#0A0A0C" stroke="#1F1F26"/>
+  <text x="52" y="115" fill="#FFFFFF" font-family="Plus Jakarta Sans, sans-serif" font-size="14.5" font-weight="700">新請求進入路由</text>
+  <text x="52" y="139" fill="#6B7280" font-family="JetBrains Mono, monospace" font-size="11">llm_classifier</text>
+  <line x1="197" y1="152" x2="197" y2="180" stroke="#BF94FF" stroke-width="1.4" marker-end="url(#np093arrow)"/>
+
+  <!-- B: session decided? -->
+  <rect x="32" y="184" width="330" height="64" rx="10" fill="#0A0A0C" stroke="#1F1F26"/>
+  <text x="52" y="211" fill="#FFFFFF" font-family="Plus Jakarta Sans, sans-serif" font-size="14.5" font-weight="700">這個 session 判過了嗎？</text>
+  <text x="52" y="235" fill="#6B7280" font-family="JetBrains Mono, monospace" font-size="11">x-switchyard-session-id</text>
+  <line x1="362" y1="216" x2="556" y2="216" stroke="#BF94FF" stroke-width="1.4" marker-end="url(#np093arrow)"/>
+  <text x="430" y="208" fill="#9CA3AF" font-family="Plus Jakarta Sans, sans-serif" font-size="11.5">判過</text>
+  <line x1="197" y1="248" x2="197" y2="276" stroke="#BF94FF" stroke-width="1.4" marker-end="url(#np093arrow)"/>
+  <text x="210" y="268" fill="#9CA3AF" font-family="Plus Jakarta Sans, sans-serif" font-size="11.5">沒判過</text>
+
+  <!-- C: reuse -->
+  <rect x="560" y="184" width="328" height="64" rx="10" fill="#0A0A0C" stroke="#1F1F26"/>
+  <text x="580" y="211" fill="#FFFFFF" font-family="Plus Jakarta Sans, sans-serif" font-size="14.5" font-weight="700">沿用第一次的決定</text>
+  <text x="580" y="235" fill="#9CA3AF" font-family="Plus Jakarta Sans, sans-serif" font-size="12">實測同 session 連打三發，判官只被呼叫 1 次</text>
+
+  <!-- D: call judge -->
+  <rect x="32" y="280" width="330" height="64" rx="10" fill="#0A0A0C" stroke="#1F1F26"/>
+  <text x="52" y="307" fill="#FFFFFF" font-family="Plus Jakarta Sans, sans-serif" font-size="14.5" font-weight="700">先問判官一次</text>
+  <text x="52" y="331" fill="#6B7280" font-family="JetBrains Mono, monospace" font-size="11">mock-judge · 這一次呼叫要花錢</text>
+  <line x1="197" y1="344" x2="197" y2="372" stroke="#BF94FF" stroke-width="1.4" marker-end="url(#np093arrow)"/>
+
+  <!-- E: schema valid? -->
+  <rect x="32" y="376" width="330" height="64" rx="10" fill="#0A0A0C" stroke="#1F1F26"/>
+  <text x="52" y="403" fill="#FFFFFF" font-family="Plus Jakarta Sans, sans-serif" font-size="14.5" font-weight="700">裁決合 strict schema 嗎？</text>
+  <text x="52" y="427" fill="#6B7280" font-family="JetBrains Mono, monospace" font-size="11">primary_rule 只收固定代碼</text>
+  <line x1="362" y1="408" x2="556" y2="408" stroke="#BF94FF" stroke-width="1.4" marker-end="url(#np093arrow)"/>
+  <text x="445" y="400" fill="#9CA3AF" font-family="Plus Jakarta Sans, sans-serif" font-size="11.5">不合</text>
+  <line x1="197" y1="440" x2="197" y2="468" stroke="#BF94FF" stroke-width="1.4" marker-end="url(#np093arrow)"/>
+  <text x="210" y="460" fill="#9CA3AF" font-family="Plus Jakarta Sans, sans-serif" font-size="11.5">合格式</text>
+
+  <!-- F: fallback strong (highlight) -->
+  <rect x="560" y="376" width="328" height="64" rx="10" fill="#140F1F" stroke="#3A2F52"/>
+  <text x="580" y="403" fill="#FFFFFF" font-family="Plus Jakarta Sans, sans-serif" font-size="14.5" font-weight="700">判官失效，一律走強模型</text>
+  <text x="580" y="427" fill="#9CA3AF" font-family="Plus Jakarta Sans, sans-serif" font-size="12">流量安靜倒向貴的那邊，客戶端仍收 HTTP 200</text>
+
+  <!-- G: threshold -->
+  <rect x="32" y="472" width="330" height="96" rx="10" fill="#0A0A0C" stroke="#1F1F26"/>
+  <text x="52" y="506" fill="#FFFFFF" font-family="Plus Jakarta Sans, sans-serif" font-size="14.5" font-weight="700">p_solve 過 0.5 門檻嗎？</text>
+  <text x="52" y="532" fill="#6B7280" font-family="JetBrains Mono, monospace" font-size="11">p_solve = 弱模型解得出來的機率</text>
+  <line x1="362" y1="504" x2="556" y2="504" stroke="#BF94FF" stroke-width="1.4" marker-end="url(#np093arrow)"/>
+  <text x="400" y="496" fill="#6B7280" font-family="JetBrains Mono, monospace" font-size="11">SIMPLE → 0.95</text>
+  <path d="M362,540 L500,540 L500,580 L556,580" fill="none" stroke="#BF94FF" stroke-width="1.4" marker-end="url(#np093arrow)"/>
+  <text x="380" y="532" fill="#6B7280" font-family="JetBrains Mono, monospace" font-size="11">HARD → 0.05</text>
+
+  <!-- H1: weak -->
+  <rect x="560" y="476" width="328" height="56" rx="10" fill="#0A0A0C" stroke="#1F1F26"/>
+  <text x="580" y="500" fill="#FFFFFF" font-family="Plus Jakarta Sans, sans-serif" font-size="14.5" font-weight="700">走弱模型</text>
+  <text x="580" y="521" fill="#6B7280" font-family="JetBrains Mono, monospace" font-size="11">mock-judge → mock-weak</text>
+
+  <!-- H2: strong -->
+  <rect x="560" y="552" width="328" height="56" rx="10" fill="#0A0A0C" stroke="#1F1F26"/>
+  <text x="580" y="576" fill="#FFFFFF" font-family="Plus Jakarta Sans, sans-serif" font-size="14.5" font-weight="700">走強模型</text>
+  <text x="580" y="597" fill="#6B7280" font-family="JetBrains Mono, monospace" font-size="11">mock-judge → mock-strong</text>
+</svg>

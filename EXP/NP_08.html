@@ -15,7 +15,9 @@
 
     <link rel="stylesheet" href="../style.css">
 
-    <script> window.siteRoot = '../'; </script>
+    <script>
+        window.siteRoot = '../';
+    </script>
     <script type="module" src="../main.js" defer></script>
 </head>
 
@@ -33,7 +35,7 @@
         <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
             <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
                 <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
-                BACK TO PROJECTS
+                返回專案列表
             </a>
             <span class="opacity-50">EXP / NP_08 (draft)</span>
         </div>
@@ -41,162 +43,212 @@
         <header class="mb-12 border-b border-white/10 pb-12">
 
             <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
-                數位行銷學程：<br>
-                <span class="text-gradient text-2xl md:text-4xl">用 Gemini 與 NotebookLM 做行銷的 15 門課</span>
+                實習第一個月：<br>
+                <span class="text-gradient text-2xl md:text-4xl">把資料搬到手邊，把工具做到能用</span>
             </h1>
 
             <div class="flex flex-wrap gap-3 mb-6">
                 <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
-                    AI &amp; Automation
+                    Engineering
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Marketing
+                    Internship
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    NotebookLM
+                    Tooling
                 </span>
             </div>
 
             <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
-                <span><i class="far fa-calendar mr-2"></i>2026.06</span>
+                <span><i class="far fa-calendar mr-2"></i>2026.07 &mdash; 2026.08</span>
                 <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
             </div>
         </header>
 
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
-            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
-                數位行銷學程是「Google 數位人才探索計畫」三學程之一，共 15 門課。教行銷人員怎麼把 Gemini 與 NotebookLM 用在日常行銷工作上，對象設定為非技術背景的行銷人。其中 10 門有完整課程內容，多屬 Google 的短課，每門搭配一個動手挑戰，完成可拿徽章；另外 5 門是 Skillshop 的廣告與分析認證，在另一個平台手動完成。
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                7 月 13 日到職。
             </p>
 
-            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
-                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">這是系列文之一</div>
-                <p class="m-0">
-                    整個計畫的地圖、報名入口與考試規則寫在<a href="NP_06.html" class="text-accent-purple hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">總覽篇</a>。另外兩個學程是<a href="NP_07.html" class="text-accent-purple hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">AI 職場通識</a>與<a href="NP_09.html" class="text-accent-purple hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">Google Cloud</a>。
-                </p>
+            <p>
+                第一個月做了很多看起來互不相干的事：整理報告、搬知識庫、做甘特圖、寫會議工具，還在兩台電腦之間架了一條傳工作的線。回頭看，這些事都在處理同一個問題：原本靠人記得、靠人確認、靠人手動完成的事，要怎麼變成一個可以被驗證、被追蹤、被重複執行的流程。
+            </p>
+
+            <p>
+                這篇記的是這一個月裡，我在哪些地方發現原本的方法其實靠不住，以及最後怎麼處理。公司名、內部系統名、客戶與合作廠商名依保密規範省略，只留做法與數字。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 五件事在解同一個問題
+            </h3>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm text-gray-300 border-collapse">
+                    <thead>
+                        <tr class="border-b border-white/10">
+                            <th class="text-left py-3 px-4 text-gray-500 font-mono text-xs uppercase">問題</th>
+                            <th class="text-left py-3 px-4 text-gray-500 font-mono text-xs uppercase">原本</th>
+                            <th class="text-left py-3 px-4 text-gray-500 font-mono text-xs uppercase">改成</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 px-4 text-white font-bold whitespace-nowrap">資料可驗證</td>
+                            <td class="py-3 px-4">寫完再找來源</td>
+                            <td class="py-3 px-4">從來源反推內容</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 px-4 text-white font-bold whitespace-nowrap">資料可取得、可更新</td>
+                            <td class="py-3 px-4">一頁一頁找</td>
+                            <td class="py-3 px-4">本機可搜尋，每週固定更新</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 px-4 text-white font-bold whitespace-nowrap">進度可追蹤</td>
+                            <td class="py-3 px-4">簡報追進度</td>
+                            <td class="py-3 px-4">內網 web app</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 px-4 text-white font-bold whitespace-nowrap">重複工作可執行</td>
+                            <td class="py-3 px-4">手動處理</td>
+                            <td class="py-3 px-4">工具化，判斷留給人</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4 text-white font-bold whitespace-nowrap">工作跨環境流動</td>
+                            <td class="py-3 px-4">手動搬檔</td>
+                            <td class="py-3 px-4">有權限邊界的 bridge</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 學程在教什麼
+                <span class="text-accent-purple">#</span> 01 報告：從「寫得對」到「證明是對的」
             </h3>
 
             <p>
-                學程的重心是把行銷工作裡最耗時的幾件事交給 AI：寫內容、找素材、做研究、整理顧客回饋、看競品動態。10 門有內容的課多和 AI 職場通識學程共用（例如 NotebookLM 那幾門），行銷學程把它們放進行銷情境重講一次。另外 5 門 Skillshop 認證則補上廣告與成效分析這塊，偏實務操作。
+                第一週的作業是 12 份產業分析報告，分金融、醫療、製造三個產業，每份照 mentor 給的十段模板走。寫的時候先把內容鋪滿，出處是最後補的。
+            </p>
+
+            <p>
+                7 月 18 日回頭把 73 個網址逐一重開：10 個是 2020 到 2024 年的舊資料、2 個已經 404、1 個連結指到的文章跟引用的內容完全無關。隔天再問一個更根本的問題：簡報備忘稿裡寫的每一句，能在附的網址找到嗎？逐條比對，大約 26% 完全吻合。
+            </p>
+
+            <p>
+                意外的地方在於錯得很難被看出來。同一份簡報，只看文字順不順，我會認為它已經完成；要求每一句都能回到來源，只剩四分之一站得住。「看起來正確」和「可以被證明正確」是兩件事，這是我第一次很直接地看到它們的距離。
+            </p>
+
+            <p>
+                做法從那天起反過來：以來源為準改內容。正文修了 76 處、9 頁備忘稿重寫，50 條宣稱各配一張把來源句子用螢光筆標出的截圖，再交給另一個乾淨 context 的 agent 逐張目檢，四輪抓出 12 處以上標錯的地方。到 8 月中，這件事收成一組固定腳本：事實由腳本從來源檔複製成 JSON，排版時只讀 ID，成品再反查每一句對應哪條事實，最後逐數字回對。數字全程不經模型之手，模型只負責敘述。
             </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 一、AI 基礎打底
-            </h3>
-
-            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
-                <li><strong class="text-white">生成式 AI：瞭解基礎概念</strong> &mdash; <span>用 AI 之前先搞懂它的能力邊界與風險：AI 含機器學習、機器學習含生成式 AI 的層級，三種學習方式，以及基礎模型六大限制與改善技術。對行銷人的意義是建立「為什麼 AI 會講錯、要怎麼讓它講對」的判斷力，例如用公司自有資料接地能減少幻覺。</span></li>
-            </ul>
-
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 二、用 Gemini 當行銷生產力助手
+                <span class="text-accent-purple">#</span> 02 知識庫：搬資料容易，維持可靠比較難
             </h3>
 
             <p>
-                這群在學把 Gemini 變成可重複使用的內容與創意產線。
+                公司的專案資料在內部知識庫平台上，只有公司電腦連得到。8 月 3 日到 4 日，公司端用爬蟲把 303 頁、1263 個檔案原樣抓成 markdown 進 Obsidian，上面再蓋一層 25 檔的整理版。搬完的當下，這件事看起來已經結束。
             </p>
 
-            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
-                <li><strong class="text-white">Gemini Gems – Your Ultimate Marketing Sidekick</strong> &mdash; <span>建立客製化 AI 助理：設定人格、語氣、格式、目標四要素，訓練成「行銷分析師」「社群小編」等專家，建立後等同團隊延伸成員，餵同類資料免再交代背景。講者實例是用一個 LinkedIn Gem 每週以本人語氣產社群貼文、針對平台最佳化又省時。</span></li>
-                <li><strong class="text-white">Content Generation with Gemini Made Easy</strong> &mdash; <span>在 Docs 側邊面板用 Gemini 發想、擬大綱、起草，產影片腳本、部落格文章與標題、網站文案；在提示詞引用 Drive 既有檔案讓草稿更貼情境。</span></li>
-                <li><strong class="text-white">Become an AI Art Director for Your World</strong> &mdash; <span>在 Gemini app 用純文字指令當影像美術指導：多輪迭代編輯（AI 記住上次修改逐步疊加），以及影像混搭（把一張圖的風格顏色質感套到另一物件）。有效指令三要素是主體、構圖、細節，行銷人不必懂繪圖軟體就能改視覺素材。</span></li>
-            </ul>
+            <p>
+                問題在下一週。頁面會改、附件會換、有些頁會被刪，搬過來的那份從第二天起就開始過期。爬不到的東西也有規律：巨集要展開、工單系統要權限、分頁式父頁永遠近空。附件 204 個攤平後剩 172，33 個是同一份掛在多頁；116 份 Office 與 PDF 逐份抽內容，抓出 8 處檔名跟內容對不上。
+            </p>
+
+            <p>
+                8 月 22 日定下版本管理：原始資料整個進 git，新版覆蓋原位自動 commit；之後每週五固定四步：公司端爬、bridge 傳、家用端乾跑列清單、點頭才落檔。合併程式改到第三版，只認每頁的 page_id，路徑一律不信，因為包裡目錄擺法每次都可能變。
+            </p>
+
+            <p>
+                8 月 28 日早上，公司端的爬蟲 API 回了 0 頁，程式把資料庫裡 2442 頁全標成已刪除。爬蟲沒做錯，它照回傳結果更新狀態；合併端也沒做錯，它照宣告刪檔。兩邊各自做對的事，合起來會把整個知識庫清空。同一天加了六道入口檢查，其中一道是「宣告刪除超過本機 20% 整包拒收」。真正需要驗證的位置在系統與系統交接的地方，兩邊各自正確擋住的東西有限。
+            </p>
+
+            <p>
+                到月底，工單系統的權限仍然是多個缺口的共同瓶頸。
+            </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 三、用 Gemini 做研究與數據敘事
+                <span class="text-accent-purple">#</span> 03 專案管理：畫面能跑，需求還不一定成立
             </h3>
 
             <p>
-                這群在學把耗時的人工研究與數據分析壓縮成幾分鐘。
+                mentor 追專案的工具是簡報與試算表，每週更新。要換成一個只有兩個人用的內網 web app，全部跑在我的公司電腦上，mentor 直連內網 IP。介面先用 mockup 對方向，四輪後得到「對一半」，8 月 10 日開始寫實際程式。簡報匯入是核心功能：43 頁掃描解析出 69 項，同名合併後載入 66 筆。
             </p>
 
-            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
-                <li><strong class="text-white">Supercharge Research with Gemini</strong> &mdash; <span>用 Deep Research 做競品稽核與市場研究，自動掃大量網站產結構化報告。三招提升品質：角色設定、輸出格式、來源指定；送出後可先檢視編輯研究計畫再啟動。</span></li>
-                <li><strong class="text-white">Find the Story in Your Data</strong> &mdash; <span>用 NotebookLM 把原始調查數據變成有報導價值的故事：資料依據化、找標題、連點成線。提問帶身分與目的（如「身為公關，產生會吸引記者的主張」），跨題項找相關性挖隱藏洞察。</span></li>
-            </ul>
+            <p>
+                8 月 14 日找三個角色（專案管理師、UIUX、架構師）對著簡報審一遍，簽核附了一個前提：資料庫裡當時是 15 筆測試假資料，demo 前一定要換成簡報的真實內容，否則 mentor 第一眼就認不出這是自己的東西。當天換完，真實資料一進來，原本看起來正常的甘特圖直接消失了。原因追到 67 筆裡有 60 筆沒有日期，<code class="text-accent-purple bg-accent-purple/10 px-1 rounded">Math.min(...[])</code> 得到 Infinity，整條時間軸都變成 NaN。同一天翻出的六個缺陷裡，三個都是這種「畫面看起來正常」型：WebSocket 斷線永不重連、存檔失敗的 500 被前端靜默吞掉、併發覆寫用 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">version</code> 欄位比對不符回 409。
+            </p>
+
+            <p>
+                8 月 16 日親審需求對現況：資料面成立，「會議時一頁看完整全貌」與「好抓時間」都不成立，原因同一個，簡報本身沒給日期，甘特圖右半是空的，程式再改也長不出來。問題從「甘特圖怎麼畫」變成「資料本身是否足以支撐甘特圖」。
+            </p>
+
+            <p>
+                到月底，無日期項目的呈現方式仍未定；3001 埠防火牆沒開，mentor 還連不進來；8 月 29 日交辦的六項介面問題待做。
+            </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 四、用 NotebookLM 做顧客洞察與競爭情報
+                <span class="text-accent-purple">#</span> 04 工具：重複工作交給程式，判斷留給人
             </h3>
 
             <p>
-                這群在學把大量分散的文件用 NotebookLM 整合成可行動洞察，核心特性是只依使用者上傳的來源作答。
+                排程工具只出到規格。公司電腦是傳統桌面版 Outlook，整個走 pywin32 COM，不經 IT。儀表板列今天加 7 天的會議，找時間把參加者忙閒疊出共同空檔，點時段彈出 Outlook 邀請視窗，送出那一下留給人按。硬約束兩條：只 Display 永不 Send；不做改期、取消、背景輪詢。忙閒查詢範圍 30 天、時間槽 30 分鐘，這兩個數字重查官方文件才改對。
             </p>
 
-            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
-                <li><strong class="text-white">Customer Insights with NotebookLM</strong> &mdash; <span>把大量客服通話與聊天逐字稿匯成單一 PDF 上傳（示範檔超過 500 筆、含所有支援語言），跨語言擷取顧客之聲；可依趨勢與可行動兩層次提問。深度對談是可語音即時追問的互動式 Podcast。</span></li>
-                <li><strong class="text-white">NotebookLM for Market Research</strong> &mdash; <span>當 AI 研究與思考夥伴，三大流程：客戶回饋分析（依情緒主題分類找痛點）、市場與競品研究、內容發想與產製。Audio Overview 音訊摘要可通勤聽。</span></li>
-                <li><strong class="text-white">NotebookLM for Competitive Edge</strong> &mdash; <span>競爭情報四步：蒐集公開資料、用 YouTube 整合直接吃整支對手簡報影片、加入自家內部文件提供差異化脈絡、萃取洞察（產品發布、策略轉向、定位改變）。進階做 SWOT、轉成兩位主持人對談的 Podcast 供團隊同步。</span></li>
-            </ul>
+            <p>
+                逐字稿是 8 月 25 日建的私人 repo，公司端 clone 下來照說明跑。轉錄走 Groq 免費方案的 whisper-large-v3；翻譯與摘要原本也想用免費 LLM，實測每次請求帶約 1 萬 tokens 固定開銷，6000 字直接 413，改用 Azure 的 gpt-4.1-mini，跳針時自動換 gpt-4o。一支 3 小時 10 分的會議錄影，抽音 24 秒、轉錄 29 秒、翻譯與摘要並行約 3 分鐘，全程約 4 分鐘出三份文字。
+            </p>
+
+            <p>
+                踩到的坑都修進腳本：模型一次吞 78k 字會在「參與者」欄無限重複，改分段並行加跳針偵測；Whisper 被術語表裡一個無關的範例詞誘發無限重複，術語表只放真的會講到的詞。到月底，三份輸出的品質還沒親自驗收，排程工具的實作還沒開始。
+            </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 五、用 AI 處理活動營運
-            </h3>
-
-            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
-                <li><strong class="text-white">Streamline Event Planning with AI</strong> &mdash; <span>以 200 人主管離場活動為例，用 Gemini 貫穿地點主題發想、公平分組破冰、依航班時間排接駁車、活動後問卷分析。好提示詞的共通結構是規模加目標加約束條件加指定輸出；後勤類任務可同時給規則與最佳化目標讓 AI 取捨。</span></li>
-            </ul>
-
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 平台外的 5 門 Skillshop 認證
+                <span class="text-accent-purple">#</span> 05 Bridge：真正難的是兩個系統交接的地方
             </h3>
 
             <p>
-                學程另有 5 門認證在 Google Skillshop 平台上完成，屬平台外的手動作業，內容偏廣告操作與成效分析。這 5 門在 skills.google 上看不到，要另外去 Skillshop 修：
+                公司電腦連得到內網，家用電腦有完整的記憶、工具與歷史脈絡。兩邊各有一個 Claude Code，中間靠一個 git repo 傳東西，<code class="text-accent-purple bg-accent-purple/10 px-1 rounded">COMMS.md</code> 當聯絡簿。
             </p>
 
-            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
-                <li><strong class="text-white">Google Analytics（分析）認證</strong></li>
-                <li><strong class="text-white">AI 技術輔助高效廣告認證</strong></li>
-                <li><strong class="text-white">運用需求開發 創造需求並促成轉換</strong></li>
-                <li><strong class="text-white">從業人員適用的 AI 技術輔助搜尋廣告基礎課程</strong></li>
-                <li><strong class="text-white">策略專家適用的 AI 技術輔助搜尋廣告基礎課程</strong></li>
-            </ul>
+            <p>
+                8 月 22 日把兩台電腦的角色切得很死：公司端負責執行，家用端負責決策。公司端沒有我的記憶、偏好與上下文，只丟一句「你自己判斷」，實際上是在要求它猜。聯絡簿裡的指令一律寫成「做什麼、怎麼做、回報什麼」，推過去的東西先在家用端用假的 HOME 目錄模擬公司環境測過。
+            </p>
+
+            <p>
+                8 月 28 日定版。權限分三區：綠區公司端自決做完補一行；黃區先問一句；紅區三條靠機器擋，檔頭標 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">OWNER: home</code> 的檔案 pre-commit 直接拒絕、失敗禁止當成功回報、不准繞過 manifest。量是硬限制：以空間為單位打包 36 頁變動變成 5.4 GB 推不上去，改成選頁層級；repo 的 .git 已經 1.6 GB，每收一次附件就永久胖一次，所以影片一律不抓不傳不存。
+            </p>
+
+            <p>
+                到月底，這條線還有兩個結構性弱點沒修：爬蟲只回報抓到幾個，沒回報該抓幾個沒抓到，7 支影片漏了兩週沒人知道；repo 只會變胖。
+            </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 三個記憶點
+                <span class="text-accent-purple">#</span> 月底：我開始怎麼判斷「完成」
             </h3>
 
-            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
-                <li><strong class="text-white">把 500 多筆客服逐字稿、含不會說的語言，幾分鐘變成顧客洞察</strong> &mdash; <span>人工兩倍速聽 30 通電話就累垮、覆蓋率還低；NotebookLM 把全部逐字稿匯成一份 PDF 就能跨語言分析，還能生成可語音追問的 Podcast。這是學完馬上能對主管交出可行動結論的能力。</span></li>
-                <li><strong class="text-white">用外部公開資料加自家內部文件，直接產 SWOT</strong> &mdash; <span>NotebookLM 能用 YouTube 整合吃下對手簡報影片，再把對手動態和自家產品文件並陳，產出對應真實市場情境的 SWOT，把「對手在做什麼」轉成「我方該怎麼應對」。</span></li>
-                <li><strong class="text-white">用 Gemini Gems 做出可重複使用的專屬行銷助手</strong> &mdash; <span>一次設定人格、語氣、格式、目標，就養出一個用你本人語氣寫社群貼文、針對平台最佳化的 Gem，之後免再交代背景。這最能展現 AI 從工具變成團隊成員的轉變。</span></li>
-            </ul>
+            <p>
+                到 8 月底，還有很多東西沒有完成。甘特圖仍有 60 筆沒有日期，逐字稿還沒驗收，排程工具還沒開始實作，bridge 還有兩個結構性問題。
+            </p>
 
-            <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> Links
-            </h3>
+            <p>
+                這一個月改變的是判斷工作的方式。以前我會問「這個功能做出來了嗎」，現在比較常問「它在什麼條件下才算真的成立」。報告要每個數字都能回到證據才算有來源；知識庫要下一週還能可靠地更新才算完成；web app 要真實資料進來後仍然成立才算能跑；bridge 要錯誤的事情能被擋在系統裡才算通了。
+            </p>
 
-            <ul class="space-y-2 text-sm text-gray-400 list-none pl-0">
-                <li>
-                    <span class="text-accent-purple mr-2">●</span>
-                    <a href="NP_06.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
-                        回總覽 — Google 數位人才探索計畫
-                    </a>
-                </li>
-                <li>
-                    <span class="text-accent-purple mr-2">●</span>
-                    <a href="https://skillshop.withgoogle.com/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
-                        認證平台 — Google Skillshop
-                    </a>
-                </li>
-            </ul>
+            <p>
+                第一個月做的事情看起來很雜。回頭看，它們都在做同一件事：把「相信它應該沒問題」，慢慢換成「我有辦法確認它沒問題」。
+            </p>
 
         </article>
 
         <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
-            <a href="NP_07.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
-                &larr; Prev Project
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                &larr; 上一篇
             </a>
             <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
-                View All Projects
+                查看所有專案
             </a>
-            <a href="NP_09.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
-                Next Project &rarr;
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                下一篇 &rarr;
             </a>
         </div>
 

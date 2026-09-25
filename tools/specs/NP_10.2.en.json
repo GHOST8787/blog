@@ -1,0 +1,122 @@
+{
+  "title": "WIRE VIEW / WHERE IT LEAKED",
+  "subtitle": "Same route before and after the fix, different payload on the way back",
+  "alt": "Architecture before and after the fix: the waiting page polls the Hong Kong Firestore through Vercel's US region every 30 seconds; before the fix full documents including report text crossed regions, after it only queuedAt, createdAt and processingTimeMs come back",
+  "viewBox": [
+    920,
+    486
+  ],
+  "groups": [
+    {
+      "index": 0,
+      "label": "Before · bare .get()"
+    },
+    {
+      "index": 1,
+      "label": "After · .select()"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "wait-a",
+      "group": 0,
+      "col": 0,
+      "label": "Waiting page",
+      "sublabel": "/v/[id]",
+      "tag": "polls every 30 s"
+    },
+    {
+      "id": "api-a",
+      "group": 0,
+      "col": 1,
+      "label": "Vercel, US region",
+      "sublabel": "queue-position API",
+      "tag": "two bare .get()",
+      "hot": true
+    },
+    {
+      "id": "fs-a",
+      "group": 0,
+      "col": 2,
+      "label": "Firestore, Hong Kong",
+      "sublabel": "videos collection",
+      "tag": "all queued + all done"
+    },
+    {
+      "id": "wait-b",
+      "group": 1,
+      "col": 0,
+      "label": "Waiting page",
+      "sublabel": "/v/[id]",
+      "tag": "polls every 30 s"
+    },
+    {
+      "id": "api-b",
+      "group": 1,
+      "col": 1,
+      "label": "Vercel, US region",
+      "sublabel": "queue-position API",
+      "tag": "two .select()",
+      "hot": true
+    },
+    {
+      "id": "fs-b",
+      "group": 1,
+      "col": 2,
+      "label": "Firestore, Hong Kong",
+      "sublabel": "videos collection",
+      "tag": "three fields only"
+    }
+  ],
+  "flows": [
+    {
+      "from": "wait-a",
+      "to": "api-a",
+      "label": "every 30 s",
+      "note": "polling"
+    },
+    {
+      "from": "api-a",
+      "to": "fs-a",
+      "label": "cross-region",
+      "note": "HK to US"
+    },
+    {
+      "from": "fs-a",
+      "to": "api-a",
+      "route": "return",
+      "variant": "hot"
+    },
+    {
+      "from": "wait-b",
+      "to": "api-b",
+      "label": "every 30 s",
+      "note": "polling"
+    },
+    {
+      "from": "api-b",
+      "to": "fs-b",
+      "label": "cross-region",
+      "note": "HK to US"
+    },
+    {
+      "from": "fs-b",
+      "to": "api-b",
+      "route": "return",
+      "variant": "dashed"
+    }
+  ],
+  "bands": [
+    {
+      "group": 0,
+      "hot": true,
+      "title": "Full documents return: all queued + all done, report text included",
+      "note": "tens of KB each · Jun 13.79 GiB · Aug 14.35 GiB egress"
+    },
+    {
+      "group": 1,
+      "title": "Only the three fields actually used",
+      "note": "queuedAt · createdAt · processingTimeMs · read count unchanged"
+    }
+  ]
+}

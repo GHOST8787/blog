@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 672" width="920" height="672" role="img" aria-label="追查因果鏈流程圖：帳單 $22.38 對不上預期、費用約四分之三是跨區傳輸、程式碼裡有兩支每 30 秒輪詢並整份搬回文件的 API、Vercel Hobby 紀錄只留 12 小時分不出元兇、排隊查詢已加 select()、後台列表待修並等下一期帳單驗收">
+  <defs>
+    <marker id="np103arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#BF94FF"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="920" height="672" fill="#050505"/>
+
+  <text x="32" y="40" fill="#9CA3AF" font-family="JetBrains Mono, monospace" font-size="13" letter-spacing="1.5">COST TRACE / 追查因果鏈</text>
+  <text x="32" y="64" fill="#6B7280" font-family="Plus Jakarta Sans, sans-serif" font-size="12.5">從對不上的帳單到兩處 select()，每一步都對到一個可查的數字或檔案</text>
+
+  <!-- 01 bill anomaly -->
+  <rect x="32" y="88" width="856" height="72" rx="10" fill="#0A0A0C" stroke="#1F1F26"/>
+  <text x="52" y="119" fill="#BF94FF" font-family="JetBrains Mono, monospace" font-size="12">01</text>
+  <text x="96" y="119" fill="#FFFFFF" font-family="Plus Jakarta Sans, sans-serif" font-size="14.5" font-weight="700">預想接近零元，8 月開出 $22.38</text>
+  <text x="96" y="145" fill="#6B7280" font-family="JetBrains Mono, monospace" font-size="11">5 月 $1.50 · 6 月 $19.22 · 7 月 $0.00 · 8 月 $22.38</text>
+  <line x1="460" y1="162" x2="460" y2="182" stroke="#BF94FF" stroke-width="1.4" marker-end="url(#np103arrow)"/>
+
+  <!-- 02 line item -->
+  <rect x="32" y="184" width="856" height="72" rx="10" fill="#0A0A0C" stroke="#1F1F26"/>
+  <text x="52" y="215" fill="#BF94FF" font-family="JetBrains Mono, monospace" font-size="12">02</text>
+  <text x="96" y="215" fill="#FFFFFF" font-family="Plus Jakarta Sans, sans-serif" font-size="14.5" font-weight="700">費用約四分之三是 Firestore 跨區傳出</text>
+  <text x="96" y="241" fill="#6B7280" font-family="JetBrains Mono, monospace" font-size="11">APAC → 美洲 · 6 月 13.79 GiB · 8 月 14.35 GiB</text>
+  <line x1="460" y1="258" x2="460" y2="278" stroke="#BF94FF" stroke-width="1.4" marker-end="url(#np103arrow)"/>
+
+  <!-- 03 spike days -->
+  <rect x="32" y="280" width="856" height="72" rx="10" fill="#0A0A0C" stroke="#1F1F26"/>
+  <text x="52" y="311" fill="#BF94FF" font-family="JetBrains Mono, monospace" font-size="12">03</text>
+  <text x="96" y="311" fill="#FFFFFF" font-family="Plus Jakarta Sans, sans-serif" font-size="14.5" font-weight="700">兩支每 30 秒輪詢、整份搬回文件的 API</text>
+  <text x="96" y="337" fill="#6B7280" font-family="JetBrains Mono, monospace" font-size="11">/api/videos/[id]/queue-position · /api/admin/users</text>
+  <line x1="460" y1="354" x2="460" y2="374" stroke="#BF94FF" stroke-width="1.4" marker-end="url(#np103arrow)"/>
+
+  <!-- 04 culprit (highlight) -->
+  <rect x="32" y="376" width="856" height="72" rx="10" fill="#140F1F" stroke="#3A2F52"/>
+  <text x="52" y="407" fill="#BF94FF" font-family="JetBrains Mono, monospace" font-size="12">04</text>
+  <text x="96" y="407" fill="#FFFFFF" font-family="Plus Jakarta Sans, sans-serif" font-size="14.5" font-weight="700">證據斷點：分不出兩支各搬了多少</text>
+  <text x="96" y="433" fill="#8B7BA8" font-family="JetBrains Mono, monospace" font-size="11">Vercel Hobby Observability 最長只能看 12 小時</text>
+  <line x1="460" y1="450" x2="460" y2="470" stroke="#BF94FF" stroke-width="1.4" marker-end="url(#np103arrow)"/>
+
+  <!-- 05 counter-evidence -->
+  <rect x="32" y="472" width="856" height="72" rx="10" fill="#0A0A0C" stroke="#1F1F26"/>
+  <text x="52" y="503" fill="#BF94FF" font-family="JetBrains Mono, monospace" font-size="12">05</text>
+  <text x="96" y="503" fill="#FFFFFF" font-family="Plus Jakarta Sans, sans-serif" font-size="14.5" font-weight="700">排隊查詢補兩處 .select()</text>
+  <text x="96" y="529" fill="#6B7280" font-family="JetBrains Mono, monospace" font-size="11">commit f3b9254 · 一支檔案 +11 −2</text>
+  <line x1="460" y1="546" x2="460" y2="566" stroke="#BF94FF" stroke-width="1.4" marker-end="url(#np103arrow)"/>
+
+  <!-- 06 fix -->
+  <rect x="32" y="568" width="856" height="72" rx="10" fill="#0A0A0C" stroke="#1F1F26"/>
+  <text x="52" y="599" fill="#BF94FF" font-family="JetBrains Mono, monospace" font-size="12">06</text>
+  <text x="96" y="599" fill="#FFFFFF" font-family="Plus Jakarta Sans, sans-serif" font-size="14.5" font-weight="700">後台列表待修，等下一期帳單驗收</text>
+  <text x="96" y="625" fill="#6B7280" font-family="JetBrains Mono, monospace" font-size="11">驗收指標：9 月整月的 APAC → 美洲傳輸量</text>
+</svg>

@@ -40,18 +40,18 @@
 
         <header class="mb-12 border-b border-white/10 pb-12">
             <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
-                一個論壇用問卷跟你告別，<br>
-                <span class="text-gradient text-2xl md:text-4xl">暫停的方式，比暫停本身更值得談</span>
+                開口的成本<br>
+                <span class="text-gradient text-2xl md:text-4xl">從 mentor 的「多看少說」，到好奇心的單向流動</span>
             </h1>
 
             <div class="flex flex-wrap gap-3 mb-6">
                 <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">Thinking</span>
-                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Platform</span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Communication</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Self-Observation</span>
             </div>
 
             <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
-                <span><i class="far fa-calendar mr-2"></i>2026.06.12</span>
+                <span><i class="far fa-calendar mr-2"></i>2026.08</span>
                 <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
             </div>
         </header>
@@ -59,190 +59,405 @@
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
             <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
-                我平常會看一個匿名的社群論壇。某天點進去，整個論壇不見了&mdash;&mdash;看板、討論串全部進不去，首頁被換成一張頁：一句「沈澱、喘息中」，底下八個問題、一個留言框，最後一行小字連回主站。原本的內容全部讀不到，每個入口都被導去同一份問卷。讓我在意的，是它收掉自己的這個方式。
+                前一晚 mentor 在 LINE 上講了幾句話，隔天早上六點半我開了一個 Incognito 視窗，把那幾句話帶去問 AI。以下按時間順序，兩邊的完整紀錄。
             </p>
 
-            <p class="mb-6">它留下的八個問題，原話大概是這樣：</p>
-
-            <div class="p-6 rounded-2xl border border-white/10 bg-[#0A0A0A] mb-8">
-                <ol class="list-decimal pl-5 space-y-3 text-gray-400 m-0 font-light text-base leading-relaxed">
-                    <li>你是什麼時候發現這個平台不見的？那一刻，你的第一個念頭是什麼？</li>
-                    <li>一個地方「一直都在」，你覺得是預設值，還是成本？</li>
-                    <li>一個沒有廣告、不用實名、沒有演算法推播的地方，你覺得它靠什麼活著？</li>
-                    <li>它收的錢少到不像話。你覺得是很傻、很佛、不會賺，還是不能賺？</li>
-                    <li>大家平常也都會用別的平台。它們的「穩定」，跟它的「穩定」，是同一種東西嗎？</li>
-                    <li>如果開這個地方的人有名有姓、有臉、天天現身跟大家搏感情，你還會像現在這樣說話嗎？</li>
-                    <li>這次的事，你是自己發現的，還是從別人那裡聽說的？</li>
-                    <li>如果想對這個地方說一句話（對此處，不是對任何「人」），就留在這裡。</li>
-                </ol>
-            </div>
-
-            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
-                下面一條一條談，文末附一段技術觀察&mdash;&mdash;我把這張頁面的原始碼翻出來，看它到底怎麼把一個好好的論壇換成這個樣子。
-            </p>
-
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 一直都在，不等於要被供著
-            </h3>
-            <div class="border-l-2 border-accent-purple/30 pl-5 py-2 my-6">
-                <p class="text-gray-300 m-0">第二題：一個地方「一直都在」，你覺得是預設值，還是成本？</p>
-            </div>
-            <p>
-                一個東西一直都在的時候，沒人會去想它為什麼在；等它不在了，有需要的人自然會去找下一個。多數東西都有替代性。替代品的價值，在被需要的當下才被選擇，不需要使用者預先承諾去維持。所以回頭問使用者「我一直都在，你覺得是預設值還是成本」，這道題本身就有點微妙。
-            </p>
-
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 一個平台能不能靠興趣活下去
-            </h3>
-            <div class="border-l-2 border-accent-purple/30 pl-5 py-2 my-6">
-                <p class="text-gray-300 m-0">第四題：它收的錢少到不像話，你覺得是很傻、很佛、不會賺，還是不能賺？</p>
-            </div>
-            <p>
-                這問題讓我想到 Wootalk，一個匿名隨機配對的聊天網站。
-            </p>
-            <p>
-                它的來歷大概是這樣：創辦人說過，這是他閒暇做的，本來只想弄一個「24 小時都找得到人聊天」的地方，到今天都沒商業化。免費、免註冊、沒有廣告，也沒把使用者的對話拿去賣；伺服器從較貴的雲端搬去便宜很多的主機，成本壓下來，就這樣一直開著。它活下去的方式很簡單：繼續開著，繼續有人用。
-            </p>
-            <p>
-                這說明一件事：一個幾乎不收費的地方，照樣能年復一年地開下去。一個平台要不要賺、賺不賺得到，屬於經營者的選擇與本事。回到那道題的設計&mdash;&mdash;有商機的時候，經營者通常不會把它交給使用者一起想；沒有商機的時候，把它描述成一種犧牲或奉獻，會把討論從經營策略，帶往情感認同的方向。把一個經營者自己的選擇，包裝成一道讓使用者來掂量的題目，是這道題真正的問題。
-            </p>
-
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 暫停的方式，與使用者的選擇權
-            </h3>
-            <p>
-                這次的做法，是把整個論壇功能換成一張新頁面，影響的範圍比單純發布公告大得多。
-            </p>
-            <p>
-                在論壇裡發一篇文，跟把整個公共空間換成一份問卷，是兩件事。發一篇文，使用者自己決定要不要點進來、要不要回；把整個門面換掉，每一個來的人都先撞上這八個問題，才找得到其他出口。原本能回話的地方，變成一個只能單向投遞的信箱；原本發文的地方，變成它想問的八個問題。使用者被放到一個比較被動的位置，這也是我對這種溝通方式有疑問的起點。
-            </p>
-
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 問題的引導性，與被留下的資料
-            </h3>
-            <p>
-                八個問題的句型幾乎一致：是預設值還是成本、很傻很佛不會賺還是不能賺、它的「穩定」跟別處的「穩定」是不是同一種。這種句型看起來開放，選項本身已經把立場放了進去&mdash;&mdash;問你是預設值還是成本的當下，「這個地方值得被珍惜」這個前提，已經先替你決定好了。
-            </p>
-            <p>
-                我個人對開放的匿名空間沒有意見。如果只是擺一個空白的格子、沒有任何引導，誰想說什麼就說什麼，我認為完全沒問題。需要分開來看的是引導式的問法：題目先替你把方向圈好，你只能在它畫的框裡走；你寫下的東西，又收進它的後台留底。一個把使用者圈進預設立場、再把回答留起來的設計，跟一個單純開放的空間，是兩種不同的東西。
-            </p>
-
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 論壇的公共性：公版與個版
-            </h3>
-
-            <figure class="my-10 mx-auto max-w-s">
-                <img src="../PNG/article_11.1.webp"
-                     alt="論壇的公共性：個版（部落格）與公版（論壇）的對照圖解"
-                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+            <figure class="my-10 mx-auto">
+                <img src="../PNG/NA_11.1.webp"
+                     alt="開口的成本"
+                     class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
                 <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
-                    個版是你家的客廳；公版一旦長出一群人，就帶上了公共性
+                    吸收對方的框架很容易，把自己的東西放回去才難
                 </figcaption>
             </figure>
 
-            <p>
-                退一步看這個地方的定位。部落格是個版，是你家的客廳：牆上掛什麼、訪客留言區擺幾個問題，全憑你高興，沒有人能說你錯。論壇是另一回事。論壇是公版，一旦它開放給大眾、長出一群固定來的人，它就帶上了公共性。
-            </p>
-            <p>
-                這個分法不是我自己編的。傳播學裡有個經典概念叫「公共領域」（public sphere，哲學家 Habermas 提出）：一個讓人放下身分、平等討論的公共空間，它的重量來自參與的人。社會學家 Oldenburg 講的「第三空間」（third place），說的也是這個&mdash;&mdash;家與職場之外、讓人有歸屬感的聚會地，咖啡館、酒吧、論壇都算；這種地方的主角是來的人，開店的人比較像場地的看守。後來研究線上社群的學者還發現，待得夠久的成員，會對社群長出一種「心理所有權」，把它當成「我們的」地方，自發去維護它。
-            </p>
-            <p>
-                把這幾件事疊起來，話就清楚了：一個東西一旦被定義成論壇，它就預設了以使用者、以這群人的利益為先。把整個公共空間，換成一份以經營者處境為核心的問卷，是拿公版的位置，做個版的事。如果一開始就講明這是個人部落格、是經營者的個版，那以上全都不成立。個版跟公版，是兩種不同的承諾。
-            </p>
+            <!-- ═══ LINE 前一晚 ═══ -->
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 經營者的情緒，與索取的方向
+                <span class="text-accent-purple">#</span> 前一晚｜多看少說
             </h3>
-            <p>
-                做出一個這樣的地方，需要力氣，這點我沒有要爭，我也樂意用付費去支持它。需要分開來看的是另一件事：經營者自己的情緒，為什麼要整個平台的人一起承接。把論壇換成一張告別頁，讓每個路過的人先面對經營者的處境，對部分使用者來說，會帶來一種額外的情緒負擔&mdash;&mdash;我姑且把它叫做「情緒房租」：你來用這個空間，順帶被收一筆沒打算付的情緒。
-            </p>
-            <p>
-                再往源頭看，價值有它自然流動的方向：別人主動來問你、需要你，你再開口。把一份問卷擺到所有人面前、等大家逐題回應，順序剛好是倒過來的。真要跟大家要東西，明著要就好&mdash;&mdash;把「使用者付費」講出來，想支持的人會付，這條路乾淨、對等。
-            </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 對等的做法，其實更省力
-            </h3>
-            <p>
-                同樣一件事，有不收情緒租的做法，而且力氣更小。在論壇裡發一篇公告：這地方要暫停一陣子，原因是這些，想留話的留在下面。它本來就匿名，想回的人自然會回，想走的人正常走，每個人手上都還握著「要不要參與」這個選擇。
-            </p>
-            <p>
-                要收掉就說收掉，要更新就說更新，要問意見就開一份大家可以選擇填或不填的問卷。把決定講清楚，把選擇權留在對方手上，如此而已。
-            </p>
+            <div class="my-8 space-y-4">
 
-            <hr class="border-white/10 my-12">
+                <div class="flex justify-end">
+                    <div class="max-w-[80%] p-4 bg-accent-purple/10 rounded-2xl rounded-br-sm border border-accent-purple/20">
+                        <p class="text-gray-300 text-base">應該是因為可以觀察到你們的判斷，就跟今天爹 v 說的一樣</p>
+                    </div>
+                </div>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 技術觀察：整個論壇如何被換成一張頁
-            </h3>
-            <p>
-                除了溝通方式，技術上的實作也值得看。我把這張頁面的原始碼翻出來，幾項特徵剛好印證了上面的觀察。
-            </p>
+                <div class="flex justify-end">
+                    <div class="max-w-[80%] p-4 bg-accent-purple/10 rounded-2xl rounded-br-sm border border-accent-purple/20">
+                        <p class="text-gray-300 text-base">觀察那些人他們的所作所為跟做事方式</p>
+                    </div>
+                </div>
 
-            <div class="space-y-5 mt-8">
-                <div class="bg-white/5 p-5 rounded-xl border-l-4 border-accent-purple/50">
-                    <strong class="text-white flex items-center gap-2 mb-2"><i class="fas fa-route text-accent-purple shrink-0"></i> 一、全站攔截（catch-all routing）</strong>
-                    <p class="text-sm text-gray-400 m-0 leading-relaxed">我試了五個原論壇一定會有的網址&mdash;&mdash;首頁、看板、最新討論、某篇文章、某個人的個人頁&mdash;&mdash;回來的內容大小到位元組都一樣，都是 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">9956 bytes</code>。不管打哪個網址，伺服器都回同一張頁面。原本的資料沒有消失，被一道吃掉所有路徑的規則統一導向這張頁。</p>
+                <div class="flex justify-start">
+                    <div class="max-w-[80%] p-4 bg-white/5 rounded-2xl rounded-bl-sm border border-white/10">
+                        <div class="text-xs font-mono text-accent-purple mb-2">MENTOR</div>
+                        <p class="text-gray-300 text-base">對阿 我會建議多看少說，至少我是這樣走過來的</p>
+                    </div>
                 </div>
-                <div class="bg-white/5 p-5 rounded-xl border-l-4 border-accent-purple/50">
-                    <strong class="text-white flex items-center gap-2 mb-2"><i class="fas fa-cloud text-accent-purple shrink-0"></i> 二、邊緣運算部署</strong>
-                    <p class="text-sm text-gray-400 m-0 leading-relaxed">頁尾掛著 Cloudflare 的偵測程式，每個請求即時回源。配上「所有網址回同一頁，另有一個專收留言的 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">/api/leave</code>」，它最接近一支跑在 Cloudflare 邊緣節點上的程式（Workers 或 Pages Functions 那一類）。我用 GET 去敲 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">/api/leave</code>，回 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">405 Method Not Allowed</code>：這個窗口只收 POST 進去的留言，讀不出東西來。</p>
+
+                <div class="flex justify-start">
+                    <div class="max-w-[80%] p-4 bg-white/5 rounded-2xl rounded-bl-sm border border-white/10">
+                        <div class="text-xs font-mono text-accent-purple mb-2">MENTOR</div>
+                        <p class="text-gray-300 text-base">這邊算還好，大家人都算不錯，有些職場小人很多的</p>
+                    </div>
                 </div>
-                <div class="bg-white/5 p-5 rounded-xl border-l-4 border-accent-purple/50">
-                    <strong class="text-white flex items-center gap-2 mb-2"><i class="fas fa-shield-halved text-accent-purple shrink-0"></i> 三、Honeypot 反垃圾機制</strong>
-                    <p class="text-sm text-gray-400 m-0 leading-relaxed">表單裡的「公司」欄位被 CSS 推到畫面外，真人看不到。自動灌廣告的程式會把它填上，後端就用這格有沒有被填，來辨識並過濾機器人。這招叫 honeypot，蜜罐。截圖裡那句「公司（請留空）」，是寫給機器人看的誘餌標籤。</p>
+
+                <div class="flex justify-end">
+                    <div class="max-w-[80%] p-4 bg-accent-purple/10 rounded-2xl rounded-br-sm border border-accent-purple/20">
+                        <p class="text-gray-300 text-base">但就信任遊戲的角度來說，要一個環境好要有超過一定比例的小藍人。不知道你有沒有玩過</p>
+                    </div>
                 </div>
-                <div class="bg-white/5 p-5 rounded-xl border-l-4 border-accent-purple/50">
-                    <strong class="text-white flex items-center gap-2 mb-2"><i class="fas fa-compass-drafting text-accent-purple shrink-0"></i> 四、完整的設計規格</strong>
-                    <p class="text-sm text-gray-400 m-0 leading-relaxed">CSS 註解裡留著一整套設計規格的痕跡：色票對應它自家的品牌紅、做了無障礙對比、輸入框字級至少 16px「避免 iOS 聚焦自動縮放」、按鈕點擊區至少 48px。還有這幾句，原封不動抄在這裡：「視覺方向 §5：深夜裡還亮著的一盞小燈」「六題之間的間距要大到讓每一題可以單獨被凝視」「頁尾主站一行：一扇安靜的側門」。連每道問題之間要留多大空白、好讓你逐題凝視，都被編號、寫進一份設計文件。</p>
+
+                <div class="flex justify-start">
+                    <div class="max-w-[80%] p-4 bg-white/5 rounded-2xl rounded-bl-sm border border-white/10">
+                        <div class="text-xs font-mono text-accent-purple mb-2">MENTOR</div>
+                        <p class="text-gray-300 text-base">沒有欸</p>
+                    </div>
                 </div>
+
+                <div class="flex justify-end">
+                    <div class="max-w-[80%] p-4 bg-accent-purple/10 rounded-2xl rounded-br-sm border border-accent-purple/20">
+                        <p class="text-gray-300 text-base">小黑人超過一定比例就會整坨黑掉</p>
+                    </div>
+                </div>
+
+                <div class="flex justify-start">
+                    <div class="max-w-[80%] p-4 bg-white/5 rounded-2xl rounded-bl-sm border border-white/10">
+                        <div class="text-xs font-mono text-accent-purple mb-2">MENTOR</div>
+                        <p class="text-gray-300 text-base">喔喔喔董</p>
+                    </div>
+                </div>
+
             </div>
 
-            <p class="mt-10">
-                這四項疊在一起，是一份完整規劃過的設計成果&mdash;&mdash;從全站攔截、機器人過濾，到每一處凝視間距，都被仔細處理過。
-            </p>
+            <!-- ═══ LINE 期許 ═══ -->
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 說回我自己
+                <span class="text-accent-purple">#</span> 前一晚｜團隊要的是什麼，我是什麼
             </h3>
-            <p>
-                最後說回自己。我也做這些東西&mdash;&mdash;寫網站、把它開放出來，你正在看的這一頁就是其中一個。做它的理由很簡單：想藉著它，遇到一群志同道合的人。
-            </p>
-            <p>
-                對這些東西的興趣，本身就是理由；不該因為自己的際遇，去抱怨任何人。
-            </p>
-            <p>
-                遇得到那群人是一種幸福，那就知足；遇不到，就把能力繼續往外推，一直往前看。做這些東西的動力，從頭到尾長在自己身上&mdash;&mdash;這是看完那八個問題之後，我個人的想法總結。
+
+            <div class="my-8 space-y-4">
+
+                <div class="flex justify-start">
+                    <div class="max-w-[80%] p-4 bg-white/5 rounded-2xl rounded-bl-sm border border-white/10">
+                        <div class="text-xs font-mono text-accent-purple mb-2">MENTOR</div>
+                        <p class="text-gray-300 text-base">TBH 我覺得我們 team 需要的是 senior 的人，因為我們就是看到整個 AI 團隊還有很多很多的缺點讓團隊使不上力，我們需要有更積極更有經驗的人參與到我們 team 才能推動些事情</p>
+                    </div>
+                </div>
+
+                <div class="flex justify-start">
+                    <div class="max-w-[80%] p-4 bg-white/5 rounded-2xl rounded-bl-sm border border-white/10">
+                        <div class="text-xs font-mono text-accent-purple mb-2">MENTOR</div>
+                        <p class="text-gray-300 text-base">這非常需要經驗還有軟實力去用行動來說服其他人，這樣做事才對</p>
+                    </div>
+                </div>
+
+                <div class="flex justify-end">
+                    <div class="max-w-[80%] p-4 bg-accent-purple/10 rounded-2xl rounded-br-sm border border-accent-purple/20">
+                        <p class="text-gray-300 text-base">嘿 記得你說過 完全同意</p>
+                    </div>
+                </div>
+
+                <div class="flex justify-start">
+                    <div class="max-w-[80%] p-4 bg-white/5 rounded-2xl rounded-bl-sm border border-white/10">
+                        <div class="text-xs font-mono text-accent-purple mb-2">MENTOR</div>
+                        <p class="text-gray-300 text-base">對阿，但不是說 junior 的人不能用，而是會需要花很多心力去帶人去訓練，我覺得目前至少我沒有太多心力可以去帶，我要執行力強和即戰力高的 member</p>
+                    </div>
+                </div>
+
+                <div class="flex justify-end">
+                    <div class="max-w-[80%] p-4 bg-accent-purple/10 rounded-2xl rounded-br-sm border border-accent-purple/20">
+                        <p class="text-gray-300 text-base">完全懂</p>
+                    </div>
+                </div>
+
+                <div class="flex justify-start">
+                    <div class="max-w-[80%] p-4 bg-white/5 rounded-2xl rounded-bl-sm border border-white/10">
+                        <div class="text-xs font-mono text-accent-purple mb-2">MENTOR</div>
+                        <p class="text-gray-300 text-base">至於你，我有在思考不只是讓你做邊邊角角，不過手上的事情大多目前都很難</p>
+                    </div>
+                </div>
+
+                <div class="flex justify-end">
+                    <div class="max-w-[80%] p-4 bg-accent-purple/10 rounded-2xl rounded-br-sm border border-accent-purple/20">
+                        <p class="text-gray-300 text-base">沒關係我沒有什麼想法我覺得現在很快樂</p>
+                    </div>
+                </div>
+
+                <div class="flex justify-start">
+                    <div class="max-w-[80%] p-4 bg-white/5 rounded-2xl rounded-bl-sm border border-white/10">
+                        <div class="text-xs font-mono text-accent-purple mb-2">MENTOR</div>
+                        <p class="text-gray-300 text-base">不太可能放你去做然後我又沒時間帶</p>
+                    </div>
+                </div>
+
+                <div class="flex justify-end">
+                    <div class="max-w-[80%] p-4 bg-accent-purple/10 rounded-2xl rounded-br-sm border border-accent-purple/20">
+                        <p class="text-gray-300 text-base">我還有時間補一些基礎設施，光 SI 文件可能我還要補。我今天有多弄一頁我想搞的，你應該有看到一堆中文版的東西。我不弄估計會到微省手上</p>
+                    </div>
+                </div>
+
+                <div class="flex justify-start">
+                    <div class="max-w-[80%] p-4 bg-white/5 rounded-2xl rounded-bl-sm border border-white/10">
+                        <div class="text-xs font-mono text-accent-purple mb-2">MENTOR</div>
+                        <p class="text-gray-300 text-base">嗯啊 我對你的期許是能夠幫上我去看到我缺漏的＆補齊 GTM 需要的這些標準化文件等等</p>
+                    </div>
+                </div>
+
+                <div class="flex justify-end">
+                    <div class="max-w-[80%] p-4 bg-accent-purple/10 rounded-2xl rounded-br-sm border border-accent-purple/20">
+                        <p class="text-gray-300 text-base">對我確實現在是想補這一塊不然看得我強迫症發作。趁我還有時間趕快把洞填起來。每天都在倒數，90 天過 2/9 了</p>
+                    </div>
+                </div>
+
+                <div class="flex justify-start">
+                    <div class="max-w-[80%] p-4 bg-white/5 rounded-2xl rounded-bl-sm border border-white/10">
+                        <div class="text-xs font-mono text-accent-purple mb-2">MENTOR</div>
+                        <p class="text-gray-300 text-base">我現在手上的事情一直在往前滾，要看的東西越來越多，被交代的 scope 越來越大，所以很多文書類的事情很花時間的事情，我希望你可以幫上忙</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ═══ LINE 取捨 ═══ -->
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 隔天早上｜取捨
+            </h3>
+
+            <div class="my-8 space-y-4">
+
+                <div class="flex justify-end">
+                    <div class="max-w-[80%] p-4 bg-accent-purple/10 rounded-2xl rounded-br-sm border border-accent-purple/20">
+                        <p class="text-gray-300 text-base">如果你眼裡有我要的東西那我想辦法</p>
+                    </div>
+                </div>
+
+                <div class="flex justify-start">
+                    <div class="max-w-[80%] p-4 bg-white/5 rounded-2xl rounded-bl-sm border border-white/10">
+                        <div class="text-xs font-mono text-accent-purple mb-2">MENTOR</div>
+                        <p class="text-gray-300 text-base">可現實工作環境就是那麼的沒有規則</p>
+                    </div>
+                </div>
+
+                <div class="flex justify-end">
+                    <div class="max-w-[80%] p-4 bg-accent-purple/10 rounded-2xl rounded-br-sm border border-accent-purple/20">
+                        <p class="text-gray-300 text-base">我覺得現在的組很好，姑且算是有個短暫的停歇點</p>
+                    </div>
+                </div>
+
+                <div class="flex justify-start">
+                    <div class="max-w-[80%] p-4 bg-white/5 rounded-2xl rounded-bl-sm border border-white/10">
+                        <div class="text-xs font-mono text-accent-purple mb-2">MENTOR</div>
+                        <p class="text-gray-300 text-base">真實的工作環境一定會有很多你看不慣的地方，但都是取捨。這邊有我想要的東西 我才留。不代表我認同這邊的做法或是文化</p>
+                    </div>
+                </div>
+
+                <div class="flex justify-end">
+                    <div class="max-w-[80%] p-4 bg-accent-purple/10 rounded-2xl rounded-br-sm border border-accent-purple/20">
+                        <p class="text-gray-300 text-base">喔是啊我同意</p>
+                    </div>
+                </div>
+
+                <div class="flex justify-start">
+                    <div class="max-w-[80%] p-4 bg-white/5 rounded-2xl rounded-bl-sm border border-white/10">
+                        <div class="text-xs font-mono text-accent-purple mb-2">MENTOR</div>
+                        <p class="text-gray-300 text-base">但抱怨沒有用</p>
+                    </div>
+                </div>
+
+                <div class="flex justify-end">
+                    <div class="max-w-[80%] p-4 bg-accent-purple/10 rounded-2xl rounded-br-sm border border-accent-purple/20">
+                        <p class="text-gray-300 text-base">所以我好奇你眼裡的是什麼</p>
+                    </div>
+                </div>
+
+                <div class="flex justify-start">
+                    <div class="max-w-[80%] p-4 bg-white/5 rounded-2xl rounded-bl-sm border border-white/10">
+                        <div class="text-xs font-mono text-accent-purple mb-2">MENTOR</div>
+                        <p class="text-gray-300 text-base">我只能做我可以做到的事情</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ═══ Incognito 06:38 ═══ -->
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 06:38｜少說多看，還是多說多看
+            </h3>
+
+            <p class="text-gray-500 italic mb-6">
+                我的提問：少說多看，還是多說多看，你怎麼想？
             </p>
 
-            <div class="p-6 rounded-2xl border border-white/10 bg-[#0A0A0A] mt-12">
-                <h4 class="text-white font-bold mb-3 flex items-center gap-2 text-sm">
-                    <i class="fas fa-book-open text-accent-purple"></i> Note
-                </h4>
-                <p class="text-sm text-gray-400 leading-relaxed m-0">
-                    起點是一個我平常就在看的匿名社群頁面。文中對技術手法的描述，可由該頁面公開的原始碼逐項對照（catch-all、Cloudflare、honeypot、設計規格註解皆出自原始碼）。不點名平台、不針對經營者個人，只討論這種做法本身。
+            <div class="my-8 p-8 bg-white/5 rounded-2xl border border-white/10">
+                <div class="flex items-center gap-2 mb-4 text-xs font-mono text-accent-purple uppercase tracking-wider">
+                    <i class="fas fa-robot"></i> AI 的回答
+                </div>
+
+                <p class="text-gray-300 mb-4">
+                    我偏向「多說多看」，但有前提。
+                </p>
+
+                <p class="text-gray-300 mb-4">
+                    <strong class="text-white">關鍵差別在回饋速度。</strong>只看不說，你的理解永遠沒被檢驗過——你以為看懂了，其實可能只是自己腦補的版本一直在自我確認。說出來才會被打臉，被打臉才會修正。少說多看最大的風險不是說錯話，是錯很久都不知道。
+                </p>
+
+                <p class="text-gray-300 mb-4">
+                    但「說」的成本因環境而異。在新單位、政治敏感、或大家會記仇的場合，說錯一次的代價可能大過學到的東西，那就先看。相對地，在允許犯錯、有人願意糾正你的地方，閉嘴反而是浪費。
+                </p>
+
+                <p class="text-gray-300">
+                    比較實用的拆法是分清楚斷言跟提問。多下判斷很貴，多問問題幾乎免費，而且一樣能暴露你的理解偏差。所以我的版本大概是：<strong class="text-white">少斷言、多提問、多看</strong>——新環境先偏「少說」，等摸清楚回饋機制再往「多說」移。
                 </p>
             </div>
 
-            <p class="text-sm text-gray-500 font-mono m-0 mt-8">
-                Tags　｜　Platform　・　Communication　・　Thinking
+            <!-- ═══ Incognito 06:49 ═══ -->
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 06:49｜怎麼樣叫斷言
+            </h3>
+
+            <p class="text-gray-500 italic mb-6">
+                我的提問：怎麼樣叫斷言？如果我對我的回覆有保留彈性空間，但對方覺得我在斷言的話，是什麼狀況？
             </p>
+
+            <div class="my-8 p-8 bg-white/5 rounded-2xl border border-white/10">
+                <div class="flex items-center gap-2 mb-4 text-xs font-mono text-accent-purple uppercase tracking-wider">
+                    <i class="fas fa-robot"></i> AI 的回答
+                </div>
+
+                <p class="text-gray-300 mb-4">
+                    <strong class="text-white">斷言＝你對「事情是怎樣」下了結論，而且把自己的信譽押上去了。</strong>判準不是語氣，是聽的人聽完後認為「他已經決定了」還是「這件事還開著」。「這個做法會出問題」是斷言；「這樣做會不會有 X 風險？」不是。
+                </p>
+
+                <p class="text-gray-300 mb-4">
+                    你說的那個落差很常見：<strong class="text-white">彈性留在你腦子裡，沒有留在句子裡。</strong>對方只能根據你講出來的字判斷。而且有幾個東西會蓋掉你的保留：句子短、語速穩、沒有講理由——這些都會被讀成「已定案」。另外「我覺得」其實幾乎不減弱什麼，大家都知道那是禮貌前綴，不是真的在開放討論。
+                </p>
+
+                <p class="text-gray-300 mb-4">
+                    真正讓人聽出彈性的是<strong class="text-white">把可推翻的條件講出來</strong>：「我目前傾向 A，但如果 B 那邊的數字不是我想的那樣，就整個翻掉」——這種句子對方一聽就知道哪裡可以推你。露出推理過程也有同樣效果，因為那等於給對方施力點。
+                </p>
+
+                <p class="text-gray-300 mb-4">
+                    還有一種情況跟你講什麼無關：位階。如果你是資深的一方，你講「也許可以考慮 X」在對方耳裡就是指示。這時候再怎麼加保留詞都沒用，得改成明確問句，或直接說「我這句不是結論，你反對我不會不高興」。
+                </p>
+
+                <p class="text-gray-300">
+                    如果你發現大家常誤判你，值得注意後果是哪一種——是有人一直跟你爭，還是沒人再給你別的選項了。後者比前者麻煩得多。
+                </p>
+            </div>
+
+            <!-- ═══ Incognito 06:50 ═══ -->
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 06:50｜不說的人，是不是沒意見
+            </h3>
+
+            <p class="text-gray-500 italic mb-6">
+                我的想法：因為我覺得如果足夠有意見那就會講。
+            </p>
+
+            <div class="my-8 p-8 bg-white/5 rounded-2xl border border-white/10">
+                <div class="flex items-center gap-2 mb-4 text-xs font-mono text-accent-purple uppercase tracking-wider">
+                    <i class="fas fa-robot"></i> AI 的回答
+                </div>
+
+                <p class="text-gray-300 mb-4">
+                    這個假設在對等關係裡大致成立，但一旦有位階差、或是對方過去講過被打槍，它就會失效——而且失效的方式很陰險：你不會收到「我不同意」，你會收到沉默，然後你把沉默讀成同意。真正有意見的人不講，通常不是因為意見不夠強，<strong class="text-white">是因為算過講的成本大於他預期能改變的機率。</strong>意見越強、越覺得講了也沒用，反而越可能不講。
+                </p>
+
+                <p class="text-gray-300 mb-4">
+                    還有一個時間差問題。當下不講的人，事後常用別的方式表達：執行的時候打折、私下跟別人抱怨、或是等事情爆掉才說「我早就覺得怪怪的」。那時候你才發現「原來當初不是共識」，成本已經高很多了。
+                </p>
+
+                <p class="text-gray-300">
+                    比較穩的做法是不要靠對方主動，而是把門檻降到你這邊：明講「我這個沒定案，誰有不同看法我想聽」，或是直接點名問特定的人。差別在於，前者要對方承擔開口的風險，後者是你主動授權。你的原則沒錯，只是它成立的條件比想像中窄。
+                </p>
+            </div>
+
+            <!-- ═══ Incognito 06:51 ═══ -->
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 06:51｜什麼該快，什麼該慢
+            </h3>
+
+            <div class="my-8 p-8 bg-white/5 rounded-2xl border border-white/10">
+                <div class="flex items-center gap-2 mb-4 text-xs font-mono text-accent-purple uppercase tracking-wider">
+                    <i class="fas fa-robot"></i> AI 的回答
+                </div>
+
+                <p class="text-gray-300 mb-4">
+                    Bezos 那個分法很好用：可逆的決策（推門，走錯了可以退回來）晚做的成本遠高於做錯的成本，該快；不可逆的決策（人事、架構、簽長約、公開承諾）做錯的成本遠高於晚做，該慢。多數人的錯誤是把兩類用同一種速度處理——對小事開三次會，對大事憑當下感覺拍板。
+                </p>
+
+                <p class="text-gray-300 mb-4">
+                    第二個關鍵是<strong class="text-white">資訊會不會自己長出來。</strong>如果等下去有明確的新資訊要進來（財報、實驗結果、對方回覆），慢是有價值的。如果沒有新資訊要進來，那「再想想」只是在原地重新排列同一批東西，純粹是拖延，而且拖延本身有成本：機會消失、團隊懸空、你自己的注意力被佔住。
+                </p>
+
+                <p class="text-gray-300 mb-4">
+                    至於快速迭代 vs 慢慢來，快通常相對正確，但前提是回饋看得到。迭代的價值來自「做完能知道對不對」。如果回饋週期很長、或訊號雜訊比很低（比如做了改動但成效要半年才知道，而且中間有一堆其他變因），那你不是在迭代，只是在製造隨機擾動然後自我感覺良好。這種情況下慢一點、想清楚因果反而效率高。
+                </p>
+
+                <p class="text-gray-300 mb-4">
+                    還有一個常被忽略的：<strong class="text-white">迭代速度受限於復原成本。</strong>能一天上線三次是因為壞了可以 rollback。同樣的頻率放在會傷到人、傷到信任、傷到品牌的決策上，就不是敏捷，是消耗。
+                </p>
+
+                <p class="text-gray-300">
+                    回到你前面的脈絡——「沒定案的風險」跟「晚做決策」其實可以拆開。宣布「這件事我三天後決定，在那之前我要聽意見」，這是快速給了一個關於流程的定案，同時保留內容的彈性。多數不確定感的痛苦不是來自結論未定，是來自不知道什麼時候會定、由誰定。
+                </p>
+            </div>
+
+            <!-- ═══ Incognito 06:57 ═══ -->
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 06:57｜你怎麼看我現在的搖擺
+            </h3>
+
+            <p class="text-gray-500 italic mb-6">
+                我的提問：你怎麼看我現在的搖擺？
+            </p>
+
+            <div class="my-8 p-8 bg-white/5 rounded-2xl border border-white/10">
+                <div class="flex items-center gap-2 mb-4 text-xs font-mono text-accent-purple uppercase tracking-wider">
+                    <i class="fas fa-robot"></i> AI 的回答
+                </div>
+
+                <p class="text-gray-300 mb-4">
+                    你的搖擺其實不在你以為的那條線上。
+                </p>
+
+                <p class="text-gray-300 mb-4">
+                    你寫「核心是我自己這是確定的」——那句是真的，價值排序你早就排完了。真正讓你難受的是最後三行：不知道他有沒有在說。<strong class="text-white">你把一個資訊問題當成認同問題在處理</strong>，所以怎麼想都不會有結論——因為缺的不是你的立場，是他的一句話。
+                </p>
+
+                <p class="text-gray-300 mb-4">
+                    而「看到對方眼裡的景色，被殺死的就會是我」這句我想多說一點。上次殺死你的可能不是好奇心，是<strong class="text-white">好奇心單向流動</strong>：你一直吸收對方的框架，卻沒有把自己的東西放回去交換。這正好是我們早上講的極端版「只看不說」——不是看得太多，是說得太少，所以沒有東西撐住你的形狀。如果是這樣，那解方不是關掉好奇心，是一邊看一邊出聲。你不需要在「懂他」跟「保留自己」之間二選一，那個二選一是舊創傷給你的錯覺。
+                </p>
+
+                <p class="text-gray-300">
+                    至於暗示——<strong class="text-white">讀不懂的暗示，功能上就不是訊息。</strong>如果他真的有意思要傳，而編碼到你解不開，那是傳送端的問題，不是你的接收能力有問題。你沒有義務當解碼器。而且 mentor 是這世界上發問成本最低的關係之一，你不問，通常不是因為代價高，是因為問了等於承認你花了一整個早上在想這件事。那沒什麼好丟臉的，反而是最快讓你從這個迴圈裡出來的方式。
+                </p>
+            </div>
 
         </article>
 
-        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
-            <a href="article_10.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
-                &larr; Prev Article
+        <div class="flex justify-between items-center mt-16 pt-8 border-t border-white/10 text-sm font-mono">
+            <a href="NA_10.html" class="text-gray-500 hover:text-white transition-colors flex items-center gap-2">
+                <i class="fas fa-arrow-left"></i> PREV
             </a>
-            <a href="../articles.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
-                View All Articles
-            </a>
-            <a href="NA_12.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
-                Next Article &rarr;
+            <a href="#" class="text-gray-500 hover:text-white transition-colors flex items-center gap-2 opacity-50 cursor-not-allowed">
+                NEXT <i class="fas fa-arrow-right"></i>
             </a>
         </div>
 
     </main>
+
     <div id="footer-placeholder"></div>
+
 </body>
 </html>

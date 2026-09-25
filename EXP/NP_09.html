@@ -15,7 +15,9 @@
 
     <link rel="stylesheet" href="../style.css">
 
-    <script> window.siteRoot = '../'; </script>
+    <script>
+        window.siteRoot = '../';
+    </script>
     <script type="module" src="../main.js" defer></script>
 </head>
 
@@ -33,7 +35,7 @@
         <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
             <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
                 <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
-                BACK TO PROJECTS
+                返回專案列表
             </a>
             <span class="opacity-50">EXP / NP_09 (draft)</span>
         </div>
@@ -41,150 +43,345 @@
         <header class="mb-12 border-b border-white/10 pb-12">
 
             <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
-                Google Cloud 學程：<br>
-                <span class="text-gradient text-2xl md:text-4xl">11 門課建立雲端與數位轉型的整體視角</span>
+                把模型路由器拆開看：<br>
+                <span class="text-gradient text-2xl md:text-4xl">NVIDIA Switchyard 到底替我改了什麼</span>
             </h1>
 
             <div class="flex flex-wrap gap-3 mb-6">
                 <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
-                    AI &amp; Automation
+                    Engineering
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Google Cloud
+                    Rust
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Cloud
+                    LLM Infra
                 </span>
             </div>
 
             <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
-                <span><i class="far fa-calendar mr-2"></i>2026.06</span>
+                <span><i class="far fa-calendar mr-2"></i>2026.09.01</span>
                 <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
             </div>
         </header>
 
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
-            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
-                Google Cloud 學程是「Google 數位人才探索計畫」三學程之一，共 11 門課。方向偏 Cloud Digital Leader（雲端數位領袖）路線，重點放在「懂雲端能做什麼、如何驅動業務」這層整體視角，停在概念層面，少碰底層程式。對象橫跨非技術背景的商業決策者與想入門的技術人，多門課明說不需要技術經驗。這篇把課程分成五群，挑出每門最關鍵的觀念。
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                NVIDIA 在 NeMo 底下放了一個 Rust 專案叫 Switchyard，做的事情很直白：把 LLM 請求接進來，再決定實際交給哪個模型。
             </p>
 
-            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
-                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">這是系列文之一</div>
-                <p class="m-0">
-                    整個計畫的地圖、報名入口與考試規則寫在<a href="NP_06.html" class="text-accent-purple hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">總覽篇</a>。另外兩個學程是<a href="NP_07.html" class="text-accent-purple hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">AI 職場通識</a>與<a href="NP_08.html" class="text-accent-purple hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">數位行銷</a>。
-                </p>
+            <p>
+                README 說得再清楚，有一個問題它回答不了：它到底替我改了什麼。請求送進去、答案吐回來，中間那段是黑的。
+            </p>
+
+            <p>
+                所以這次上游沒有接真的模型。接真的模型看得到回答，看不到中間發生什麼。我在本機架了一支假的上游伺服器，讓 Switchyard 把每一筆送出去的 HTTP 請求原樣留下來，然後逐筆打開看。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 我測的其實是四種決策方式
+            </h3>
+
+            <p>
+                官方文件把部署拆成三層：<code class="text-accent-purple bg-accent-purple/10 px-1 rounded">llm_clients</code> 是怎麼找到供應商，<code class="text-accent-purple bg-accent-purple/10 px-1 rounded">targets</code> 是供應商裡的哪個模型，<code class="text-accent-purple bg-accent-purple/10 px-1 rounded">routes</code> 是使用者看到什麼、以及怎麼決定 target。文件裡有一句話講得很直白：<span class="text-gray-400">&ldquo;Strong, weak, capable, and efficient are roles within an algorithm, not fixed properties of a model&rdquo;</span>——強和弱是演算法裡的角色，同一個模型在不同路由可以扮演不同角色。
+            </p>
+
+            <p>
+                換句話說，我這次測的不是四個模型，是四種決策方式。它們疊起來剛好是一道階梯，每往下一階，被抽掉的東西就多一層。
+            </p>
+
+            <figure class="my-10">
+                <img src="../PNG/NP_09.2.svg" alt="四種路由演算法構成的抽象化階梯：passthrough 抽掉模型名、協定轉換抽掉供應商格式、random 抽掉流量分配、llm_classifier 抽掉選模型這個決定" class="w-full rounded-xl border border-white/10">
+                <figcaption class="mt-3 text-sm text-gray-500">左邊是機制與本次實測觀察，右邊是它在這一層抽掉的東西。</figcaption>
+            </figure>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 在 Windows 上編譯，卡了三層
+            </h3>
+
+            <p>
+                安裝指令官方只寫一行 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">cargo install --locked switchyard-server</code>，實際跑完花了三輪：Rust 版本不足（<code class="text-accent-purple bg-accent-purple/10 px-1 rounded">it requires rustc 1.96.1 or newer, while the currently active rustc version is 1.94.0</code>）、gnu toolchain 的連結工具鏈不完整（<code class="text-accent-purple bg-accent-purple/10 px-1 rounded">error calling dlltool: program not found</code>，補進 PATH 之後換成 dlltool 找不到 GNU assembler）、TLS 相依 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">aws-lc-sys</code> 要編一段 C 程式碼而本機缺 gcc。用 MSYS2 補上 binutils 與 gcc 之後，release 編譯 4 分 00 秒跑完，執行檔 34.8 MB。
+            </p>
+
+            <p>
+                同樣在 Windows 上要跑的話，真正值得先確認的是第一關：<code class="text-accent-purple bg-accent-purple/10 px-1 rounded">rustup update stable</code> 更新的是預設 host 那套，我本機預設是 gnu，跑完版本仍然停在 1.94.0，要指名 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">rustup update stable-x86_64-pc-windows-gnu</code> 才動得到。先看清楚目前啟用的是哪一個 toolchain，比直接更新有用。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 上游是一支會把證據留下來的假伺服器
+            </h3>
+
+            <p>
+                假伺服器是 108 行的 Python，行為只有兩件事：把收到的路徑、標頭、body 原樣寫進 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">requests.jsonl</code>，再回一個合法的 OpenAI 回應，內容是 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">PONG from &lt;model&gt;</code>。設定裡兩個 target 分別叫 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">mock-weak</code> 和 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">mock-strong</code>，回答帶著自己的名字，於是從回覆就能直接讀出這一發被送去哪裡。
+            </p>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm text-gray-300 border-collapse">
+                    <thead>
+                        <tr class="border-b border-white/10">
+                            <th class="text-left py-3 px-4 text-gray-500 font-mono text-xs uppercase">機制</th>
+                            <th class="text-left py-3 px-4 text-gray-500 font-mono text-xs uppercase">想知道的事</th>
+                            <th class="text-left py-3 px-4 text-gray-500 font-mono text-xs uppercase">本次實測觀察</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 px-4 text-white font-bold whitespace-nowrap">passthrough</td>
+                            <td class="py-3 px-4">上游收到的模型名是誰</td>
+                            <td class="py-3 px-4">fast &rarr; mock-weak</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 px-4 text-white font-bold whitespace-nowrap">協定轉換</td>
+                            <td class="py-3 px-4">Anthropic 進去，上游收到什麼</td>
+                            <td class="py-3 px-4">收到 OpenAI 格式</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 px-4 text-white font-bold whitespace-nowrap">random</td>
+                            <td class="py-3 px-4">權重 3:7 打出來的分布</td>
+                            <td class="py-3 px-4">30 發 &rarr; 9 比 21</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4 text-white font-bold whitespace-nowrap">llm_classifier</td>
+                            <td class="py-3 px-4">判官的裁決會不會改變去向</td>
+                            <td class="py-3 px-4">簡單題走弱、難題走強</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 學程在教什麼
+                <span class="text-accent-purple">#</span> 一、路由名和真正的模型可以完全分開
             </h3>
 
             <p>
-                學程建立對雲端運算、基礎架構、網路安全、資料轉型、雲端上的 AI，以及成本治理與營運可靠度的整體理解。課程內含計分式知識評量，通過才取得學分。相關的認證路徑包括 Cloud Digital Leader（《Scaling with Google Cloud Operations》是這條路徑的收尾課）與 Gen AI Leader（《生成式 AI：瞭解基礎概念》是該認證的第二門）。其中《Cloud 運算基礎知識》完成評量後還能拿四種數位技能徽章。
+                想知道的是：客戶端看到的 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">fast</code>，是不是上游真正的模型名字。設定裡開一條 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">passthrough</code> 路由，id 叫 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">fast</code>，指向 target <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">weak</code>。
+            </p>
+
+            <p>
+                客戶端送 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">model: fast</code>，HTTP 200，往返 3.85 ms；假伺服器那頭記到的 model 是 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">mock-weak</code>。<code class="text-accent-purple bg-accent-purple/10 px-1 rounded">GET /v1/models</code> 列出來的也是路由名。
+            </p>
+
+            <p>
+                意思是在這個配置下，呼叫端不需要知道實際 target 是誰，更換 target 可以留在 Switchyard 的設定層處理。官方文件另外提醒它沒有自動探索上游型錄，要露出幾個模型就得寫幾條 passthrough 路由。
             </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 一、Cloud 基礎概念與基礎架構
+                <span class="text-accent-purple">#</span> 二、Anthropic 進去，OpenAI 出來，Anthropic 回來
             </h3>
 
             <p>
-                這群在學雲端是什麼、三種服務模型怎麼分、Google Cloud 的整體架構與運算儲存選項。
+                想知道的是：格式不合的兩端接在一起，中間哪些欄位被動過。客戶端打 Anthropic Messages 端點 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">POST /v1/messages</code>，body 帶 Anthropic 的 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">max_tokens</code>，標頭帶 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">anthropic-version</code> 和 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">x-api-key</code>；上游那台假伺服器只認 OpenAI 格式。
             </p>
 
-            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
-                <li><strong class="text-white">Digital Transformation with Google Cloud</strong> &mdash; <span>把數位轉型定義為用新技術改造業務流程、文化與顧客體驗。最具體的觀念是六種 IT 部署方式（地端、私有雲、公有雲、混合雲、多雲）與 IaaS／PaaS／SaaS 的買車、租車、計程車、公車比喻；以及成本從資本支出轉向營運支出的核心財務轉變。</span></li>
-                <li><strong class="text-white">Cloud 運算基礎知識</strong> &mdash; <span>雲端五項特點（隨選自助、多元網路存取、資源集區、機動彈性、依量付費）；三波技術浪潮（主機代管、虛擬化、容器式全自動彈性）；Google Cloud 三層架構；五大運算選項（Compute Engine、App Engine、Cloud Run functions、GKE、Cloud Run）。</span></li>
-                <li><strong class="text-white">Google Cloud 基礎架構</strong> &mdash; <span>補齊儲存、API、安全三塊。五大儲存產品選型（Cloud Storage、Cloud SQL、Spanner、Firestore、Bigtable）；Cloud Storage 四種儲存級別；以及 Google 五層安全模型、共同責任模型、四種加密選項、IAM 最小權限。</span></li>
-            </ul>
+            <figure class="my-10">
+                <img src="../PNG/NP_09.1.svg" alt="Anthropic 格式的請求經過 Switchyard 轉成 OpenAI 格式送往上游，回程再轉回 Anthropic 格式" class="w-full rounded-xl border border-white/10">
+                <figcaption class="mt-3 text-sm text-gray-500">同一發請求在三個位置的樣子，欄位取自假伺服器記下的原始封包。</figcaption>
+            </figure>
+
+            <div class="my-6 rounded-xl border border-white/10 bg-black/40 overflow-x-auto">
+                <div class="px-4 pt-3 pb-2 text-xs font-mono text-gray-500 border-b border-white/5">requests.jsonl &middot; 上游實際收到的請求</div>
+                <pre class="px-4 py-4 text-[13px] leading-relaxed font-mono text-gray-300"><code>PATH: /v1/chat/completions
+
+HEADERS:
+{
+  "content-type": "application/json",
+  "authorization": "Bearer lab-dummy"
+}
+
+BODY:
+{
+  "max_completion_tokens": 64,
+  "messages": [
+    { "content": "hello from anthropic client", "role": "user" }
+  ],
+  "model": "mock-weak"
+}</code></pre>
+            </div>
+
+            <p>
+                端點換成 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">/v1/chat/completions</code>，Anthropic 的 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">max_tokens</code> 翻成 OpenAI 的 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">max_completion_tokens</code>。客戶端那頭收回來的是這個，全程往返 14.35 ms：
+            </p>
+
+            <div class="my-6 rounded-xl border border-white/10 bg-black/40 overflow-x-auto">
+                <div class="px-4 pt-3 pb-2 text-xs font-mono text-gray-500 border-b border-white/5">客戶端收到的回應 &middot; Anthropic Messages 格式</div>
+                <pre class="px-4 py-4 text-[13px] leading-relaxed font-mono text-gray-300"><code>{
+  "type": "message",
+  "role": "assistant",
+  "id": "chatcmpl-mock3",
+  "model": "mock-weak",
+  "content": [
+    { "type": "text", "text": "PONG from mock-weak (seq 3)" }
+  ],
+  "stop_reason": "end_turn",
+  "stop_sequence": null,
+  "usage": { "input_tokens": 11, "output_tokens": 7 }
+}</code></pre>
+            </div>
+
+            <p>
+                順帶看到一件跟憑證有關的事。客戶端送的 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">x-api-key: dummy</code> 沒有出現在上游收到的標頭裡，上游拿到的是 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">Bearer lab-dummy</code>，也就是 TOML 的 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">api_key_env</code> 指定的那把鑰匙。呼叫端的憑證留在呼叫端，上游只看得到伺服器自己的憑證。文件另外提供 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">forward_auth = true</code> 把來電者的憑證轉發上去，預設關著。
+            </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 二、網路與安全性
-            </h3>
-
-            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
-                <li><strong class="text-white">Google Cloud 的網路與安全性</strong> &mdash; <span>虛擬私有雲（VPC）是全域資源，子網路才是區域層級；兩種子網路模式（自動模式擴展上限、自訂模式完全自管，自動可單向轉自訂不可逆）。混合雲四種連線（Cloud VPN、直接對接、Dedicated 與 Partner Interconnect）。安全與維運：Cloud Armor 減緩 DDoS、用 Terraform 寫基礎架構即程式碼、Cloud Observability 五大功能。</span></li>
-            </ul>
-
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 三、數位轉型與資料轉型
-            </h3>
-
-            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
-                <li><strong class="text-white">Exploring Data Transformation with Google Cloud</strong> &mdash; <span>資料三型態（結構化、半結構化、非結構化，後者佔企業新資料八九成卻分析率不到 1%）；三種資料平台的分工（資料庫為存取設計、資料倉儲 BigQuery 為分析設計、資料湖存原始資料）；儲存選型決策樹；資料價值鏈六階段與串流分析（Pub/Sub 加 Dataflow），以及 Looker 的網頁式 BI。</span></li>
-            </ul>
-
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 四、Cloud 上的 AI 與 Vertex AI
+                <span class="text-accent-purple">#</span> 三、3:7 的分流，這 30 發打出 9 比 21
             </h3>
 
             <p>
-                這群在學 AI／ML 是什麼、Google Cloud 怎麼讓人建模型、Vertex AI Studio 怎麼用提示打造生成式 AI 應用。
+                想知道的是：設定寫的權重，在實際流量上長什麼樣。<code class="text-accent-purple bg-accent-purple/10 px-1 rounded">random</code> 路由設 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">targets = [strong, weak]</code>、<code class="text-accent-purple bg-accent-purple/10 px-1 rounded">weights = [3, 7]</code>、<code class="text-accent-purple bg-accent-purple/10 px-1 rounded">seed = 42</code>。權重不必加起來等於 1，官方說明會把 3:7 當成 30% 對 70%。
             </p>
 
-            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
-                <li><strong class="text-white">Innovating with Google Cloud Artificial Intelligence</strong> &mdash; <span>AI 是總稱、ML 是子集；ML 適合解的四類問題；四種建模途徑由快到客製（BigQuery ML 用 SQL、預訓練 API 直接用、AutoML 無程式碼、自訂訓練最有彈性）；TPU 讓同一運算從 GPU 的 26 小時縮到 7.9 分鐘。</span></li>
-                <li><strong class="text-white">生成式 AI：瞭解基礎概念</strong> &mdash; <span>AI 含 ML、ML 含生成式 AI 的層級；深度學習到基礎模型到 LLM 與擴散模型的關係（Gemini、Gemma、Imagen、Veo）；基礎模型六大限制與克服技術（接地、RAG 三階段、提示工程、微調、人機協作）。</span></li>
-                <li><strong class="text-white">Vertex AI Studio 簡介</strong> &mdash; <span>從提示走到正式應用的單一開發環境。提示三要素（任務、脈絡、樣本）；零樣本與少量樣本；三個模型參數（溫度、Top-K、Top-P）；調整層級由低到高（提示設計、高效參數調整、全面微調）。</span></li>
-            </ul>
+            <p>
+                連打 30 發，假伺服器接到 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">mock-strong</code> 9 次、<code class="text-accent-purple bg-accent-purple/10 px-1 rounded">mock-weak</code> 21 次，proxy 的 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">/v1/stats</code> 給的比例是 28.13% 對 71.88%（分母是含前兩發單獨測試的 32 個請求，0 錯誤）。30 次樣本只夠說這次的分布與設定一致，官方文件自己也寫了短時間的執行未必吻合設定比例。往返延遲平均 7.12 ms、中位數 2.2 ms、最大 24.77 ms，這組數字量的是本機到本機，用來確認它有沒有加上明顯的固定開銷，拿去推估接真模型的表現並不成立。
+            </p>
+
+            <p>
+                開了 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">--routing-log-file</code> 之後，32 個請求各留下一行決策記錄：
+            </p>
+
+            <div class="my-6 rounded-xl border border-white/10 bg-black/40 overflow-x-auto">
+                <div class="px-4 pt-3 pb-2 text-xs font-mono text-gray-500 border-b border-white/5">routing.jsonl &middot; 32 行中的第一行</div>
+                <pre class="px-4 py-4 text-[13px] leading-relaxed font-mono text-gray-300"><code>{"ts": "2026-09-01T00:01:38.543Z", "task": null, "trial_id": null,
+ "session_id": null, "model": "mock-weak", "tier": "",
+ "prompt_tokens": 11, "cached_tokens": 0, "cache_creation_tokens": 0,
+ "completion_tokens": 7, "reasoning_tokens": 0, "total_tokens": 18}</code></pre>
+            </div>
+
+            <p>
+                每一發打了哪個模型、花掉多少 token 都留在檔案裡，事後要算成本或核對分流比例都從這裡讀。<code class="text-accent-purple bg-accent-purple/10 px-1 rounded">tier</code> 這欄在 random 路由下是空字串，欄位本身是留給有強弱分層的演算法用的。
+            </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 五、營運與負責任 AI
+                <span class="text-accent-purple">#</span> 四、讓一個模型決定該用哪個模型
             </h3>
 
             <p>
-                這群在學上雲後怎麼控成本、保可靠度、做永續，以及怎麼負責任地開發 AI。
+                想知道的是：判官的裁決會不會真的改變請求的去向。<code class="text-accent-purple bg-accent-purple/10 px-1 rounded">llm_classifier</code> 的做法是先問一次判官模型：這題弱模型做得完嗎？判官回一份結構化裁決，其中 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">p_solve</code> 是弱模型解得出來的機率，門檻預設 0.5，過了走弱，沒過走強。
             </p>
 
-            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
-                <li><strong class="text-white">Scaling with Google Cloud Operations</strong> &mdash; <span>雲端財務治理影響人、流程、技術三面向，常以雲端卓越中心集中管理；資源階層四層（資源、專案、資料夾、組織）靠繼承落實最小權限；SRE 四大黃金訊號（延遲、流量、飽和度、錯誤）與 SLI、SLO、SLA 的層級；永續面以 2030 完全無碳為目標。</span></li>
-                <li><strong class="text-white">負責任的 AI 技術</strong> &mdash; <span>核心理念是負責任的 AI 等於成功的 AI，強調決策權始終在人，AI 的每個階段都有人類價值觀介入。Google 三大支柱與七項 AI 應用目標加四項不予開發領域；靠一連串提問來偵測問題。個案：名人辨識 API 用膚色量表重新標記後，發現深膚色男性錯誤拒絕率近 100%，根因在訓練集與圖片庫年齡分布落差，靠擴充各年齡資料修正。</span></li>
-            </ul>
+            <p>
+                我讓假伺服器兼任判官：使用者訊息開頭是 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">SIMPLE</code> 就回 p_solve 0.95，是 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">HARD</code> 就回 0.05。上游收到的呼叫順序分別是 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">mock-judge &rarr; mock-weak</code> 和 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">mock-judge &rarr; mock-strong</code>。同一段文字、同一條路由，換掉的只有判官給的數字，去向就跟著換。
+            </p>
 
-            <p class="text-sm text-gray-500 font-light">
-                （學程另有一門「在 Agent Platform 設計提示」是純動手 Lab，沒有逐字稿教材。）
+            <figure class="my-10">
+                <img src="../PNG/NP_09.3.svg" alt="llm_classifier 判官路由決策流程圖：session 判過就沿用上次的決定，沒判過先呼叫判官，裁決不合 schema 一律走強模型，合格式依 p_solve 門檻分流到弱模型或強模型" class="w-full rounded-xl border border-white/10">
+                <figcaption class="mt-3 text-sm text-gray-500">判官路由從收到請求到選定模型的完整決策流，兩條岔路的行為接下來兩節逐一驗證。</figcaption>
+            </figure>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 判官答得不合格式的時候，它退回強模型
+            </h3>
+
+            <p>
+                第一版假判官回的 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">primary_rule</code> 我隨手寫成 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">lab-rule-hard</code>，結果兩種題目全部被送去 strong。翻出它送給判官的那筆請求才看到原因：裡面帶了一份 strict JSON schema，<code class="text-accent-purple bg-accent-purple/10 px-1 rounded">primary_rule</code> 只收固定幾個代碼。
+            </p>
+
+            <div class="my-6 rounded-xl border border-white/10 bg-black/40 overflow-x-auto">
+                <div class="px-4 pt-3 pb-2 text-xs font-mono text-gray-500 border-b border-white/5">判官被要求回的格式 &middot; response_format.json_schema（strict: true）</div>
+                <pre class="px-4 py-4 text-[13px] leading-relaxed font-mono text-gray-300"><code>required:      ["crux", "primary_rule", "capability_boundary", "p_solve"]
+p_solve:       number, 0.0 &ndash; 1.0
+primary_rule:  ["SUP-1","SUP-2","SUP-3","SUP-4","SUP-5",
+                "UNC-1","UNC-2","LIM-1","LIM-2","none"]
+
+// 改成合法代碼之後，HARD 那發假判官回的裁決
+{
+  "p_solve": 0.05,
+  "capability_boundary": "unsupported",
+  "primary_rule": "LIM-1",
+  "crux": "multi-step reasoning"
+}</code></pre>
+            </div>
+
+            <p>
+                裁決不合格式就當判官失效，一律退回強模型，這跟官方文件寫的 fallback 行為一致。從可靠性看是對的選擇，代價是判官那端一出問題，流量會安靜地全部倒向貴的那邊，而客戶端收到的仍然是 HTTP 200。
             </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 三個記憶點
+                <span class="text-accent-purple">#</span> 判官本身也是一次模型呼叫
             </h3>
 
-            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
-                <li><strong class="text-white">IaaS／PaaS／SaaS 的交通工具比喻加共同責任模型</strong> &mdash; <span>地端是買車、IaaS 是租車、PaaS 是搭計程車、SaaS 是搭公車，一句話講清三種服務模型的控制權差別。再接共同責任模型：雲端本身的安全由供應商負責、雲端中的安全由客戶負責，客戶永遠對自己的資料負責。</span></li>
-                <li><strong class="text-white">Google Cloud 的儲存選型決策樹</strong> &mdash; <span>能依情境選對產品是雲端素養的硬指標：非結構化選 Cloud Storage、交易型用 SQL 選 Cloud SQL 或 Spanner、交易型免 SQL 選 Firestore、分析型用 SQL 選 BigQuery、分析型 NoSQL 選 Bigtable。</span></li>
-                <li><strong class="text-white">Vertex AI 四種建模途徑加生成式 AI 的接地與 RAG</strong> &mdash; <span>建模四階梯（BigQuery ML、預訓練 API、AutoML、自訂訓練）門檻與客製度遞增；生成式 AI 的幻覺痛點靠接地與 RAG 三階段把回答錨定到可驗證來源。TPU 把同一運算從 26 小時縮到 7.9 分鐘很適合當亮點。</span></li>
-            </ul>
+            <p>
+                判官那筆請求有兩則訊息：一則是 Switchyard 自己組的 system 能力卡，開頭寫 <span class="text-gray-400">&ldquo;You are a task-level probability forecaster for a model router&rdquo;</span>，一則是使用者的原始提問，<code class="text-accent-purple bg-accent-purple/10 px-1 rounded">max_completion_tokens</code> 開到 4096。這一次呼叫要花錢。
+            </p>
 
-            <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
+            <p>
+                後續會不會每一發都再問一次，我用同一個 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">x-switchyard-session-id</code> 連打三發實測：
+            </p>
+
+            <div class="my-6 rounded-xl border border-white/10 bg-black/40 overflow-x-auto">
+                <div class="px-4 pt-3 pb-2 text-xs font-mono text-gray-500 border-b border-white/5">同一個 session 連打三發 &middot; 上游收到的呼叫</div>
+                <pre class="px-4 py-4 text-[13px] leading-relaxed font-mono text-gray-300"><code>第 1 發   mock-judge &rarr; mock-weak     回覆來自 mock-weak
+第 2 發   mock-weak                 回覆來自 mock-weak
+第 3 發   mock-weak                 回覆來自 mock-weak
+
+三發之中判官被呼叫 1 次</code></pre>
+            </div>
+
+            <p>
+                所以成本落在新的 session 上：需要分類的第一發至少多一次模型呼叫，同一個 session 之後的請求沿用第一次的決定。要不要在每個使用者回合重新判斷，官方由 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">classify_trigger</code> 控制，文件列的預設值是 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">every_request</code>——那個設定下每一發都會多一次判官呼叫。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 兩個和文件對不上的地方
+            </h3>
+
+            <p>
+                官方 getting_started 和 llm_classifier 兩份文件的範例都寫 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">classify_trigger = "new_session"</code>，我手上這顆 v0.2.0 執行檔不吃：<code class="text-accent-purple bg-accent-purple/10 px-1 rounded">unknown field classify_trigger</code>，錯誤訊息把它認得的欄位全列出來，功能對應的那個叫 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">session_affinity</code>，改掉才通過驗證。準確地說，是那兩份文件的設定範例與 v0.2.0 原生 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">llm_classifier</code> 的 schema 不一致。
+            </p>
+
+            <p>
+                另一個是判官 schema 的嚴格程度。文件把 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">primary_rule</code> 描述成「決定邊界的那條能力卡規則」，讀起來像自由文字，實際是封閉的 enum。要接自己訓練的判官模型，這份 schema 得先看過一遍。
+            </p>
+
+            <p>
+                repo 首頁自己標的階段是 pre-alpha，預告 v1.0 之前 API 還會大改。上面這兩點對得上這個階段。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 所以這代表什麼
+            </h3>
+
+            <p>
+                跑完這四組，我會把 Switchyard 理解成三件事。它是格式轉換層，同一條路由可以同時對 OpenAI 與 Anthropic 客戶端露出，上游要什麼格式是它的事。它是模型選擇層，<code class="text-accent-purple bg-accent-purple/10 px-1 rounded">random</code> 把流量配比從程式碼搬進設定檔，<code class="text-accent-purple bg-accent-purple/10 px-1 rounded">llm_classifier</code> 更進一步，把「這題該用哪個模型」交給另一個模型判斷。它還不是可以直接丟進正式環境的黑盒，v0.2.0 仍在 pre-alpha，文件與實際 schema 已經出現落差，判官失效時的 fallback 會安靜地改變成本結構。
+            </p>
+
+            <p>
+                真正值得記住的是最後這件事。以前選模型是寫在程式裡的一個常數，現在它變成一層有設定、有記錄檔、有失敗模式、也會自己花錢的系統。既然是系統，就該被觀測和驗證——這次我做的事情，其實就是拿一個宣稱會 routing 的黑盒，逐項確認它怎麼改請求、怎麼選模型、以及怎麼失敗。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 技術環境
+            </h3>
+
+            <p>
+                switchyard-server 0.2.0（Apache 2.0）、rustc 1.98.0、cargo 1.98.0、Windows 11 Home 26200，gnu toolchain 搭 MSYS2 的 binutils 與 gcc。上游假伺服器用 Python 3.11 標準函式庫的 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">ThreadingHTTPServer</code> 寫成，108 行；測試腳本只用 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">urllib</code>，沒有額外相依。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Links
             </h3>
 
-            <ul class="space-y-2 text-sm text-gray-400 list-none pl-0">
-                <li>
-                    <span class="text-accent-purple mr-2">●</span>
-                    <a href="NP_06.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
-                        回總覽 — Google 數位人才探索計畫
-                    </a>
-                </li>
-                <li>
-                    <span class="text-accent-purple mr-2">●</span>
-                    <a href="https://www.cloudskillsboost.google/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
-                        課程平台 — Google Cloud Skills Boost
-                    </a>
-                </li>
+            <ul class="space-y-2">
+                <li><a href="https://github.com/NVIDIA-NeMo/Switchyard" target="_blank" rel="noopener" class="text-accent-purple hover:underline">NVIDIA-NeMo/Switchyard</a>（Apache 2.0）</li>
+                <li><a href="https://github.com/NVIDIA-NeMo/Switchyard/blob/main/docs/getting_started.md" target="_blank" rel="noopener" class="text-accent-purple hover:underline">Getting Started</a>：TOML 結構與端點清單</li>
+                <li><a href="https://github.com/NVIDIA-NeMo/Switchyard/blob/main/docs/routing_algorithms/llm_classifier_routing.md" target="_blank" rel="noopener" class="text-accent-purple hover:underline">LLM Classifier Routing</a>：判官路由的參數表與門檻規則</li>
             </ul>
+
+            <p class="text-sm text-gray-500 mt-8">
+                本文數字取自 2026-09-01 的本機實測記錄，引用的英文原句與欄位說明取自上列官方文件（2026-09-01 查證）。
+            </p>
 
         </article>
 
         <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
-            <a href="NP_08.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
-                &larr; Prev Project
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                &larr; 上一篇
             </a>
             <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
-                View All Projects
+                查看所有專案
             </a>
             <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
-                Next Project &rarr;
+                下一篇 &rarr;
             </a>
         </div>
 

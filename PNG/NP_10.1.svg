@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 440" width="920" height="440" role="img" aria-label="五到八月 Google Cloud 月費長條圖：5 月 1.50 美元、6 月 19.22 美元、7 月 0 美元、8 月 22.38 美元，標出各月傳到美洲的資料量與讀取次數">
+  <defs>
+    <linearGradient id="np10bar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5EEAD4" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#0F766E" stop-opacity="0.85"/>
+    </linearGradient>
+    <pattern id="np10dots" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="1" fill="#FFFFFF" fill-opacity="0.05"/>
+    </pattern>
+  </defs>
+
+  <rect x="0" y="0" width="920" height="440" fill="#050505"/>
+  <rect x="0" y="0" width="920" height="440" fill="url(#np10dots)"/>
+
+  <text x="32" y="42" fill="#9CA3AF" font-family="JetBrains Mono, monospace" font-size="13" letter-spacing="1.5">GOOGLE CLOUD 月費 / 2026 5月–8月</text>
+  <text x="888" y="42" fill="#5EEAD4" font-family="JetBrains Mono, monospace" font-size="12" text-anchor="end">預想：接近 $0</text>
+
+  <!-- 格線 -->
+  <g font-family="JetBrains Mono, monospace" font-size="11" fill="#4B5563">
+    <line x1="96" y1="90"  x2="888" y2="90"  stroke="#1F2126"/><text x="84" y="94"  text-anchor="end">$25</text>
+    <line x1="96" y1="136" x2="888" y2="136" stroke="#1F2126"/><text x="84" y="140" text-anchor="end">$20</text>
+    <line x1="96" y1="182" x2="888" y2="182" stroke="#1F2126"/><text x="84" y="186" text-anchor="end">$15</text>
+    <line x1="96" y1="228" x2="888" y2="228" stroke="#1F2126"/><text x="84" y="232" text-anchor="end">$10</text>
+    <line x1="96" y1="274" x2="888" y2="274" stroke="#1F2126"/><text x="84" y="278" text-anchor="end">$5</text>
+    <line x1="96" y1="320" x2="888" y2="320" stroke="#3A3D45"/><text x="84" y="324" text-anchor="end">$0</text>
+  </g>
+
+  <!-- 長條 -->
+  <rect x="150" y="306.2" width="80" height="13.8"  rx="3" fill="url(#np10bar)"/>
+  <rect x="330" y="143.2" width="80" height="176.8" rx="3" fill="url(#np10bar)"/>
+  <rect x="510" y="317"   width="80" height="3"     rx="1.5" fill="#3A3D45"/>
+  <rect x="690" y="114.1" width="80" height="205.9" rx="3" fill="url(#np10bar)"/>
+
+  <!-- 數值 -->
+  <g font-family="JetBrains Mono, monospace" font-size="15" font-weight="500" text-anchor="middle">
+    <text x="190" y="294" fill="#9CA3AF">$1.50</text>
+    <text x="370" y="129" fill="#5EEAD4">$19.22</text>
+    <text x="550" y="306" fill="#6B7280">$0.00</text>
+    <text x="730" y="100" fill="#5EEAD4">$22.38</text>
+  </g>
+
+  <!-- 傳輸量 -->
+  <g font-family="JetBrains Mono, monospace" font-size="10.5" fill="#052E2B" text-anchor="middle">
+    <text x="370" y="165">13.79 GiB</text>
+    <text x="730" y="136">14.35 GiB</text>
+  </g>
+
+  <!-- 月份 -->
+  <g font-family="Plus Jakarta Sans, sans-serif" font-size="14.5" font-weight="700" fill="#E5E7EB" text-anchor="middle">
+    <text x="190" y="346">5 月</text>
+    <text x="370" y="346">6 月</text>
+    <text x="550" y="346">7 月</text>
+    <text x="730" y="346">8 月</text>
+  </g>
+
+  <!-- 當月用量 -->
+  <g font-family="JetBrains Mono, monospace" font-size="10.5" text-anchor="middle">
+    <text x="370" y="374" fill="#5EEAD4">傳輸收費 $14.27</text>
+    <text x="370" y="392" fill="#9CA3AF">讀取 755,628 次</text>
+    <text x="550" y="374" fill="#6B7280">傳到美洲 1.91 GiB</text>
+    <text x="550" y="392" fill="#6B7280">讀取 416,134 次</text>
+    <text x="190" y="374" fill="#6B7280">傳到美洲 7.52 GiB</text>
+    <text x="190" y="392" fill="#6B7280">讀取 465,255 次</text>
+    <text x="730" y="374" fill="#5EEAD4">傳輸收費 $16.91</text>
+    <text x="730" y="392" fill="#9CA3AF">讀取 712,176 次</text>
+  </g>
+
+  <text x="32" y="424" fill="#4B5563" font-family="JetBrains Mono, monospace" font-size="10.5">來源：Google Cloud 帳單報表（按月份與 SKU），2026-09-13 查證。費用約四分之三為 Firestore 跨區傳出（APAC → 美洲）。</text>
+</svg>

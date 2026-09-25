@@ -15,7 +15,9 @@
 
     <link rel="stylesheet" href="../style.css">
 
-    <script> window.siteRoot = '../'; </script>
+    <script>
+        window.siteRoot = '../';
+    </script>
     <script type="module" src="../main.js" defer></script>
 </head>
 
@@ -33,7 +35,7 @@
         <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
             <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
                 <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
-                BACK TO PROJECTS
+                返回專案列表
             </a>
             <span class="opacity-50">EXP / NP_06 (draft)</span>
         </div>
@@ -41,216 +43,424 @@
         <header class="mb-12 border-b border-white/10 pb-12">
 
             <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
-                2026 Google 數位人才探索計畫：<br>
-                <span class="text-gradient text-2xl md:text-4xl">三學程 59 門課的地圖，與我修完後整理的一套筆記</span>
+                企業 IT 基礎架構筆記：<br>
+                <span class="text-gradient text-2xl md:text-4xl">從硬體堆疊到虛擬化、HCI 與 AI 基礎建設</span>
             </h1>
 
             <div class="flex flex-wrap gap-3 mb-6">
                 <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
-                    AI &amp; Automation
+                    Engineering
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Google
+                    IT Infrastructure
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Self Learning
+                    System Design
                 </span>
             </div>
 
             <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
-                <span><i class="far fa-calendar mr-2"></i>2026.06</span>
+                <span><i class="far fa-calendar mr-2"></i>2026.07</span>
                 <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
             </div>
         </header>
 
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
-            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
-                「Google 數位人才探索計畫」是 Google 在台灣辦的免費線上學習計畫，課程掛在 skills.google 上，分成三個學程：AI 職場通識、數位行銷、Google Cloud，加起來 59 門課。我把三學程都修過一輪，過程中把每一門課整理成一套繁體中文的系統化筆記。這一篇是整個計畫的地圖：講清楚它在學什麼、怎麼報名與考認證、有哪些資源能用上，三個學程各自的細節再分成三篇拆開講。
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                企業 IT 的骨架就是硬體四層堆疊。拆完每一層之後，接著看虛擬化如何把一台實體機變成多台、HCI 如何把分散的硬體合成一個節點，最後看 AI 對基礎架構提出了什麼新要求。
             </p>
 
-            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
-                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">先講結論</div>
-                <p class="m-0">
-                    這個計畫適合想把生成式 AI、雲端、數位行銷補成完整一塊的人。課程多數是 Google 官方教材的短課，搭配可重複測驗的認證機制，零成本、可自己排進度。底下我先給三學程地圖，再給報名入口、考試規則與幾個讓進度快很多的實戰技巧。
-                </p>
+            <!-- ===== 全貌 ===== -->
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 全貌：四層堆疊
+            </h3>
+
+            <p>
+                Application、Server、Storage、Network&mdash;&mdash;應用程式跑在伺服器上，資料存在儲存設備裡，全部透過網路連接。這四層各自獨立、各自採購管理。
+            </p>
+
+            <figure class="my-10 mx-auto">
+                <img src="../PNG/NP_06.1.svg"
+                     alt="傳統 IT 基礎架構四層堆疊圖"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    Application &rarr; Server &rarr; Storage &rarr; Network
+                </figcaption>
+            </figure>
+
+            <!-- ===== Server ===== -->
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 第一層：Server
+            </h3>
+
+            <p>
+                Server 有三種物理形態，差別在密度和適用規模。
+            </p>
+
+            <figure class="my-10 mx-auto">
+                <img src="../PNG/NP_06.2.svg"
+                     alt="伺服器三種物理形態：Tower、Rack、Blade"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    Tower &rarr; Rack &rarr; Blade，密度由低到高
+                </figcaption>
+            </figure>
+
+            <p><strong class="text-white">Tower</strong> 像桌上型電腦，適合小型辦公室。</p>
+
+            <p><strong class="text-white">Rack</strong> 裝在 19 吋標準機櫃裡，企業主流，每台佔 1U&ndash;4U 高度，一個機櫃塞滿一整排。</p>
+
+            <p><strong class="text-white">Blade</strong> 多台伺服器共用一個機箱的電源和散熱，密度最高。</p>
+
+            <!-- ===== Storage ===== -->
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 第二層：Storage
+            </h3>
+
+            <p>
+                Storage 有兩個維度要理解&mdash;&mdash;「用什麼媒體存」和「怎麼接到伺服器」。
+            </p>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">儲存媒體速度</h4>
+
+            <p>
+                速度差距就是這麼大&mdash;&mdash;NVMe 比 HDD 快 17 到 35 倍。NVMe 透過 PCIe 直連 CPU，跳過 SATA 控制器瓶頸，所以快。
+            </p>
+
+            <figure class="my-10 mx-auto">
+                <img src="../PNG/NP_06.3.svg"
+                     alt="儲存媒體速度階梯：HDD、SATA SSD、NVMe SSD"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    HDD ~200 MB/s &rarr; SATA SSD ~550 MB/s &rarr; NVMe ~3,500&ndash;7,000 MB/s
+                </figcaption>
+            </figure>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">儲存怎麼接到伺服器</h4>
+
+            <p>
+                三種方式，從簡單到複雜。
+            </p>
+
+            <figure class="my-10 mx-auto">
+                <img src="../PNG/NP_06.4.svg"
+                     alt="DAS、NAS、SAN 三種儲存連接架構比較"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    DAS（直連）&rarr; NAS（檔案共享）&rarr; SAN（區塊存取）
+                </figcaption>
+            </figure>
+
+            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-8">
+                <li><span class="flex items-start gap-3"><span><strong class="text-white">DAS（Direct Attached）</strong> &mdash; 硬碟直接接在伺服器上。最簡單，無法共享。</span></span></li>
+                <li><span class="flex items-start gap-3"><span><strong class="text-white">NAS（Network Attached）</strong> &mdash; 透過乙太網路用檔案協定（Linux 用 NFS，Windows 用 SMB）共享。多台伺服器存取同份檔案。</span></span></li>
+                <li><span class="flex items-start gap-3"><span><strong class="text-white">SAN（Storage Area Network）</strong> &mdash; 用獨立儲存網路做區塊層級存取。協定是 FC（光纖通道）或 iSCSI（SCSI over IP）。效能最高、架構最複雜。</span></span></li>
+            </ul>
+
+            <!-- ===== Network ===== -->
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 第三層：Network
+            </h3>
+
+            <p>
+                Network 的核心只有兩種設備，做不同的事。
+            </p>
+
+            <figure class="my-10 mx-auto">
+                <img src="../PNG/NP_06.5.svg"
+                     alt="Switch 與 Router 的職責分工"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    Switch 管 LAN 內部，Router 管跨 LAN 與 Internet
+                </figcaption>
+            </figure>
+
+            <p><strong class="text-white">Switch</strong> 看 MAC 位址，管同一區域網路（LAN）內部的通信。同一間辦公室裡的電腦、伺服器、NAS 靠 Switch 互通。</p>
+
+            <p><strong class="text-white">Router</strong> 看 IP 位址，管不同 LAN 之間的交通。兩間辦公室互連、連上 Internet，都是 Router 的事。</p>
+
+            <!-- ===== 傳統 → HCI ===== -->
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 傳統架構的問題 &rarr; HCI
+            </h3>
+
+            <p>
+                把前面所有東西收在一起看&mdash;&mdash;傳統架構的問題，就是 HCI（Hyper-Converged Infrastructure）要解決的事。
+            </p>
+
+            <figure class="my-10 mx-auto">
+                <img src="../PNG/NP_06.6.svg"
+                     alt="傳統架構三層分離 vs HCI 單節點整合"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    三樣分開買 &rarr; 合成一台 HCI 節點
+                </figcaption>
+            </figure>
+
+            <p>
+                傳統 Server、Storage、Network 三樣分開買、分開管。擴展三個都要分別擴、管理三套介面、資源各自閒置。HCI 把三層合成一台節點&mdash;&mdash;擴展加一台節點、管理一個 Web UI、利用率靠軟體自動調度。
+            </p>
+
+            <!-- ===== Cache Server ===== -->
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 補充：Cache Server
+            </h3>
+
+            <p>
+                Cache Server 不在前面四層堆疊裡，它是加在 Application 和 Storage 之間的加速層。
+            </p>
+
+            <figure class="my-10 mx-auto">
+                <img src="../PNG/NP_06.7.svg"
+                     alt="Cache Server 運作原理：Cache Hit 與 Cache Miss"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    RAM 速度是 NVMe 的 7 倍、HDD 的 250 倍
+                </figcaption>
+            </figure>
+
+            <p>核心邏輯三步。</p>
+
+            <p>Application 要資料時，先問 Cache Server&mdash;&mdash;RAM 裡有沒有。</p>
+
+            <p>有的話叫 <strong class="text-white">Cache Hit</strong>，直接從 RAM 回傳，不碰硬碟。RAM 速度是 NVMe 的 7 倍、HDD 的 250 倍。</p>
+
+            <p>沒有的話叫 <strong class="text-white">Cache Miss</strong>，去 Database / Storage 讀，讀完順便複製一份存到 Cache，下次就不用再讀硬碟。</p>
+
+            <p>
+                為什麼不全部存在 RAM？RAM 貴、斷電就消失（volatile）。所以 Cache 只放最常被讀取的熱資料，冷資料還是存硬碟。
+            </p>
+
+            <p>
+                Cache Miss 時還是要讀硬碟。NVMe SSD 讓 Cache Miss 的代價變小&mdash;&mdash;讀硬碟越快，沒快取到的懲罰就越輕。
+            </p>
+
+            <div class="text-xs font-mono text-gray-500 uppercase tracking-wider mt-10 mb-4">常見 Cache 軟體</div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 my-4">
+                <div class="bg-white/5 rounded-xl border border-white/10 p-4">
+                    <div class="text-white font-bold text-sm mb-1">Redis</div>
+                    <div class="text-sm text-gray-400 font-light">最主流，支援多種資料結構，可持久化。銀行的即時風控、詐欺偵測常用。</div>
+                </div>
+                <div class="bg-white/5 rounded-xl border border-white/10 p-4">
+                    <div class="text-white font-bold text-sm mb-1">Memcached</div>
+                    <div class="text-sm text-gray-400 font-light">純 key-value，比 Redis 簡單。Facebook 早期大量使用。</div>
+                </div>
+                <div class="bg-white/5 rounded-xl border border-white/10 p-4">
+                    <div class="text-white font-bold text-sm mb-1">Varnish</div>
+                    <div class="text-sm text-gray-400 font-light">專門做 HTTP 快取，放在 Web Server 前面加速網頁回應。</div>
+                </div>
+                <div class="bg-white/5 rounded-xl border border-white/10 p-4">
+                    <div class="text-white font-bold text-sm mb-1">CDN</div>
+                    <div class="text-sm text-gray-400 font-light">本質也是 Cache，分佈在全球各地的節點，讓使用者從最近的節點拿資料（Cloudflare、Akamai）。</div>
+                </div>
             </div>
 
+            <!-- ===== 虛擬機與 Hypervisor ===== -->
+
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 這個計畫是什麼
+                <span class="text-accent-purple">#</span> 虛擬機與 Hypervisor
             </h3>
 
             <p>
-                計畫由 Google 主辦，主軸是培育台灣的數位人才，把生成式 AI 工具、雲端基礎、數位行銷三條線的能力一次補齊。課程本身放在 Google 的兩個學習平台上：大部分在 skills.google（原本的 Cloud Skills Boost），少數行銷認證在 Skillshop。報名、進度追蹤與課程通知則透過計畫的官方 LINE 帳號串起來。
+                虛擬機（VM）是在一台實體伺服器上，用軟體模擬出多台獨立的「虛擬電腦」。每台 VM 有自己的 OS、CPU、RAM、硬碟、網路&mdash;&mdash;互不干擾。
             </p>
 
             <p>
-                學習方式是自己排進度的線上自學。多數課程屬於 Google 官方教材，含中文與英文課；英文課可以搭翻譯工具讀。每個學程修完並通過各課程的認證考試後，會收到「總整課程」的通知，那是計畫最後一關。
+                讓 VM 跑起來的軟體叫 Hypervisor，分兩類，差別在裝的位置。
             </p>
 
+            <figure class="my-10 mx-auto">
+                <img src="../PNG/NP_06.8.svg"
+                     alt="Hypervisor Type 1 vs Type 2 架構比較"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    Type 1 直接裝在硬體上（企業用）｜Type 2 裝在 OS 之上（開發測試用）
+                </figcaption>
+            </figure>
+
+            <p><strong class="text-white">Type 1（Bare-metal）</strong> 直接裝在硬體上，中間沒有作業系統，效能接近實體機，企業生產環境用。代表：VMware ESXi、Hyper-V Server、KVM。</p>
+
+            <p><strong class="text-white">Type 2（Hosted）</strong> 裝在現有 OS（Windows / macOS / Linux）之上，多了一層 OS 所以效能較低，開發測試用。代表：VirtualBox、VMware Workstation。</p>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">三大虛擬化平台</h4>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 my-4">
+                <div class="bg-white/5 rounded-xl border border-white/10 p-4">
+                    <div class="text-white font-bold text-sm mb-1">VMware vSphere / ESXi</div>
+                    <div class="text-sm text-gray-400 font-light">市佔率最高的企業虛擬化平台。2023 年被 Broadcom 收購後，授權改為訂閱制（per-core），價格大幅上漲，客戶正在外逃。</div>
+                </div>
+                <div class="bg-white/5 rounded-xl border border-white/10 p-4">
+                    <div class="text-white font-bold text-sm mb-1">Microsoft Hyper-V</div>
+                    <div class="text-sm text-gray-400 font-light">內建在 Windows Server 中。免費獨立版已停止開發，未來方向是 Azure Stack HCI。</div>
+                </div>
+                <div class="bg-white/5 rounded-xl border border-white/10 p-4">
+                    <div class="text-white font-bold text-sm mb-1">KVM</div>
+                    <div class="text-sm text-gray-400 font-light">內建在 Linux 核心中，開源免費。Nutanix、Red Hat、Proxmox 都基於 KVM 建構自己的虛擬化方案。</div>
+                </div>
+            </div>
+
+            <!-- ===== HCI 深入 ===== -->
+
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 三學程地圖
+                <span class="text-accent-purple">#</span> HCI 深入：定義、技術、廠商
             </h3>
 
             <p>
-                三學程合計 59 門課（含跨學程重複的課，例如「生成式 AI：瞭解基礎概念」三個學程都列）。每個學程的細節我各寫了一篇拆開講：
+                前面看過傳統架構的問題&mdash;&mdash;Server、Storage、Network 各買各管。HCI（Hyper-Converged Infrastructure）把 Server、Storage、Network、Hypervisor 整合在同一個硬體節點中，以軟體定義的方式統一管理。
             </p>
 
             <div class="overflow-x-auto my-8">
-                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
-                    <thead class="bg-white/5">
-                        <tr>
-                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">學程</th>
-                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">門數</th>
-                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">在學什麼</th>
+                <table class="w-full text-sm text-gray-300 border-collapse">
+                    <thead>
+                        <tr class="border-b border-white/10">
+                            <th class="text-left py-3 px-4 text-gray-500 font-mono text-xs uppercase"></th>
+                            <th class="text-left py-3 px-4 text-gray-500 font-mono text-xs uppercase">傳統架構</th>
+                            <th class="text-left py-3 px-4 text-gray-500 font-mono text-xs uppercase">HCI</th>
                         </tr>
                     </thead>
-                    <tbody class="text-gray-300">
-                        <tr class="border-t border-white/10">
-                            <td class="px-4 py-3 font-bold text-white">AI 職場通識學程</td>
-                            <td class="px-4 py-3 font-mono">33</td>
-                            <td class="px-4 py-3">把生成式 AI 用進日常工作：從 AI 觀念、Gemini for Workspace、NotebookLM 到主管級應用情境，含 Gen AI Leader 認證 5 門</td>
+                    <tbody>
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 px-4 text-white font-bold">組成</td>
+                            <td class="py-3 px-4">獨立伺服器 + SAN/NAS + 網路</td>
+                            <td class="py-3 px-4">每個節點包含運算＋儲存＋網路</td>
                         </tr>
-                        <tr class="border-t border-white/10">
-                            <td class="px-4 py-3 font-bold text-white">數位行銷學程</td>
-                            <td class="px-4 py-3 font-mono">15</td>
-                            <td class="px-4 py-3">用 Gemini 與 NotebookLM 做行銷：內容生成、市場與競品研究、顧客洞察，外加 5 門 Skillshop 廣告與分析認證</td>
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 px-4 text-white font-bold">儲存</td>
+                            <td class="py-3 px-4">集中式（SAN/NAS）</td>
+                            <td class="py-3 px-4">分散式 SDS，各節點硬碟組成叢集儲存池</td>
                         </tr>
-                        <tr class="border-t border-white/10">
-                            <td class="px-4 py-3 font-bold text-white">Google Cloud 學程</td>
-                            <td class="px-4 py-3 font-mono">11</td>
-                            <td class="px-4 py-3">建立雲端與數位轉型的整體視角：Cloud 基礎、網路安全、資料轉型、Vertex AI、營運與負責任 AI</td>
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 px-4 text-white font-bold">擴展</td>
+                            <td class="py-3 px-4">Scale-up（升級單一設備）</td>
+                            <td class="py-3 px-4">Scale-out（加節點）</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 px-4 text-white font-bold">管理</td>
+                            <td class="py-3 px-4">多個管理介面</td>
+                            <td class="py-3 px-4">單一管理平面</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4 text-white font-bold">最少節點</td>
+                            <td class="py-3 px-4">依設備而異</td>
+                            <td class="py-3 px-4">通常 3 個節點起跳</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            <ul class="space-y-2 text-sm text-gray-400 list-none pl-0 my-6">
-                <li>
-                    <span class="text-accent-purple mr-2">●</span>
-                    <a href="NP_07.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
-                        學程一詳解 — AI 職場通識學程（33 門）
-                    </a>
-                </li>
-                <li>
-                    <span class="text-accent-purple mr-2">●</span>
-                    <a href="NP_08.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
-                        學程二詳解 — 數位行銷學程（15 門）
-                    </a>
-                </li>
-                <li>
-                    <span class="text-accent-purple mr-2">●</span>
-                    <a href="NP_09.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
-                        學程三詳解 — Google Cloud 學程（11 門）
-                    </a>
-                </li>
-            </ul>
+            <figure class="my-10 mx-auto">
+                <img src="../PNG/NP_06.9.svg"
+                     alt="傳統架構 vs HCI：擴展方式的根本差異"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    Scale-up（升級單一設備）&rarr; Scale-out（加節點）
+                </figcaption>
+            </figure>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">核心技術：Software-Defined Storage（SDS）</h4>
+
+            <p>
+                HCI 的關鍵是 SDS&mdash;&mdash;所有節點的本地硬碟由軟體統一管理，對外呈現為一個大儲存池。資料自動跨節點複製（Replication Factor，通常 RF=2 或 RF=3），任一台掛掉其他台接手。
+            </p>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">HCI 主要廠商</h4>
+
+            <figure class="my-10 mx-auto">
+                <img src="../PNG/NP_06.10.svg"
+                     alt="HCI 四大廠商定位圖"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    各家的 Hypervisor、SDS 引擎、管理介面、核心差異
+                </figcaption>
+            </figure>
+
+            <p><strong class="text-white">Nutanix</strong> 是獨立 HCI 軟體公司，不賣硬體，可跑在 Dell / Lenovo / HPE / 自有 NX 硬體上。自有 Hypervisor AHV（基於 KVM，免費內建），也支援 ESXi 和 Hyper-V。管理平面是 Prism Central（Web UI）。Gartner Magic Quadrant Leader，受益於 Broadcom 收購 VMware 後的客戶外逃潮。</p>
+
+            <p><strong class="text-white">VMware vSAN</strong> 是 Broadcom 旗下的 HCI 儲存方案，需搭配 vSphere（ESXi）和 vCenter。授權改為 VCF（VMware Cloud Foundation）捆綁銷售，既有客戶龐大但新客戶正在流失。</p>
+
+            <p><strong class="text-white">Azure Stack HCI</strong> 是 Microsoft 的方案，Hypervisor 用 Hyper-V，SDS 用 Storage Spaces Direct（S2D），管理走 Azure Arc（從 Azure Portal 管地端叢集）。特色是 Azure 雲端深度整合&mdash;&mdash;AKS on HCI、AVD on HCI。</p>
+
+            <p><strong class="text-white">Phison HCI</strong> 以自家 NVMe SSD 控制器為核心差異化，儲存效能有成本優勢。目標市場是中小企業和特定垂直產業&mdash;&mdash;銀行分行、製造邊緣。定位是儲存技術為核心競爭力的 HCI。</p>
+
+            <!-- ===== AI 基礎架構 ===== -->
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 報名與入口
+                <span class="text-accent-purple">#</span> AI 基礎架構
             </h3>
 
             <p>
-                計畫的主入口是官方活動頁，從那裡能進到報名與課程說明。報名後，課程進度、開始學習與認證提交都走計畫的官方 LINE 帳號操作。課程平台分兩站：絕大多數課在 skills.google，數位行銷的廣告與分析認證在 Skillshop。計畫另有官方的 LINE 交流社群，裡頭有同學分享的學習經驗與技巧。
+                AI 的基礎架構跟傳統 IT 長得不一樣&mdash;&mdash;多了 GPU 和 AI Framework 兩層，對 Storage 和 Network 的速度要求也高出一個量級。
             </p>
 
-            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
-                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">入口</div>
-                <p class="m-0">
-                    官方活動頁：<a href="https://growonairtw.withgoogle.com/events/digitaleducation" target="_blank" rel="noopener noreferrer" class="text-accent-purple hover:text-white transition-colors underline decoration-gray-600 underline-offset-4 break-all">growonairtw.withgoogle.com/events/digitaleducation</a><br>
-                    課程平台：skills.google（多數課程）＋ Skillshop（部分行銷認證）<br>
-                    報名與認證提交：透過計畫官方 LINE 帳號操作；另有官方 LINE 交流社群可交流。
-                </p>
-            </div>
+            <figure class="my-10 mx-auto">
+                <img src="../PNG/NP_06.11.svg"
+                     alt="AI 基礎架構五層堆疊"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    GPU 是引擎，Storage 是燃料供給管線
+                </figcaption>
+            </figure>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 認證與考試規則
-            </h3>
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">為什麼 AI 需要高速 Storage：I/O Bottleneck</h4>
 
             <p>
-                計畫的測驗分成三層，規則各自不同，搞懂之後排進度會輕鬆很多：
+                GPU 是 AI 的運算引擎。儲存的讀寫速度跟不上 GPU 消化資料的速度，GPU 就會閒置等待&mdash;&mdash;等於浪費昂貴的 GPU 時間。
             </p>
 
-            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
-                <li><strong class="text-white">學以致用（章節小測驗）</strong> &mdash; <span>每一章課程最後的小測驗，可以一直重複測，用來確認自己有沒有讀懂。</span></li>
-                <li><strong class="text-white">認證考試</strong> &mdash; <span>每門課的認證考試，每 24 小時可以再考一次，沒過就隔天再來。</span></li>
-                <li><strong class="text-white">總整課程</strong> &mdash; <span>所有課程的認證考試都通過後，會收到總整課程的通知，上完課後一週內要參加測驗。這個測驗可以一直重複考，沒有時間限制。</span></li>
-            </ul>
+            <figure class="my-10 mx-auto">
+                <img src="../PNG/NP_06.12.svg"
+                     alt="I/O Bottleneck：儲存慢 vs 儲存快對 GPU 利用率的影響"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    儲存慢 &rarr; GPU 空轉 ｜ 儲存快 &rarr; GPU 利用率高
+                </figcaption>
+            </figure>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 幾個讓進度快很多的技巧
-            </h3>
+            <p>四個環節都卡在儲存速度。</p>
 
-            <p>
-                計畫的交流社群裡有同學整理過幾個實戰技巧，我自己用下來確實省時間，整理在這裡供參：
-            </p>
+            <p><strong class="text-white">訓練 Data Loading</strong>&mdash;&mdash;數據集 TB 到 PB 級，GPU 持續從儲存讀資料，I/O 慢等於 GPU 空轉。</p>
 
-            <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
-                <li><strong class="text-white">Lab 卡關用 GSP 編號搜解法</strong> &mdash; <span>Google Cloud 的動手 Lab 都有一組 <code class="text-accent-purple">GSP</code> 編號。卡住的時候直接搜尋「GSP207 lab solution」這種關鍵字，能很快把整個 Lab 流程走過一次。有時間可以慢慢摸，趕時間的人用這招最快。</span></li>
-                <li><strong class="text-white">英文課搭沉浸式翻譯</strong> &mdash; <span>英文課程想看中文，搜尋「沉浸式翻譯」這個瀏覽器外掛，整頁中英對照閱讀。</span></li>
-                <li><strong class="text-white">用官方 LINE 一鍵提交認證</strong> &mdash; <span>考過認證後到計畫的官方 LINE 提交：流程大致是官方 LINE → 左下 → 開始學習 → 線上自學 → 一鍵提交認證 → 選你修的課程 → 貼上認證網址編號。</span></li>
-            </ul>
+            <p><strong class="text-white">Checkpoint</strong>&mdash;&mdash;訓練過程中定期存模型權重（數十到數百 GB），寫入慢等於訓練暫停。</p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 我整理的學習筆記
-            </h3>
+            <p><strong class="text-white">模型載入</strong>&mdash;&mdash;LLaMA 70B 以 FP16 格式約 130GB。HDD 讀取要幾分鐘，NVMe 數秒。</p>
 
-            <p>
-                修課過程裡，我把三學程的每一門課都整理成一套繁體中文的系統化筆記，格式統一成：課程大綱 → 章節導覽 → 逐章重點 → 速記卡 → 自我檢核。這套筆記只根據課程教材寫，把英文教材的內容用白話中文重講一次，重點放在「學完能拿來做什麼」。
-            </p>
+            <p><strong class="text-white">RAG 檢索</strong>&mdash;&mdash;推論時即時從向量資料庫讀資料，儲存延遲直接影響回應時間。</p>
 
-            <p>
-                三篇學程詳解就是這套筆記濃縮後的公開版，把每個學程的課程分群、各門課的關鍵重點、最值得記住的觀念整理出來。配合這個計畫，我另外做了一個 Chrome 擴充，把三學程 59 門課的完成度在一頁攤開，省掉一頁頁點進去數進度的麻煩。
-            </p>
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">主要 AI 基礎架構方案</h4>
 
-            <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> Links
-            </h3>
+            <figure class="my-10 mx-auto">
+                <img src="../PNG/NP_06.13.svg"
+                     alt="三大 AI 基礎架構方案：NVIDIA、Dell、HPE"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    三家都需要高速儲存（NVMe SSD）來餵 GPU
+                </figcaption>
+            </figure>
 
-            <ul class="space-y-2 text-sm text-gray-400 list-none pl-0">
-                <li>
-                    <span class="text-accent-purple mr-2">●</span>
-                    <a href="https://growonairtw.withgoogle.com/events/digitaleducation" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
-                        官方活動頁 — Google 數位人才探索計畫
-                    </a>
-                </li>
-                <li>
-                    <span class="text-accent-purple mr-2">●</span>
-                    <a href="NP_07.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
-                        學程一詳解 — AI 職場通識學程
-                    </a>
-                </li>
-                <li>
-                    <span class="text-accent-purple mr-2">●</span>
-                    <a href="NP_08.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
-                        學程二詳解 — 數位行銷學程
-                    </a>
-                </li>
-                <li>
-                    <span class="text-accent-purple mr-2">●</span>
-                    <a href="NP_09.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
-                        學程三詳解 — Google Cloud 學程
-                    </a>
-                </li>
-                <li>
-                    <span class="text-accent-purple mr-2">●</span>
-                    <a href="project_19.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
-                        相關專案 — Skills 學程進度檢查 Chrome 擴充
-                    </a>
-                </li>
-            </ul>
+            <p><strong class="text-white">NVIDIA</strong> 掌控全堆疊。GPU 從 A100 &rarr; H100 &rarr; H200 &rarr; B200（Blackwell 架構）。網路是 InfiniBand（併購 Mellanox 取得）和 Spectrum-X。軟體有 CUDA、cuDNN、NIM（推論微服務）。整機有 DGX（自有品牌）和 HGX（OEM 參考設計）。這個從晶片到軟體到整機的垂直整合是護城河。</p>
+
+            <p><strong class="text-white">Dell AI Factory</strong> 走硬體到部署的一站式服務。GPU 伺服器是 PowerEdge XE 系列，儲存用 PowerScale（非結構化資料）和 ECS（物件儲存），與 NVIDIA 深度合作。</p>
+
+            <p><strong class="text-white">HPE Private AI</strong> 的 HPC 背景最深&mdash;&mdash;併購 Cray（超算）和 SGI（圖形）。GPU 伺服器有 ProLiant DL380a 和 Cray XD（HPC/AI 超級電腦），儲存是 Cray ClusterStor（平行檔案系統）。</p>
 
         </article>
 
         <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
-            <a href="project_19.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
-                &larr; Prev Project
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                &larr; 上一篇
             </a>
             <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
-                View All Projects
+                查看所有專案
             </a>
-            <a href="NP_07.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
-                Next Project &rarr;
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                下一篇 &rarr;
             </a>
         </div>
 
