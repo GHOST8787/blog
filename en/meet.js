@@ -32,7 +32,6 @@ const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 const T = {
     weekdays: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
     states: { yes: 'Works', notice: 'Needs notice', no: "Can't", pend: 'No reply' },
-    signInFirst: 'Sign in first',
     loading: 'Loading...',
     denied: 'No permission to read this meeting. Check that you signed in with the invited Google account.',
     minutes: 'min',
@@ -193,19 +192,16 @@ function showState(msg) {
 onAuthStateChanged(auth, (user) => {
     me = user;
     const logged = !!user;
-    $('mt-login-prompt').classList.toggle('hidden', logged);
-    $('mt-login-prompt').classList.toggle('flex', !logged);
+    $('mt-login-prompt').classList.toggle('hidden', logged || !!pollId);
+    $('mt-login-prompt').classList.toggle('flex', !logged && !pollId);
     $('mt-user-badge').classList.toggle('hidden', !logged);
     $('mt-user-badge').classList.toggle('flex', logged);
     if (logged) {
         $('mt-user-email').textContent = user.isAnonymous
             ? T.guestBadge
             : (user.email || user.displayName || user.uid.slice(0, 8));
-        hideAuthModal();
     }
-    // Anonymous voting is offered on poll pages only; creating a meeting still needs a Google account
-    $('mt-anon-btn').classList.toggle('hidden', logged || !pollId);
-    if ($modalAnon) $modalAnon.classList.toggle('hidden', logged || !pollId);
+    authResolved = true;
     boot();
 });
 
@@ -229,7 +225,7 @@ function initGoogleSignIn() {
     google.accounts.id.initialize({ client_id: GOOGLE_CLIENT_ID, callback: onGoogleCredential });
     const opts = { theme: 'filled_black', size: 'large', shape: 'pill', text: 'signin_with', locale: 'en' };
     if ($('mt-gis-btn')) google.accounts.id.renderButton($('mt-gis-btn'), opts);
-    if ($('mt-gis-btn-modal')) google.accounts.id.renderButton($('mt-gis-btn-modal'), opts);
+    if ($('mt-gis-btn-gate')) google.accounts.id.renderButton($('mt-gis-btn-gate'), opts);
 }
 initGoogleSignIn();
 
@@ -246,25 +242,18 @@ async function anonSignIn() {
         showState(((err.code === 'auth/operation-not-allowed' || err.code === 'auth/admin-restricted-operation') ? T.anonNeedsConsole : T.anonFailed + err.message));
     }
 }
-$('mt-anon-btn').addEventListener('click', anonSignIn);
-// The same action inside the auth modal (the dialog that opens on a vote tap)
-const $modalAnon = $('mt-auth-anon');
-if ($modalAnon) $modalAnon.addEventListener('click', () => { hideAuthModal(); anonSignIn(); });
-
-const $authModal = $('mt-auth-modal');
-function showAuthModal() { $authModal.classList.add('show'); $authModal.setAttribute('aria-hidden', 'false'); }
-function hideAuthModal() { $authModal.classList.remove('show'); $authModal.setAttribute('aria-hidden', 'true'); }
-$('mt-auth-cancel').addEventListener('click', hideAuthModal);
-$authModal.addEventListener('click', e => { if (e.target === $authModal) hideAuthModal(); });
+// The guest option on the entry screen: the only anonymous entry on this page
+$('mt-gate-guest').addEventListener('click', anonSignIn);
 
 // === Boot ===
 let booted = false;
+let authResolved = false;   // 第一次 auth 回呼後才分得出「沒登入」和「還沒回來」
 function boot() {
     if (!me) {
         $home.classList.add('hidden');
-        // Poll content is publicly readable, so keep it visible while signed out
-        // and only hide the home view; tapping a pick opens the sign-in choice
-        if (!pollId) showState('');
+        // Poll page: no identity means the entry screen (poll name + sign-in or guest)
+        if (pollId) decidePollView();
+        else showState('');
         return;
     }
     if (!pollId && me.isAnonymous) {
@@ -274,11 +263,9 @@ function boot() {
         return;
     }
     if (pollId) {
-        // Content listeners attach at module load (no sign-in needed); this adds
-        // the identity-specific part. If public reads are not open yet, attachPublic
-        // retries here after sign-in.
+        // Identity in hand: close the entry screen, open the voting view. attachPublic retries here if a read was denied.
         attachPublic();
-        attachRole();
+        decidePollView();
         return;
     }
     if (booted) return;
@@ -681,11 +668,8 @@ $('mt-name-save').addEventListener('click', async () => {
 /* ===================== B. Poll page ===================== */
 let publicAttached = false;
 let loadTimer = null;
+let metaLoaded = false;
 
-function startPoll() {
-    $poll.classList.remove('hidden');
-    attachPublic();
-}
 
 // meta / slots / tally are readable by anyone holding the link (the unguessable id
 // is the ticket), so paint content before sign-in. votes and private stay protected
@@ -701,20 +685,8 @@ function attachPublic() {
     onValue(ref(db, `meet/polls/${pollId}/meta`), snap => {
         clearTimeout(loadTimer);
         meta = snap.val();
-        if (!meta) {
-            // The meeting is gone (deleted, or a stale link): say so plainly,
-            // no identity needed, and stay put
-            showState('');
-            $poll.classList.add('hidden');
-            $('mt-gone').classList.remove('hidden');
-            return;
-        }
-        showState('');
-        $('mt-gone').classList.add('hidden');
-        $poll.classList.remove('hidden');
-        attachRole();
-        renderPollHeader();
-        renderAll();
+        metaLoaded = true;
+        decidePollView();
     }, err => {
         // Denied while signed out = public reads not enabled yet; stay quiet and
         // let boot() re-attach after sign-in. Denied while signed in is a real error.
@@ -742,6 +714,35 @@ function attachPublic() {
 function attachRole() {
     if (!me || !meta) return;
     if (isOrganizer()) attachOrganizer(); else attachParticipant();
+}
+
+// The poll page has exactly three views, decided by (poll exists x identity), and it
+// settles on one without bouncing: gone -> removed panel; no identity -> entry screen
+// (poll name + sign-in or guest); identity -> the voting view
+function decidePollView() {
+    if (!metaLoaded || !authResolved) return;   // decide only once both answers are in, so the view never flips
+    const $gate = $('mt-gate');
+    if (!meta) {
+        showState('');
+        $poll.classList.add('hidden');
+        $gate.classList.add('hidden');
+        $('mt-gone').classList.remove('hidden');
+        return;
+    }
+    showState('');
+    $('mt-gone').classList.add('hidden');
+    if (!me) {
+        $('mt-gate-title').textContent = meta.title || '';
+        $('mt-gate-org').textContent = meta.organizerName ? 'by ' + meta.organizerName : '';
+        $poll.classList.add('hidden');
+        $gate.classList.remove('hidden');
+        return;
+    }
+    $gate.classList.add('hidden');
+    $poll.classList.remove('hidden');
+    attachRole();
+    renderPollHeader();
+    renderAll();
 }
 
 let attached = null;
@@ -1101,7 +1102,7 @@ function renderSubmitBar() {
 $('slot-cards').addEventListener('click', async e => {
     const btn = e.target.closest('.pick');
     if (!btn || btn.disabled) return;
-    if (!me) { showAuthModal(); return; }
+    if (!me) return;   // 入口畫面選完身分才進得到這個畫面，這行只是保險
     const slotId = btn.dataset.slot;
     // Draft only. Nothing is written until Submit.
     if (draft[slotId] === btn.dataset.pick) delete draft[slotId];
@@ -1111,7 +1112,7 @@ $('slot-cards').addEventListener('click', async e => {
 
 // --- Submit: one multi-path update carrying votes, tally and the joined record ---
 $('p-submit').addEventListener('click', async () => {
-    if (!me) { showAuthModal(); return; }
+    if (!me) return;   // 入口畫面選完身分才進得到這個畫面，這行只是保險
     const btn = $('p-submit');
     const msg = $('p-submit-msg');
     const delta = tallyDelta();
@@ -1350,6 +1351,7 @@ function setAddSlotMsg(text, isError) {
 });
 
 $('add-slot').addEventListener('click', async () => {
+    if (!me) return;
     const d = $('new-date').value, t = $('new-time').value, te = $('new-end').value;
     if (!d || !t || !te) return;
     const start = new Date(`${d}T${t}`).getTime();
@@ -1416,4 +1418,4 @@ $('slot-bars').addEventListener('click', async e => {
 console.log('[meet] initialized', { app: app.name, pollId });
 
 // Poll content does not wait for sign-in: start listening as soon as the module loads
-if (pollId) startPoll();
+if (pollId) attachPublic();
