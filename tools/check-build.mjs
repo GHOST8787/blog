@@ -2,25 +2,30 @@
 //   1. 還有頁面在引 cdn.tailwindcss.com（改到一半）
 //   2. 有頁面用了 Tailwind class 卻沒引 tw.css（樣式整頁消失）
 //   3. 改過 class 忘記重跑 build，tw.css 跟原始碼對不上（線上少那個樣式）
+// 外加 JS 語法檢查（2026-09-26 補）：
+//   4. 每支 .js 都解析一次。有 import/export 的必須用 module 模式，
+//      因為 `node --check 檔.js` 是 CommonJS 解析，遇到 import 就放棄，
+//      連 const 重複宣告都會回 exit 0。實際踩過：meet.js 的 slotMount 重複宣告
+//      逃過 node --check，靠瀏覽器 pageerror 才抓到。
 // 用法：pnpm lint
 import { execFileSync } from 'node:child_process';
-import { readFileSync, readdirSync, statSync, rmSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, readdirSync, statSync, rmSync, existsSync } from 'node:fs';
 import { join, relative } from 'node:path';
 
 const ROOT = new URL('..', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1');
 const problems = [];
 
-function walk(dir, out = []) {
+function walk(dir, ext, out = []) {
     for (const name of readdirSync(dir)) {
         if (name === '.git' || name === 'node_modules' || name === 'PNG') continue;
         const p = join(dir, name);
-        if (statSync(p).isDirectory()) walk(p, out);
-        else if (name.endsWith('.html')) out.push(p);
+        if (statSync(p).isDirectory()) walk(p, ext, out);
+        else if (name.endsWith(ext)) out.push(p);
     }
     return out;
 }
 
-const pages = walk(ROOT);
+const pages = walk(ROOT, '.html');
 let missing = 0, cdn = 0;
 for (const p of pages) {
     const rel = relative(ROOT, p).replace(/\\/g, '/');
@@ -38,6 +43,33 @@ for (const p of pages) {
     }
 }
 console.log(`掃 ${pages.length} 個 HTML：引 CDN 的 ${cdn} 個、缺 tw.css 的 ${missing} 個`);
+
+// JS 語法：含 import/export 的一律走 module 模式，其餘用一般模式
+const scripts = walk(ROOT, '.js').concat(walk(ROOT, '.mjs'));
+let broken = 0, asModule = 0;
+for (const p of scripts) {
+    const rel = relative(ROOT, p).replace(/\\/g, '/');
+    const src = readFileSync(p, 'utf8');
+    // module 判定看有沒有 top-level import / export
+    const isModule = p.endsWith('.mjs') || /^\s*(import|export)\s/m.test(src);
+    if (isModule) asModule++;
+    // node --check 認副檔名，所以 module 要先落成 .mjs 再檢查
+    const target = isModule && !p.endsWith('.mjs') ? join(ROOT, '.syntax-check.mjs') : p;
+    try {
+        if (target !== p) writeFileSync(target, src);
+        execFileSync(process.execPath, ['--check', target], { stdio: 'pipe' });
+    } catch (e) {
+        // node 的錯誤訊息裡是暫存檔名，換回真實檔名才看得懂
+        const msg = (e.stderr?.toString() || e.message)
+            .replace(/.*\.syntax-check\.mjs/g, rel)
+            .split('\n').filter(Boolean).slice(0, 3).join(' / ');
+        problems.push(`${rel} 語法錯誤：${msg}`);
+        broken++;
+    } finally {
+        if (target !== p && existsSync(target)) rmSync(target);
+    }
+}
+console.log(`掃 ${scripts.length} 個 JS（其中 ${asModule} 個用 module 模式）：語法錯誤 ${broken} 個`);
 
 // tw.css 是不是最新的
 const TMP = join(ROOT, '.tw-check.css');
