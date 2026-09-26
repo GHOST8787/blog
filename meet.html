@@ -127,14 +127,25 @@
 
         <!-- 登入區獨立一塊放在標題底下置中；右上角只留已登入的帳號膠囊 -->
         <div id="mt-login-prompt" class="hidden flex-col items-center gap-3 py-6 mb-2">
-            <span class="text-gray-500 text-xs font-mono">用 Google 登入後才能開會議與投票</span>
+            <span class="text-gray-500 text-xs font-mono">用 Google 登入後才能開會議</span>
             <div id="mt-gis-btn"></div>
-            <button id="mt-anon-btn" class="hidden text-xs font-mono text-gray-500 hover:text-accent-purple transition underline underline-offset-4">不想登入，直接匿名投票</button>
         </div>
 
         <!-- 載入 / 錯誤 -->
         <div id="mt-state" class="hidden text-center text-gray-500 font-mono text-sm py-10"></div>
 
+        <!-- 入口畫面：拿到連結先看到這場問卷叫什麼，選「登入」或「訪客」其中一種身分才進投票畫面。
+             選過一次之後身分留在這台裝置，下次開連結直接進去，不再問。 -->
+        <div id="mt-gate" class="hidden mt-card rounded-2xl px-6 py-10 text-center">
+            <div class="font-mono text-[10px] text-accent-purple uppercase tracking-wider mb-3">Meeting Poll</div>
+            <div id="mt-gate-title" class="text-2xl font-bold text-white mb-1"></div>
+            <div id="mt-gate-org" class="text-gray-500 text-xs font-mono mb-8"></div>
+            <p class="text-gray-400 text-sm mb-5">選擇怎麼參加</p>
+            <div class="flex flex-col items-center gap-3">
+                <div id="mt-gis-btn-gate"></div>
+                <button id="mt-gate-guest" class="text-xs font-mono text-gray-500 hover:text-accent-purple transition underline underline-offset-4">不登入，用訪客身分投票</button>
+            </div>
+        </div>
         <!-- 會議被刪掉時顯示這塊並停住。原本是顯示一行字 1.8 秒後自動跳走，訊息一閃就過。 -->
         <div id="mt-gone" class="hidden mt-card rounded-2xl px-6 py-10 text-center">
             <i class="fa-regular fa-trash-can text-3xl text-gray-600 mb-4 block"></i>
@@ -374,24 +385,6 @@
 
     </main>
 
-    <!-- 登入提示 Modal -->
-    <div id="mt-auth-modal" class="modal-bg" role="dialog" aria-labelledby="mt-auth-title" aria-hidden="true">
-        <div class="modal text-center">
-            <div class="w-14 h-14 mx-auto mb-4 rounded-full bg-accent-purple/10 border border-accent-purple/30 flex items-center justify-center">
-                <i class="fas fa-lock text-accent-purple text-xl"></i>
-            </div>
-            <h2 id="mt-auth-title" class="text-2xl font-bold mb-2 text-gradient">需要登入</h2>
-            <p class="text-gray-400 text-sm mb-6">
-                投票可以用 Google 登入，或用匿名身分；開會議一定要 Google。
-                <span class="block text-gray-500 text-xs mt-2 font-mono">登入只用來認你是誰，發起人會看到你的名字與 email</span>
-            </p>
-            <div class="flex flex-col items-center gap-3">
-                <div id="mt-gis-btn-modal" class="flex justify-center"></div>
-                <button id="mt-auth-anon" class="hidden text-xs font-mono text-gray-500 hover:text-accent-purple transition underline underline-offset-4">不想登入，直接匿名投票</button>
-                <button id="mt-auth-cancel" class="text-gray-500 text-sm hover:text-white transition-colors">下次再說</button>
-            </div>
-        </div>
-    </div>
 
     <div id="footer-placeholder"></div>
 </body>
