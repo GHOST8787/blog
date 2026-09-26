@@ -8,7 +8,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
 import {
     getAuth, GoogleAuthProvider, signInWithCredential, signOut, onAuthStateChanged,
-    signInAnonymously, setPersistence, inMemoryPersistence
+    signInAnonymously, setPersistence, browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -34,8 +34,6 @@ const T = {
     states: { yes: '可以', notice: '需要先通知', no: '不可', pend: '還沒回' },
     signInFirst: '請先登入',
     loading: '載入中...',
-    notFound: '找不到這場會議，可能已經被刪掉了。',
-    backHome: '　正在帶你回會議清單…',
     denied: '沒有權限讀這場會議。確認你登入的是收到邀請的那個 Google 帳號。',
     minutes: '分鐘',
     deadlineLabel: '截止',
@@ -100,8 +98,6 @@ const T = {
     pickSomething: '選好之後按送出',
     unsaved: '有還沒送出的修改',
     submittedAt: (t) => `已於 ${t} 送出`,
-    submittedLocked: '已送出。匿名投票送出後就不能改，要改請發起人把你那筆移掉。',
-    anonPartial: '已送出。答過的時段改不了，新的時段還可以補。',
     canEdit: '已送出。你可以改完再按一次更新。',
     tallyFmt: (y, n, x) => `${y} 可以 · ${n} 需提前通知 · ${x} 不行`,
     joinedNone: '還沒回過任何會議。',
@@ -210,6 +206,7 @@ onAuthStateChanged(auth, (user) => {
     }
     // 匿名投票只在有 ?id= 的投票頁提供（開會議還是要 Google 帳號）
     $('mt-anon-btn').classList.toggle('hidden', logged || !pollId);
+    if ($modalAnon) $modalAnon.classList.toggle('hidden', logged || !pollId);
     boot();
 });
 
@@ -237,16 +234,21 @@ function initGoogleSignIn() {
 }
 initGoogleSignIn();
 
-// 匿名投票：in-memory persistence，關掉分頁身分就消失，不留任何本機資料
-$('mt-anon-btn').addEventListener('click', async () => {
+// 匿名投票：身分留在這台裝置的瀏覽器裡，之後回來還是同一個訪客、可以改自己的票。
+// 原本是 in-memory、關分頁即蒸發——投完隔天想改時間就變成一筆沒人動得了的幽靈票。
+async function anonSignIn() {
     try {
-        await setPersistence(auth, inMemoryPersistence);
+        await setPersistence(auth, browserLocalPersistence);
         await signInAnonymously(auth);
     } catch (err) {
         console.error('[meet] anonymous sign-in failed', err);
         showState(((err.code === 'auth/operation-not-allowed' || err.code === 'auth/admin-restricted-operation') ? T.anonNeedsConsole : T.anonFailed + err.message));
     }
-});
+}
+$('mt-anon-btn').addEventListener('click', anonSignIn);
+// auth modal 裡的同一顆（點投票選項時跳出來的那個視窗）
+const $modalAnon = $('mt-auth-anon');
+if ($modalAnon) $modalAnon.addEventListener('click', () => { hideAuthModal(); anonSignIn(); });
 
 const $authModal = $('mt-auth-modal');
 function showAuthModal() { $authModal.classList.add('show'); $authModal.setAttribute('aria-hidden', 'false'); }
@@ -259,8 +261,9 @@ let booted = false;
 function boot() {
     if (!me) {
         $home.classList.add('hidden');
-        $poll.classList.add('hidden');
-        showState('');   // 上方登入列已經在講同一件事，這裡不重複
+        // 投票頁的內容是公開讀的，未登入也看得到，這裡只藏首頁；
+        // 要投票時 pick 按鈕會跳出登入／匿名的選擇
+        if (!pollId) showState('');
         return;
     }
     if (!pollId && me.isAnonymous) {
@@ -269,10 +272,16 @@ function boot() {
         showState(T.anonCannotCreate);
         return;
     }
+    if (pollId) {
+        // 內容的監聽模組載入時就掛了（不等登入）；這裡補身分相關的部分。
+        // 規則還沒開放公開讀時，attachPublic 會在這裡重試。
+        attachPublic();
+        attachRole();
+        return;
+    }
     if (booted) return;
     booted = true;
-    if (pollId) startPoll();
-    else startHome();
+    startHome();
 }
 
 /* ===================== A. 我的會議 ===================== */
@@ -661,24 +670,47 @@ $('mt-name-save').addEventListener('click', async () => {
 });
 
 /* ===================== B. 投票頁 ===================== */
+let publicAttached = false;
+let loadTimer = null;
+
 function startPoll() {
     $poll.classList.remove('hidden');
-    showState(T.loading);
+    attachPublic();
+}
+
+// meta / slots / tally 的規則是「拿到連結就能讀」（連結 id 不可猜＝入場券），
+// 所以不等登入就先把內容畫出來。votes 與 private 仍受保護，由 attachRole() 依身分掛。
+function attachPublic() {
+    if (publicAttached) return;
+    publicAttached = true;
+
+    // 超過 3 秒還沒有結果才顯示提示，不要一進頁面就閃一次「載入中」
+    clearTimeout(loadTimer);
+    loadTimer = setTimeout(() => { if (!meta) showState(T.loading); }, 3000);
 
     onValue(ref(db, `meet/polls/${pollId}/meta`), snap => {
+        clearTimeout(loadTimer);
         meta = snap.val();
         if (!meta) {
-            // 會議被刪掉（或網址失效）就退回主頁，不要停在死頁面
-            showState(T.notFound + T.backHome);
+            // 會議被刪掉（或網址失效）：不需要任何身分，直接講清楚並停在這裡
+            showState('');
             $poll.classList.add('hidden');
-            setTimeout(() => { location.href = 'meet.html'; }, 1800);
+            $('mt-gone').classList.remove('hidden');
             return;
         }
         showState('');
-        if (isOrganizer()) attachOrganizer(); else attachParticipant();
+        $('mt-gone').classList.add('hidden');
+        $poll.classList.remove('hidden');
+        attachRole();
         renderPollHeader();
         renderAll();
     }, err => {
+        // 未登入而且被拒＝規則還沒開放公開讀，不報錯，登入後由 boot() 重掛；
+        // 已登入還被拒才是真的權限問題
+        clearTimeout(loadTimer);
+        showState('');   // 3 秒提示可能已經冒出來了，安靜等登入時不要讓它掛著
+        publicAttached = false;
+        if (!me) return;
         console.error('[meet] meta read failed', err);
         showState(T.denied + ' (' + err.code + ')');
     });
@@ -689,7 +721,15 @@ function startPoll() {
         // 送出時又會寫一張指向不存在時段的票，被 .validate 整包退掉。
         Object.keys(draft).forEach(id => { if (!slots[id]) delete draft[id]; });
         renderAll();
-    });
+    }, () => {});
+
+    // 統計原本掛在 attachParticipant 裡，公開之後看的人不需要身分
+    onValue(ref(db, `meet/polls/${pollId}/tally`), s => { tally = s.val() || {}; renderAll(); }, () => {});
+}
+
+function attachRole() {
+    if (!me || !meta) return;
+    if (isOrganizer()) attachOrganizer(); else attachParticipant();
 }
 
 let attached = null;
@@ -729,9 +769,6 @@ function attachParticipant() {
     $('mt-name').value = initialName;
     $('mt-identity').classList.remove('hidden');
     $('mt-identity').classList.add('flex');
-    // 票數統計：所有登入者都讀得到，裡面只有數字
-    onValue(ref(db, `meet/polls/${pollId}/tally`), s => { tally = s.val() || {}; renderAll(); });
-
     onValue(ref(db, `meet/polls/${pollId}/votes/${me.uid}`), s => {
         const mine = s.val() || {};
         votes = { [me.uid]: mine };
@@ -744,6 +781,7 @@ function attachParticipant() {
 
 // 草稿跟已送出的差異，換算成 tally 每個時段的加減
 function tallyDelta() {
+    if (!me) return {};
     const committed = (votes[me.uid] || {});
     const delta = {};
     const bump = (slotId, key, n) => {
@@ -761,6 +799,7 @@ function tallyDelta() {
 }
 
 function hasUnsaved() {
+    if (!me) return false;
     const committed = (votes[me.uid] || {});
     const keys = new Set([...Object.keys(committed), ...Object.keys(draft)]);
     for (const k of keys) {
@@ -854,7 +893,7 @@ function renderAll() {
     const org = isOrganizer();
     $('organizer-view').classList.toggle('hidden', !org);
     $('participant-view').classList.toggle('hidden', org);
-    $('mt-role-badge').textContent = org ? '發起人' : (me.isAnonymous ? T.guestBadge : '參與者');
+    $('mt-role-badge').textContent = org ? '發起人' : ((me && me.isAnonymous) ? T.guestBadge : '參與者');
 
     const canAdd = votingOpen() && (org || meta.allowGuestSlots === true);
     $('add-slot-card').classList.toggle('hidden', !canAdd);
@@ -1000,18 +1039,18 @@ document.addEventListener('click', e => { if (!e.target.closest('#slot-bars')) {
 
 // --- 參與者：三選一 ---
 function renderCards() {
-    const committed = votes[me.uid] || {};
+    const committed = (me && votes[me.uid]) || {};
     const open = votingOpen();
     $('slot-cards').innerHTML = sortedSlots().map(s => {
-        // 匿名身分：答過的那一格鎖住，沒答過的還可以補
-        const canVote = open && !(me.isAnonymous && committed[s.id]);
+        // 沒登入也可以按：點下去會跳出登入／匿名的選擇；匿名現在可以改自己的票
+        const canVote = open;
         const mine = draft[s.id] || null;             // 畫面看草稿，不看資料庫
         const t = tally[s.id] || {};
         const counts = `<div class="font-mono text-[10px] text-gray-500 mt-2">${T.tallyFmt(t.yes || 0, t.notice || 0, t.no || 0)}</div>`;
         const r = fmtRange(s.start, s.end);
         const owner = slotOwners[s.id];
         const by = (owner && owner !== meta.organizer)
-            ? `<span class="font-mono text-[9px] text-gray-600 ml-2">${owner === me.uid ? T.youProposed : T.otherProposed}</span>` : '';
+            ? `<span class="font-mono text-[9px] text-gray-600 ml-2">${me && owner === me.uid ? T.youProposed : T.otherProposed}</span>` : '';
         const locked = s.id === meta.lockedSlot
             ? `<span class="ml-2 font-mono text-[9px] px-1.5 py-0.5 rounded whitespace-nowrap bg-accent-success/15 text-accent-success border border-accent-success/30">${T.lockedBadge}</span>` : '';
         const picks = STATES.map(k =>
@@ -1028,23 +1067,19 @@ function renderCards() {
             ${counts}
         </div>`;
     }).join('');
-    // 匿名而且每一格都答過了，才算整場鎖住
-    const allLocked = me.isAnonymous && sortedSlots().every(s => committed[s.id]);
-    renderSubmitBar(allLocked);
+    renderSubmitBar();
 }
 
 // 送出列：按鈕文字與狀態說明
-function renderSubmitBar(frozen) {
+function renderSubmitBar() {
     const btn = $('p-submit');
     const msg = $('p-submit-msg');
     if (!btn) return;
     const dirty = hasUnsaved();
     btn.textContent = submittedOnce ? T.resubmitBtn : T.submitBtn;
-    btn.classList.toggle('hidden', frozen);
-    btn.disabled = frozen || !votingOpen() || !dirty;
-    if (frozen) msg.textContent = T.submittedLocked;
-    else if (me.isAnonymous && submittedOnce && !dirty) msg.textContent = T.anonPartial;
-    else if (dirty) msg.textContent = T.unsaved;
+    btn.classList.remove('hidden');
+    btn.disabled = !votingOpen() || !dirty;
+    if (dirty) msg.textContent = T.unsaved;
     else if (submittedOnce) msg.textContent = T.canEdit;
     else msg.textContent = T.pickSomething;
 }
@@ -1265,8 +1300,9 @@ function renderVerdict() {
     }
 
     const all = sortedSlots();
-    const answered = all.filter(x => voteOf(me.uid, x.id)).length;
-    const myYes = all.filter(x => voteOf(me.uid, x.id) === 'yes').map(x => {
+    // 未登入也會走到這裡（內容公開讀），還沒有身分就沒有「我的票」
+    const answered = me ? all.filter(x => voteOf(me.uid, x.id)).length : 0;
+    const myYes = !me ? [] : all.filter(x => voteOf(me.uid, x.id) === 'yes').map(x => {
         const rr = fmtRange(x.start, x.end); return `${rr.day} ${rr.time}`;
     });
     const body = meta.lockedSlot
@@ -1362,3 +1398,6 @@ $('slot-bars').addEventListener('click', async e => {
 });
 
 console.log('[meet] initialized', { app: app.name, pollId });
+
+// 投票頁的內容不等登入：模組載入完就開始聽公開節點
+if (pollId) startPoll();

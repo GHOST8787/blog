@@ -8,7 +8,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
 import {
     getAuth, GoogleAuthProvider, signInWithCredential, signOut, onAuthStateChanged,
-    signInAnonymously, setPersistence, inMemoryPersistence
+    signInAnonymously, setPersistence, browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -34,8 +34,6 @@ const T = {
     states: { yes: 'Works', notice: 'Needs notice', no: "Can't", pend: 'No reply' },
     signInFirst: 'Sign in first',
     loading: 'Loading...',
-    notFound: 'This meeting is gone. It may have been deleted.',
-    backHome: ' Taking you back to your meetings...',
     denied: 'No permission to read this meeting. Check that you signed in with the invited Google account.',
     minutes: 'min',
     deadlineLabel: 'Closes',
@@ -99,8 +97,6 @@ const T = {
     pickSomething: 'Pick your times, then hit Submit',
     unsaved: 'You have unsubmitted changes',
     submittedAt: (t) => `Submitted ${t}`,
-    submittedLocked: 'Submitted. Anonymous replies are final — ask the organizer to remove yours if you need to change it.',
-    anonPartial: 'Submitted. Answered slots are locked; new slots can still be filled in.',
     canEdit: 'Submitted. Change anything and hit update again.',
     tallyFmt: (y, n, x) => `${y} yes · ${n} needs notice · ${x} no`,
     joinedNone: 'You have not replied to any meeting yet.',
@@ -209,6 +205,7 @@ onAuthStateChanged(auth, (user) => {
     }
     // Anonymous voting is offered on poll pages only; creating a meeting still needs a Google account
     $('mt-anon-btn').classList.toggle('hidden', logged || !pollId);
+    if ($modalAnon) $modalAnon.classList.toggle('hidden', logged || !pollId);
     boot();
 });
 
@@ -236,16 +233,23 @@ function initGoogleSignIn() {
 }
 initGoogleSignIn();
 
-// Anonymous voting: in-memory persistence, so the identity disappears with the tab and nothing is stored locally
-$('mt-anon-btn').addEventListener('click', async () => {
+// Anonymous voting: the identity stays in this device's browser, so a returning
+// guest is the same visitor and can edit their own votes. It used to be in-memory
+// and evaporate with the tab - a guest who wanted to change their answer the next
+// day left behind a ghost vote nobody could touch.
+async function anonSignIn() {
     try {
-        await setPersistence(auth, inMemoryPersistence);
+        await setPersistence(auth, browserLocalPersistence);
         await signInAnonymously(auth);
     } catch (err) {
         console.error('[meet] anonymous sign-in failed', err);
         showState(((err.code === 'auth/operation-not-allowed' || err.code === 'auth/admin-restricted-operation') ? T.anonNeedsConsole : T.anonFailed + err.message));
     }
-});
+}
+$('mt-anon-btn').addEventListener('click', anonSignIn);
+// The same action inside the auth modal (the dialog that opens on a vote tap)
+const $modalAnon = $('mt-auth-anon');
+if ($modalAnon) $modalAnon.addEventListener('click', () => { hideAuthModal(); anonSignIn(); });
 
 const $authModal = $('mt-auth-modal');
 function showAuthModal() { $authModal.classList.add('show'); $authModal.setAttribute('aria-hidden', 'false'); }
@@ -258,8 +262,9 @@ let booted = false;
 function boot() {
     if (!me) {
         $home.classList.add('hidden');
-        $poll.classList.add('hidden');
-        showState('');   // the sign-in bar above already says this
+        // Poll content is publicly readable, so keep it visible while signed out
+        // and only hide the home view; tapping a pick opens the sign-in choice
+        if (!pollId) showState('');
         return;
     }
     if (!pollId && me.isAnonymous) {
@@ -268,9 +273,17 @@ function boot() {
         showState(T.anonCannotCreate);
         return;
     }
+    if (pollId) {
+        // Content listeners attach at module load (no sign-in needed); this adds
+        // the identity-specific part. If public reads are not open yet, attachPublic
+        // retries here after sign-in.
+        attachPublic();
+        attachRole();
+        return;
+    }
     if (booted) return;
     booted = true;
-    if (pollId) startPoll(); else startHome();
+    startHome();
 }
 
 /* ===================== A. My meetings ===================== */
@@ -666,24 +679,49 @@ $('mt-name-save').addEventListener('click', async () => {
 });
 
 /* ===================== B. Poll page ===================== */
+let publicAttached = false;
+let loadTimer = null;
+
 function startPoll() {
     $poll.classList.remove('hidden');
-    showState(T.loading);
+    attachPublic();
+}
+
+// meta / slots / tally are readable by anyone holding the link (the unguessable id
+// is the ticket), so paint content before sign-in. votes and private stay protected
+// and attach per identity in attachRole().
+function attachPublic() {
+    if (publicAttached) return;
+    publicAttached = true;
+
+    // Only show a loading hint after 3s with no answer; no flash on entry
+    clearTimeout(loadTimer);
+    loadTimer = setTimeout(() => { if (!meta) showState(T.loading); }, 3000);
 
     onValue(ref(db, `meet/polls/${pollId}/meta`), snap => {
+        clearTimeout(loadTimer);
         meta = snap.val();
         if (!meta) {
-            // The meeting is gone (deleted or bad link): fall back to the home view instead of a dead page
-            showState(T.notFound + T.backHome);
+            // The meeting is gone (deleted, or a stale link): say so plainly,
+            // no identity needed, and stay put
+            showState('');
             $poll.classList.add('hidden');
-            setTimeout(() => { location.href = 'meet.html'; }, 1800);
+            $('mt-gone').classList.remove('hidden');
             return;
         }
         showState('');
-        if (isOrganizer()) attachOrganizer(); else attachParticipant();
+        $('mt-gone').classList.add('hidden');
+        $poll.classList.remove('hidden');
+        attachRole();
         renderPollHeader();
         renderAll();
     }, err => {
+        // Denied while signed out = public reads not enabled yet; stay quiet and
+        // let boot() re-attach after sign-in. Denied while signed in is a real error.
+        clearTimeout(loadTimer);
+        showState('');   // the 3s hint may already be up; do not leave it hanging while waiting quietly
+        publicAttached = false;
+        if (!me) return;
         console.error('[meet] meta read failed', err);
         showState(T.denied + ' (' + err.code + ')');
     });
@@ -695,7 +733,15 @@ function startPoll() {
         // which .validate rejects, taking the whole update down with it.
         Object.keys(draft).forEach(id => { if (!slots[id]) delete draft[id]; });
         renderAll();
-    });
+    }, () => {});
+
+    // The tally used to attach inside attachParticipant; it is public now
+    onValue(ref(db, `meet/polls/${pollId}/tally`), s => { tally = s.val() || {}; renderAll(); }, () => {});
+}
+
+function attachRole() {
+    if (!me || !meta) return;
+    if (isOrganizer()) attachOrganizer(); else attachParticipant();
 }
 
 let attached = null;
@@ -737,9 +783,6 @@ function attachParticipant() {
     $('mt-name').value = initialName;
     $('mt-identity').classList.remove('hidden');
     $('mt-identity').classList.add('flex');
-    // Vote counts: readable by any signed-in user, numbers only
-    onValue(ref(db, `meet/polls/${pollId}/tally`), s => { tally = s.val() || {}; renderAll(); });
-
     onValue(ref(db, `meet/polls/${pollId}/votes/${me.uid}`), s => {
         const mine = s.val() || {};
         votes = { [me.uid]: mine };
@@ -751,6 +794,7 @@ function attachParticipant() {
 
 // Difference between the draft and what was submitted, as per-slot tally deltas
 function tallyDelta() {
+    if (!me) return {};
     const committed = (votes[me.uid] || {});
     const delta = {};
     const bump = (slotId, key, n) => {
@@ -768,6 +812,7 @@ function tallyDelta() {
 }
 
 function hasUnsaved() {
+    if (!me) return false;
     const committed = (votes[me.uid] || {});
     const keys = new Set([...Object.keys(committed), ...Object.keys(draft)]);
     for (const k of keys) {
@@ -861,7 +906,7 @@ function renderAll() {
     const org = isOrganizer();
     $('organizer-view').classList.toggle('hidden', !org);
     $('participant-view').classList.toggle('hidden', org);
-    $('mt-role-badge').textContent = org ? T.organizerRole : (me.isAnonymous ? T.guestBadge : T.participantRole);
+    $('mt-role-badge').textContent = org ? T.organizerRole : ((me && me.isAnonymous) ? T.guestBadge : T.participantRole);
 
     const canAdd = votingOpen() && (org || meta.allowGuestSlots === true);
     $('add-slot-card').classList.toggle('hidden', !canAdd);
@@ -1007,18 +1052,19 @@ document.addEventListener('click', e => { if (!e.target.closest('#slot-bars')) {
 
 // --- Participant cards ---
 function renderCards() {
-    const committed = votes[me.uid] || {};
+    const committed = (me && votes[me.uid]) || {};
     const open = votingOpen();
     $('slot-cards').innerHTML = sortedSlots().map(s => {
-        // Anonymous: slots already answered are locked, new ones can still be filled in
-        const canVote = open && !(me.isAnonymous && committed[s.id]);
+        // Tappable even while signed out (the tap opens the sign-in choice);
+        // anonymous voters can now edit their own votes
+        const canVote = open;
         const mine = draft[s.id] || null;             // the UI follows the draft, not the database
         const t = tally[s.id] || {};
         const counts = `<div class="font-mono text-[10px] text-gray-500 mt-2">${T.tallyFmt(t.yes || 0, t.notice || 0, t.no || 0)}</div>`;
         const r = fmtRange(s.start, s.end);
         const owner = slotOwners[s.id];
         const by = (owner && owner !== meta.organizer)
-            ? `<span class="font-mono text-[9px] text-gray-600 ml-2">${owner === me.uid ? T.youProposed : T.otherProposed}</span>` : '';
+            ? `<span class="font-mono text-[9px] text-gray-600 ml-2">${me && owner === me.uid ? T.youProposed : T.otherProposed}</span>` : '';
         const locked = s.id === meta.lockedSlot
             ? `<span class="ml-2 font-mono text-[9px] px-1.5 py-0.5 rounded whitespace-nowrap bg-accent-success/15 text-accent-success border border-accent-success/30">${T.lockedBadge}</span>` : '';
         const picks = STATES.map(k =>
@@ -1035,23 +1081,19 @@ function renderCards() {
             ${counts}
         </div>`;
     }).join('');
-    // Fully locked only when an anonymous voter has answered every slot
-    const allLocked = me.isAnonymous && sortedSlots().every(s => committed[s.id]);
-    renderSubmitBar(allLocked);
+    renderSubmitBar();
 }
 
 // Submit bar: button label and status line
-function renderSubmitBar(frozen) {
+function renderSubmitBar() {
     const btn = $('p-submit');
     const msg = $('p-submit-msg');
     if (!btn) return;
     const dirty = hasUnsaved();
     btn.textContent = submittedOnce ? T.resubmitBtn : T.submitBtn;
-    btn.classList.toggle('hidden', frozen);
-    btn.disabled = frozen || !votingOpen() || !dirty;
-    if (frozen) msg.textContent = T.submittedLocked;
-    else if (me.isAnonymous && submittedOnce && !dirty) msg.textContent = T.anonPartial;
-    else if (dirty) msg.textContent = T.unsaved;
+    btn.classList.remove('hidden');
+    btn.disabled = !votingOpen() || !dirty;
+    if (dirty) msg.textContent = T.unsaved;
     else if (submittedOnce) msg.textContent = T.canEdit;
     else msg.textContent = T.pickSomething;
 }
@@ -1274,8 +1316,9 @@ function renderVerdict() {
     }
 
     const all = sortedSlots();
-    const answered = all.filter(x => voteOf(me.uid, x.id)).length;
-    const myYes = all.filter(x => voteOf(me.uid, x.id) === 'yes').map(x => {
+    // Reached while signed out too (content is publicly readable); no identity, no own votes
+    const answered = me ? all.filter(x => voteOf(me.uid, x.id)).length : 0;
+    const myYes = !me ? [] : all.filter(x => voteOf(me.uid, x.id) === 'yes').map(x => {
         const rr = fmtRange(x.start, x.end); return `${rr.day} ${rr.time}`;
     });
     const body = meta.lockedSlot
@@ -1371,3 +1414,6 @@ $('slot-bars').addEventListener('click', async e => {
 });
 
 console.log('[meet] initialized', { app: app.name, pollId });
+
+// Poll content does not wait for sign-in: start listening as soon as the module loads
+if (pollId) startPoll();
