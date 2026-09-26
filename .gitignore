@@ -6,3 +6,7 @@
 
 # orphaned images kept locally only (38MB, not deployed)
 PNG/_unused/
+
+# pnpm lint 的暫存檔，正常跑完會自己刪，中途掛掉才會留下
+.tw-check.css
+.syntax-check.mjs

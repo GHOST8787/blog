@@ -32,7 +32,7 @@
     <script type="module" src="../main.js"></script>
     <script src="../theme.js"></script>
     <script src="https://accounts.google.com/gsi/client" async></script>
-    <script type="module" src="meet.js"></script>
+    <script type="module" src="../meet/app.js"></script>
 
     <style>
         /* Proportional bar (organizer result view) */
@@ -215,12 +215,17 @@
             <!-- Create form -->
             <div id="mt-create" class="hidden mt-card rounded-2xl p-5 sm:p-7 space-y-6 mt-6">
                 <div>
-                    <label class="block font-mono text-[10px] text-gray-500 uppercase tracking-wider mb-2">Meeting name</label>
+                    <label class="block font-mono text-[10px] text-gray-500 uppercase tracking-wider mb-2">Meeting subject</label>
                     <input id="c-title" type="text" maxlength="80" placeholder="e.g. Q4 product planning" class="mt-input w-full rounded-xl px-4 py-3 text-sm">
+                </div>
+                <div>
+                    <label class="block font-mono text-[10px] text-gray-500 uppercase tracking-wider mb-2">Organizer display name</label>
+                    <input id="c-organizer-name" type="text" maxlength="40" class="mt-input w-full rounded-xl px-4 py-3 text-sm">
+                    <p class="font-mono text-[10px] text-gray-600 mt-2">This name is shown to participants who receive the link; when left blank, your Google account name is used.</p>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label class="block font-mono text-[10px] text-gray-500 uppercase tracking-wider mb-2">Length</label>
+                        <label class="block font-mono text-[10px] text-gray-500 uppercase tracking-wider mb-2">Meeting duration</label>
                         <select id="c-duration" class="mt-input w-full rounded-xl px-4 py-3 text-sm">
                             <option value="30">30 min</option>
                             <option value="60" selected>60 min</option>
@@ -229,30 +234,30 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block font-mono text-[10px] text-gray-500 uppercase tracking-wider mb-2">Voting deadline (optional)</label>
+                        <label class="block font-mono text-[10px] text-gray-500 uppercase tracking-wider mb-2">Reply deadline (optional)</label>
                         <input id="c-deadline" type="date" class="mt-input w-full rounded-xl px-4 py-3 text-sm font-mono">
                     </div>
                 </div>
                 <div>
-                    <label class="block font-mono text-[10px] text-gray-500 uppercase tracking-wider mb-2">Place / link</label>
-                    <input id="c-place" type="text" maxlength="120" placeholder="Defaults to Microsoft Teams when left blank" class="mt-input w-full rounded-xl px-4 py-3 text-sm">
+                    <label class="block font-mono text-[10px] text-gray-500 uppercase tracking-wider mb-2">Meeting location / link</label>
+                    <input id="c-place" type="text" maxlength="120" placeholder="Defaults to Microsoft Teams when left blank." class="mt-input w-full rounded-xl px-4 py-3 text-sm">
                 </div>
                 <div>
-                    <label class="block font-mono text-[10px] text-gray-500 uppercase tracking-wider mb-2">Note (optional)</label>
+                    <label class="block font-mono text-[10px] text-gray-500 uppercase tracking-wider mb-2">Meeting notes (optional)</label>
                     <textarea id="c-note" rows="3" maxlength="500" class="mt-input w-full rounded-xl px-4 py-3 text-sm resize-none"></textarea>
                 </div>
                 <div>
-                    <label class="block font-mono text-[10px] text-gray-500 uppercase tracking-wider mb-2">My private note (only you can see it)</label>
+                    <label class="block font-mono text-[10px] text-gray-500 uppercase tracking-wider mb-2">Organizer private note (visible to the organizer only)</label>
                     <textarea id="c-private" rows="3" maxlength="2000" class="mt-input w-full rounded-xl px-4 py-3 text-sm resize-none"></textarea>
-                    <p class="font-mono text-[10px] text-gray-600 mt-2">Participants never see this field; it is your own record</p>
+                    <p class="font-mono text-[10px] text-gray-600 mt-2">Participants do not see this field; it is for the organizer&rsquo;s own records.</p>
                 </div>
 
 
                 <div>
-                    <label class="block font-mono text-[10px] text-gray-500 uppercase tracking-wider mb-2">Paste from the office tool (optional)</label>
+                    <label class="block font-mono text-[10px] text-gray-500 uppercase tracking-wider mb-2">Import from the office tool (optional)</label>
                     <div class="flex gap-2">
-                        <input id="c-code" type="text" placeholder="Paste a slot code starting with MT1." class="mt-input flex-1 min-w-0 rounded-xl px-4 py-3 text-sm font-mono">
-                        <button id="c-code-apply" type="button" class="shrink-0 px-5 rounded-xl border border-white/10 text-xs font-mono text-gray-400 hover:text-accent-purple hover:border-accent-purple/30 transition">Fill in</button>
+                        <input id="c-code" type="text" placeholder="Paste a slot code beginning with MT1." class="mt-input flex-1 min-w-0 rounded-xl px-4 py-3 text-sm font-mono">
+                        <button id="c-code-apply" type="button" class="shrink-0 px-5 rounded-xl border border-white/10 text-xs font-mono text-gray-400 hover:text-accent-purple hover:border-accent-purple/30 transition">Import</button>
                     </div>
                     <div id="c-code-msg" class="font-mono text-[10px] mt-2"></div>
                 </div>
@@ -261,22 +266,22 @@
                     <label class="block font-mono text-[10px] text-gray-500 uppercase tracking-wider mb-3">Candidate times</label>
                     <div id="c-slots" class="space-y-2"></div>
                     <button id="c-add-slot" class="mt-3 w-full py-3 rounded-xl border border-dashed border-white/10 text-gray-500 hover:text-accent-purple hover:border-accent-purple/30 transition text-xs font-mono">
-                        <i class="fa-solid fa-plus mr-1.5"></i>Add another time
+                        <i class="fa-solid fa-plus mr-1.5"></i>Add a candidate time
                     </button>
                 </div>
 
                 <div class="space-y-3 border-t border-white/5 pt-5">
                     <label class="flex items-start gap-3 cursor-pointer">
                         <input id="c-guest-slots" type="checkbox" checked class="mt-0.5 w-4 h-4">
-                        <span class="text-sm text-gray-300">Let participants add their own times
-                            <span class="block text-[11px] text-gray-600 font-mono mt-0.5">Turn this off to keep them to your list</span>
+                        <span class="text-sm text-gray-300">Allow participants to add candidate times
+                            <span class="block text-[11px] text-gray-600 font-mono mt-0.5">When disabled, participants can only choose from the times you provide.</span>
                         </span>
                     </label>
                 </div>
 
                 <div id="c-error" class="text-xs text-red-400 font-mono"></div>
                 <div class="flex gap-3">
-                    <button id="c-submit" class="flex-1 py-4 rounded-full bg-accent-purple text-black font-bold text-sm tracking-wide hover:shadow-[0_0_24px_rgb(var(--c-purple)/.5)] transition disabled:opacity-50">Create and get the link</button>
+                    <button id="c-submit" class="flex-1 py-4 rounded-full bg-accent-purple text-black font-bold text-sm tracking-wide hover:shadow-[0_0_24px_rgb(var(--c-purple)/.5)] transition disabled:opacity-50">Create the poll and get the share link</button>
                     <button id="c-cancel" class="px-6 border border-white/10 text-gray-400 rounded-full text-sm hover:border-white/30 transition">Cancel</button>
                 </div>
             </div>
@@ -320,7 +325,7 @@
             <div id="org-note-card" class="mt-card rounded-2xl p-4 sm:p-5 mb-5 hidden">
                 <div class="flex items-center justify-between gap-3 mb-3">
                     <span class="font-mono text-[10px] text-gray-500 uppercase tracking-wider">My private note</span>
-                    <span class="font-mono text-[10px] text-gray-600"><i class="fa-solid fa-lock mr-1.5"></i>Only you can see it</span>
+                    <span class="font-mono text-[10px] text-gray-600"><i class="fa-solid fa-lock mr-1.5"></i>Visible to the organizer only</span>
                 </div>
                 <textarea id="org-note" rows="3" maxlength="2000" class="mt-input w-full rounded-xl px-4 py-3 text-sm resize-none"></textarea>
                 <div class="flex items-center gap-3 mt-3">
@@ -331,19 +336,46 @@
 
             <div id="organizer-view" class="mt-card rounded-2xl overflow-hidden mb-5 hidden">
                 <div class="flex flex-wrap items-center justify-between gap-2 px-5 py-4 border-b border-white/5">
-                    <h3 class="font-mono text-xs text-gray-400 uppercase tracking-wider">Results (visible to you only)</h3>
-                    <span class="font-mono text-[10px] text-gray-600"><i class="fa-solid fa-hand-pointer mr-1"></i>Hover a block for names, tap on mobile</span>
+                    <h3 class="font-mono text-xs text-gray-400 uppercase tracking-wider">Results (visible to the organizer only)</h3>
+                    <span class="font-mono text-[10px] text-gray-600"><i class="fa-solid fa-hand-pointer mr-1"></i>Hover a block to see names; tap on mobile</span>
                 </div>
                 <div id="slot-bars" class="divide-y divide-white/5"></div>
+                <div id="add-slot-mount-org">
+                    <!-- Propose a time: collapsed by default, opened by the "Add a time" button.
+                         renderAll moves this block under the organizer's bars, or under the
+                         participant's slot cards, depending on the role. -->
+                    <div id="add-slot-card" class="hidden px-5 py-4 border-t border-white/5">
+                        <button id="add-slot-toggle" type="button" class="w-full py-4 rounded-2xl border border-dashed border-white/10 text-gray-500 hover:text-accent-purple hover:border-accent-purple/30 transition text-sm font-mono">
+                            <i class="fa-solid fa-plus mr-2"></i>Add a time
+                        </button>
+                        <div id="add-slot-form" class="hidden mt-4">
+                            <div class="flex flex-wrap items-end gap-3">
+                                <div class="flex-1 min-w-[180px]">
+                                    <label class="block font-mono text-[10px] text-gray-500 uppercase tracking-wider mb-2">Propose another time</label>
+                                    <div class="flex flex-wrap gap-2">
+                                        <input id="new-date" type="date" class="mt-input rounded-lg px-3 py-2 text-sm font-mono">
+                                        <input id="new-time" type="time" value="14:00" class="mt-input rounded-lg px-3 py-2 text-sm font-mono">
+                                        <span class="text-gray-600 font-mono text-sm self-center">&ndash;</span>
+                                        <input id="new-end" type="time" value="15:00" class="mt-input rounded-lg px-3 py-2 text-sm font-mono">
+                                    </div>
+                                </div>
+                                <button id="add-slot" class="px-5 py-2.5 rounded-full bg-accent-purple text-black font-bold text-xs tracking-wide hover:shadow-[0_0_20px_rgb(var(--c-purple)/.5)] transition">
+                                    <i class="fa-solid fa-plus mr-1.5"></i>Add
+                                </button>
+                            </div>
+                            <p id="add-slot-msg" class="text-[11px] text-gray-600 font-mono mt-3"></p>
+                        </div>
+                    </div>
+                </div>
                 <div class="px-5 py-4 border-t border-white/5 flex items-center justify-between gap-3">
                     <h4 class="font-mono text-[11px] text-gray-500 uppercase tracking-wider">Participants (<span id="voter-count">0</span>)</h4>
-                    <span class="font-mono text-[10px] text-gray-600">Removing someone lets them vote again</span>
+                    <span class="font-mono text-[10px] text-gray-600">Removing a participant lets them vote again.</span>
                 </div>
                 <div id="voter-list" class="divide-y divide-white/5"></div>
                 <div class="px-5 py-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-[11px] font-mono text-gray-500 border-t border-white/5">
-                    <span><span class="inline-block w-3 h-3 rounded-sm align-middle mr-1.5" style="background:rgb(var(--c-success))"></span>Works</span>
+                    <span><span class="inline-block w-3 h-3 rounded-sm align-middle mr-1.5" style="background:rgb(var(--c-success))"></span>Available</span>
                     <span><span class="inline-block w-3 h-3 rounded-sm align-middle mr-1.5" style="background:rgb(var(--c-warn))"></span>Needs notice</span>
-                    <span><span class="inline-block w-3 h-3 rounded-sm align-middle mr-1.5" style="background:rgb(var(--c-g500))"></span>Can't</span>
+                    <span><span class="inline-block w-3 h-3 rounded-sm align-middle mr-1.5" style="background:rgb(var(--c-g500))"></span>Unavailable</span>
                     <span><span class="inline-block w-3 h-3 rounded-sm align-middle mr-1.5" style="background:rgb(var(--c-ink)/.12)"></span>No reply</span>
                 </div>
             </div>
@@ -351,9 +383,10 @@
             <!-- Participant: three-way pick -->
             <div id="participant-view" class="mt-card rounded-2xl overflow-hidden mb-5 hidden">
                 <div class="px-5 py-4 border-b border-white/5">
-                    <h3 class="font-mono text-xs text-gray-400 uppercase tracking-wider mb-1">Pick the times that work</h3>
+                    <h3 class="font-mono text-xs text-gray-400 uppercase tracking-wider mb-1">Select the times you are available</h3>
                 </div>
                 <div id="slot-cards" class="divide-y divide-white/5"></div>
+                <div id="add-slot-mount-part"></div>
                 <div class="px-5 py-4 border-t border-white/5 flex flex-wrap items-center justify-between gap-3">
                     <span id="p-submit-msg" class="font-mono text-[11px] text-gray-600"></span>
                     <button id="p-submit" class="px-6 py-2.5 rounded-full bg-accent-purple text-black text-sm font-bold tracking-wide hover:opacity-90 transition disabled:opacity-40 disabled:cursor-not-allowed shrink-0" disabled>
@@ -362,24 +395,6 @@
                 </div>
             </div>
 
-            <!-- Propose a time -->
-            <div id="add-slot-card" class="mt-card rounded-2xl p-5 mb-5 hidden">
-                <div class="flex flex-wrap items-end gap-3">
-                    <div class="flex-1 min-w-[180px]">
-                        <label class="block font-mono text-[10px] text-gray-500 uppercase tracking-wider mb-2">Propose another time</label>
-                        <div class="flex flex-wrap gap-2">
-                            <input id="new-date" type="date" class="mt-input rounded-lg px-3 py-2 text-sm font-mono">
-                            <input id="new-time" type="time" value="14:00" class="mt-input rounded-lg px-3 py-2 text-sm font-mono">
-                            <span class="text-gray-600 font-mono text-sm self-center">to</span>
-                            <input id="new-end" type="time" value="15:00" class="mt-input rounded-lg px-3 py-2 text-sm font-mono">
-                        </div>
-                    </div>
-                    <button id="add-slot" class="px-5 py-2.5 rounded-full bg-accent-purple text-black font-bold text-xs tracking-wide hover:shadow-[0_0_20px_rgb(var(--c-purple)/.5)] transition">
-                        <i class="fa-solid fa-plus mr-1.5"></i>Add
-                    </button>
-                </div>
-                <p id="add-slot-msg" class="text-[11px] text-gray-600 font-mono mt-3">Length follows the meeting length set by the organizer.</p>
-            </div>
 
             <div id="verdict" class="rounded-2xl p-5 border border-accent-purple/25 bg-accent-purple/[0.06]"></div>
 
