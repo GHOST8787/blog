@@ -199,7 +199,7 @@
 
         try {
             // 1. 讀取 JSON 清單 (確保檔名與路徑正確)
-            const listResponse = await fetch('projects.json');
+            const listResponse = await fetch('data/projects.json');
             if (!listResponse.ok) throw new Error('無法取得專案清單');
             const projects = (await listResponse.json()).reverse();
 

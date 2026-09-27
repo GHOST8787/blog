@@ -168,7 +168,7 @@
         if (!container) return;
 
         try {
-            const listResponse = await fetch('projects.json');
+            const listResponse = await fetch('data/projects.json');
             if (!listResponse.ok) throw new Error('Failed to fetch project list');
             const projects = (await listResponse.json()).reverse();
 

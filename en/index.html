@@ -297,7 +297,7 @@
                         requestAnimationFrame(step);
                     }
 
-                    var articlesReady = fetch(rootPath + 'articles.json')
+                    var articlesReady = fetch(rootPath + 'data/articles.json')
                         .then(function (r) { return r.ok ? r.json() : []; })
                         .then(function (list) {
                             if (!Array.isArray(list)) return;
@@ -353,7 +353,7 @@
                         });
 
                     // 3d) Fetch projects.json — 動態算 Projects 篇數
-                    var projectsReady = fetch(rootPath + 'projects.json')
+                    var projectsReady = fetch(rootPath + 'data/projects.json')
                         .then(function (r) { return r.ok ? r.json() : []; })
                         .then(function (list) {
                             if (!Array.isArray(list)) return;
@@ -363,7 +363,7 @@
                         .catch(function () {});
 
                     // 3e) Fetch stats.json —「本月持續開發」手動維護的數字（同目錄 en/stats.json）
-                    var statsReady = fetch(rootPath + 'stats.json')
+                    var statsReady = fetch(rootPath + 'data/stats.json')
                         .then(function (r) { return r.ok ? r.json() : null; })
                         .then(function (s) {
                             if (!s || typeof s.activeThisMonth !== 'number') return;

@@ -11,7 +11,7 @@ const isEn = process.argv.includes('--en');
 const root = path.resolve(__dirname, '..');
 const baseDir = isEn ? path.join(root, 'en') : root;
 const expDir = path.join(baseDir, 'EXP');
-const outJson = path.join(baseDir, 'articles.json');
+const outJson = path.join(baseDir, 'data', 'articles.json');
 
 function extractTitle(html) {
   const h1Match = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/);

@@ -34,7 +34,7 @@ function renderError(msg) {
 
 async function loadResumes() {
     try {
-        const res = await fetch('resumes.json', { cache: 'no-store' });
+        const res = await fetch('data/resumes.json', { cache: 'no-store' });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const list = await res.json();
         if (!Array.isArray(list) || list.length === 0) {

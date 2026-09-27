@@ -107,7 +107,7 @@
         if (!container) return;
 
         try {
-            const res = await fetch('quotes.json');
+            const res = await fetch('data/quotes.json');
             if (!res.ok) throw new Error('無法載入名言');
             const quotes = await res.json();
 

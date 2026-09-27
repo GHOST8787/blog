@@ -202,7 +202,7 @@
         if (!container) return;
 
         try {
-            const listResponse = await fetch('articles.json');
+            const listResponse = await fetch('data/articles.json');
             if (!listResponse.ok) throw new Error('無法取得文章清單');
             const articles = (await listResponse.json()).reverse();
 

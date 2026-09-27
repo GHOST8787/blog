@@ -184,11 +184,11 @@
     async function init() {
       let publicArticles = new Set(), publicProjects = new Set();
       try {
-        const a = await fetch('articles.json').then(r => r.json());
+        const a = await fetch('data/articles.json').then(r => r.json());
         publicArticles = new Set(a.map(x => x.url));
       } catch { }
       try {
-        const p = await fetch('projects.json').then(r => r.json());
+        const p = await fetch('data/projects.json').then(r => r.json());
         publicProjects = new Set(p.map(x => x.url));
       } catch { }
 
