@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Site Stats</title>
+    <link rel="icon" type="image/png" href="PNG/pixelS2.png">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="theme.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async></script>
+    <script type="module" src="stats/stats.js"></script>
+    <link rel="stylesheet" href="tw.css">
+    <style>
+        /* 展開箭頭：用原生 <details>，只換掉預設三角形 */
+        .drill > summary { list-style: none; cursor: pointer; }
+        .drill > summary::-webkit-details-marker { display: none; }
+        .drill[open] .drill-caret { transform: rotate(90deg); }
+        .drill-caret { transition: transform .15s ease; }
+        /* 原生日期選擇器跟著站上的深淺主題（深色沒有 data-theme，淡色才有） */
+        input[type="date"] { color-scheme: dark; }
+        :root[data-theme="light"] input[type="date"] { color-scheme: light; }
+    </style>
+</head>
+<body class="font-sans">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+    </div>
+
+    <main class="relative z-10 max-w-6xl mx-auto px-4 sm:px-5 py-8">
+
+        <div class="flex flex-wrap items-center gap-x-4 gap-y-3 mb-5">
+            <a href="index.html" class="text-gray-500 hover:text-accent-purple transition-colors" title="回首頁">
+                <i class="fa-solid fa-arrow-left text-sm"></i>
+            </a>
+            <h1 class="text-xl font-bold text-white leading-none">Site Stats</h1>
+            <span class="text-[11px] font-mono text-gray-600" id="s-who">未登入</span>
+            <button id="s-logout" class="text-[11px] font-mono text-gray-600 hover:text-white transition-colors">登出</button>
+        </div>
+
+        <!-- 登入：只有站長帳號看得到數字 -->
+        <section id="s-login" class="max-w-sm">
+            <div class="bg-surface border border-white/10 rounded-xl p-6">
+                <h2 class="text-base font-bold text-white mb-1">站長登入</h2>
+                <p class="text-gray-500 text-xs mb-4">流量資料只有你讀得到，訪客連讀都讀不到。</p>
+                <div id="s-gis-btn"></div>
+                <p id="s-login-err" class="text-accent-danger text-xs font-mono mt-3"></p>
+            </div>
+        </section>
+
+        <div id="s-body" class="hidden">
+
+            <div class="flex flex-wrap items-center gap-2 mb-5">
+                <div class="ml-auto flex items-center gap-1 rounded-lg border border-white/10 p-1" id="s-range">
+                    <button data-days="7"  class="px-2.5 py-1 rounded text-[11px] font-mono text-gray-400 hover:text-white transition-colors">7 天</button>
+                    <button data-days="30" class="px-2.5 py-1 rounded text-[11px] font-mono bg-accent-purple/15 text-white transition-colors">30 天</button>
+                    <button data-days="90" class="px-2.5 py-1 rounded text-[11px] font-mono text-gray-400 hover:text-white transition-colors">90 天</button>
+                    <button data-custom class="px-2.5 py-1 rounded text-[11px] font-mono text-gray-400 hover:text-white transition-colors">自訂</button>
+                </div>
+            </div>
+
+            <!-- 自訂區間。上限一年，因為資料只保存一年 -->
+            <div id="s-custom" class="hidden flex-wrap items-center gap-2 mb-5 bg-surface border border-white/10 rounded-lg px-3 py-2">
+                <label class="text-[11px] font-mono text-gray-500">開始</label>
+                <input type="date" id="s-from" class="bg-bg border border-white/10 rounded px-2 py-1 text-[11px] font-mono text-white">
+                <label class="text-[11px] font-mono text-gray-500">結束</label>
+                <input type="date" id="s-to" class="bg-bg border border-white/10 rounded px-2 py-1 text-[11px] font-mono text-white">
+                <button id="s-apply" class="px-3 py-1 rounded bg-accent-purple/15 border border-accent-purple/40 text-[11px] font-mono text-white hover:bg-accent-purple/25 transition-colors">套用</button>
+                <span id="s-custom-msg" class="text-[11px] font-mono text-gray-600">資料保存一年，最早只能選到一年前</span>
+            </div>
+
+            <p class="text-[11px] font-mono text-gray-600 mb-3" id="s-rangelabel"></p>
+
+            <div class="grid grid-cols-12 gap-3">
+
+                <div class="col-span-12 grid grid-cols-2 lg:grid-cols-4 gap-3" id="s-cards"></div>
+
+                <section class="col-span-12 lg:col-span-8 bg-surface border border-white/10 rounded-xl p-4 flex flex-col">
+                    <div class="flex items-center justify-between gap-3 flex-wrap">
+                        <h2 class="text-sm font-semibold text-white">每日瀏覽</h2>
+                        <div class="flex items-center gap-3 text-[11px] font-mono" id="s-legend"></div>
+                    </div>
+                    <div id="s-readout" class="text-[11px] font-mono text-gray-500 mt-1 h-4"></div>
+                    <div id="s-chart" class="mt-1 flex-1 flex flex-col justify-end"></div>
+                </section>
+
+                <section class="col-span-12 lg:col-span-4 bg-surface border border-white/10 rounded-xl p-4">
+                    <h2 class="text-sm font-semibold text-white mb-3">熱門頁面</h2>
+                    <ol class="space-y-2" id="s-top"></ol>
+                </section>
+
+                <section class="col-span-12 bg-surface border border-white/10 rounded-xl divide-y divide-white/5" id="s-details"></section>
+
+            </div>
+
+            <p class="text-gray-600 text-[11px] font-mono mt-6 leading-relaxed">
+                只記頁面路徑與時間，沒有 IP、沒有 cookie。同一分頁重整不重複計算，不執行 JavaScript 的爬蟲不計入。<br>
+                以台北時間分日，資料保存一年，開這一頁時會順手清掉更舊的。
+            </p>
+
+        </div>
+
+    </main>
+
+</body>
+</html>
