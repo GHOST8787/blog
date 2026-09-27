@@ -354,9 +354,9 @@
                                     <label class="block font-mono text-[10px] text-gray-500 uppercase tracking-wider mb-2">Propose another time</label>
                                     <div class="flex flex-wrap gap-2">
                                         <input id="new-date" type="date" class="mt-input rounded-lg px-3 py-2 text-sm font-mono">
-                                        <input id="new-time" type="time" value="14:00" class="mt-input rounded-lg px-3 py-2 text-sm font-mono">
+                                        <input id="new-time" type="text" inputmode="numeric" maxlength="8" placeholder="HH:MM" value="14:00" class="mt-input rounded-lg px-3 py-2 text-sm font-mono w-24">
                                         <span class="text-gray-600 font-mono text-sm self-center">&ndash;</span>
-                                        <input id="new-end" type="time" value="15:00" class="mt-input rounded-lg px-3 py-2 text-sm font-mono">
+                                        <input id="new-end" type="text" inputmode="numeric" maxlength="8" placeholder="HH:MM" value="15:00" class="mt-input rounded-lg px-3 py-2 text-sm font-mono w-24">
                                     </div>
                                 </div>
                                 <button id="add-slot" class="px-5 py-2.5 rounded-full bg-accent-purple text-black font-bold text-xs tracking-wide hover:shadow-[0_0_20px_rgb(var(--c-purple)/.5)] transition">

@@ -177,6 +177,54 @@ export async function savedName(kind) {
 }
 
 // 把 HH:MM 加上幾分鐘，跨午夜就繞回來。建立表單與提議時段都用它。
+/* 時間輸入用文字欄位，不用 <input type="time">。
+   原生那個顯示 12 還是 24 小時制由瀏覽器的介面語言決定，網頁端改不了，
+   而且它是分段欄位，沒辦法整串打或貼上。這裡自己解析，一律 24 小時制。
+   接受 1400、14:00、14.00、9:5、全形冒號、只打小時；回傳 'HH:MM'，看不懂回 null。 */
+export function parseHM(raw) {
+    if (typeof raw !== 'string') return null;
+    let s = raw.trim()
+        // 全形數字轉半形
+        .replace(/[０-９]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0xFEE0))
+        // 各種分隔符一律收斂成冒號：全半形冒號句點、連字號、斜線、「時」
+        .replace(/[：．.\-－−—/／時點点]/g, ':')
+        // 空白與「分」直接丟掉，讓 14時30分、2 30 都成立
+        .replace(/[\s分]/g, '')
+        .replace(/:+/g, ':')
+        .replace(/:$/, '');        // 只打到 12. 或 12: 就當整點
+    if (!s) return null;
+    let h, m;
+    const colon = s.match(/^(\d{1,2}):(\d{1,2})$/);
+    if (colon) {
+        h = Number(colon[1]); m = Number(colon[2]);
+    } else if (/^\d{3,4}$/.test(s)) {
+        h = Number(s.slice(0, s.length - 2)); m = Number(s.slice(-2));
+    } else if (/^\d{1,2}$/.test(s)) {
+        h = Number(s); m = 0;                      // 只打小時就當整點
+    } else {
+        return null;
+    }
+    if (h > 23 || m > 59) return null;
+    return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0');
+}
+
+// 把欄位的值就地正規化並標示對錯。回傳 'HH:MM' 或 null（空白也算 null，但不標紅）
+export function normalizeTime(el) {
+    if (!el) return null;
+    const raw = el.value.trim();
+    if (!raw) { markTime(el, true); return null; }
+    const v = parseHM(raw);
+    if (v) { el.value = v; markTime(el, true); return v; }
+    markTime(el, false);
+    return null;
+}
+
+export function markTime(el, ok) {
+    if (!el) return;
+    el.classList.toggle('border-red-400', !ok);
+    el.setAttribute('aria-invalid', ok ? 'false' : 'true');
+}
+
 export function addMinutes(hhmm, mins) {
     const [h, m] = hhmm.split(':').map(Number);
     const t = (h * 60 + m + mins) % 1440;

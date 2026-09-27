@@ -4,7 +4,7 @@ import {
     app, db, auth, S, T, LANG, $, $state, $home, $poll, pollId, MAX_POLLS,
     STATES, ICONS, SEGCLS, SEGCOLOR,
     esc, fmtRange, fmtDate, sortedSlots, displayName, voterUids, voteOf,
-    isOrganizer, votingOpen, showState, addMinutes,
+    isOrganizer, votingOpen, showState, addMinutes, parseHM, normalizeTime, markTime,
     googleName, loadSavedNames, savedName, watch, dropWatches
 } from './core.js';
 
@@ -755,8 +755,13 @@ function renderVerdict() {
 }
 
 // --- 提議新時段 ---
-$('new-time').addEventListener('change', () => {
-    $('new-end').value = addMinutes($('new-time').value, (S.meta && S.meta.durationMin) || 60);
+['new-time', 'new-end'].forEach(id => {
+    $(id).addEventListener('change', () => {
+        const v = normalizeTime($(id));          // 1400 → 14:00，看不懂就標紅
+        if (v && id === 'new-time') {
+            $('new-end').value = addMinutes(v, (S.meta && S.meta.durationMin) || 60);
+        }
+    });
 });
 
 // 提議時段預設收合，按按鈕才展開
@@ -778,13 +783,22 @@ function setAddSlotMsg(text, isError) {
 // 改任何一個時間欄位就把重複警告清掉
 ['new-date', 'new-time', 'new-end'].forEach(id => {
     const el = $(id);
-    if (el) el.addEventListener('input', () => setAddSlotMsg(addSlotHint(), false));
+    if (!el) return;
+    el.addEventListener('input', () => {
+        setAddSlotMsg(addSlotHint(), false);
+        if (id !== 'new-date') markTime(el, true);   // 重打就把紅框拿掉
+    });
 });
 
 $('add-slot').addEventListener('click', async () => {
     if (!S.me) return;
-    const d = $('new-date').value, t = $('new-time').value, te = $('new-end').value;
-    if (!d || !t || !te) return;
+    const d = $('new-date').value;
+    const t = normalizeTime($('new-time')), te = normalizeTime($('new-end'));
+    if (!t || !te) {
+        if ($('new-time').value.trim() || $('new-end').value.trim()) setAddSlotMsg(T.badTime, true);
+        return;
+    }
+    if (!d) return;
     const start = new Date(`${d}T${t}`).getTime();
     let endMs = new Date(`${d}T${te}`).getTime();
     if (endMs <= start) endMs += 86400000;

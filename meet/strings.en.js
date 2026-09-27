@@ -51,6 +51,7 @@ export const T = {
     leadFmt: r => `Best so far ${r}`,
     lockedFmt: r => `Locked ${r}`,
     leadNone: 'Best so far: no replies yet',
+    badTime: 'That time is not readable. Use the 24-hour clock, e.g. 1400 or 14:00.',
     dupSlot: 'That slot is already on the list.',
     delSlot: 'Delete this slot',
     delSlotConfirm: 'Tap again to delete',

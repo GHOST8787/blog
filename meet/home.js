@@ -4,7 +4,7 @@ import {
     app, db, auth, S, T, LANG, $, $state, $home, $poll, pollId, MAX_POLLS,
     STATES, ICONS, SEGCLS, SEGCOLOR,
     esc, fmtRange, fmtDate, sortedSlots, displayName, voterUids, voteOf,
-    isOrganizer, votingOpen, showState, addMinutes,
+    isOrganizer, votingOpen, showState, addMinutes, parseHM, normalizeTime, markTime,
     googleName, loadSavedNames, savedName, watch, dropWatches
 } from './core.js';
 
@@ -284,9 +284,9 @@ $('c-cancel').addEventListener('click', () => $('mt-create').classList.add('hidd
 function slotRowHtml(date, start, end) {
     return `<div class="flex flex-wrap items-center gap-2 js-slot-row">
         <input type="date" value="${date}" class="mt-input rounded-lg px-3 py-2 text-sm font-mono js-sd">
-        <input type="time" value="${start}" class="mt-input rounded-lg px-3 py-2 text-sm font-mono js-st">
+        <input type="text" inputmode="numeric" maxlength="8" placeholder="HH:MM" value="${start}" class="mt-input rounded-lg px-3 py-2 text-sm font-mono w-24 js-st">
         <span class="text-gray-600 font-mono text-sm">–</span>
-        <input type="time" value="${end}" class="mt-input rounded-lg px-3 py-2 text-sm font-mono js-se">
+        <input type="text" inputmode="numeric" maxlength="8" placeholder="HH:MM" value="${end}" class="mt-input rounded-lg px-3 py-2 text-sm font-mono w-24 js-se">
         <button class="js-rm w-9 h-9 rounded-lg border border-white/10 text-gray-600 hover:text-red-400 transition text-xs"><i class="fa-regular fa-trash-can"></i></button>
     </div>`;
 }
@@ -306,15 +306,23 @@ $('c-add-slot').addEventListener('click', () => {
 
 // 改開始時間 → 結束時間跟著往後推一個會議長度；改長度 → 全部重算
 $('c-slots').addEventListener('change', e => {
-    const st = e.target.closest('.js-st');
-    if (!st) return;
-    const row = st.closest('.js-slot-row');
-    row.querySelector('.js-se').value = addMinutes(st.value, Number($('c-duration').value) || 60);
+    const field = e.target.closest('.js-st, .js-se');
+    if (!field) return;
+    const v = normalizeTime(field);              // 1400 → 14:00，看不懂就標紅
+    if (!v || !field.classList.contains('js-st')) return;
+    const row = field.closest('.js-slot-row');
+    row.querySelector('.js-se').value = addMinutes(v, Number($('c-duration').value) || 60);
+});
+// 開始重打就把紅框拿掉，不要邊打邊噴錯
+$('c-slots').addEventListener('input', e => {
+    const field = e.target.closest('.js-st, .js-se');
+    if (field) markTime(field, true);
 });
 $('c-duration').addEventListener('change', () => {
     const dur = Number($('c-duration').value) || 60;
     $('c-slots').querySelectorAll('.js-slot-row').forEach(row => {
-        row.querySelector('.js-se').value = addMinutes(row.querySelector('.js-st').value, dur);
+        const v = parseHM(row.querySelector('.js-st').value);
+        if (v) row.querySelector('.js-se').value = addMinutes(v, dur);
     });
 });
 $('c-slots').addEventListener('click', e => {
@@ -336,9 +344,15 @@ $('c-submit').addEventListener('click', async () => {
     const seen = new Set();
     for (const r of rows) {
         const d = r.querySelector('.js-sd').value;
-        const t = r.querySelector('.js-st').value;
-        const te = r.querySelector('.js-se').value;
-        if (!d || !t || !te) continue;
+        const t = normalizeTime(r.querySelector('.js-st'));
+        const te = normalizeTime(r.querySelector('.js-se'));
+        if (!d || !t || !te) {
+            // 有填但看不懂就直接擋下，不要默默略過整列
+            if (r.querySelector('.js-st').value.trim() || r.querySelector('.js-se').value.trim()) {
+                err.textContent = T.badTime; return;
+            }
+            continue;
+        }
         const start = new Date(`${d}T${t}`).getTime();
         let end = new Date(`${d}T${te}`).getTime();
         if (end <= start) end += 86400000;   // 跨午夜
