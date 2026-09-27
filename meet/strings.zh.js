@@ -60,6 +60,7 @@ export const T = {
     lockedFmt: r => `已定案 ${r}`,
     leadNone: '目前預計：還沒有人回覆',
     badTime: '時間格式看不懂，請用 24 小時制，例如 1400 或 14:00',
+    badDate: '日期看不懂，打 0930 或 20260930 都可以',
     dupSlot: '此時段已存在，請選擇其他時間。',
     delSlot: '刪除這個時段',
     delSlotConfirm: '再按一次刪除',

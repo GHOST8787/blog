@@ -4,7 +4,8 @@ import {
     app, db, auth, S, T, LANG, $, $state, $home, $poll, pollId, MAX_POLLS,
     STATES, ICONS, SEGCLS, SEGCOLOR,
     esc, fmtRange, fmtDate, sortedSlots, displayName, voterUids, voteOf,
-    isOrganizer, votingOpen, showState, addMinutes, parseHM, normalizeTime, markTime,
+    isOrganizer, votingOpen, showState, addMinutes, parseHM, normalizeTime, markField,
+    normalizeDate, wireCellRow, focusCell,
     googleName, loadSavedNames, savedName, watch, dropWatches
 } from './core.js';
 
@@ -755,6 +756,10 @@ function renderVerdict() {
 }
 
 // --- 提議新時段 ---
+// 一列三格：日期、開始、結束。進格整格選取、左右鍵跳格、Enter 直接加入候選。
+wireCellRow([$('new-date'), $('new-time'), $('new-end')], () => $('add-slot').click());
+
+$('new-date').addEventListener('change', () => normalizeDate($('new-date')));
 ['new-time', 'new-end'].forEach(id => {
     $(id).addEventListener('change', () => {
         const v = normalizeTime($(id));          // 1400 → 14:00，看不懂就標紅
@@ -768,7 +773,16 @@ function renderVerdict() {
 $('add-slot-toggle').addEventListener('click', () => {
     const form = $('add-slot-form');
     form.classList.toggle('hidden');
-    if (!form.classList.contains('hidden')) setAddSlotMsg(addSlotHint(), false);
+    if (form.classList.contains('hidden')) return;
+    setAddSlotMsg(addSlotHint(), false);
+    // 日期欄是文字欄，空白的話先填明天，讓人可以直接敲時間按 Enter
+    const dEl = $('new-date');
+    if (!dEl.value.trim()) {
+        const t = new Date(Date.now() + 86400000);
+        dEl.value = String(t.getMonth() + 1).padStart(2, '0') + '/' + String(t.getDate()).padStart(2, '0');
+        normalizeDate(dEl);
+    }
+    focusCell(dEl);
 });
 
 // add-slot-msg 的預設提示，換時間時還原回去。時長沒有鎖死，只是建議值。
@@ -786,19 +800,22 @@ function setAddSlotMsg(text, isError) {
     if (!el) return;
     el.addEventListener('input', () => {
         setAddSlotMsg(addSlotHint(), false);
-        if (id !== 'new-date') markTime(el, true);   // 重打就把紅框拿掉
+        markField(el, true);                     // 重打就把紅框拿掉
     });
 });
 
 $('add-slot').addEventListener('click', async () => {
     if (!S.me) return;
-    const d = $('new-date').value;
+    const d = normalizeDate($('new-date'));
     const t = normalizeTime($('new-time')), te = normalizeTime($('new-end'));
+    if (!d) {
+        if ($('new-date').value.trim()) setAddSlotMsg(T.badDate, true);
+        return;
+    }
     if (!t || !te) {
         if ($('new-time').value.trim() || $('new-end').value.trim()) setAddSlotMsg(T.badTime, true);
         return;
     }
-    if (!d) return;
     const start = new Date(`${d}T${t}`).getTime();
     let endMs = new Date(`${d}T${te}`).getTime();
     if (endMs <= start) endMs += 86400000;
@@ -826,6 +843,12 @@ $('add-slot').addEventListener('click', async () => {
         // 自己提的時段預設幫你勾「可以」，但一樣要按送出才算數
         draft[slotId] = 'yes';
         renderCards();
+        // 這一列不清空：日期留著、開始接上剛才的結束、結束再往後推一個建議時長，
+        // 焦點回到開始時間並整格選取，連續加好幾段不用重打日期
+        const dur = (S.meta && S.meta.durationMin) || 60;
+        $('new-time').value = te;
+        $('new-end').value = addMinutes(te, dur);
+        focusCell($('new-time'));
     }
     catch (err) {
         console.error('[meet] add slot failed', err);

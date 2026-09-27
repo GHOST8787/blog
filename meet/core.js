@@ -212,17 +212,135 @@ export function parseHM(raw) {
 export function normalizeTime(el) {
     if (!el) return null;
     const raw = el.value.trim();
-    if (!raw) { markTime(el, true); return null; }
+    if (!raw) { markField(el, true); return null; }
     const v = parseHM(raw);
-    if (v) { el.value = v; markTime(el, true); return v; }
-    markTime(el, false);
+    if (v) { el.value = v; markField(el, true); return v; }
+    markField(el, false);
     return null;
 }
 
-export function markTime(el, ok) {
+// 把欄位標成對或錯。時間欄與日期欄共用這一支。
+export function markField(el, ok) {
     if (!el) return;
     el.classList.toggle('border-red-400', !ok);
     el.setAttribute('aria-invalid', ok ? 'false' : 'true');
+}
+
+/* 日期輸入也用文字欄位，理由跟時間欄一樣：<input type="date"> 是分段欄位，
+   沒辦法整串打或貼，顯示成 yyyy/mm/dd 還是 mm/dd/yyyy 由瀏覽器語言決定。
+   這裡自己解析，接受 930、0930、20260930、2026-09-30、2026年9月30日、全形數字。
+   4 碼以下當「今年的月日」，算出來的日子已經過了就跳明年——開會都往後排。
+   回傳 'YYYY-MM-DD'，看不懂回 null。 */
+export function parseDate(raw, today) {
+    if (typeof raw !== 'string') return null;
+    // 全形數字轉半形，各種分隔符一律收斂成斜線，再把多餘的斜線清掉
+    const norm = raw.trim()
+        .replace(/[０-９]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0xFEE0))
+        .replace(/[\s\/／\-－−—.．年月日]/g, '/')
+        .replace(/\/+/g, '/')
+        .replace(/^\/|\/$/g, '');
+    if (!norm) return null;
+
+    const now = today instanceof Date ? today : new Date();
+    let y, mo, d;
+    if (norm.includes('/')) {
+        // 有分隔符就照段落讀，2026/9/30 與 2026年9月30日 都是三段
+        const parts = norm.split('/');
+        if (parts.some(x => !/^\d{1,4}$/.test(x))) return null;
+        if (parts.length === 3) {
+            [y, mo, d] = parts.map(Number);
+        } else if (parts.length === 2) {
+            y = now.getFullYear(); [mo, d] = parts.map(Number);
+        } else {
+            return null;
+        }
+    } else {
+        if (!/^\d+$/.test(norm)) return null;
+        if (norm.length === 8) {
+            y = Number(norm.slice(0, 4)); mo = Number(norm.slice(4, 6)); d = Number(norm.slice(6));
+        } else if (norm.length === 3 || norm.length === 4) {
+            y = now.getFullYear();
+            mo = Number(norm.slice(0, norm.length - 2)); d = Number(norm.slice(-2));
+        } else {
+            return null;
+        }
+    }
+    if (mo < 1 || mo > 12 || d < 1) return null;
+    if (y < 100) y += 2000;          // 26/9/30 這種兩碼年份
+
+    const mk = (yy) => {
+        const dt = new Date(yy, mo - 1, d);
+        // new Date(2026, 1, 31) 會自己滾成 3/3，比對回去就能擋掉不存在的日子
+        return (dt.getFullYear() === yy && dt.getMonth() === mo - 1 && dt.getDate() === d) ? dt : null;
+    };
+    let dt = mk(y);
+    if (!dt) return null;
+    // 只給了月日又已經過了，當作明年——開會都往後排
+    const gaveYear = norm.includes('/') ? norm.split('/').length === 3 : norm.length === 8;
+    if (!gaveYear) {
+        const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        if (dt < midnight) {
+            dt = mk(y + 1);
+            if (!dt) return null;    // 2/29 碰到明年非閏年
+        }
+    }
+    return dt.getFullYear() + '-'
+        + String(dt.getMonth() + 1).padStart(2, '0') + '-'
+        + String(dt.getDate()).padStart(2, '0');
+}
+
+// 把日期欄就地正規化並標對錯，順便更新旁邊那行完整日期。回傳 'YYYY-MM-DD' 或 null
+// 欄位裡只顯示 MM/DD（好讀、好重打），完整的 ISO 值放 data-iso，送出時讀它。
+export function normalizeDate(el) {
+    if (!el) return null;
+    const lab = el.parentElement && el.parentElement.querySelector('.js-dlabel');
+    const paint = (v) => { if (lab) lab.textContent = v ? v.replace(/-/g, '/') : ''; };
+    const raw = el.value.trim();
+    if (!raw) { markField(el, true); paint(null); delete el.dataset.iso; return null; }
+    const v = parseDate(raw);
+    if (v) {
+        el.value = v.slice(5).replace('-', '/');
+        el.dataset.iso = v;
+        markField(el, true); paint(v);
+        return v;
+    }
+    markField(el, false); paint(null); delete el.dataset.iso;
+    return null;
+}
+
+/* 一列格子的鍵盤行為：進去就整格選取、左右鍵跳到隔壁格、Enter 送出。
+   左右鍵完全接走，格子裡不移游標——反正每次進格都是整格選取、整串重打。
+   點進來時瀏覽器會在 mouseup 把游標放到點擊位置、把 select() 蓋掉，
+   所以第一次 mouseup 要擋掉。 */
+export function wireCellRow(cells, onEnter) {
+    const list = cells.filter(Boolean);
+    list.forEach((el, i) => {
+        if (el.dataset.cellWired) return;
+        el.dataset.cellWired = '1';
+        el.addEventListener('focus', () => { el.dataset.pickAll = '1'; el.select(); });
+        el.addEventListener('mouseup', (e) => {
+            if (el.dataset.pickAll) { e.preventDefault(); delete el.dataset.pickAll; }
+        });
+        el.addEventListener('blur', () => { delete el.dataset.pickAll; });
+        el.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+                const next = list[i + (e.key === 'ArrowRight' ? 1 : -1)];
+                if (!next) return;
+                e.preventDefault();
+                next.focus();
+            } else if (e.key === 'Enter' && onEnter) {
+                e.preventDefault();
+                onEnter();
+            }
+        });
+    });
+}
+
+// 把焦點放進某一格並整格選取。加完候選之後回到開始時間那一格用的。
+export function focusCell(el) {
+    if (!el) return;
+    el.focus();
+    el.select();
 }
 
 export function addMinutes(hhmm, mins) {

@@ -4,7 +4,8 @@ import {
     app, db, auth, S, T, LANG, $, $state, $home, $poll, pollId, MAX_POLLS,
     STATES, ICONS, SEGCLS, SEGCOLOR,
     esc, fmtRange, fmtDate, sortedSlots, displayName, voterUids, voteOf,
-    isOrganizer, votingOpen, showState, addMinutes, parseHM, normalizeTime, markTime,
+    isOrganizer, votingOpen, showState, addMinutes, parseHM, normalizeTime, markField,
+    normalizeDate, wireCellRow, focusCell,
     googleName, loadSavedNames, savedName, watch, dropWatches
 } from './core.js';
 
@@ -283,7 +284,8 @@ $('c-cancel').addEventListener('click', () => $('mt-create').classList.add('hidd
 
 function slotRowHtml(date, start, end) {
     return `<div class="flex flex-wrap items-center gap-2 js-slot-row">
-        <input type="date" value="${date}" class="mt-input rounded-lg px-3 py-2 text-sm font-mono js-sd">
+        <input type="text" inputmode="numeric" maxlength="10" placeholder="MM/DD" value="${date.slice(5).replace('-', '/')}" class="mt-input rounded-lg px-3 py-2 text-sm font-mono w-24 js-sd" data-iso="${date}">
+        <span class="js-dlabel font-mono text-[11px] text-gray-600">${date.replace(/-/g, '/')}</span>
         <input type="text" inputmode="numeric" maxlength="8" placeholder="HH:MM" value="${start}" class="mt-input rounded-lg px-3 py-2 text-sm font-mono w-24 js-st">
         <span class="text-gray-600 font-mono text-sm">–</span>
         <input type="text" inputmode="numeric" maxlength="8" placeholder="HH:MM" value="${end}" class="mt-input rounded-lg px-3 py-2 text-sm font-mono w-24 js-se">
@@ -296,16 +298,37 @@ function renderCreateSlots() {
     const dur = Number($('c-duration').value) || 60;
     $('c-slots').innerHTML = slotRowHtml(iso, '10:00', addMinutes('10:00', dur))
                            + slotRowHtml(iso, '14:00', addMinutes('14:00', dur));
+    wireCreateRows();
+}
+
+// 每一列的三格都要能整格選取、左右鍵跳格。Enter 在建立表單當「再加一列」。
+function wireCreateRows() {
+    $('c-slots').querySelectorAll('.js-slot-row').forEach(row => {
+        wireCellRow(
+            [row.querySelector('.js-sd'), row.querySelector('.js-st'), row.querySelector('.js-se')],
+            () => $('c-add-slot').click()
+        );
+    });
 }
 $('c-add-slot').addEventListener('click', () => {
-    const last = $('c-slots').querySelector('.js-slot-row:last-child .js-sd');
-    const d = last ? last.value : new Date().toISOString().slice(0, 10);
+    const rows = $('c-slots').querySelectorAll('.js-slot-row');
+    const last = rows[rows.length - 1];
+    const lastDate = last && last.querySelector('.js-sd');
+    const lastEnd = last && parseHM(last.querySelector('.js-se').value);
+    const d = (lastDate && lastDate.dataset.iso) || new Date().toISOString().slice(0, 10);
     const dur = Number($('c-duration').value) || 60;
-    $('c-slots').insertAdjacentHTML('beforeend', slotRowHtml(d, '16:00', addMinutes('16:00', dur)));
+    // 接著上一列的結束時間往下排，同一天連加不用重打
+    const start = lastEnd || '16:00';
+    $('c-slots').insertAdjacentHTML('beforeend', slotRowHtml(d, start, addMinutes(start, dur)));
+    wireCreateRows();
+    const fresh = $('c-slots').querySelector('.js-slot-row:last-child .js-st');
+    focusCell(fresh);
 });
 
 // 改開始時間 → 結束時間跟著往後推一個會議長度；改長度 → 全部重算
 $('c-slots').addEventListener('change', e => {
+    const dateField = e.target.closest('.js-sd');
+    if (dateField) { normalizeDate(dateField); return; }
     const field = e.target.closest('.js-st, .js-se');
     if (!field) return;
     const v = normalizeTime(field);              // 1400 → 14:00，看不懂就標紅
@@ -315,8 +338,8 @@ $('c-slots').addEventListener('change', e => {
 });
 // 開始重打就把紅框拿掉，不要邊打邊噴錯
 $('c-slots').addEventListener('input', e => {
-    const field = e.target.closest('.js-st, .js-se');
-    if (field) markTime(field, true);
+    const field = e.target.closest('.js-sd, .js-st, .js-se');
+    if (field) markField(field, true);
 });
 $('c-duration').addEventListener('change', () => {
     const dur = Number($('c-duration').value) || 60;
@@ -343,13 +366,18 @@ $('c-submit').addEventListener('click', async () => {
     const slotsObj = {};
     const seen = new Set();
     for (const r of rows) {
-        const d = r.querySelector('.js-sd').value;
+        const d = normalizeDate(r.querySelector('.js-sd'));
         const t = normalizeTime(r.querySelector('.js-st'));
         const te = normalizeTime(r.querySelector('.js-se'));
-        if (!d || !t || !te) {
+        if (!d) {
+            // 日期看不懂就擋下，不要拿一列不完整的資料去算時間
+            if (r.querySelector('.js-sd').value.trim()) { err.textContent = T.badDate; btn.disabled = false; return; }
+            continue;
+        }
+        if (!t || !te) {
             // 有填但看不懂就直接擋下，不要默默略過整列
             if (r.querySelector('.js-st').value.trim() || r.querySelector('.js-se').value.trim()) {
-                err.textContent = T.badTime; return;
+                err.textContent = T.badTime; btn.disabled = false; return;
             }
             continue;
         }

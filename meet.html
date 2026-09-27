@@ -345,7 +345,8 @@
                                 <div class="flex-1 min-w-[180px]">
                                     <label class="block font-mono text-[10px] text-gray-500 uppercase tracking-wider mb-2">提議新的時段</label>
                                     <div class="flex flex-wrap gap-2">
-                                        <input id="new-date" type="date" class="mt-input rounded-lg px-3 py-2 text-sm font-mono">
+                                        <input id="new-date" type="text" inputmode="numeric" maxlength="10" placeholder="MM/DD" class="mt-input rounded-lg px-3 py-2 text-sm font-mono w-24">
+                                        <span class="js-dlabel self-center font-mono text-[11px] text-gray-600"></span>
                                         <input id="new-time" type="text" inputmode="numeric" maxlength="8" placeholder="HH:MM" value="14:00" class="mt-input rounded-lg px-3 py-2 text-sm font-mono w-24">
                                         <span class="text-gray-600 font-mono text-sm self-center">–</span>
                                         <input id="new-end" type="text" inputmode="numeric" maxlength="8" placeholder="HH:MM" value="15:00" class="mt-input rounded-lg px-3 py-2 text-sm font-mono w-24">
