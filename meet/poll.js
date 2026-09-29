@@ -8,6 +8,8 @@ import {
     normalizeDate, wireCellRow, focusCell,
     googleName, loadSavedNames, savedName, watch, dropWatches
 } from './core.js';
+// 建立會議表單那一區的兩支：畫候選時段列、組刪除會議的 payload。宣告在 home.js，這裡借用。
+import { slotRowHtml, deletePollPayload } from './home.js';
 
 // 只有投票頁用得到的狀態，不進 core 的共用區
 let pinned = null;             // 名單浮層釘住的那一格

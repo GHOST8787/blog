@@ -115,11 +115,6 @@ export function showState(msg) {
     $state.classList.toggle('hidden', !msg);
 }
 
-$('mt-logout-btn').addEventListener('click', () => {
-    if (S.me) dropCache(S.me.uid);   // 換人登入不要看到上一個人的清單
-    signOut(auth);
-});
-
 export function onGoogleCredential(response) {
     const cred = GoogleAuthProvider.credential(response.credential);
     signInWithCredential(auth, cred).catch(err => {

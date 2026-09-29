@@ -3,11 +3,11 @@
 import * as zh from './strings.zh.js';
 import * as en from './strings.en.js';
 import {
-    auth, onAuthStateChanged, S, T, $, $home, pollId,
+    auth, onAuthStateChanged, signOut, S, T, $, $home, pollId,
     setStrings, showState, initGoogleSignIn, loadSavedNames, dropWatches
 } from './core.js';
 
-import { startHome, resetHome } from './home.js';
+import { startHome, resetHome, dropCache } from './home.js';
 import { attachPublic, decidePollView, resetPoll } from './poll.js';
 
 // 字串要在任何畫面動作之前就位（Google 登入按鈕的 locale 也讀它）。
@@ -52,6 +52,13 @@ function resetForNewIdentity() {
     resetHome();
     resetPoll();
 }
+
+// 登出掛在這裡而不是 core.js：清快取的 dropCache 住在 home.js，
+// 由同時 import 兩邊的進入點接線，core 就不必反過來 import home 繞成循環相依。
+$('mt-logout-btn').addEventListener('click', () => {
+    if (S.me) dropCache(S.me.uid);   // 換人登入不要看到上一個人的清單
+    signOut(auth);
+});
 
 let lastUid = null;
 onAuthStateChanged(auth, (user) => {

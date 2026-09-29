@@ -161,7 +161,7 @@ function writeCache(uid, list, active) {
     }
     catch (e) { /* 無痕視窗或配額滿，快取只是加速，失敗不影響功能 */ }
 }
-function dropCache(uid) {
+export function dropCache(uid) {
     try {
         localStorage.removeItem(cacheKey(uid));
         // 也要清掉 last-uid，否則登出後 inline script 還會畫上一個人的清單
@@ -236,7 +236,7 @@ function renderPollRow(p) {
 
 // 刪一場會議要動三個地方：會議本體、我的會議清單、還在開放中的話把 activeCount 減一。
 // activeCount 的規則是「只准跟現值差 ±1」，基準一定要現讀，不能拿畫面上的。
-async function deletePollPayload(id) {
+export async function deletePollPayload(id) {
     const m = (await get(ref(db, `meet/polls/${id}/meta`))).val();
     const cur = (await get(ref(db, `meet/users/${S.me.uid}/activeCount`))).val() || 0;
     const payload = {
@@ -282,7 +282,7 @@ $('mt-new-btn').addEventListener('click', async () => {
 
 $('c-cancel').addEventListener('click', () => $('mt-create').classList.add('hidden'));
 
-function slotRowHtml(date, start, end) {
+export function slotRowHtml(date, start, end) {
     return `<div class="flex flex-wrap items-center gap-2 js-slot-row">
         <input type="text" inputmode="numeric" maxlength="10" placeholder="MM/DD" value="${date.slice(5).replace('-', '/')}" class="mt-input rounded-lg px-3 py-2 text-sm font-mono w-24 js-sd" data-iso="${date}">
         <span class="js-dlabel font-mono text-[11px] text-gray-600">${date.replace(/-/g, '/')}</span>
