@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 400" width="920" height="400" role="img" aria-label="Meet 從建立到定案的五個步驟，以及公司工具時段碼這條支線">
+  <defs>
+    <marker id="mtFlowArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#BF94FF"/>
+    </marker>
+    <style>
+      .mono { font-family: 'JetBrains Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace; }
+      .sans { font-family: 'Plus Jakarta Sans', 'Noto Sans TC', system-ui, sans-serif; }
+    </style>
+  </defs>
+
+  <rect width="920" height="400" fill="#050505"/>
+
+  <text class="mono" x="32" y="38" fill="#BF94FF" font-size="12" letter-spacing="2.2">MEET / 從建立到定案</text>
+  <text class="mono" x="32" y="60" fill="#6B7280" font-size="11">五個步驟，中間流動的只有一個網址</text>
+
+  <!-- 01 建立 -->
+  <rect x="36" y="96" width="152" height="140" rx="12" fill="#0A0A0C" stroke="#1F1F26" stroke-width="1"/>
+  <text class="mono" x="54" y="122" fill="#BF94FF" font-size="10" letter-spacing="1.6">01</text>
+  <text class="sans" x="54" y="150" fill="#FFFFFF" font-size="14.5" font-weight="700">建立</text>
+  <text class="mono" x="54" y="170" fill="#6B7280" font-size="10">發起人</text>
+  <text class="mono" x="54" y="196" fill="#9CA3AF" font-size="10.5">填主題與候選時段</text>
+  <text class="mono" x="54" y="212" fill="#9CA3AF" font-size="10.5">需要 Google 登入</text>
+
+  <!-- 02 分享 -->
+  <rect x="210" y="96" width="152" height="140" rx="12" fill="#0A0A0C" stroke="#1F1F26" stroke-width="1"/>
+  <text class="mono" x="228" y="122" fill="#BF94FF" font-size="10" letter-spacing="1.6">02</text>
+  <text class="sans" x="228" y="150" fill="#FFFFFF" font-size="14.5" font-weight="700">分享</text>
+  <text class="mono" x="228" y="170" fill="#6B7280" font-size="10">發起人</text>
+  <text class="mono" x="228" y="196" fill="#9CA3AF" font-size="10.5">複製網址丟群組</text>
+  <text class="mono" x="228" y="212" fill="#9CA3AF" font-size="10.5">網址就是通行證</text>
+
+  <!-- 03 回覆 -->
+  <rect x="384" y="96" width="152" height="140" rx="12" fill="#0A0A0C" stroke="#1F1F26" stroke-width="1"/>
+  <text class="mono" x="402" y="122" fill="#BF94FF" font-size="10" letter-spacing="1.6">03</text>
+  <text class="sans" x="402" y="150" fill="#FFFFFF" font-size="14.5" font-weight="700">回覆</text>
+  <text class="mono" x="402" y="170" fill="#6B7280" font-size="10">參與者</text>
+  <text class="mono" x="402" y="196" fill="#9CA3AF" font-size="10.5">每個時段三選一</text>
+  <text class="mono" x="402" y="212" fill="#9CA3AF" font-size="10.5">訪客填名字就能送</text>
+
+  <!-- 04 讀結果 -->
+  <rect x="558" y="96" width="152" height="140" rx="12" fill="#0A0A0C" stroke="#1F1F26" stroke-width="1"/>
+  <text class="mono" x="576" y="122" fill="#BF94FF" font-size="10" letter-spacing="1.6">04</text>
+  <text class="sans" x="576" y="150" fill="#FFFFFF" font-size="14.5" font-weight="700">讀結果</text>
+  <text class="mono" x="576" y="170" fill="#6B7280" font-size="10">發起人</text>
+  <text class="mono" x="576" y="196" fill="#9CA3AF" font-size="10.5">四色比例條與名單</text>
+  <text class="mono" x="576" y="212" fill="#9CA3AF" font-size="10.5">分母只算已回覆的人</text>
+
+  <!-- 05 定案 -->
+  <rect x="732" y="96" width="152" height="140" rx="12" fill="#140F1F" stroke="#3A2F52" stroke-width="1"/>
+  <text class="mono" x="750" y="122" fill="#BF94FF" font-size="10" letter-spacing="1.6">05</text>
+  <text class="sans" x="750" y="150" fill="#FFFFFF" font-size="14.5" font-weight="700">定案</text>
+  <text class="mono" x="750" y="170" fill="#6B7280" font-size="10">發起人</text>
+  <text class="mono" x="750" y="196" fill="#BF94FF" font-size="10.5">鎖定一格，停止收票</text>
+  <text class="mono" x="750" y="212" fill="#9CA3AF" font-size="10.5">參與者畫面同步改掉</text>
+
+  <!-- 步驟之間 -->
+  <path d="M 190 166 L 206 166" stroke="#BF94FF" stroke-width="1.4" marker-end="url(#mtFlowArrow)"/>
+  <path d="M 364 166 L 380 166" stroke="#BF94FF" stroke-width="1.4" marker-end="url(#mtFlowArrow)"/>
+  <path d="M 538 166 L 554 166" stroke="#BF94FF" stroke-width="1.4" marker-end="url(#mtFlowArrow)"/>
+  <path d="M 712 166 L 728 166" stroke="#BF94FF" stroke-width="1.4" marker-end="url(#mtFlowArrow)"/>
+
+  <!-- 支線：公司工具 -->
+  <rect x="36" y="272" width="410" height="92" rx="12" fill="#0A0A0C" stroke="#1F1F26" stroke-width="1"/>
+  <text class="mono" x="56" y="298" fill="#BF94FF" font-size="10" letter-spacing="1.6">支線　從公司工具帶時段進來</text>
+  <text class="mono" x="56" y="322" fill="#9CA3AF" font-size="10.5">公司電腦的找時間工具產出 MT1 開頭的時段碼</text>
+  <text class="mono" x="56" y="342" fill="#9CA3AF" font-size="10.5">貼進步驟 01 的匯入欄，候選時段整批帶入</text>
+  <path d="M 112 268 L 112 244" stroke="#BF94FF" stroke-width="1.4" stroke-dasharray="4 4" marker-end="url(#mtFlowArrow)"/>
+
+  <!-- 定案之後 -->
+  <rect x="474" y="272" width="410" height="92" rx="12" fill="#0A0A0C" stroke="#1F1F26" stroke-width="1"/>
+  <text class="mono" x="494" y="298" fill="#6B7280" font-size="10" letter-spacing="1.6">定案之後</text>
+  <text class="mono" x="494" y="322" fill="#9CA3AF" font-size="10.5">行事曆邀請由發起人自己寄，Meet 不寫任何人的行事曆</text>
+  <text class="mono" x="494" y="342" fill="#9CA3AF" font-size="10.5">截止時間還沒過的話，可以取消定案恢復收票</text>
+  <path d="M 808 268 L 808 244" stroke="#BF94FF" stroke-width="1.4" stroke-dasharray="4 4" marker-end="url(#mtFlowArrow)"/>
+</svg>
