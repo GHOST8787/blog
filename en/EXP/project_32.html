@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / P32 | GHOST.ouo</title>
+    <link rel="canonical" href="https://ghost8787.github.io/blog/en/EXP/project_32.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_32.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_32.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/project_32.html">
+
+    <link rel="icon" type="image/png" href="../../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../../PNG/pixelS2.png">
+
+    <script src="../../theme.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
+
+    <link rel="stylesheet" href="../../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script src="../../i18n.js" defer></script>
+    <script type="module" src="../../main.js" defer></script>
+    <link rel="stylesheet" href="../../tw.css">
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-bg">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                Back to projects
+            </a>
+            <span class="opacity-50">EXP / P32</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-4 leading-tight">
+                Meet user guide:<br>
+                <span class="text-gradient text-2xl md:text-4xl">one link, everyone&rsquo;s time</span>
+            </h1>
+
+            <p class="text-lg text-gray-500 font-light mb-6 leading-relaxed">
+                Running a poll from creation to a locked slot, plus five limits worth knowing
+            </p>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">Engineering</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">User guide</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Tool build</span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.09.27</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
+                Meet is the meeting-time poll on this site, unrelated to Google Meet. The organizer creates a meeting, lists candidate slots and gets a URL. Whoever opens that URL marks each slot as available, needs notice, or unavailable. The organizer comes back to the same page, reads the result and locks one slot in. It replaces asking people one by one in a group chat.
+            </p>
+
+            <p class="text-sm text-gray-500 font-light mb-6">
+                This guide follows the order you use it in: the fields on the create form, the participant&rsquo;s voting view, then the organizer&rsquo;s result view and lock-in. The tool itself is <a href="../meet.html" class="underline decoration-gray-600 underline-offset-4 hover:text-white transition-colors">here</a>, and how it was built is written up in <a href="project_31.html" class="underline decoration-gray-600 underline-offset-4 hover:text-white transition-colors">P31</a>。
+            </p>
+
+            <nav class="my-10 p-6 bg-white/5 rounded-2xl border border-white/10" aria-label="Contents">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-4">Contents</div>
+                <ol class="list-none pl-0 m-0 space-y-1 text-sm font-light">
+                    <li class="m-0">
+                        <a href="#roles" class="flex items-baseline gap-3 py-1.5 text-gray-400 hover:text-white transition-colors no-underline">
+                            <span class="font-mono text-[11px] text-gray-600 shrink-0">01</span>
+                            <span>Roles and permissions</span>
+                        </a>
+                    </li>
+                    <li class="m-0">
+                        <a href="#create" class="flex items-baseline gap-3 py-1.5 text-gray-400 hover:text-white transition-colors no-underline">
+                            <span class="font-mono text-[11px] text-gray-600 shrink-0">02</span>
+                            <span>Organizer: create a meeting</span>
+                        </a>
+                    </li>
+                    <li class="m-0 pl-9">
+                        <a href="#time-format" class="flex items-baseline gap-2 py-1 text-gray-500 hover:text-white transition-colors no-underline text-[13px]">
+                            <span class="text-gray-700 shrink-0">&mdash;</span>
+                            <span>What the slot fields accept</span>
+                        </a>
+                    </li>
+                    <li class="m-0 pl-9">
+                        <a href="#company-code" class="flex items-baseline gap-2 py-1 text-gray-500 hover:text-white transition-colors no-underline text-[13px]">
+                            <span class="text-gray-700 shrink-0">&mdash;</span>
+                            <span>Bringing slots in from the company tool</span>
+                        </a>
+                    </li>
+                    <li class="m-0">
+                        <a href="#vote" class="flex items-baseline gap-3 py-1.5 text-gray-400 hover:text-white transition-colors no-underline">
+                            <span class="font-mono text-[11px] text-gray-600 shrink-0">03</span>
+                            <span>Participant: reply to a meeting</span>
+                        </a>
+                    </li>
+                    <li class="m-0">
+                        <a href="#result" class="flex items-baseline gap-3 py-1.5 text-gray-400 hover:text-white transition-colors no-underline">
+                            <span class="font-mono text-[11px] text-gray-600 shrink-0">04</span>
+                            <span>Organizer: read the result, lock it in, wrap up</span>
+                        </a>
+                    </li>
+                    <li class="m-0 pl-9">
+                        <a href="#not-needed" class="flex items-baseline gap-2 py-1 text-gray-500 hover:text-white transition-colors no-underline text-[13px]">
+                            <span class="text-gray-700 shrink-0">&mdash;</span>
+                            <span>What needs no action, and what you handle yourself</span>
+                        </a>
+                    </li>
+                    <li class="m-0">
+                        <a href="#rules" class="flex items-baseline gap-3 py-1.5 text-gray-400 hover:text-white transition-colors no-underline">
+                            <span class="font-mono text-[11px] text-gray-600 shrink-0">05</span>
+                            <span>Five limits to know before you use it</span>
+                        </a>
+                    </li>
+                    <li class="m-0">
+                        <a href="#links" class="flex items-baseline gap-3 py-1.5 text-gray-400 hover:text-white transition-colors no-underline">
+                            <span class="font-mono text-[11px] text-gray-600 shrink-0">06</span>
+                            <span>Related links</span>
+                        </a>
+                    </li>
+                </ol>
+            </nav>
+
+            <h3 id="roles" class="scroll-mt-28 text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Roles and permissions
+            </h3>
+
+            <p>
+                Creating a meeting needs a Google account. Anyone who only replies to slots votes as a guest without signing in. The three roles compare as follows.
+            </p>
+
+            <div class="my-8 overflow-x-auto">
+                <table class="w-full text-sm font-light border-collapse">
+                    <thead>
+                        <tr class="border-b border-white/15 text-gray-400 font-mono text-[11px] uppercase tracking-wider">
+                            <th class="text-left py-3 pr-4 font-medium">Item</th>
+                            <th class="text-left py-3 px-4 font-medium">Organizer</th>
+                            <th class="text-left py-3 px-4 font-medium">Signed-in participant</th>
+                            <th class="text-left py-3 pl-4 font-medium">Guest</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 pr-4 text-gray-400">Create a meeting</td>
+                            <td class="py-3 px-4">Yes</td>
+                            <td class="py-3 px-4">Yes, and becomes that meeting&rsquo;s organizer</td>
+                            <td class="py-3 pl-4 text-gray-500">No, guests only vote</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 pr-4 text-gray-400">Vote</td>
+                            <td class="py-3 px-4 text-gray-500">Excluded from the tally</td>
+                            <td class="py-3 px-4">Yes</td>
+                            <td class="py-3 pl-4">Yes, a name is required before submitting</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 pr-4 text-gray-400">Propose a new slot</td>
+                            <td class="py-3 px-4">Yes</td>
+                            <td class="py-3 px-4">Yes once the organizer turns it on</td>
+                            <td class="py-3 pl-4">Yes once the organizer turns it on</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 pr-4 text-gray-400">See other replies</td>
+                            <td class="py-3 px-4">Full list and counts</td>
+                            <td class="py-3 px-4 text-gray-500">Counts only</td>
+                            <td class="py-3 pl-4 text-gray-500">Counts only</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4 text-gray-400">Coming back later</td>
+                            <td class="py-3 px-4">Home lists the meetings created</td>
+                            <td class="py-3 px-4">&ldquo;Meetings I replied to&rdquo; on the home page</td>
+                            <td class="py-3 pl-4 text-gray-500">Kept in the same browser on the same device</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                A guest identity lives in that device&rsquo;s browser. Reopening on the same device keeps you as the same person and lets you change an earlier reply. A different device or browser counts as a new participant and votes again. Sign in with Google to change a reply across devices.
+            </p>
+
+            <h3 id="create" class="scroll-mt-28 text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Organizer: create a meeting
+            </h3>
+
+            <p>
+                Press &ldquo;Start a new meeting&rdquo; on the home page to open the form, ten fields in all. Two are required: the meeting title, and at least one candidate slot. Every other field has a default and can be skipped.
+            </p>
+
+            <figure class="my-10">
+                <img src="../../PNG/project_32.1.webp"
+                     alt="Top of the Meet create form: meeting title, organizer display name, meeting length, reply deadline, place, meeting note and the organizer&rsquo;s private note"
+                     class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    Top of the create form: title, display name, length, deadline, place and the two note fields
+                </figcaption>
+            </figure>
+
+            <figure class="my-10">
+                <img src="../../PNG/project_32.2.webp"
+                     alt="Bottom of the Meet create form: the import field for the company tool, three candidate slot rows, the toggle for participant-added slots and the create button"
+                     class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    Bottom: company tool import, the candidate slot list and the create button
+                </figcaption>
+            </figure>
+
+            <ol class="list-decimal pl-5 space-y-3 text-gray-300 font-light mb-6 marker:font-mono marker:text-gray-600">
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-accent-purple/30 bg-accent-purple/10 text-accent-purple">required</span>
+                    <strong class="text-white">Meeting title</strong>　Shown at the top of the participant&rsquo;s view. Spell out the scope. (Pressing create with this empty keeps you on the form and shows a prompt underneath.)
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">optional</span>
+                    <strong class="text-white">Organizer display name</strong>　Participants recognise the organizer by this name. It pre-fills with the name you used last time, 40 characters maximum.
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">pick one</span>
+                    <strong class="text-white">Meeting length</strong>　30 minutes / 60 minutes / 90 minutes / half a day (4 hours). Once picked, every row&rsquo;s end time is recalculated. (Pick the length before laying out slots; in the other order, end times you already typed get recalculated over.)
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">optional</span>
+                    <strong class="text-white">Reply deadline</strong>　Voting stops at 23:59 on the date you set, in the time zone the meeting was created in. (After the deadline the participant view says the voting deadline has passed and the three buttons are disabled.)
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">default</span>
+                    <strong class="text-white">Place or link</strong>　Left empty, it fills in <code class="text-accent-purple">Microsoft Teams</code>. Overwrite it for a physical room.
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">optional</span>
+                    <strong class="text-white">Meeting note</strong>　Shown under the title in the participant&rsquo;s view, for scope or a time limit, for example &ldquo;this one covers the Q2 budget only, forty minutes&rdquo;.
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">organizer only</span>
+                    <strong class="text-white">Organizer&rsquo;s private note</strong>　Visible to the organizer alone; the participant view leaves it out.
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">optional</span>
+                    <strong class="text-white">Import from the company tool</strong>　Paste a slot code produced on the company side to bring a batch of candidate slots in. (Steps are in &ldquo;Bringing slots in from the company tool&rdquo;; that section ends with the current verification status.)
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">on by default</span>
+                    <strong class="text-white">Let participants add candidate slots</strong>　On, participants can propose new slots. Off, they choose from the existing ones.
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-accent-purple/30 bg-accent-purple/10 text-accent-purple">required</span>
+                    <strong class="text-white">Candidate slots</strong>　At least one row. The form opens with tomorrow at 10:00 and 14:00 already filled in; press &ldquo;Add candidate slot&rdquo; to append more. (The three rows in the screenshot are sample data; the input format is in the next section.)
+                </li>
+            </ol>
+
+            <h4 id="time-format" class="scroll-mt-28 text-xl font-bold text-white mt-10 mb-4">
+                What the slot fields accept
+            </h4>
+
+            <p>
+                Date and time are plain text fields. Type or paste the whole string; tidying it into a fixed format first is unnecessary. These are the spellings it accepts.
+            </p>
+
+            <div class="my-6 p-6 bg-[var(--c-e3)] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre class="m-0"><code>Time   9 &rarr; 09:00    930 &rarr; 09:30    1400 &rarr; 14:00    12. &rarr; 12:00
+Date   0930 or 9/30 means this year; a date already past rolls to next year
+       20260930, 2026-09-30, 2026年9月30日 and 26/9/30 all parse</code></pre>
+            </div>
+
+            <p>
+                Four more things happen automatically:
+            </p>
+
+<ol class="list-decimal pl-5 space-y-3 text-gray-300 font-light mb-6 marker:font-mono marker:text-gray-600">
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">automatic</span>
+                    <strong class="text-white">Full-width to half-width</strong>　Full-width digits and full-width colons convert to half-width.
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">display</span>
+                    <strong class="text-white">The date field shows <code class="text-accent-purple">MM/DD</code></strong>　The full year-month-day sits in small type to the right of the same row.
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">keyboard</span>
+                    <strong class="text-white">Whole-field selection</strong>　Clicking into a field selects the whole string, so typing overwrites it. Left and right arrows move to the neighbouring field, and a row can be filled with the keyboard alone.
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">automatic</span>
+                    <strong class="text-white">A new row follows the previous one</strong>　A new row reuses the previous row&rsquo;s date, and its start time picks up where the previous row ended. Consecutive slots on one day need no editing.
+                </li>
+            </ol>
+            <h4 id="company-code" class="scroll-mt-28 text-xl font-bold text-white mt-10 mb-4">
+                Bringing slots in from the company tool
+            </h4>
+
+            <div class="my-8 p-5 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-2">Current status</div>
+                <p class="m-0">
+                    <strong class="text-gray-200">Verified end to end (2026-09-29).</strong>The slot code format was agreed on 2026-09-24 and both sides implemented it. On 2026-09-29 the whole path ran once: the company side produced a code carrying four slots, it was pasted into this form and imported, and all four rows came back with the right dates and start and end times.
+                </p>
+            </div>
+
+            <p>
+                After comparing calendars in Outlook on the company machine, the free slots it finds come into this form in one batch, which saves copying them across by hand. Five steps:
+            </p>
+
+<ol class="list-decimal pl-5 space-y-3 text-gray-300 font-light mb-6 marker:font-mono marker:text-gray-600">
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">company side</span>
+                    Tick the slots to send in the find-a-time result list and press &ldquo;Generate slot code&rdquo; to get a string that starts with <code class="text-accent-purple">MT1.</code> .
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">company side</span>
+                    Copy the whole string. (The two sides share no connection; the clipboard is the only channel, and an incomplete copy fails verification.)
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">Meet side</span>
+                    Back on the create form, paste it into the &ldquo;Import from the company tool&rdquo; field.
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-accent-purple/30 bg-accent-purple/10 text-accent-purple">Meet side</span>
+                    Press &ldquo;Import&rdquo;. The candidate slots are replaced by the rows in the code. (Rows typed by hand get overwritten, so note them down first to keep them.)
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">Meet side</span>
+                    Imported rows behave like typed rows; dates and times stay editable.
+                </li>
+            </ol>
+
+            <p>
+                One code carries at most 20 slots, and anything beyond that stays out. When verification fails, the reason appears under the field:
+            </p>
+
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
+                <li>It does not start with <code class="text-accent-purple">MT1.</code>(the clipboard holds something else)</li>
+                <li>The code is incomplete or was altered (usually a partial copy; copy it again on the company side)</li>
+                <li>The contents will not parse (the code is damaged; generate it again on the company side)</li>
+                <li>The code carries no slots (nothing was ticked when it was generated)</li>
+            </ul>
+
+            <p>
+                A slot code carries the times alone. Attendees, the subject and the free/busy detail stay on the company machine. What reaches the public site is a handful of dates and times.
+            </p>
+
+
+            <p>
+                Creating takes you straight to that meeting&rsquo;s URL. Press &ldquo;Copy share link&rdquo; in the top right to get the link.
+            </p>
+
+            <h3 id="vote" class="scroll-mt-28 text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Participant: reply to a meeting
+            </h3>
+
+            <p>
+                A participant clicks once per slot and is done, around thirty seconds in all. Opening the URL lands on the entry screen: the meeting name and organizer on top, two options below, sign in with Google or vote as a guest. Guests register nothing.
+            </p>
+
+            <figure class="my-10">
+                <img src="../../PNG/project_32.3.webp"
+                     alt="Top of the Meet voting view: meeting title, organizer, length and place, with the display name field and the first candidate slot below"
+                     class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    Top of the participant view: meeting details, the display name field and the first slot
+                </figcaption>
+            </figure>
+
+            <figure class="my-10">
+                <img src="../../PNG/project_32.4.webp"
+                     alt="Bottom of the Meet voting view: the remaining candidate slots with their three buttons and counts, the add-a-slot button and the submit button"
+                     class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    Bottom: one of three per remaining slot, with the current counts under the buttons
+                </figcaption>
+            </figure>
+
+<ol class="list-decimal pl-5 space-y-3 text-gray-300 font-light mb-6 marker:font-mono marker:text-gray-600">
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-accent-purple/30 bg-accent-purple/10 text-accent-purple">Guest</span>
+                    <strong class="text-white">Fill in a display name first</strong>　The default &ldquo;Guest + the first four characters of the identity id&rdquo; will not submit; the screen asks for a name so the organizer can tell who replied. (Signed-in people get their account name and can leave this alone.)
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">everyone</span>
+                    <strong class="text-white">One of three per slot</strong>　Available, needs notice, unavailable. The counts sit under the buttons; the names are visible to the organizer alone.
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">everyone</span>
+                    <strong class="text-white">Press &ldquo;Submit reply&rdquo;</strong>　Replying to some of the slots is fine; &ldquo;You have replied to N of M slots&rdquo; is a prompt. (After submitting, the button becomes &ldquo;Update my reply&rdquo; and changes are allowed any time.)
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">when the organizer allows it</span>
+                    <strong class="text-white">Propose a new slot</strong>　&ldquo;Add a slot&rdquo; sits under the slot list. A proposed slot is labelled with who proposed it, and the proposer can delete it. (Hidden when the organizer turns &ldquo;Let participants add candidate slots&rdquo; off.)
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">when the buttons do nothing</span>
+                    <strong class="text-white">The three buttons are disabled</strong>　The deadline has passed, the organizer has locked a slot in, or the meeting has ended. The screen states the actual reason.
+                </li>
+            </ol>
+
+            <h3 id="result" class="scroll-mt-28 text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Organizer: read the result, lock it in, wrap up
+            </h3>
+
+            <p>
+                Opening the same URL as the organizer adds a &ldquo;Results&rdquo; section that participants never see. Read it by the length of each slot&rsquo;s green block.
+            </p>
+
+            <figure class="my-10">
+                <img src="../../PNG/project_32.5.webp"
+                     alt="Meet organizer result view: a four-colour bar per slot, the most-available marker, the share of available people on the right, and the participant list with remove buttons below"
+                     class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    Four-colour bar: green for available, amber for needs notice, dark grey for unavailable, pale for no reply yet
+                </figcaption>
+            </figure>
+
+<ol class="list-decimal pl-5 space-y-3 text-gray-300 font-light mb-6 marker:font-mono marker:text-gray-600">
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">read</span>
+                    <strong class="text-white">The bar</strong>　Hovering a block shows the names; on a phone, tap the block. The numbers under the blocks are the head counts per state.
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">read</span>
+                    <strong class="text-white">The <code class="text-accent-purple">2/3 available</code></strong>　on the right means two of the three people who replied can attend. The denominator counts replies alone, so it says nothing about how many have yet to answer.
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">read</span>
+                    <strong class="text-white">The &ldquo;most available&rdquo; marker</strong>　Sits automatically on the slot with the highest count. (On a tie, the slot with fewer &ldquo;needs notice&rdquo; wins.)
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-accent-purple/30 bg-accent-purple/10 text-accent-purple">action</span>
+                    <strong class="text-white">Lock this slot in</strong>　Pressing it stops the voting, and the participant view says the organizer has locked a slot in and a calendar invite follows separately. (&ldquo;Undo lock-in&rdquo; reopens voting while the deadline still holds.)
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">action</span>
+                    <strong class="text-white">Remove a participant</strong>　Each row in the list has a remove button on the right. After removal that person can reopen the link and vote again while the meeting still takes votes.
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-accent-purple/30 bg-accent-purple/10 text-accent-purple">action</span>
+                    <strong class="text-white">Delete the whole meeting</strong>　The bin icon on that row of the home page, with a confirmation first. The meeting and every reply go together and one slot of the quota comes back. (No undo; anyone holding the link sees that the poll has been removed.)
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">read</span>
+                    <strong class="text-white">&ldquo;Currently leading&rdquo; on the home page</strong>　Shows each meeting&rsquo;s highest-scoring slot, and switches to the locked-in slot once one is chosen.
+                </li>
+            </ol>
+
+            <h4 id="not-needed" class="scroll-mt-28 text-xl font-bold text-white mt-10 mb-4">
+                What needs no action, and what you handle yourself
+            </h4>
+
+            <p>
+                These are the questions that come up most, listed up front.
+            </p>
+
+<ol class="list-decimal pl-5 space-y-3 text-gray-300 font-light mb-6 marker:font-mono marker:text-gray-600">
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">not needed</span>
+                    <strong class="text-white">Registering an account</strong>　Voting works with a guest identity. A Google account is needed to create a meeting.
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">not needed</span>
+                    <strong class="text-white">Installing anything</strong>　It is all web pages; a phone browser opens the URL and votes.
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">not needed</span>
+                    <strong class="text-white">Waiting for everyone</strong>　The denominator is the number of replies, so a slot can be locked in as soon as the count is enough.
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-accent-purple/30 bg-accent-purple/10 text-accent-purple">handle yourself</span>
+                    <strong class="text-white">Calendar invites</strong>　Locking a slot in marks the conclusion on the page. Meet writes to nobody&rsquo;s calendar.
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-accent-purple/30 bg-accent-purple/10 text-accent-purple">handle yourself</span>
+                    <strong class="text-white">Notifications and nudges</strong>　Meet holds no invitee list and no email addresses, so it sends no reminders. Nudge in whichever group chat the link went to.
+                </li>
+            </ol>
+
+            <h3 id="rules" class="scroll-mt-28 text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Five limits to know before you use it
+            </h3>
+
+            <ol class="list-decimal pl-5 space-y-4 text-gray-300 font-light mb-6">
+                <li>
+                    <strong class="text-white">Ten meetings at a time.</strong>
+                    The eleventh is blocked, and deleting a finished meeting releases a slot. This ceiling keeps the whole tool inside the free tier.
+                </li>
+                <li>
+                    <strong class="text-white">The organizer stays out of the tally.</strong>
+                    The slots the organizer lists already say when they are free, so the bar leaves their vote out. Add it back when you read the bar.
+                </li>
+                <li>
+                    <strong class="text-white">The number of people still to reply stays unknown.</strong>
+                    Meet has no idea who the link went to, so it cannot work out how many votes are missing. Nudge against the participant list, which shows who has already replied.
+                </li>
+                <li>
+                    <strong class="text-white">The list shows names only.</strong>
+                    Participant records carry no email address; what shows is the name each person typed. Ask for full names when you send the link.
+                </li>
+                <li>
+                    <strong class="text-white">Anyone holding the URL can vote, so keep it off public pages.</strong>
+                    The URL carries a 20-character id that is hard to guess, which makes it safe enough to pass around a group chat. A leaked URL splits into two layers. Privacy holds: the votes and the full list stay readable by the organizer alone, each participant reads only their own vote, and that limit lives in the database rather than in what the screen draws. The tally loosens: anyone holding the URL can vote, which costs the count its credibility.
+                </li>
+            </ol>
+
+            <h3 id="links" class="scroll-mt-28 text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Related links
+            </h3>
+
+            <ul class="space-y-2 text-sm text-gray-400 list-none pl-0">
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="../meet.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">Meet &mdash; open the tool</a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="project_31.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">P31 &mdash; how this tool was built</a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="project_30.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">P30 &mdash; Idea Whiteboard, the first tool on the same setup</a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="https://github.com/GHOST8787/blog" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">GitHub &mdash; GHOST8787/blog</a>
+                </li>
+            </ul>
+
+            <p class="text-gray-400 text-sm mt-8">
+                For a question or a feature idea, leave a note on the <a href="../whiteboard.html" class="underline decoration-gray-600 underline-offset-4 hover:text-white transition-colors">Whiteboard</a> , or open an issue on GitHub.
+            </p>
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="project_31.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Previous
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View all projects
+            </a>
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                Next &rarr;
+            </a>
+        </div>
+
+    </main>
+    <div id="footer-placeholder"></div>
+</body>
+</html>

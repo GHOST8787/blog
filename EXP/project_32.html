@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EXP / NP_11 | GHOST.ouo</title>
+    <title>EXP / P32 | GHOST.ouo</title>
+    <link rel="canonical" href="https://ghost8787.github.io/blog/EXP/project_32.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_32.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_32.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/project_32.html">
 
     <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
     <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
@@ -37,7 +41,7 @@
                 <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
                 返回專案列表
             </a>
-            <span class="opacity-50">EXP / NP_11 (draft)</span>
+            <span class="opacity-50">EXP / P32</span>
         </div>
 
         <header class="mb-12 border-b border-white/10 pb-12">
@@ -198,11 +202,20 @@
             </p>
 
             <figure class="my-10">
-                <img src="../PNG/NP_11.1.webp"
-                     alt="Meet 建立會議表單：會議主題、發起人顯示名稱、會議時長、回覆截止時間、地點、備註、私人備註、時段代碼匯入、候選時段列表與建立按鈕"
+                <img src="../PNG/project_32.1.webp"
+                     alt="Meet 建立會議表單上半：會議主題、發起人顯示名稱、會議時長、回覆截止時間、會議地點、會議備註與發起人私人備註"
                      class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
                 <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
-                    建立會議表單全貌，候選時段可往下增列
+                    建立會議表單上半：主題、顯示名稱、時長、截止時間、地點與兩個備註欄
+                </figcaption>
+            </figure>
+
+            <figure class="my-10">
+                <img src="../PNG/project_32.2.webp"
+                     alt="Meet 建立會議表單下半：從公司工具匯入欄位、候選時段三列、允許參與者新增候選時段開關與建立按鈕"
+                     class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    下半：公司工具匯入、候選時段列表與建立按鈕
                 </figcaption>
             </figure>
 
@@ -292,7 +305,7 @@
             <div class="my-8 p-5 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
                 <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-2">目前狀態</div>
                 <p class="m-0">
-                    <strong class="text-gray-200">本節記載的是設計，尚未經過驗收。</strong>時段碼的格式於 2026-09-24 談定，公司端與 Meet 端各自完成實作，從貼碼到帶入候選時段的完整流程還沒實際走過一輪。完成實測後補上結果。
+                    <strong class="text-gray-200">已完成實測（2026-09-29）。</strong>時段碼的格式於 2026-09-24 談定，公司端與 Meet 端各自實作。2026-09-29 走完一輪：公司端當場產出一組四個時段的碼，貼進本頁表單按「匯入」，四列日期與起訖時間逐筆還原正確。
                 </p>
             </div>
 
@@ -352,11 +365,20 @@
             </p>
 
             <figure class="my-10">
-                <img src="../PNG/NP_11.2.webp"
-                     alt="Meet 投票畫面：顯示名稱欄，三個候選時段各有可參加、需事先通知、無法參加三顆按鈕，每個時段下方是目前票數"
+                <img src="../PNG/project_32.3.webp"
+                     alt="Meet 投票畫面上半：會議標題、發起人、時長與地點，下方是顯示名稱欄與第一個候選時段的三顆按鈕"
                      class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
                 <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
-                    參與者畫面：每個時段三選一，下方為目前票數
+                    參與者畫面上半：會議資訊、顯示名稱欄與第一個時段
+                </figcaption>
+            </figure>
+
+            <figure class="my-10">
+                <img src="../PNG/project_32.4.webp"
+                     alt="Meet 投票畫面下半：其餘候選時段的三顆按鈕與票數、新增時段按鈕與送出回覆按鈕"
+                     class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    下半：其餘時段三選一，按鈕下方為目前票數
                 </figcaption>
             </figure>
 
@@ -392,7 +414,7 @@
             </p>
 
             <figure class="my-10">
-                <img src="../PNG/NP_11.3.webp"
+                <img src="../PNG/project_32.5.webp"
                      alt="Meet 發起人結果檢視：每個時段一條四色比例條、最多人可參加標記、右側可參加人數比例，下方是參與者名單與移除按鈕"
                      class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
                 <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
@@ -518,7 +540,7 @@
         </article>
 
         <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
-            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+            <a href="project_31.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
                 &larr; 上一篇
             </a>
             <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
