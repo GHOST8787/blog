@@ -162,13 +162,7 @@
             </h3>
 
             <p>
-                發起人用 Google 登入，填寫標題、會議長度、地點或連結、候選時段、回覆截止時間，按下建立就拿到網址。
-            </p>
-            <p>
-                收到網址的人點開直接進投票畫面。每個時段有三種狀態：可以、需要提前通知、不行。想留名字就留，不想留的按一下「匿名投票」也能送出。
-            </p>
-            <p>
-                發起人回到同一頁，看到四色比例條、回覆人數，以及每個人各自選了什麼。某個人的答案要整份拿掉也可以。移除之後他回來就像沒投過，能重投一次。
+                使用面剩三個動作：發起人填表單拿網址，收到的人對每個時段三選一，發起人回到同一頁看四色比例條，挑一格定案。每個欄位與按鈕的作用另外寫成一篇使用說明。
             </p>
             <p>
                 另外接了一條路進來。公司電腦上有一支自己寫的小工具，讀行事曆、算共同空檔。我讓它把算好的時段編成一串可貼的文字，貼進 Meet 的建立表單就展開成候選時段，省掉手動輸入。兩邊完全不連線，中間只有剪貼簿。
@@ -309,7 +303,7 @@
                 <li><strong class="text-white">部署</strong>：GitHub Pages</li>
                 <li><strong class="text-white">資料庫與權限</strong>：Firebase Realtime Database ＋ Security Rules</li>
                 <li><strong class="text-white">登入</strong>：Google Identity Services，頁內登入不開彈窗</li>
-                <li><strong class="text-white">匿名投票</strong>：Firebase 匿名驗證，登入狀態只留在記憶體</li>
+                <li><strong class="text-white">匿名投票</strong>：Firebase 匿名驗證，身分存在瀏覽器本機，同一台裝置回來還是同一個人</li>
                 <li><strong class="text-white">跨系統傳遞</strong>：base64url ＋ HMAC-SHA256，瀏覽器端用 Web Crypto API 驗章</li>
                 <li><strong class="text-white">共用</strong>：跟 Whiteboard 共用同一個 Firebase 專案與同一份權限檔，兩個工具各佔一個頂層節點</li>
             </ul>

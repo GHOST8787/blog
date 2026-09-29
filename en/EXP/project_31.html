@@ -135,7 +135,7 @@
             </h3>
 
             <p>
-                The organizer signs in with Google, fills in a title, meeting length, place or link, candidate slots and a reply deadline, and hits create to get a URL. Anyone who opens that URL lands straight in the voting view, with three states per slot: yes, needs notice, no. Leave your name if you want; a tap on &ldquo;vote anonymously&rdquo; submits without it.
+                Three actions cover the whole thing: the organizer fills a form and gets a URL, whoever opens it picks one of three states for each slot, and the organizer comes back to the same page, reads the four-colour bar and locks one slot in. What every field and button does is written up separately as a usage guide.
             </p>
 
             <figure class="my-10">
@@ -146,10 +146,6 @@
                     Organizer home: each running poll takes a slot, and every row shows replies so far and the leading time
                 </figcaption>
             </figure>
-
-            <p>
-                Back on the same page, the organizer gets a four-colour bar, the reply count, and what each person picked. Someone's answer can be dropped entirely; once removed, they come back as though they had never voted and can vote again.
-            </p>
 
             <p>
                 There is also a second way in. On my work machine sits a small tool of my own that reads calendars and works out the shared free slots; it encodes them into one pasteable string, and pasting that into Meet's create form expands it back into candidate slots, which saves typing them out. The two sides never talk to each other &mdash; the clipboard is the only thing between them.
@@ -277,7 +273,7 @@ signature = HMAC-SHA256 over the payload with a shared key, first few bytes</cod
                 <li><strong class="text-white">Hosting</strong>: GitHub Pages</li>
                 <li><strong class="text-white">Data and permissions</strong>: Firebase Realtime Database with Security Rules</li>
                 <li><strong class="text-white">Sign-in</strong>: Google Identity Services, in-page, no popup</li>
-                <li><strong class="text-white">Anonymous voting</strong>: Firebase anonymous auth, session kept in memory only</li>
+                <li><strong class="text-white">Anonymous voting</strong>: Firebase anonymous auth, the identity is stored in the browser, so the same device comes back as the same person</li>
                 <li><strong class="text-white">Cross-system transfer</strong>: base64url with HMAC-SHA256, verified in the browser via the Web Crypto API</li>
                 <li><strong class="text-white">Shared</strong>: same Firebase project and same rules file as Whiteboard, one top-level node each</li>
             </ul>
