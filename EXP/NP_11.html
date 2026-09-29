@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / NP_11 | GHOST.ouo</title>
+
+    <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
+
+    <script src="../theme.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
+
+    <link rel="stylesheet" href="../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script type="module" src="../main.js" defer></script>
+    <link rel="stylesheet" href="../tw.css">
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-bg">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                返回專案列表
+            </a>
+            <span class="opacity-50">EXP / NP_11 (draft)</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-4 leading-tight">
+                Meet 使用說明：<br>
+                <span class="text-gradient text-2xl md:text-4xl">一個網址收齊每個人的時間</span>
+            </h1>
+
+            <p class="text-lg text-gray-500 font-light mb-6 leading-relaxed">
+                從建立到定案的操作說明，以及五項使用限制
+            </p>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">Engineering</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">使用說明</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">工具實作</span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.09.27</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
+                Meet 是這個站上的會議時段投票工具，跟 Google Meet 沒有關係。發起人建立一場會議、列出候選時段，拿到一個網址；收到網址的人對每個時段選「可參加」「需事先通知」「無法參加」；發起人回到同一頁看結果，挑一個時段定案。全程不需要在群組裡一個一個問。
+            </p>
+
+            <p class="text-sm text-gray-500 font-light mb-6">
+                本文依實際操作順序編排：建立會議的各欄位、參與者的回覆畫面、發起人的結果檢視與定案。工具本身在 <a href="../meet.html" class="underline decoration-gray-600 underline-offset-4 hover:text-white transition-colors">這裡</a>，
+                怎麼做出來的寫在 <a href="project_31.html" class="underline decoration-gray-600 underline-offset-4 hover:text-white transition-colors">P31</a>。
+            </p>
+
+            <nav class="my-10 p-6 bg-white/5 rounded-2xl border border-white/10" aria-label="目錄">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-4">目錄</div>
+                <ol class="list-none pl-0 m-0 space-y-1 text-sm font-light">
+                    <li class="m-0">
+                        <a href="#roles" class="flex items-baseline gap-3 py-1.5 text-gray-400 hover:text-white transition-colors no-underline">
+                            <span class="font-mono text-[11px] text-gray-600 shrink-0">01</span>
+                            <span>身分與權限</span>
+                        </a>
+                    </li>
+                    <li class="m-0">
+                        <a href="#create" class="flex items-baseline gap-3 py-1.5 text-gray-400 hover:text-white transition-colors no-underline">
+                            <span class="font-mono text-[11px] text-gray-600 shrink-0">02</span>
+                            <span>發起人：開一場會議</span>
+                        </a>
+                    </li>
+                    <li class="m-0 pl-9">
+                        <a href="#time-format" class="flex items-baseline gap-2 py-1 text-gray-500 hover:text-white transition-colors no-underline text-[13px]">
+                            <span class="text-gray-700 shrink-0">&mdash;</span>
+                            <span>時段欄位的輸入格式</span>
+                        </a>
+                    </li>
+                    <li class="m-0 pl-9">
+                        <a href="#company-code" class="flex items-baseline gap-2 py-1 text-gray-500 hover:text-white transition-colors no-underline text-[13px]">
+                            <span class="text-gray-700 shrink-0">&mdash;</span>
+                            <span>從公司工具帶時段進來</span>
+                        </a>
+                    </li>
+                    <li class="m-0">
+                        <a href="#vote" class="flex items-baseline gap-3 py-1.5 text-gray-400 hover:text-white transition-colors no-underline">
+                            <span class="font-mono text-[11px] text-gray-600 shrink-0">03</span>
+                            <span>參與者：回覆一場會議</span>
+                        </a>
+                    </li>
+                    <li class="m-0">
+                        <a href="#result" class="flex items-baseline gap-3 py-1.5 text-gray-400 hover:text-white transition-colors no-underline">
+                            <span class="font-mono text-[11px] text-gray-600 shrink-0">04</span>
+                            <span>發起人：看結果、定案、收尾</span>
+                        </a>
+                    </li>
+                    <li class="m-0 pl-9">
+                        <a href="#not-needed" class="flex items-baseline gap-2 py-1 text-gray-500 hover:text-white transition-colors no-underline text-[13px]">
+                            <span class="text-gray-700 shrink-0">&mdash;</span>
+                            <span>不需操作與需自行處理的項目</span>
+                        </a>
+                    </li>
+                    <li class="m-0">
+                        <a href="#rules" class="flex items-baseline gap-3 py-1.5 text-gray-400 hover:text-white transition-colors no-underline">
+                            <span class="font-mono text-[11px] text-gray-600 shrink-0">05</span>
+                            <span>使用前須知的五項限制</span>
+                        </a>
+                    </li>
+                    <li class="m-0">
+                        <a href="#links" class="flex items-baseline gap-3 py-1.5 text-gray-400 hover:text-white transition-colors no-underline">
+                            <span class="font-mono text-[11px] text-gray-600 shrink-0">06</span>
+                            <span>相關連結</span>
+                        </a>
+                    </li>
+                </ol>
+            </nav>
+
+            <h3 id="roles" class="scroll-mt-28 text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 身分與權限
+            </h3>
+
+            <p>
+                建立會議需要 Google 帳號。只是要回覆時段的人不用登入，用訪客身分就能投票。三種身分的權限對照如下。
+            </p>
+
+            <div class="my-8 overflow-x-auto">
+                <table class="w-full text-sm font-light border-collapse">
+                    <thead>
+                        <tr class="border-b border-white/15 text-gray-400 font-mono text-[11px] uppercase tracking-wider">
+                            <th class="text-left py-3 pr-4 font-medium">項目</th>
+                            <th class="text-left py-3 px-4 font-medium">發起人</th>
+                            <th class="text-left py-3 px-4 font-medium">Google 登入的參與者</th>
+                            <th class="text-left py-3 pl-4 font-medium">訪客</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 pr-4 text-gray-400">建立會議</td>
+                            <td class="py-3 px-4">可以</td>
+                            <td class="py-3 px-4">可，建立後即為該場發起人</td>
+                            <td class="py-3 pl-4 text-gray-500">不可，訪客僅能投票</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 pr-4 text-gray-400">投票</td>
+                            <td class="py-3 px-4 text-gray-500">不計入票數</td>
+                            <td class="py-3 px-4">可以</td>
+                            <td class="py-3 pl-4">可，送出前須填名稱</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 pr-4 text-gray-400">提議新時段</td>
+                            <td class="py-3 px-4">可</td>
+                            <td class="py-3 px-4">發起人開啟開關後可</td>
+                            <td class="py-3 pl-4">發起人開啟開關後可</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 pr-4 text-gray-400">檢視他人回覆</td>
+                            <td class="py-3 px-4">完整名單與票數</td>
+                            <td class="py-3 px-4 text-gray-500">僅票數</td>
+                            <td class="py-3 pl-4 text-gray-500">僅票數</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4 text-gray-400">下次回訪</td>
+                            <td class="py-3 px-4">首頁列出建立過的會議</td>
+                            <td class="py-3 px-4">首頁的「我回過的會議」</td>
+                            <td class="py-3 pl-4 text-gray-500">同一裝置的同一瀏覽器保留</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                訪客身分記在那台裝置的瀏覽器裡。同一台裝置重新開啟還是同一個人，可以改先前的回覆；換裝置或換瀏覽器會被當成新的參與者，要重投一次。需要跨裝置改回覆就用 Google 登入。
+            </p>
+
+            <h3 id="create" class="scroll-mt-28 text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 發起人：開一場會議
+            </h3>
+
+            <p>
+                在首頁按「開一場新的會議」展開表單，共十格。一定要填的有兩項：會議主題，以及至少一列候選時段。其他欄位都有預設值，可以直接跳過。
+            </p>
+
+            <figure class="my-10">
+                <img src="../PNG/NP_11.1.webp"
+                     alt="Meet 建立會議表單：會議主題、發起人顯示名稱、會議時長、回覆截止時間、地點、備註、私人備註、時段代碼匯入、候選時段列表與建立按鈕"
+                     class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    建立會議表單全貌，候選時段可往下增列
+                </figcaption>
+            </figure>
+
+            <ol class="list-decimal pl-5 space-y-3 text-gray-300 font-light mb-6 marker:font-mono marker:text-gray-600">
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-accent-purple/30 bg-accent-purple/10 text-accent-purple">必填</span>
+                    <strong class="text-white">會議主題</strong>　顯示在參與者畫面最上方，建議寫清楚討論範圍。（沒填就按建立會停在原地，表單下方顯示提示）
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">選填</span>
+                    <strong class="text-white">發起人顯示名稱</strong>　參與者靠這個名稱認出發起人。預設帶入上次用過的名稱，上限 40 字。
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">四選一</span>
+                    <strong class="text-white">會議時長</strong>　30 分鐘／60 分鐘／90 分鐘／半天（4 小時）。選好之後，每一列的結束時間自動換算。（先選時長再排時段；順序相反時，已經輸入的結束時間會被重新換算覆蓋）
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">選填</span>
+                    <strong class="text-white">回覆截止時間</strong>　指定日期當天 23:59 停止收票，時間以建立會議時所在的時區為準。（過了截止時間，參與者畫面顯示「已經過了投票截止時間」，三顆按鈕停用）
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">預設</span>
+                    <strong class="text-white">會議地點／連結</strong>　留空時自動填入 <code class="text-accent-purple">Microsoft Teams</code>。約實體會議室就直接改掉。
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">選填</span>
+                    <strong class="text-white">會議備註</strong>　顯示在參與者畫面的標題下方，用來補充討論範圍或時間限制，例如「這次只討論第二季預算，四十分鐘結束」。
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">僅發起人</span>
+                    <strong class="text-white">發起人私人備註</strong>　僅發起人可見，參與者畫面不顯示。
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">選填</span>
+                    <strong class="text-white">從公司工具匯入</strong>　貼入公司端產生的時段碼，整批帶入候選時段。（操作見〈從公司工具帶時段進來〉，該節末尾標示目前的驗收狀態）
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">預設開啟</span>
+                    <strong class="text-white">允許參與者新增候選時段</strong>　開啟時，參與者可以提議新的時段；關閉後只能從既有時段裡選。
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-accent-purple/30 bg-accent-purple/10 text-accent-purple">必填</span>
+                    <strong class="text-white">候選時段</strong>　至少一列。表單展開時預設帶入明天的 10:00 與 14:00 兩列，按「新增候選時段」往下加。（上圖的三列是示範內容；輸入格式見下節）
+                </li>
+            </ol>
+
+            <h4 id="time-format" class="scroll-mt-28 text-xl font-bold text-white mt-10 mb-4">
+                時段欄位的輸入格式
+            </h4>
+
+            <p>
+                日期與時間都是純文字欄位，可以整串輸入或貼上，不用先整理成固定格式。認得的寫法如下。
+            </p>
+
+            <div class="my-6 p-6 bg-[var(--c-e3)] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre class="m-0"><code>時間   9 → 09:00    930 → 09:30    1400 → 14:00    12. → 12:00
+日期   0930 或 9/30 當今年，算出來已經過了就跳明年
+       20260930、2026-09-30、2026年9月30日、26/9/30 都認得</code></pre>
+            </div>
+
+            <p>
+                另外有四項自動處理：
+            </p>
+
+<ol class="list-decimal pl-5 space-y-3 text-gray-300 font-light mb-6 marker:font-mono marker:text-gray-600">
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">自動</span>
+                    <strong class="text-white">全形轉半形</strong>　全形數字與全形冒號自動轉成半形。
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">顯示</span>
+                    <strong class="text-white">日期欄顯示 <code class="text-accent-purple">MM/DD</code></strong>　完整年月日顯示在同一列右側的小字。
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">鍵盤</span>
+                    <strong class="text-white">整格選取</strong>　點進欄位後會整串選起來，直接輸入就是覆寫。左右鍵切換到相鄰欄位，整列可以只用鍵盤完成。
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">自動</span>
+                    <strong class="text-white">新列沿用上一列</strong>　新增的一列沿用上一列的日期，開始時間接著上一列的結束時間。同一天排連續時段時不用修改。
+                </li>
+            </ol>
+            <h4 id="company-code" class="scroll-mt-28 text-xl font-bold text-white mt-10 mb-4">
+                從公司工具帶時段進來
+            </h4>
+
+            <div class="my-8 p-5 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-2">目前狀態</div>
+                <p class="m-0">
+                    <strong class="text-gray-200">本節記載的是設計，尚未經過驗收。</strong>時段碼的格式於 2026-09-24 談定，公司端與 Meet 端各自完成實作，從貼碼到帶入候選時段的完整流程還沒實際走過一輪。完成實測後補上結果。
+                </p>
+            </div>
+
+            <p>
+                在公司電腦用 Outlook 比對完行事曆之後，找到的空檔可以整批帶進這張表單，省掉兩邊對照抄寫。操作五步：
+            </p>
+
+<ol class="list-decimal pl-5 space-y-3 text-gray-300 font-light mb-6 marker:font-mono marker:text-gray-600">
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">公司端</span>
+                    在找時間工具的結果清單勾選要送出的時段，按「產生時段碼」，拿到一串 <code class="text-accent-purple">MT1.</code> 開頭的文字。
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">公司端</span>
+                    整串複製。（兩端沒有任何連線，剪貼簿是唯一的傳遞方式；複製不完整會驗證失敗）
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">Meet 端</span>
+                    回到建立會議表單，貼入「從公司工具匯入」欄位。
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-accent-purple/30 bg-accent-purple/10 text-accent-purple">Meet 端</span>
+                    按「匯入」。候選時段整批換成碼裡的那幾列。（原本手動輸入的列會被覆蓋，要保留的話先另外記下來）
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">Meet 端</span>
+                    帶進來的列跟手動輸入的列一樣，日期與時間都還可以改。
+                </li>
+            </ol>
+
+            <p>
+                一組時段碼最多帶入 20 個時段，超出的部分不會帶進來。驗證失敗時，欄位下方會顯示原因：
+            </p>
+
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
+                <li>開頭不是 <code class="text-accent-purple">MT1.</code>（剪貼簿裡不是時段碼，複製到別的內容了）</li>
+                <li>時段碼不完整或被改過（多半是複製時漏選一段，回公司端重新複製）</li>
+                <li>內容無法解析（時段碼毀損，回公司端重新產生）</li>
+                <li>碼中沒有時段（產碼時未勾選）</li>
+            </ul>
+
+            <p>
+                時段碼裡面只有時間本身。與會者、會議主旨、行事曆的忙閒明細都留在公司電腦，不會跟著時段碼出來。送上公開網站的資料只有幾組日期與時間。
+            </p>
+
+
+            <p>
+                建立完成後直接進到那場會議的網址。按右上角「複製分享網址」取得連結。
+            </p>
+
+            <h3 id="vote" class="scroll-mt-28 text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 參與者：回覆一場會議
+            </h3>
+
+            <p>
+                參與者對每個時段各點一次就完成，全程約三十秒。打開網址先進入入口畫面，上方是會議名稱與發起人，下方兩個選項：Google 登入，或用訪客身分投票。訪客不用註冊。
+            </p>
+
+            <figure class="my-10">
+                <img src="../PNG/NP_11.2.webp"
+                     alt="Meet 投票畫面：顯示名稱欄，三個候選時段各有可參加、需事先通知、無法參加三顆按鈕，每個時段下方是目前票數"
+                     class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    參與者畫面：每個時段三選一，下方為目前票數
+                </figcaption>
+            </figure>
+
+<ol class="list-decimal pl-5 space-y-3 text-gray-300 font-light mb-6 marker:font-mono marker:text-gray-600">
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-accent-purple/30 bg-accent-purple/10 text-accent-purple">訪客</span>
+                    <strong class="text-white">先填顯示名稱</strong>　沿用預設的「訪客 + 身分編號前四碼」送不出去，畫面提示「請先填你的名字，發起人才認得出是誰」。（Google 登入的人帶入帳號名稱，這一格可以不動）
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">所有人</span>
+                    <strong class="text-white">每個時段三選一</strong>　可參加、需事先通知、無法參加。按鈕下方是目前票數，名單只有發起人看得到。
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">所有人</span>
+                    <strong class="text-white">按「送出回覆」</strong>　可以只回覆部分時段，不必每一格都選；「您已回覆 N / M 個時段」只是提示。（送出後按鈕變成「更新我的回覆」，可以隨時改）
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">發起人開放時</span>
+                    <strong class="text-white">提議新時段</strong>　時段列表下方有「新增時段」。提議出來的時段會標上提議者，提議的人可以自己刪掉。（發起人關閉「允許參與者新增候選時段」時不顯示）
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">按不下去時</span>
+                    <strong class="text-white">三顆按鈕停用</strong>　截止時間已過、發起人已定案、或這場已經結束。畫面會寫出實際原因。
+                </li>
+            </ol>
+
+            <h3 id="result" class="scroll-mt-28 text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 發起人：看結果、定案、收尾
+            </h3>
+
+            <p>
+                發起人打開同一個網址時會多出「投票結果」一段，參與者畫面看不到。判讀重點是各時段綠色區塊的長度。
+            </p>
+
+            <figure class="my-10">
+                <img src="../PNG/NP_11.3.webp"
+                     alt="Meet 發起人結果檢視：每個時段一條四色比例條、最多人可參加標記、右側可參加人數比例，下方是參與者名單與移除按鈕"
+                     class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    四色比例條：綠為可參加、黃為需事先通知、深灰為無法參加、淡色為尚未回覆
+                </figcaption>
+            </figure>
+
+<ol class="list-decimal pl-5 space-y-3 text-gray-300 font-light mb-6 marker:font-mono marker:text-gray-600">
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">檢視</span>
+                    <strong class="text-white">比例條</strong>　滑鼠移到色塊上會顯示名單，手機點一下色塊。色塊下方的數字是各狀態的人數。
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">檢視</span>
+                    <strong class="text-white">右側的 <code class="text-accent-purple">2/3 可參加</code></strong>　已回覆的三個人裡面有兩個可參加。分母只算已回覆的人數，看不出還有幾個人沒回。
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">檢視</span>
+                    <strong class="text-white">「最多人可參加」標記</strong>　自動標在票數最高的那一格。（同票時，以「需事先通知」比較少的那一格優先）
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-accent-purple/30 bg-accent-purple/10 text-accent-purple">操作</span>
+                    <strong class="text-white">定案這個時段</strong>　按下後整場停止收票，參與者畫面顯示「發起人已定案，行事曆邀請將另行寄送」。（按「取消定案」可以恢復收票，前提是截止時間還沒過）
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">操作</span>
+                    <strong class="text-white">移除參與者</strong>　名單每一列右側有移除鈕。移除後，那位參與者重新打開連結可以再投一次，前提是這場還在收票。
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-accent-purple/30 bg-accent-purple/10 text-accent-purple">操作</span>
+                    <strong class="text-white">刪除整場</strong>　在首頁那一列的垃圾桶，按下會先跳出確認。會議與所有回覆一起刪掉，並釋回一個名額。（無法復原；拿到連結的人打開後會看到「這場投票已經被移除」）
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">檢視</span>
+                    <strong class="text-white">首頁的「目前預計」</strong>　顯示每一場目前票數最高的時段；定案之後改成顯示定案的那一格。
+                </li>
+            </ol>
+
+            <h4 id="not-needed" class="scroll-mt-28 text-xl font-bold text-white mt-10 mb-4">
+                不需操作與需自行處理的項目
+            </h4>
+
+            <p>
+                以下是常被問到的幾件事，先列出來。
+            </p>
+
+<ol class="list-decimal pl-5 space-y-3 text-gray-300 font-light mb-6 marker:font-mono marker:text-gray-600">
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">不需</span>
+                    <strong class="text-white">註冊帳號</strong>　投票端用訪客身分就能送出。只有建立新會議需要 Google 帳號。
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">不需</span>
+                    <strong class="text-white">安裝程式</strong>　整套都是網頁，手機瀏覽器打開網址就能投票。
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-white/10 bg-white/5 text-gray-400">不需</span>
+                    <strong class="text-white">等待全員回覆</strong>　票數的分母是已回覆人數，票數夠了就可以定案。
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-accent-purple/30 bg-accent-purple/10 text-accent-purple">需自行處理</span>
+                    <strong class="text-white">行事曆邀請</strong>　定案只是把結論標在頁面上，Meet 不會寫進任何人的行事曆。
+                </li>
+                <li>
+                    <span class="inline-block align-middle font-mono text-[10px] leading-none px-1.5 py-1 mr-2 rounded border border-accent-purple/30 bg-accent-purple/10 text-accent-purple">需自行處理</span>
+                    <strong class="text-white">通知與催覆</strong>　Meet 沒有受邀名單也沒有 email，發不出提醒。連結丟在哪個群組，催覆就回那個群組。
+                </li>
+            </ol>
+
+            <h3 id="rules" class="scroll-mt-28 text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 使用前須知的五項限制
+            </h3>
+
+            <ol class="list-decimal pl-5 space-y-4 text-gray-300 font-light mb-6">
+                <li>
+                    <strong class="text-white">同時最多 10 場。</strong>
+                    開到第 11 場會被擋下來，刪掉已經結束的會議就會釋回名額。這個上限讓整套工具維持在免費額度內。
+                </li>
+                <li>
+                    <strong class="text-white">發起人不計入票數。</strong>
+                    發起人列出的候選時段就代表他可以的時間，畫面上不含發起人的票。判讀比例條時要另外算進去。
+                </li>
+                <li>
+                    <strong class="text-white">看不到還有幾個人沒回。</strong>
+                    Meet 不知道連結發給了誰，算不出還缺幾票。要催覆就對照參與者名單，那邊列得出已經回過的人。
+                </li>
+                <li>
+                    <strong class="text-white">名單只顯示名稱。</strong>
+                    參與者紀錄裡沒有 email，顯示的是每個人自己填的名稱。發連結的時候可以順便要求填全名。
+                </li>
+                <li>
+                    <strong class="text-white">拿到網址就能投票，避免貼在公開的地方。</strong>
+                    網址帶一組 20 字元的識別碼，不容易猜到，在群組裡流通夠安全。網址外流時的影響分兩層：隱私這一層守得住，投票內容與完整名單仍然只有發起人讀得到，每位參與者只能讀自己的那一票，這道限制在資料庫層成立，與畫面呈現無關；票數這一層會鬆掉，拿到網址的人都能投，統計的可信度因此受影響。
+                </li>
+            </ol>
+
+            <h3 id="links" class="scroll-mt-28 text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 相關連結
+            </h3>
+
+            <ul class="space-y-2 text-sm text-gray-400 list-none pl-0">
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="../meet.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">Meet &mdash; 直接打開工具</a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="project_31.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">P31 &mdash; 這個工具怎麼做出來的</a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="project_30.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">P30 &mdash; Idea Whiteboard，同一套設定上的第一個工具</a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="https://github.com/GHOST8787/blog" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">GitHub &mdash; GHOST8787/blog</a>
+                </li>
+            </ul>
+
+            <p class="text-gray-400 text-sm mt-8">
+                使用上有問題或有功能建議，於 <a href="../whiteboard.html" class="underline decoration-gray-600 underline-offset-4 hover:text-white transition-colors">許願板</a> 留言，或在 GitHub 開 issue。
+            </p>
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                &larr; 上一篇
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                查看所有專案
+            </a>
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                下一篇 &rarr;
+            </a>
+        </div>
+
+    </main>
+    <div id="footer-placeholder"></div>
+</body>
+</html>
