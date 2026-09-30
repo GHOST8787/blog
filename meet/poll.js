@@ -1,9 +1,9 @@
-// 投票頁：入口畫面、參與者三選一、發起人結果檢視。帶 ?id= 才會用到。
+// 投票頁：入口畫面、參與者兩選一、發起人結果檢視。帶 ?id= 才會用到。
 import {
     ref, onValue, push, update, set, get, serverTimestamp,
     app, db, auth, S, T, LANG, $, $state, $home, $poll, pollId, MAX_POLLS,
     STATES, ICONS, SEGCLS, SEGCOLOR,
-    esc, fmtRange, fmtDate, sortedSlots, displayName, voterUids, voteOf,
+    esc, fmtRange, fmtDate, sortedSlots, displayName, voterUids, voteOf, rawVoteOf, normVotes,
     isOrganizer, votingOpen, showState, addMinutes, parseHM, normalizeTime, markField,
     normalizeDate, wireCellRow, focusCell,
     googleName, loadSavedNames, savedName, watch, dropWatches
@@ -31,6 +31,7 @@ export function resetPoll() {
     draft = {};
     submittedOnce = false;
     hideTip();
+    hideSentCard();
     $('mt-gone').classList.add('hidden');
     $('mt-identity').classList.add('hidden');
     $('mt-identity').classList.remove('flex');
@@ -203,7 +204,7 @@ function attachParticipant() {
         S.votes = { [S.me.uid]: mine };
         // 資料庫裡已經有票，代表送出過；草稿以資料庫為準重新鋪一次
         submittedOnce = Object.keys(mine).length > 0;
-        draft = { ...mine };
+        draft = normVotes(mine);   // 舊的 notice 票在畫面上一律當「無法參加」
         renderAll();
     });
 }
@@ -211,10 +212,10 @@ function attachParticipant() {
 // 草稿跟已送出的差異，換算成 S.tally 每個時段的加減
 function tallyDelta() {
     if (!S.me) return {};
-    const committed = (S.votes[S.me.uid] || {});
+    const committed = normVotes(S.votes[S.me.uid] || {});   // 舊的 notice 票當 no 算
     const delta = {};
     const bump = (slotId, key, n) => {
-        if (!delta[slotId]) delta[slotId] = { yes: 0, notice: 0, no: 0 };
+        if (!delta[slotId]) delta[slotId] = { yes: 0, no: 0 };
         delta[slotId][key] += n;
     };
     new Set([...Object.keys(committed), ...Object.keys(draft)]).forEach(slotId => {
@@ -229,7 +230,8 @@ function tallyDelta() {
 
 function hasUnsaved() {
     if (!S.me) return false;
-    const committed = (S.votes[S.me.uid] || {});
+    // 收斂後再比。資料庫存的是 notice、畫面顯示 no，這不算「有未送出的變更」。
+    const committed = normVotes(S.votes[S.me.uid] || {});
     const keys = new Set([...Object.keys(committed), ...Object.keys(draft)]);
     for (const k of keys) {
         if ((committed[k] || null) !== (draft[k] || null)) return true;
@@ -277,13 +279,13 @@ const timeVal = ms => { const d = new Date(ms); return `${two(d.getHours())}:${t
 $('c-code-apply').addEventListener('click', async () => {
     const msg = $('c-code-msg');
     const raw = $('c-code').value.trim();
-    msg.className = 'font-mono text-[10px] mt-2 text-red-400';
+    msg.className = 'font-mono text-[13px] mt-2 text-red-400';
     if (!raw) { msg.textContent = T.codeEmpty; return; }
     let list;
     try { list = await decodeSlotCode(raw); }
     catch (err) { msg.textContent = T.codeError[err.message] || T.codeError.format; return; }
     $('c-slots').innerHTML = list.map(s => slotRowHtml(dateVal(s.start), timeVal(s.start), timeVal(s.end))).join('');
-    msg.className = 'font-mono text-[10px] mt-2 text-accent-success';
+    msg.className = 'font-mono text-[13px] mt-2 text-accent-success';
     msg.textContent = T.codeOk(list.length);
 });
 
@@ -417,10 +419,10 @@ function listBy(slotId, state) {
     return voterUids().filter(u => (voteOf(u, slotId) || 'pend') === state);
 }
 function bestSlotId() {
-    let best = null, ty = -1, tn = -1;
+    let best = null, ty = -1;
     sortedSlots().forEach(s => {
-        const y = countBy(s.id, 'yes'), n = countBy(s.id, 'notice');
-        if (y > ty || (y === ty && n > tn)) { ty = y; tn = n; best = s.id; }
+        const y = countBy(s.id, 'yes');
+        if (y > ty) { ty = y; best = s.id; }   // 同票數時保留較早的那個時段
     });
     return best;
 }
@@ -449,38 +451,38 @@ function renderBars() {
     const total = headcount || 1;   // 寬度用的分母保底 1，顯示的分母用真實人數
     const best = bestSlotId();
     $('slot-bars').innerHTML = sortedSlots().map(s => {
-        const c = { yes: countBy(s.id, 'yes'), notice: countBy(s.id, 'notice'), no: countBy(s.id, 'no'), pend: countBy(s.id, 'pend') };
+        const c = { yes: countBy(s.id, 'yes'), no: countBy(s.id, 'no'), pend: countBy(s.id, 'pend') };
         const isBest = s.id === best && !S.meta.lockedSlot;
         const isLocked = s.id === S.meta.lockedSlot;
         const r = fmtRange(s.start, s.end);
 
-        const segs = ['yes', 'notice', 'no', 'pend'].filter(k => c[k] > 0).map(k =>
+        const segs = ['yes', 'no', 'pend'].filter(k => c[k] > 0).map(k =>
             `<div class="seg ${SEGCLS[k]}" style="width:${c[k] / total * 100}%" data-slot="${s.id}" data-state="${k}"></div>`
         ).join('');
 
         const badge = isLocked
-            ? `<span class="ml-2 font-mono text-[9px] px-1.5 py-0.5 rounded whitespace-nowrap bg-accent-success/15 text-accent-success border border-accent-success/30">${T.lockedBadge}</span>`
-            : (isBest ? `<span class="ml-2 font-mono text-[9px] px-1.5 py-0.5 rounded whitespace-nowrap bg-accent-purple/15 text-accent-purple border border-accent-purple/30">${T.bestBadge}</span>` : '');
+            ? `<span class="ml-2 font-mono text-[12px] px-1.5 py-0.5 rounded whitespace-nowrap bg-accent-success/15 text-accent-success border border-accent-success/30">${T.lockedBadge}</span>`
+            : (isBest ? `<span class="ml-2 font-mono text-[12px] px-1.5 py-0.5 rounded whitespace-nowrap bg-accent-purple/15 text-accent-purple border border-accent-purple/30">${T.bestBadge}</span>` : '');
 
         const owner = S.slotOwners[s.id];
         const by = (owner && owner !== S.meta.organizer)
-            ? `<span class="font-mono text-[9px] text-gray-600 ml-2">${esc(T.proposedBy(displayName(owner)))}</span>` : '';
+            ? `<span class="font-mono text-[12px] text-gray-600 ml-2">${esc(T.proposedBy(displayName(owner)))}</span>` : '';
 
         const num = k => `<span class="whitespace-nowrap" data-slot="${s.id}" data-state="${k}">
             <span class="inline-block w-2 h-2 rounded-sm align-middle mr-1" style="background:${SEGCOLOR[k]}"></span>${c[k]}</span>`;
 
         return `<div class="slot-row px-5 py-4 ${isBest ? 'is-best' : ''} ${isLocked ? 'is-locked' : ''}">
             <div class="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 mb-2.5">
-                <div><span class="text-sm text-white font-medium">${r.day}</span>
-                    <span class="font-mono text-[11px] text-gray-500 ml-2">${r.time}</span>${by}${badge}</div>
+                <div><span class="text-base text-white font-semibold">${r.day}</span>
+                    <span class="font-mono text-sm text-gray-500 ml-2">${r.time}</span>${by}${badge}</div>
                 <div class="flex items-center gap-3">
                     <div class="font-mono text-sm ${isLocked ? 'text-accent-success' : (isBest ? 'text-accent-purple' : 'text-gray-400')}">${T.yesCount(c.yes, headcount)}</div>
-                    <button type="button" class="js-del-slot shrink-0 px-2 py-1 rounded-full border border-white/10 text-[10px] font-mono text-gray-600 hover:text-red-300 hover:border-red-400/30 transition" data-slot="${s.id}" title="${T.delSlot}"><i class="fa-regular fa-trash-can"></i></button>
+                    <button type="button" class="js-del-slot shrink-0 px-2 py-1 rounded-full border border-white/10 text-[13px] font-mono text-gray-600 hover:text-red-300 hover:border-red-400/30 transition" data-slot="${s.id}" title="${T.delSlot}"><i class="fa-regular fa-trash-can"></i></button>
                 </div>
             </div>
             <div class="bar mb-2">${segs}</div>
-            <div class="flex flex-wrap gap-x-4 gap-y-1 font-mono text-[11px] text-gray-500">
-                ${num('yes')}${num('notice')}${num('no')}${num('pend')}
+            <div class="flex flex-wrap gap-x-4 gap-y-1 font-mono text-[13px] text-gray-500">
+                ${num('yes')}${num('no')}${num('pend')}
             </div>
         </div>`;
     }).join('');
@@ -496,7 +498,7 @@ function showTip(slotId, state, x, y) {
     $('tip-title').textContent = `${r.day} ${r.time} · ${T.states[state]}`;
     $('tip-count').textContent = names.length + ' ' + T.totalPeople;
     const box = $('tip-names');
-    box.className = 'names font-mono text-[11px] text-gray-300' + (names.length <= 8 ? ' few' : '');
+    box.className = 'names font-mono text-[13px] text-gray-300' + (names.length <= 8 ? ' few' : '');
     box.innerHTML = names.length
         ? names.map(n => `<span class="truncate">${esc(n)}</span>`).join('')
         : `<span class="text-gray-600">${T.nobody}</span>`;
@@ -547,28 +549,51 @@ function renderCards() {
         const canVote = open;
         const mine = draft[s.id] || null;             // 畫面看草稿，不看資料庫
         const t = S.tally[s.id] || {};
-        const counts = `<div class="font-mono text-[10px] text-gray-500 mt-2">${T.tallyFmt(t.yes || 0, t.notice || 0, t.no || 0)}</div>`;
+        // tally 的 notice 是舊資料留下的，顯示時併進「無法參加」
+        const counts = `<div class="font-mono text-[13px] text-gray-500 mt-2.5">${T.tallyFmt(t.yes || 0, (t.no || 0) + (t.notice || 0))}</div>`;
         const r = fmtRange(s.start, s.end);
         const owner = S.slotOwners[s.id];
         const by = (owner && owner !== S.meta.organizer)
-            ? `<span class="font-mono text-[9px] text-gray-600 ml-2">${S.me && owner === S.me.uid ? T.youProposed : T.otherProposed}</span>` : '';
+            ? `<span class="font-mono text-[12px] text-gray-600 ml-2">${S.me && owner === S.me.uid ? T.youProposed : T.otherProposed}</span>` : '';
         const locked = s.id === S.meta.lockedSlot
-            ? `<span class="ml-2 font-mono text-[9px] px-1.5 py-0.5 rounded whitespace-nowrap bg-accent-success/15 text-accent-success border border-accent-success/30">${T.lockedBadge}</span>` : '';
+            ? `<span class="ml-2 font-mono text-[12px] px-1.5 py-0.5 rounded whitespace-nowrap bg-accent-success/15 text-accent-success border border-accent-success/30">${T.lockedBadge}</span>` : '';
         const picks = STATES.map(k =>
             `<button class="pick ${mine === k ? 'on-' + k : ''}" data-slot="${s.id}" data-pick="${k}" ${canVote ? '' : 'disabled'}>
                 <i class="${ICONS[k]}"></i>${T.states[k]}</button>`
         ).join('');
         return `<div class="px-5 py-4">
             <div class="flex items-baseline justify-between gap-3 mb-3">
-                <div><span class="text-sm text-white font-medium">${r.day}</span>
-                    <span class="font-mono text-[11px] text-gray-500 ml-2">${r.time}</span>${by}${locked}</div>
-                ${mine ? '' : `<span class="font-mono text-[10px] text-gray-600 shrink-0">${T.notAnswered}</span>`}
+                <div><span class="text-base text-white font-semibold">${r.day}</span>
+                    <span class="font-mono text-sm text-gray-500 ml-2">${r.time}</span>${by}${locked}</div>
+                ${mine ? '' : `<span class="font-mono text-[13px] text-gray-600 shrink-0">${T.notAnswered}</span>`}
             </div>
             <div class="flex gap-2">${picks}</div>
             ${counts}
         </div>`;
     }).join('');
     renderSubmitBar();
+}
+
+// 送出成功後的綠框卡片。參與者看不到別人怎麼填，所以這裡要講清楚
+// 「收齊之後發起人會確認、會另行通知」，不然按完送出等於沒有下文。
+function sentVisible() {
+    const c = $('p-sent');
+    return !!c && !c.classList.contains('hidden');
+}
+function showSentCard() {
+    const card = $('p-sent');
+    if (!card) return;
+    const at = new Date().toLocaleTimeString(T.timeLocale, { hour: '2-digit', minute: '2-digit' });
+    $('p-sent-title').textContent = T.sentTitle;
+    $('p-sent-body').textContent = T.sentBody(at);
+    $('p-sent-edit').textContent = T.sentEdit;
+    card.classList.remove('hidden');
+    $('p-submit-msg').textContent = '';   // 卡片已經講完了，按鈕旁不再重複一次
+    try { card.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); } catch (err) { }
+}
+function hideSentCard() {
+    const c = $('p-sent');
+    if (c) c.classList.add('hidden');
 }
 
 // 送出列：按鈕文字與狀態說明
@@ -591,10 +616,12 @@ function renderSubmitBar() {
     btn.disabled = !votingOpen() || !dirty;
     // 不能投的時候要說原因。原本只是把按鈕變灰，訊息還寫「選擇完成後請按送出」，
     // 人看不出來是截止了、被定案了、還是壞了。
+    if (dirty) hideSentCard();
     const why = closedReason();
     if (why) msg.textContent = why;
     else if (dirty) msg.textContent = T.unsaved;
-    else if (submittedOnce) msg.textContent = T.canEdit;
+    // 卡片還開著就不重複講一次；重新載入頁面時卡片是收起來的，那時才用這句
+    else if (submittedOnce) msg.textContent = sentVisible() ? '' : T.canEdit;
     else msg.textContent = T.pickSomething;
 }
 
@@ -674,7 +701,8 @@ $('p-submit').addEventListener('click', async e => {
     const payload = {};
     // 只寫真的有變動的時段。匿名的人那條規則是 !data.exists()，
     // 把沒動過的票原值再寫一次會被擋，整包 update 一起掛掉。
-    const committed = S.votes[S.me.uid] || {};
+    // 讀收斂後的值：舊的 notice 票沒被人動過時，它跟 draft 都是 no 算相同，不會被重寫。
+    const committed = normVotes(S.votes[S.me.uid] || {});
     new Set([...Object.keys(committed), ...Object.keys(draft)]).forEach(slotId => {
         const before = committed[slotId] || null;
         const after = draft[slotId] || null;
@@ -691,7 +719,7 @@ $('p-submit').addEventListener('click', async e => {
         console.warn('[meet] could not read the latest S.tally, falling back to the cached copy', e.code);
     }
     Object.entries(delta).forEach(([slotId, d]) => {
-        ['yes', 'notice', 'no'].forEach(k => {
+        ['yes', 'no'].forEach(k => {
             if (!d[k]) return;
             const cur = (base[slotId] && base[slotId][k]) || 0;
             payload[`meet/polls/${pollId}/tally/${slotId}/${k}`] = Math.max(0, cur + d[k]);
@@ -713,8 +741,8 @@ $('p-submit').addEventListener('click', async e => {
     try {
         await update(ref(db), payload);
         submittedOnce = true;
-        msg.textContent = T.submittedAt(new Date().toLocaleTimeString(T.timeLocale, { hour: '2-digit', minute: '2-digit' }));
         renderCards();
+        showSentCard();
         try { burstThanks(e, btn); } catch (err) { console.warn('[meet] burst skipped', err); }
     } catch (err) {
         console.error('[meet] submit failed', err);
@@ -730,16 +758,18 @@ $('p-submit').addEventListener('click', async e => {
 async function syncTally() {
     if (!isOrganizer() || !S.meta) return;
     const want = {};
-    Object.keys(S.slots).forEach(id => { want[id] = { yes: 0, notice: 0, no: 0 }; });
+    // notice 一律歸零：舊票在這裡併進 no，發起人開過結果頁資料庫就收斂完了。
+    Object.keys(S.slots).forEach(id => { want[id] = { yes: 0, no: 0, notice: 0 }; });
     Object.entries(S.votes).forEach(([uid, v]) => {
         if (uid === S.meta.organizer) return;
         Object.entries(v || {}).forEach(([slotId, pick]) => {
-            if (want[slotId] && want[slotId][pick] !== undefined) want[slotId][pick]++;
+            const k = pick === 'notice' ? 'no' : pick;
+            if (want[slotId] && (k === 'yes' || k === 'no')) want[slotId][k]++;
         });
     });
     const payload = {};
     Object.entries(want).forEach(([slotId, w]) => {
-        ['yes', 'notice', 'no'].forEach(k => {
+        ['yes', 'no', 'notice'].forEach(k => {
             const cur = (S.tally[slotId] && S.tally[slotId][k]) || 0;
             if (cur !== w[k]) payload[`meet/polls/${pollId}/tally/${slotId}/${k}`] = w[k];
         });
@@ -759,10 +789,10 @@ function renderVoters() {
         return `<div class="flex items-center gap-3 px-5 py-3">
             <span class="avatar shrink-0" style="background:#2a2a30">${esc(name.slice(0, 1))}</span>
             <span class="text-sm text-gray-300 truncate flex-1 min-w-0">${esc(name)}</span>
-            <span class="font-mono text-[10px] text-gray-600 shrink-0">${n ? T.repliedSlots(n) : T.notRepliedYet}</span>
-            <button type="button" class="js-del-voter shrink-0 px-3 py-1.5 rounded-full border border-white/10 text-[10px] font-mono text-gray-500 hover:text-red-300 hover:border-red-400/30 transition" data-uid="${u}">${T.removeVoter}</button>
+            <span class="font-mono text-[13px] text-gray-600 shrink-0">${n ? T.repliedSlots(n) : T.notRepliedYet}</span>
+            <button type="button" class="js-del-voter shrink-0 px-3 py-1.5 rounded-full border border-white/10 text-[13px] font-mono text-gray-500 hover:text-red-300 hover:border-red-400/30 transition" data-uid="${u}">${T.removeVoter}</button>
         </div>`;
-    }).join('') : `<div class="px-5 py-4 font-mono text-[11px] text-gray-600">${T.noVoters}</div>`;
+    }).join('') : `<div class="px-5 py-4 font-mono text-[13px] text-gray-600">${T.noVoters}</div>`;
 }
 
 $('voter-list').addEventListener('click', async e => {
@@ -813,18 +843,17 @@ function renderVerdict() {
             if (!arr.length) return T.nobody;
             return arr.length <= CAP ? arr.join(T.listSep) : arr.slice(0, CAP).join(T.listSep) + T.andMore(arr.length);
         };
-        const lockBtn = `<button id="lock-btn" class="px-5 py-2.5 rounded-full ${S.meta.lockedSlot ? 'border border-white/15 text-gray-400' : 'bg-accent-purple text-black font-bold'} text-xs tracking-wide transition">${S.meta.lockedSlot ? T.unlockBtn : T.lockBtn}</button>`;
+        const lockBtn = `<button id="lock-btn" class="px-5 py-2.5 rounded-full ${S.meta.lockedSlot ? 'border border-white/15 text-gray-400' : 'bg-accent-purple text-black font-bold'} text-sm tracking-wide transition">${S.meta.lockedSlot ? T.unlockBtn : T.lockBtn}</button>`;
         // 這顆會把整場會議連同所有回覆刪掉，不可復原，所以用紅色並要按兩次
-        const closeBtn = `<button id="close-btn" class="px-4 py-2.5 rounded-full border border-red-400/40 text-red-300 hover:text-red-200 hover:border-red-400/70 text-xs tracking-wide transition">${T.closeBtn}</button>`;
+        const closeBtn = `<button id="close-btn" class="px-4 py-2.5 rounded-full border border-red-400/40 text-red-300 hover:text-red-200 hover:border-red-400/70 text-sm tracking-wide transition">${T.closeBtn}</button>`;
 
         $('verdict').innerHTML = `<div class="flex flex-wrap items-start justify-between gap-4">
             <div class="min-w-[220px] flex-1">
-                <div class="font-mono text-[10px] text-accent-purple uppercase tracking-wider mb-2">${S.meta.lockedSlot ? T.verdictLocked : T.verdictBest}</div>
+                <div class="font-mono text-[13px] text-accent-purple uppercase tracking-wider mb-2">${S.meta.lockedSlot ? T.verdictLocked : T.verdictBest}</div>
                 <div class="text-xl font-bold text-white mb-3">${r.day} ${r.time}</div>
-                <div class="space-y-1.5 text-xs">
+                <div class="space-y-1.5 text-sm">
                     <div class="flex gap-2"><span class="font-mono text-gray-600 w-24 shrink-0">${T.states.yes}</span><span class="text-accent-success">${esc(nameList('yes'))}</span></div>
-                    <div class="flex gap-2"><span class="font-mono text-gray-600 w-24 shrink-0">${T.states.notice}</span><span class="text-accent-warn">${esc(nameList('notice'))}</span></div>
-                    <div class="flex gap-2"><span class="font-mono text-gray-600 w-24 shrink-0">${T.states.no}</span><span class="text-gray-400">${esc(nameList('no'))}</span></div>
+                    <div class="flex gap-2"><span class="font-mono text-gray-600 w-24 shrink-0">${T.states.no}</span><span class="text-accent-warn">${esc(nameList('no'))}</span></div>
                     <div class="flex gap-2"><span class="font-mono text-gray-600 w-24 shrink-0">${T.states.pend}</span><span class="text-gray-500">${esc(nameList('pend'))}</span></div>
                 </div>
             </div>
@@ -872,10 +901,10 @@ function renderVerdict() {
     });
     const body = S.meta.lockedSlot
         ? `<div class="text-xl font-bold text-white mb-2">${r.day} ${r.time}</div>
-           <p class="text-xs text-gray-400">${T.lockedNote}</p>`
+           <p class="text-sm text-gray-400">${T.lockedNote}</p>`
         : `<div class="text-sm text-gray-300 mb-2">${T.answeredFmt(answered, all.length)}</div>
-           <p class="text-xs text-gray-500">${T.myYes}${esc(myYes.join(T.listSep) || T.nothingPicked)}</p>`;
-    $('verdict').innerHTML = `<div class="font-mono text-[10px] text-accent-purple uppercase tracking-wider mb-2">${S.meta.lockedSlot ? T.verdictLocked : T.yourReply}</div>${body}`;
+           <p class="text-sm text-gray-500">${T.myYes}${esc(myYes.join(T.listSep) || T.nothingPicked)}</p>`;
+    $('verdict').innerHTML = `<div class="font-mono text-[13px] text-accent-purple uppercase tracking-wider mb-2">${S.meta.lockedSlot ? T.verdictLocked : T.yourReply}</div>${body}`;
 }
 
 // --- 提議新時段 ---

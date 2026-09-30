@@ -51,10 +51,21 @@ export const S = {
     authResolved: false // 第一次登入回呼回來了沒。沒回來以前分不出「沒登入」和「還在等」
 };
 
-export const STATES = ['yes', 'notice', 'no'];
-export const ICONS = { yes: 'fa-solid fa-check', notice: 'fa-solid fa-bell', no: 'fa-solid fa-xmark' };
-export const SEGCLS = { yes: 'seg-yes', notice: 'seg-notice', no: 'seg-no', pend: 'seg-pend' };
-export const SEGCOLOR = { yes: '#4ADE80', notice: '#FBBF24', no: '#6B7280', pend: 'rgba(255,255,255,.12)' };
+// 兩態：可參加 / 無法參加。2026-09-30 拿掉「需事先通知」。
+// 資料庫裡在那之前寫進去的 'notice' 還在，規則的 validate 仍認 yes|notice|no，
+// 所以不必重發布規則；顯示層一律把 notice 當成 no（Sunny 2026-09-30 拍板）。
+export const STATES = ['yes', 'no'];
+export const ICONS = { yes: 'fa-solid fa-check', no: 'fa-solid fa-xmark' };
+export const SEGCLS = { yes: 'seg-yes', no: 'seg-no', pend: 'seg-pend' };
+export const SEGCOLOR = { yes: 'rgb(var(--c-success))', no: 'rgb(var(--c-warn))', pend: 'rgb(var(--c-ink)/.12)' };
+
+// 舊值收斂。畫面、統計、名單全部走這支，寫入前的加減才看原始值。
+export function normVote(v) { return v === 'notice' ? 'no' : (v || null); }
+export function normVotes(obj) {
+    const out = {};
+    Object.keys(obj || {}).forEach(k => { const v = normVote(obj[k]); if (v) out[k] = v; });
+    return out;
+}
 
 // === DOM ===
 export const $ = (id) => document.getElementById(id);
@@ -98,6 +109,10 @@ export function voterUids() {
     return [...set];
 }
 export function voteOf(uid, slotId) {
+    return normVote(rawVoteOf(uid, slotId));
+}
+// 沒收斂過的原值。只有算 tally 加減時要用它——舊的 notice 票要從 notice 那個數字扣掉。
+export function rawVoteOf(uid, slotId) {
     return (S.votes[uid] && S.votes[uid][slotId]) || null;
 }
 export function isOrganizer() {

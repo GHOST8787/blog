@@ -103,7 +103,7 @@ async function renderJoined() {
 }
 
 function emptyJoined() {
-    return `<div class="mt-card rounded-xl px-5 py-4 font-mono text-[11px] text-gray-600">${T.joinedNone}</div>`;
+    return `<div class="mt-card rounded-xl px-5 py-4 font-mono text-[13px] text-gray-600">${T.joinedNone}</div>`;
 }
 
 // 按鈕在使用者資訊列右邊：第一次按才去讀資料並展開，之後純開合
@@ -128,11 +128,11 @@ function renderJoinedRow(p) {
         : '—';
     return `<a href="meet.html?id=${encodeURIComponent(p.id)}" class="block mt-card rounded-xl p-4 sm:p-5 hover:border-white/10 transition">
         <div class="flex items-center gap-2 mb-1.5">
-            <span class="font-mono text-[10px] text-gray-600">#${esc(p.id.slice(-6))}</span>
-            <span class="font-mono text-[9px] px-1.5 py-0.5 rounded whitespace-nowrap ${cls}">${done ? T.closed : T.open}</span>
+            <span class="font-mono text-[13px] text-gray-600">#${esc(p.id.slice(-6))}</span>
+            <span class="font-mono text-[12px] px-1.5 py-0.5 rounded whitespace-nowrap ${cls}">${done ? T.closed : T.open}</span>
         </div>
         <div class="text-white font-medium mb-1">${esc(p.meta.title)}</div>
-        <div class="font-mono text-[11px] text-gray-500">${esc(p.meta.organizerName || '')} · ${T.submittedAt(when)}</div>
+        <div class="font-mono text-[13px] text-gray-500">${esc(p.meta.organizerName || '')} · ${T.submittedAt(when)}</div>
     </a>`;
 }
 
@@ -195,13 +195,14 @@ function leadingSlot(slotsObj, votesObj, lockedId, organizerUid) {
     if (!ids.length) return null;
     if (lockedId && slotsObj[lockedId]) return { slot: slotsObj[lockedId], locked: true };
     const voters = Object.entries(votesObj || {}).filter(e => e[0] !== organizerUid).map(e => e[1]);
-    let bestId = null, by = -1, bn = -1;
+    // 兩態之後只比可參加人數，同票保留較早的時段。
+    let bestId = null, by = -1;
     ids.sort((a, b) => slotsObj[a].start - slotsObj[b].start).forEach(id => {
-        let y = 0, n = 0;
-        voters.forEach(v => { if (v[id] === 'yes') y++; else if (v[id] === 'notice') n++; });
-        if (y > by || (y === by && n > bn)) { by = y; bn = n; bestId = id; }
+        let y = 0;
+        voters.forEach(v => { if (v[id] === 'yes') y++; });
+        if (y > by) { by = y; bestId = id; }
     });
-    if (by <= 0 && bn <= 0) return null;
+    if (by <= 0) return null;
     return { slot: slotsObj[bestId], locked: false };
 }
 
@@ -213,23 +214,23 @@ function renderPollRow(p) {
     const dl = p.meta.deadline ? `${T.deadlineLabel} ${fmtDate(p.meta.deadline)}` : T.noDeadline;
     const lead = p.lead
         ? (() => { const r = fmtRange(p.lead.slot.start, p.lead.slot.end); const txt = `${r.day} ${r.time}`;
-                   return `<div class="font-mono text-[11px] ${p.lead.locked ? 'text-accent-success' : 'text-accent-purple'}"><i class="fa-regular fa-calendar-check mr-1.5"></i>${p.lead.locked ? T.lockedFmt(txt) : T.leadFmt(txt)}</div>`; })()
-        : `<div class="font-mono text-[11px] text-gray-600"><i class="fa-regular fa-calendar mr-1.5"></i>${T.leadNone}</div>`;
+                   return `<div class="font-mono text-[13px] ${p.lead.locked ? 'text-accent-success' : 'text-accent-purple'}"><i class="fa-regular fa-calendar-check mr-1.5"></i>${p.lead.locked ? T.lockedFmt(txt) : T.leadFmt(txt)}</div>`; })()
+        : `<div class="font-mono text-[13px] text-gray-600"><i class="fa-regular fa-calendar mr-1.5"></i>${T.leadNone}</div>`;
     return `<div class="js-row cursor-pointer mt-card rounded-xl p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4 hover:border-white/10 transition" data-id="${p.id}">
         <div class="min-w-[180px]">
             <div class="flex items-center gap-2 mb-1.5">
-                <span class="font-mono text-[10px] text-gray-600">#${esc(p.id.slice(-6))}</span>
-                <span class="font-mono text-[9px] px-1.5 py-0.5 rounded whitespace-nowrap ${cls}">${done ? T.closed : T.open}</span>
+                <span class="font-mono text-[13px] text-gray-600">#${esc(p.id.slice(-6))}</span>
+                <span class="font-mono text-[12px] px-1.5 py-0.5 rounded whitespace-nowrap ${cls}">${done ? T.closed : T.open}</span>
             </div>
             <div class="text-white font-medium mb-1">${esc(p.meta.title)}</div>
             ${lead}
         </div>
         <div class="flex flex-col items-start sm:items-end gap-2 shrink-0">
             <div class="flex items-center gap-2">
-            <button class="js-copy px-3 py-2 rounded-lg border border-white/10 text-[11px] font-mono text-gray-400 hover:text-white transition" data-id="${p.id}"><i class="fa-regular fa-copy mr-1"></i>${T.copyBtn}</button>
-            <button class="js-del px-3 py-2 rounded-lg border border-white/10 text-[11px] font-mono text-gray-600 hover:text-red-400 transition" data-id="${p.id}"><i class="fa-regular fa-trash-can"></i></button>
+            <button class="js-copy px-3 py-2 rounded-lg border border-white/10 text-[13px] font-mono text-gray-400 hover:text-white transition" data-id="${p.id}"><i class="fa-regular fa-copy mr-1"></i>${T.copyBtn}</button>
+            <button class="js-del px-3 py-2 rounded-lg border border-white/10 text-[13px] font-mono text-gray-600 hover:text-red-400 transition" data-id="${p.id}"><i class="fa-regular fa-trash-can"></i></button>
             </div>
-            <div class="font-mono text-[11px] text-gray-500">${T.rowMeta(p.voters, p.slots)} · ${dl}</div>
+            <div class="font-mono text-[13px] text-gray-500">${T.rowMeta(p.voters, p.slots)} · ${dl}</div>
         </div>
     </div>`;
 }
@@ -285,11 +286,11 @@ $('c-cancel').addEventListener('click', () => $('mt-create').classList.add('hidd
 export function slotRowHtml(date, start, end) {
     return `<div class="flex flex-wrap items-center gap-2 js-slot-row">
         <input type="text" inputmode="numeric" maxlength="10" placeholder="MM/DD" value="${date.slice(5).replace('-', '/')}" class="mt-input rounded-lg px-3 py-2 text-sm font-mono w-24 js-sd" data-iso="${date}">
-        <span class="js-dlabel font-mono text-[11px] text-gray-600">${date.replace(/-/g, '/')}</span>
+        <span class="js-dlabel font-mono text-[13px] text-gray-600">${date.replace(/-/g, '/')}</span>
         <input type="text" inputmode="numeric" maxlength="8" placeholder="HH:MM" value="${start}" class="mt-input rounded-lg px-3 py-2 text-sm font-mono w-24 js-st">
         <span class="text-gray-600 font-mono text-sm">–</span>
         <input type="text" inputmode="numeric" maxlength="8" placeholder="HH:MM" value="${end}" class="mt-input rounded-lg px-3 py-2 text-sm font-mono w-24 js-se">
-        <button class="js-rm w-9 h-9 rounded-lg border border-white/10 text-gray-600 hover:text-red-400 transition text-xs"><i class="fa-regular fa-trash-can"></i></button>
+        <button class="js-rm w-9 h-9 rounded-lg border border-white/10 text-gray-600 hover:text-red-400 transition text-sm"><i class="fa-regular fa-trash-can"></i></button>
     </div>`;
 }
 function renderCreateSlots() {
