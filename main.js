@@ -1,6 +1,7 @@
 // 👇 1. 確保這兩行在最上面
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
 import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
+import { createHeart, createNumberParticle } from './particles.js';
 
 /**
  * 1. 核心功能：組件載入器
@@ -370,39 +371,6 @@ function initHeartButton() {
             console.warn("Firebase 寫入失敗:", err);
         });
     });
-}
-
-// Meet 的送出回饋也用這兩支（meet/poll.js import），所以 export 出去，不另外複製一份實作。
-export function createNumberParticle(x, y, number) {
-    const el = document.createElement('div');
-    el.innerText = number;
-    el.className = 'number-particle';
-    el.style.left = `${x}px`;
-    el.style.top = `${y - 20}px`;
-    document.body.appendChild(el);
-    setTimeout(() => { el.remove(); }, 1500);
-    return el;
-}
-
-export function createHeart(x, y, hearts) {
-    const el = document.createElement('div');
-    el.innerText = hearts[Math.floor(Math.random() * hearts.length)];
-    el.className = 'heart-particle';
-    el.style.left = `${x}px`;
-    el.style.top = `${y}px`;
-
-    const angle = Math.random() * Math.PI * 2;
-    const velocity = 60 + Math.random() * 100; 
-    const tx = Math.cos(angle) * velocity;
-    const ty = Math.sin(angle) * velocity;
-    const rot = (Math.random() - 0.5) * 60;
-
-    el.style.setProperty('--tx', `${tx}px`);
-    el.style.setProperty('--ty', `${ty}px`);
-    el.style.setProperty('--rot', `${rot}deg`);
-
-    document.body.appendChild(el);
-    setTimeout(() => { el.remove(); }, 1000);
 }
 
 // 動態卡片刷新動畫

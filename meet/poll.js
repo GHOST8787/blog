@@ -10,8 +10,9 @@ import {
 } from './core.js';
 // 建立會議表單那一區的兩支：畫候選時段列、組刪除會議的 payload。宣告在 home.js，這裡借用。
 import { slotRowHtml, deletePollPayload } from './home.js';
-// 送出回饋的愛心粒子。跟首頁那顆愛心按鈕同一套實作，不複製第二份。
-import { createHeart, createNumberParticle } from '../main.js';
+// 送出回饋的愛心粒子。跟首頁那顆愛心按鈕共用 particles.js，
+// 不 import main.js——那會把整個首頁邏輯拉進投票頁的依賴鏈。
+import { createHeart, createNumberParticle } from '../particles.js';
 
 // 只有投票頁用得到的狀態，不進 core 的共用區
 let pinned = null;             // 名單浮層釘住的那一格
@@ -556,7 +557,8 @@ function burstThanks(e, btn) {
         x = r.left + r.width / 2;
         y = r.top + r.height / 2;
     }
-    createNumberParticle(x, y, T.sentBurst).classList.add('is-text');
+    const el = createNumberParticle(x, y, T.sentBurst);
+    if (el && el.classList) el.classList.add('is-text');
     const hearts = ['🖤', '❤️', '🤍'];
     for (let i = 0; i < 15; i++) createHeart(x, y, hearts);
 }
@@ -616,8 +618,8 @@ $('p-submit').addEventListener('click', async e => {
         await update(ref(db), payload);
         submittedOnce = true;
         msg.textContent = T.submittedAt(new Date().toLocaleTimeString(T.timeLocale, { hour: '2-digit', minute: '2-digit' }));
-        burstThanks(e, btn);
         renderCards();
+        try { burstThanks(e, btn); } catch (err) { console.warn('[meet] burst skipped', err); }
     } catch (err) {
         console.error('[meet] submit failed', err);
         msg.textContent = '';
