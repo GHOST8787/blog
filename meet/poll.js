@@ -185,8 +185,12 @@ function attachParticipant() {
     $('mt-identity').classList.remove('hidden');
     $('mt-identity').classList.add('flex');
     if (S.me.isAnonymous) {
-        $('mt-name').value = `${T.guest}${S.me.uid.slice(0, 4)}`;
+        // 留空 + 灰字提示，讓「還沒填」一眼看得出來；標籤同時標成必填。
+        $('mt-name').value = '';
+        $('mt-name').placeholder = T.guestNamePlaceholder;
+        $('mt-name-label').textContent = T.nameLabelRequired;
     } else {
+        $('mt-name-label').textContent = T.nameLabel;
         // 帳號裡存過的「回覆時用的名字」優先，沒存過才用 Google 帳號的名字
         savedName('participantName').then(name => {
             $('mt-name').value = name;
@@ -614,12 +618,29 @@ function requireGuestName() {
     const typed = ($('mt-name').value || '').trim();
     const placeholder = `${T.guest}${S.me.uid.slice(0, 4)}`;
     if (typed && typed !== placeholder) return typed;
-    $('mt-name-msg').textContent = T.guestNameRequired;
-    $('mt-name').focus();
-    $('mt-name').select();
-    setTimeout(() => { $('mt-name-msg').textContent = ''; }, 4000);
+    const el = $('mt-name');
+    const msg = $('mt-name-msg');
+    msg.textContent = T.guestNameRequired;
+    msg.classList.remove('text-gray-600');
+    msg.classList.add('text-sm');
+    msg.style.color = 'rgb(var(--c-warn))';
+    markField(el, false);
+    // 捲到畫面中央再 focus。直接 focus 的話手機鍵盤彈出來會把欄位頂到看不見的地方。
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    setTimeout(() => el.focus({ preventScroll: true }), 300);
     return null;
 }
+
+// 提示留著不自動消失，打了字才收掉——人要看得到自己補上了什麼。
+$('mt-name').addEventListener('input', () => {
+    const msg = $('mt-name-msg');
+    if (!msg.textContent) return;
+    msg.textContent = '';
+    msg.style.color = '';
+    msg.classList.remove('text-sm');
+    msg.classList.add('text-gray-600');
+    markField($('mt-name'), true);
+});
 
 // 送出成功的回饋：在按鈕附近噴愛心，跟首頁那顆愛心按鈕同一套視覺。
 // 滑鼠點的話就噴在游標上，鍵盤 Enter 送出沒有座標，改抓按鈕中心。
