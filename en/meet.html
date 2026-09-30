@@ -413,9 +413,11 @@
                 </div>
                 <div id="slot-cards" class="divide-y divide-white/5"></div>
                 <div id="add-slot-mount-part"></div>
-                <div class="px-5 py-4 border-t border-white/5 flex flex-wrap items-center justify-between gap-3">
-                    <span id="p-submit-msg" class="font-mono text-[11px] text-gray-600"></span>
-                    <button id="p-submit" class="px-6 py-2.5 rounded-full bg-accent-purple text-black text-sm font-bold tracking-wide hover:opacity-90 transition disabled:opacity-40 disabled:cursor-not-allowed shrink-0" disabled>
+                <!-- 手機固定上下兩段：訊息一長就會把按鈕擠到下一行，列高從 73 跳到 102，
+                     按下送出的瞬間整個版面彈一下。寬螢幕才回到左右同列。 -->
+                <div class="px-5 py-4 border-t border-white/5 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+                    <span id="p-submit-msg" class="font-mono text-[11px] text-gray-600 leading-relaxed"></span>
+                    <button id="p-submit" class="px-6 py-2.5 rounded-full bg-accent-purple text-black text-sm font-bold tracking-wide hover:opacity-90 transition disabled:opacity-40 disabled:cursor-not-allowed shrink-0 self-end sm:self-auto" disabled>
                         Submit
                     </button>
                 </div>
