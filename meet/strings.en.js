@@ -30,7 +30,8 @@ export const T = {
     youProposed: 'you proposed',
     otherProposed: 'proposed by a participant',
     yesCount: (a, b) => `${a}/${b} available`,
-    answeredFmt: (a, b) => `You answered ${a} of ${b} times`,
+    answeredFmt: (a, b) => `Reply sent: you can make ${a} of ${b} times`,
+    notSubmittedYet: 'You have not sent a reply yet',
     myYes: 'Marked as available: ',
     nothingPicked: 'none selected',
     lockedNote: 'The organizer locked this in. A calendar invite follows separately.',
@@ -73,8 +74,10 @@ export const T = {
     submitBtn: 'Submit',
     resubmitBtn: 'Update my reply',
     submitting: 'Submitting…',
-    pickSomething: 'Pick your times, then hit Submit',
+    pickSomething: 'Tick the times you can make, then hit Submit',
     unsaved: 'You have unsubmitted changes',
+    // Slots left unticked go in as unavailable — say how many before they send
+    uncheckedMeansNo: (n) => `${n} unticked slot${n === 1 ? '' : 's'} will be recorded as unavailable`,
     sentBurst: 'Sent!',                 // the particle that floats up on a successful submit
     // The three ways a poll stops taking replies. The gate and the banner share the same line.
     closedGateSuffix: 'You can still read the results.',

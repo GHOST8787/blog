@@ -60,15 +60,41 @@
                       max-height:220px; overflow:auto; margin-top:8px; }
         #tip .names.few { grid-template-columns:repeat(2, minmax(0,1fr)); }
 
-        /* Participant two-way pick. 15px: these two buttons carry the page */
-        .pick { flex:1; min-width:0; max-width:300px; padding:13px 10px; border-radius:12px; font-size:15px;
-                border:1px solid rgb(var(--c-ink)/.10); background:rgb(var(--c-ink)/.02); color:rgb(var(--c-g400));
-                display:flex; align-items:center; justify-content:center; gap:8px; cursor:pointer;
-                transition:background .15s ease, border-color .15s ease, color .15s ease; white-space:nowrap; }
-        .pick:hover { border-color:rgb(var(--c-ink)/.22); color:rgb(var(--c-g300)); }
-        .pick.on-yes { background:rgb(var(--c-success)/.15); border-color:rgb(var(--c-success)/.5); color:rgb(var(--c-success)); font-weight:700; }
-        .pick.on-no { background:rgb(var(--c-warn)/.14); border-color:rgb(var(--c-warn)/.5); color:rgb(var(--c-warn)); font-weight:700; }
-        .pick[disabled] { opacity:.45; cursor:not-allowed; }
+        /* Slot row: the whole row is the button. Ticked = I can make it, left blank = I cannot,
+           so there are only two looks — picked and not picked — instead of two side-by-side buttons. */
+        .slot-pick { width:100%; display:flex; align-items:center; gap:12px; text-align:left;
+                     padding:13px 14px; border-radius:12px; cursor:pointer; position:relative; overflow:hidden;
+                     border:1px solid rgb(var(--c-ink)/.09); background:rgb(var(--c-ink)/.025);
+                     color:rgb(var(--c-g300)); font:inherit;
+                     transition:background .15s ease, border-color .15s ease; }
+        .slot-pick:hover { border-color:rgb(var(--c-ink)/.22); }
+        .slot-pick[disabled] { opacity:.5; cursor:not-allowed; }
+        /* Fill width = share of people available, so the fullest row reads without the numbers */
+        /* 右緣淡出，不然整條列會被切成深淺兩塊，看起來像壞掉的進度條 */
+        .sp-fill { position:absolute; inset:0 auto 0 0; pointer-events:none;
+                   background:linear-gradient(90deg, rgb(var(--c-success)/.11) 0%, rgb(var(--c-success)/.09) 62%, rgb(var(--c-success)/0) 100%); }
+        .slot-pick > *:not(.sp-fill) { position:relative; z-index:1; }
+        .sp-box { width:24px; height:24px; flex:0 0 24px; border-radius:7px; font-size:13px;
+                  border:1px solid rgb(var(--c-ink)/.18); display:flex; align-items:center; justify-content:center;
+                  color:transparent; transition:background .15s ease, color .15s ease; }
+        .sp-when { flex:1; min-width:0; font-size:15px; }
+        .sp-day { color:rgb(var(--c-g300)); margin-right:8px; }
+        .sp-time { color:rgb(var(--c-g500)); font-size:13.5px; }
+        .sp-tally { flex:0 0 auto; display:flex; align-items:center; gap:7px; font-size:13px; }
+        .sp-num { display:inline-flex; align-items:center; gap:4px; padding:1.5px 8px; border-radius:999px;
+                  white-space:nowrap; border:1px solid rgb(var(--c-ink)/.08); background:rgb(var(--c-ink)/.05); }
+        .sp-num.is-yes { color:rgb(var(--c-success)); background:rgb(var(--c-success)/.10); border-color:rgb(var(--c-success)/.25); }
+        .sp-num.is-no { color:rgb(var(--c-warn)); background:rgb(var(--c-warn)/.10); border-color:rgb(var(--c-warn)/.25); }
+        .slot-pick.is-on { background:rgb(var(--c-success)/.12); border-color:rgb(var(--c-success)/.45); }
+        .slot-pick.is-on .sp-fill { background:linear-gradient(90deg, rgb(var(--c-success)/.16) 0%, rgb(var(--c-success)/.13) 62%, rgb(var(--c-success)/0) 100%); }
+        .slot-pick.is-on .sp-box { background:rgb(var(--c-success)); border-color:rgb(var(--c-success)); color:rgb(var(--c-ink-inv)); }
+        .slot-pick.is-on .sp-day { color:rgb(var(--c-ink)); font-weight:600; }
+        @media (max-width:480px) {
+            .slot-pick { gap:9px; padding:12px 11px; }
+            .sp-when { font-size:14px; line-height:1.35; }
+            .sp-day { display:block; margin:0; font-size:13px; }
+            .sp-num { padding:1px 6px; }
+        }
 
         /* Outlined small buttons. On the light theme border-white/10 is nearly invisible and
            gray-600 text too faint, so border, text and fill are all strengthened there. */
@@ -409,7 +435,6 @@
                 <div class="px-5 py-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-[13px] font-mono text-gray-500 border-t border-white/5">
                     <span><span class="inline-block w-3 h-3 rounded-sm align-middle mr-1.5" style="background:rgb(var(--c-success))"></span>Available</span>
                     <span><span class="inline-block w-3 h-3 rounded-sm align-middle mr-1.5" style="background:rgb(var(--c-warn))"></span>Unavailable</span>
-                    <span><span class="inline-block w-3 h-3 rounded-sm align-middle mr-1.5" style="background:rgb(var(--c-ink)/.12)"></span>No reply</span>
                 </div>
             </div>
 
@@ -417,8 +442,9 @@
             <div id="participant-view" class="mt-card rounded-2xl overflow-hidden mb-5 hidden">
                 <div class="px-5 py-4 border-b border-white/5">
                     <h3 class="font-mono text-sm text-gray-400 uppercase tracking-wider mb-1">Select the times you are available</h3>
+                    <p class="font-mono text-[13px] text-gray-600">Pick as many as you like. Anything you leave unticked is recorded as unavailable.</p>
                 </div>
-                <div id="slot-cards" class="divide-y divide-white/5"></div>
+                <div id="slot-cards" class="px-4 py-4 space-y-2"></div>
                 <div id="add-slot-mount-part"></div>
                 <!-- Only shown after a successful submit. Participants cannot see the results,
                      so this is where we spell out what happens next. -->
@@ -435,7 +461,11 @@
                 <!-- 手機固定上下兩段：訊息一長就會把按鈕擠到下一行，列高從 73 跳到 102，
                      按下送出的瞬間整個版面彈一下。寬螢幕才回到左右同列。 -->
                 <div class="px-5 py-4 border-t border-white/5 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
-                    <span id="p-submit-msg" class="font-mono text-[13px] text-gray-600 leading-relaxed"></span>
+                    <span class="min-w-0">
+                        <span id="p-submit-msg" class="block font-mono text-[13px] text-gray-600 leading-relaxed"></span>
+                        <!-- Slots left unticked go in as "unavailable", so say how many before they hit send -->
+                        <span id="p-submit-warn" class="hidden block font-mono text-[13px] text-accent-warn leading-relaxed mt-1"></span>
+                    </span>
                     <button id="p-submit" class="px-6 py-2.5 rounded-full bg-accent-purple text-black text-base font-bold tracking-wide hover:opacity-90 transition disabled:opacity-40 disabled:cursor-not-allowed shrink-0 self-end sm:self-auto" disabled>
                         Submit
                     </button>

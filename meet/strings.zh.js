@@ -37,7 +37,8 @@ export const T = {
     youProposed: '由您提議',
     otherProposed: '由其他人提議',
     yesCount: (a, b) => `${a}/${b} 可參加`,
-    answeredFmt: (a, b) => `您已回覆 ${a} / ${b} 個時段`,
+    answeredFmt: (a, b) => `您已送出回覆：${b} 個時段中有 ${a} 個可參加`,
+    notSubmittedYet: '您還沒送出回覆',
     myYes: '您選擇「可參加」的時段：',
     nothingPicked: '尚未選擇',
     lockedNote: '發起人已定案，行事曆邀請將另行寄送。',
@@ -81,8 +82,10 @@ export const T = {
     submitBtn: '送出',
     resubmitBtn: '更新我的回覆',
     submitting: '送出中…',
-    pickSomething: '選擇完成後請按送出',
+    pickSomething: '勾選你可以參加的時段，然後按送出',
     unsaved: '有尚未送出的變更',
+    // 沒勾的時段會被登記成無法參加，送出前先講清楚有幾個
+    uncheckedMeansNo: (n) => `沒有勾選的 ${n} 個時段會登記為無法參加`,
     sentBurst: '已經送出囉',            // 送出成功時飄上去的那顆粒子
     // 收不了票的三種情況。入口畫面與投票畫面頂端共用同一句，後面接「現在只能看結果」。
     closedGateSuffix: '現在只能看結果。',

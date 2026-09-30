@@ -1,8 +1,8 @@
-// 投票頁：入口畫面、參與者兩選一、發起人結果檢視。帶 ?id= 才會用到。
+// 投票頁：入口畫面、參與者勾選可參加的時段、發起人結果檢視。帶 ?id= 才會用到。
 import {
     ref, onValue, push, update, set, get, serverTimestamp,
     app, db, auth, S, T, LANG, $, $state, $home, $poll, pollId, MAX_POLLS,
-    STATES, ICONS, SEGCLS, SEGCOLOR,
+    ICONS, SEGCLS, SEGCOLOR,
     esc, fmtRange, fmtDate, sortedSlots, displayName, voterUids, voteOf, rawVoteOf, normVotes,
     isOrganizer, votingOpen, showState, addMinutes, parseHM, normalizeTime, markField,
     normalizeDate, wireCellRow, focusCell,
@@ -204,23 +204,34 @@ function attachParticipant() {
         S.votes = { [S.me.uid]: mine };
         // 資料庫裡已經有票，代表送出過；草稿以資料庫為準重新鋪一次
         submittedOnce = Object.keys(mine).length > 0;
-        draft = normVotes(mine);   // 舊的 notice 票在畫面上一律當「無法參加」
+        // 畫面只認 yes：無法參加（含舊的 notice 票）就是沒勾，不進草稿
+        draft = {};
+        Object.entries(normVotes(mine)).forEach(([id, v]) => { if (v === 'yes') draft[id] = 'yes'; });
         renderAll();
     });
+}
+
+// 畫面上只記「我勾了哪幾格」，要寫出去的時候才補齊：沒勾的一律是無法參加。
+// 勾選當下不補，不然人還沒按過任何東西，送出鈕就先亮起「有未送出的變更」。
+function finalVotes() {
+    const out = {};
+    sortedSlots().forEach(s => { out[s.id] = draft[s.id] === 'yes' ? 'yes' : 'no'; });
+    return out;
 }
 
 // 草稿跟已送出的差異，換算成 S.tally 每個時段的加減
 function tallyDelta() {
     if (!S.me) return {};
     const committed = normVotes(S.votes[S.me.uid] || {});   // 舊的 notice 票當 no 算
+    const final = finalVotes();
     const delta = {};
     const bump = (slotId, key, n) => {
         if (!delta[slotId]) delta[slotId] = { yes: 0, no: 0 };
         delta[slotId][key] += n;
     };
-    new Set([...Object.keys(committed), ...Object.keys(draft)]).forEach(slotId => {
+    new Set([...Object.keys(committed), ...Object.keys(final)]).forEach(slotId => {
         const before = committed[slotId] || null;
-        const after = draft[slotId] || null;
+        const after = final[slotId] || null;
         if (before === after) return;
         if (before) bump(slotId, before, -1);
         if (after) bump(slotId, after, +1);
@@ -230,11 +241,16 @@ function tallyDelta() {
 
 function hasUnsaved() {
     if (!S.me) return false;
-    // 收斂後再比。資料庫存的是 notice、畫面顯示 no，這不算「有未送出的變更」。
+    // 還沒送出過的人：勾了任何一格才算有東西要送，全部沒勾時按鈕不亮
+    // （真的想表達「每個時段都不行」，勾一格再取消就會亮起來）。
+    if (!submittedOnce) return Object.keys(draft).length > 0;
+    // 送出過的人：拿補齊後的結果跟資料庫比。收斂後再比，
+    // 資料庫存的是 notice、畫面當成 no，這不算「有未送出的變更」。
     const committed = normVotes(S.votes[S.me.uid] || {});
-    const keys = new Set([...Object.keys(committed), ...Object.keys(draft)]);
+    const final = finalVotes();
+    const keys = new Set([...Object.keys(committed), ...Object.keys(final)]);
     for (const k of keys) {
-        if ((committed[k] || null) !== (draft[k] || null)) return true;
+        if ((committed[k] || null) !== (final[k] || null)) return true;
     }
     return false;
 }
@@ -447,16 +463,19 @@ function deleteSlotPayload(slotId) {
 }
 
 function renderBars() {
-    const headcount = voterUids().length;
-    const total = headcount || 1;   // 寬度用的分母保底 1，顯示的分母用真實人數
+    // 只有兩個狀態：可參加、無法參加。沒送出過的人不算進任何一邊，
+    // 把他們塞進「無法參加」等於替他們說了沒說過的話；「還有幾個人沒回」
+    // 已經由上面那行「已有 N 人回覆」在講。
     const best = bestSlotId();
     $('slot-bars').innerHTML = sortedSlots().map(s => {
-        const c = { yes: countBy(s.id, 'yes'), no: countBy(s.id, 'no'), pend: countBy(s.id, 'pend') };
+        const c = { yes: countBy(s.id, 'yes'), no: countBy(s.id, 'no') };
+        const headcount = c.yes + c.no;          // 這個時段真的有人表態的人數
+        const total = headcount || 1;            // 寬度用的分母保底 1
         const isBest = s.id === best && !S.meta.lockedSlot;
         const isLocked = s.id === S.meta.lockedSlot;
         const r = fmtRange(s.start, s.end);
 
-        const segs = ['yes', 'no', 'pend'].filter(k => c[k] > 0).map(k =>
+        const segs = ['yes', 'no'].filter(k => c[k] > 0).map(k =>
             `<div class="seg ${SEGCLS[k]}" style="width:${c[k] / total * 100}%" data-slot="${s.id}" data-state="${k}"></div>`
         ).join('');
 
@@ -482,7 +501,7 @@ function renderBars() {
             </div>
             <div class="bar mb-2">${segs}</div>
             <div class="flex flex-wrap gap-x-4 gap-y-1 font-mono text-[13px] text-gray-500">
-                ${num('yes')}${num('no')}${num('pend')}
+                ${num('yes')}${num('no')}
             </div>
         </div>`;
     }).join('');
@@ -540,36 +559,36 @@ $bars.addEventListener('click', e => {
 });
 document.addEventListener('click', e => { if (!e.target.closest('#slot-bars')) { pinned = null; hideTip(); } });
 
-// --- 參與者：三選一 ---
+// --- 參與者：整列一顆按鈕，勾起來＝我可以參加，沒勾＝無法參加 ---
 function renderCards() {
-    const committed = (S.me && S.votes[S.me.uid]) || {};
     const open = votingOpen();
     $('slot-cards').innerHTML = sortedSlots().map(s => {
         // 沒登入也可以按：點下去會跳出登入／匿名的選擇；匿名現在可以改自己的票
         const canVote = open;
-        const mine = draft[s.id] || null;             // 畫面看草稿，不看資料庫
+        const mine = draft[s.id] === 'yes';           // 畫面看草稿，不看資料庫
         const t = S.tally[s.id] || {};
         // tally 的 notice 是舊資料留下的，顯示時併進「無法參加」
-        const counts = `<div class="font-mono text-[13px] text-gray-500 mt-2.5">${T.tallyFmt(t.yes || 0, (t.no || 0) + (t.notice || 0))}</div>`;
+        const yes = t.yes || 0;
+        const no = (t.no || 0) + (t.notice || 0);
+        const tot = yes + no;
+        // 底色長度＝可參加的比例，不用讀數字也看得出哪一列最滿
+        const fill = tot ? Math.round(yes / tot * 100) : 0;
         const r = fmtRange(s.start, s.end);
         const owner = S.slotOwners[s.id];
         const by = (owner && owner !== S.meta.organizer)
-            ? `<span class="font-mono text-[12px] text-gray-600 ml-2">${S.me && owner === S.me.uid ? T.youProposed : T.otherProposed}</span>` : '';
+            ? `<span class="font-mono text-[12px] text-gray-600 ml-1.5">${S.me && owner === S.me.uid ? T.youProposed : T.otherProposed}</span>` : '';
         const locked = s.id === S.meta.lockedSlot
-            ? `<span class="ml-2 font-mono text-[12px] px-1.5 py-0.5 rounded whitespace-nowrap bg-accent-success/15 text-accent-success border border-accent-success/30">${T.lockedBadge}</span>` : '';
-        const picks = STATES.map(k =>
-            `<button class="pick ${mine === k ? 'on-' + k : ''}" data-slot="${s.id}" data-pick="${k}" ${canVote ? '' : 'disabled'}>
-                <i class="${ICONS[k]}"></i>${T.states[k]}</button>`
-        ).join('');
-        return `<div class="px-5 py-4">
-            <div class="flex items-baseline justify-between gap-3 mb-3">
-                <div><span class="text-base text-white font-semibold">${r.day}</span>
-                    <span class="font-mono text-sm text-gray-500 ml-2">${r.time}</span>${by}${locked}</div>
-                ${mine ? '' : `<span class="font-mono text-[13px] text-gray-600 shrink-0">${T.notAnswered}</span>`}
-            </div>
-            <div class="flex gap-2">${picks}</div>
-            ${counts}
-        </div>`;
+            ? `<span class="ml-1.5 font-mono text-[12px] px-1.5 py-0.5 rounded whitespace-nowrap bg-accent-success/15 text-accent-success border border-accent-success/30">${T.lockedBadge}</span>` : '';
+        return `<button type="button" class="slot-pick ${mine ? 'is-on' : ''}" data-slot="${s.id}"
+                    aria-pressed="${mine}" ${canVote ? '' : 'disabled'}>
+            <span class="sp-fill" style="width:${fill}%"></span>
+            <span class="sp-box"><i class="${ICONS.yes}"></i></span>
+            <span class="sp-when"><span class="sp-day">${r.day}</span><span class="sp-time font-mono">${r.time}</span>${by}${locked}</span>
+            <span class="sp-tally font-mono">
+                <span class="sp-num is-yes"><i class="${ICONS.yes}"></i>${yes}</span>
+                <span class="sp-num is-no"><i class="${ICONS.no}"></i>${no}</span>
+            </span>
+        </button>`;
     }).join('');
     renderSubmitBar();
 }
@@ -623,16 +642,26 @@ function renderSubmitBar() {
     // 卡片還開著就不重複講一次；重新載入頁面時卡片是收起來的，那時才用這句
     else if (submittedOnce) msg.textContent = sentVisible() ? '' : T.canEdit;
     else msg.textContent = T.pickSomething;
+
+    // 沒勾的時段會被送成「無法參加」，按下去之前先講清楚有幾個
+    const warn = $('p-submit-warn');
+    if (warn) {
+        const total = sortedSlots().length;
+        const picked = sortedSlots().filter(s => draft[s.id] === 'yes').length;
+        const showWarn = votingOpen() && !why && dirty && picked < total;
+        warn.textContent = showWarn ? T.uncheckedMeansNo(total - picked) : '';
+        warn.classList.toggle('hidden', !showWarn);
+    }
 }
 
 $('slot-cards').addEventListener('click', async e => {
-    const btn = e.target.closest('.pick');
+    const btn = e.target.closest('.slot-pick');
     if (!btn || btn.disabled) return;
     if (!S.me) return;   // 入口畫面選完身分才進得到這個畫面，這行只是保險
     const slotId = btn.dataset.slot;
-    // 只改草稿，按送出才寫資料庫
-    if (draft[slotId] === btn.dataset.pick) delete draft[slotId];
-    else draft[slotId] = btn.dataset.pick;
+    // 只改草稿，按送出才寫資料庫。取消勾選＝這個時段我不行
+    if (draft[slotId] === 'yes') delete draft[slotId];
+    else draft[slotId] = 'yes';
     renderCards();
 });
 
@@ -703,9 +732,10 @@ $('p-submit').addEventListener('click', async e => {
     // 把沒動過的票原值再寫一次會被擋，整包 update 一起掛掉。
     // 讀收斂後的值：舊的 notice 票沒被人動過時，它跟 draft 都是 no 算相同，不會被重寫。
     const committed = normVotes(S.votes[S.me.uid] || {});
-    new Set([...Object.keys(committed), ...Object.keys(draft)]).forEach(slotId => {
+    const final = finalVotes();   // 沒勾的時段在這裡補成 no，一起寫出去
+    new Set([...Object.keys(committed), ...Object.keys(final)]).forEach(slotId => {
         const before = committed[slotId] || null;
-        const after = draft[slotId] || null;
+        const after = final[slotId] || null;
         if (before === after) return;
         payload[`meet/polls/${pollId}/votes/${S.me.uid}/${slotId}`] = after;
     });
@@ -854,7 +884,6 @@ function renderVerdict() {
                 <div class="space-y-1.5 text-sm">
                     <div class="flex gap-2"><span class="font-mono text-gray-600 w-24 shrink-0">${T.states.yes}</span><span class="text-accent-success">${esc(nameList('yes'))}</span></div>
                     <div class="flex gap-2"><span class="font-mono text-gray-600 w-24 shrink-0">${T.states.no}</span><span class="text-accent-warn">${esc(nameList('no'))}</span></div>
-                    <div class="flex gap-2"><span class="font-mono text-gray-600 w-24 shrink-0">${T.states.pend}</span><span class="text-gray-500">${esc(nameList('pend'))}</span></div>
                 </div>
             </div>
             <div class="shrink-0 flex flex-col gap-2">${lockBtn}${closeBtn}</div>
@@ -895,14 +924,15 @@ function renderVerdict() {
 
     const all = sortedSlots();
     // 未登入也會走到這裡（內容公開讀），還沒有身分就沒有「我的票」
-    const answered = S.me ? all.filter(x => voteOf(S.me.uid, x.id)).length : 0;
+    // 送出時每個時段都會寫進去，所以「回答了幾個」只會是 0 或全部，改講送出了沒。
+    const submitted = S.me ? all.some(x => voteOf(S.me.uid, x.id)) : false;
     const myYes = !S.me ? [] : all.filter(x => voteOf(S.me.uid, x.id) === 'yes').map(x => {
         const rr = fmtRange(x.start, x.end); return `${rr.day} ${rr.time}`;
     });
     const body = S.meta.lockedSlot
         ? `<div class="text-xl font-bold text-white mb-2">${r.day} ${r.time}</div>
            <p class="text-sm text-gray-400">${T.lockedNote}</p>`
-        : `<div class="text-sm text-gray-300 mb-2">${T.answeredFmt(answered, all.length)}</div>
+        : `<div class="text-sm text-gray-300 mb-2">${submitted ? T.answeredFmt(myYes.length, all.length) : T.notSubmittedYet}</div>
            <p class="text-sm text-gray-500">${T.myYes}${esc(myYes.join(T.listSep) || T.nothingPicked)}</p>`;
     $('verdict').innerHTML = `<div class="font-mono text-[13px] text-accent-purple uppercase tracking-wider mb-2">${S.meta.lockedSlot ? T.verdictLocked : T.yourReply}</div>${body}`;
 }
