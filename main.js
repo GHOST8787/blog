@@ -372,7 +372,8 @@ function initHeartButton() {
     });
 }
 
-function createNumberParticle(x, y, number) {
+// Meet 的送出回饋也用這兩支（meet/poll.js import），所以 export 出去，不另外複製一份實作。
+export function createNumberParticle(x, y, number) {
     const el = document.createElement('div');
     el.innerText = number;
     el.className = 'number-particle';
@@ -380,9 +381,10 @@ function createNumberParticle(x, y, number) {
     el.style.top = `${y - 20}px`;
     document.body.appendChild(el);
     setTimeout(() => { el.remove(); }, 1500);
+    return el;
 }
 
-function createHeart(x, y, hearts) {
+export function createHeart(x, y, hearts) {
     const el = document.createElement('div');
     el.innerText = hearts[Math.floor(Math.random() * hearts.length)];
     el.className = 'heart-particle';

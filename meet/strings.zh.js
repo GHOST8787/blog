@@ -83,7 +83,8 @@ export const T = {
     submitting: '送出中…',
     pickSomething: '選擇完成後請按送出',
     unsaved: '有尚未送出的變更',
-    submittedAt: (t) => `已於 ${t} 送出`,
+    sentBurst: '已經送出囉',            // 送出成功時飄上去的那顆粒子
+    submittedAt: (t) => `已於 ${t} 送出，謝謝你撥空勾時間。`,
     canEdit: '已送出。修改後可再次按下更新。',
     tallyFmt: (y, n, x) => `${y} 可參加 · ${n} 需事先通知 · ${x} 無法參加`,
     joinedNone: '尚未回覆任何會議。',

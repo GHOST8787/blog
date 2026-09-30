@@ -139,7 +139,10 @@
         <div id="mt-gate" class="hidden mt-card rounded-2xl px-6 py-10 text-center">
             <div class="font-mono text-[10px] text-accent-purple uppercase tracking-wider mb-3">Meeting Poll</div>
             <div id="mt-gate-title" class="text-2xl font-bold text-white mb-1"></div>
-            <div id="mt-gate-org" class="text-gray-500 text-xs font-mono mb-8"></div>
+            <div id="mt-gate-org" class="text-gray-500 text-xs font-mono"></div>
+            <!-- 會議備註：同事常把主旨寫在這裡，所以入口畫面就要看得到。超過三行截斷，完整版在投票頁的 p-note。 -->
+            <p id="mt-gate-note" class="hidden text-gray-400 text-sm leading-relaxed max-w-md mx-auto mt-4 whitespace-pre-line line-clamp-3"></p>
+            <div class="mb-8"></div>
             <p class="text-gray-400 text-sm mb-5">選擇怎麼參加</p>
             <div class="flex flex-col items-center gap-3">
                 <div id="mt-gis-btn-gate"></div>

@@ -144,7 +144,10 @@
         <div id="mt-gate" class="hidden mt-card rounded-2xl px-6 py-10 text-center">
             <div class="font-mono text-[10px] text-accent-purple uppercase tracking-wider mb-3">Meeting Poll</div>
             <div id="mt-gate-title" class="text-2xl font-bold text-white mb-1"></div>
-            <div id="mt-gate-org" class="text-gray-500 text-xs font-mono mb-8"></div>
+            <div id="mt-gate-org" class="text-gray-500 text-xs font-mono"></div>
+            <!-- Meeting note: colleagues often put the actual subject here, so the gate has to show it. Clamped to three lines; the full text lives in p-note on the voting view. -->
+            <p id="mt-gate-note" class="hidden text-gray-400 text-sm leading-relaxed max-w-md mx-auto mt-4 whitespace-pre-line line-clamp-3"></p>
+            <div class="mb-8"></div>
             <p class="text-gray-400 text-sm mb-5">Choose how to join</p>
             <div class="flex flex-col items-center gap-3">
                 <div id="mt-gis-btn-gate"></div>

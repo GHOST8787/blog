@@ -10,6 +10,8 @@ import {
 } from './core.js';
 // 建立會議表單那一區的兩支：畫候選時段列、組刪除會議的 payload。宣告在 home.js，這裡借用。
 import { slotRowHtml, deletePollPayload } from './home.js';
+// 送出回饋的愛心粒子。跟首頁那顆愛心按鈕同一套實作，不複製第二份。
+import { createHeart, createNumberParticle } from '../main.js';
 
 // 只有投票頁用得到的狀態，不進 core 的共用區
 let pinned = null;             // 名單浮層釘住的那一格
@@ -124,6 +126,10 @@ export function decidePollView() {
     if (!S.me) {
         $('mt-gate-title').textContent = S.meta.title || '';
         $('mt-gate-org').textContent = S.meta.organizerName ? T.orgPrefix + S.meta.organizerName : '';
+        // 同事習慣把會議主旨寫在備註，所以選身分之前就要看得到。長的截三行，完整版在投票頁。
+        const gateNote = $('mt-gate-note');
+        gateNote.textContent = S.meta.note || '';
+        gateNote.classList.toggle('hidden', !S.meta.note);
         $poll.classList.add('hidden');
         $gate.classList.remove('hidden');
         return;
@@ -539,7 +545,23 @@ function requireGuestName() {
     return null;
 }
 
-$('p-submit').addEventListener('click', async () => {
+// 送出成功的回饋：在按鈕附近噴愛心，跟首頁那顆愛心按鈕同一套視覺。
+// 滑鼠點的話就噴在游標上，鍵盤 Enter 送出沒有座標，改抓按鈕中心。
+function burstThanks(e, btn) {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    let x = e && e.clientX;
+    let y = e && e.clientY;
+    if (!x && !y) {
+        const r = btn.getBoundingClientRect();
+        x = r.left + r.width / 2;
+        y = r.top + r.height / 2;
+    }
+    createNumberParticle(x, y, T.sentBurst).classList.add('is-text');
+    const hearts = ['🖤', '❤️', '🤍'];
+    for (let i = 0; i < 15; i++) createHeart(x, y, hearts);
+}
+
+$('p-submit').addEventListener('click', async e => {
     if (!S.me) return;   // 入口畫面選完身分才進得到這個畫面，這行只是保險
     const btn = $('p-submit');
     const msg = $('p-submit-msg');
@@ -594,6 +616,7 @@ $('p-submit').addEventListener('click', async () => {
         await update(ref(db), payload);
         submittedOnce = true;
         msg.textContent = T.submittedAt(new Date().toLocaleTimeString(T.timeLocale, { hour: '2-digit', minute: '2-digit' }));
+        burstThanks(e, btn);
         renderCards();
     } catch (err) {
         console.error('[meet] submit failed', err);

@@ -185,6 +185,15 @@ body {
     animation: number-float-up 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
+/* 文字版的粒子（Meet 送出回饋）。首頁那顆是數字，10px 讀得到；
+   一整句中文在 10px 下糊成一團，所以獨立一個變體，不動原本的尺寸。 */
+.number-particle.is-text {
+    font-size: 15px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+}
+
 @keyframes number-float-up {
     0% {
         transform: translate(-50%, -50%) scale(0.5); /* 一開始很小 */

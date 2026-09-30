@@ -75,7 +75,8 @@ export const T = {
     submitting: 'Submitting…',
     pickSomething: 'Pick your times, then hit Submit',
     unsaved: 'You have unsubmitted changes',
-    submittedAt: (t) => `Submitted ${t}`,
+    sentBurst: 'Sent!',                 // the particle that floats up on a successful submit
+    submittedAt: (t) => `Submitted ${t}. Thanks for taking the time.`,
     canEdit: 'Submitted. Change anything and hit update again.',
     tallyFmt: (y, n, x) => `${y} available · ${n} needs notice · ${x} unavailable`,
     joinedNone: 'You have not replied to any meeting yet.',
