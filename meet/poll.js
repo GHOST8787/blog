@@ -131,6 +131,13 @@ export function decidePollView() {
         const gateNote = $('mt-gate-note');
         gateNote.textContent = S.meta.note || '';
         gateNote.classList.toggle('hidden', !S.meta.note);
+        // 已經截止或已定案就先講，不要讓人選完身分進去按半天才發現按不動。
+        const why = closedReason();
+        const gateClosed = $('mt-gate-closed');
+        gateClosed.textContent = why ? `${why}${T.closedGateSuffix}` : '';
+        gateClosed.classList.toggle('hidden', !why);
+        $('mt-gate-howto').textContent = why ? T.gateHowtoClosed : T.gateHowtoOpen;
+        $('mt-gate-guest').textContent = why ? T.gateGuestClosed : T.gateGuestOpen;
         $poll.classList.add('hidden');
         $gate.classList.remove('hidden');
         return;
@@ -290,6 +297,67 @@ $('org-note-save').addEventListener('click', async () => {
     setTimeout(() => { msg.textContent = ''; }, 2500);
 });
 
+// 截止時間要連時分一起講，只給 MM/DD 的話「今天到底還能不能投」看不出來。
+function fmtDeadline(ms) {
+    // 固定 24 小時制。Meet 的輸入欄也是 24 小時制，交給 locale 決定會變成「下午11:59」。
+    const t = new Date(ms).toLocaleTimeString(T.timeLocale, { hour: '2-digit', minute: '2-digit', hour12: false });
+    return `${fmtDate(ms)} ${t}`;
+}
+
+// --- 發起人：改截止時間 ---
+// 過了截止就沒有人投得進來（規則層擋的，不只是畫面變灰），所以發起人要能自己延。
+// 寫的是 meta/deadline 一個數字，0 代表不設截止。規則本來就允許發起人寫 meta，不必改規則。
+
+let deadlineShown = null;   // 已經帶進欄位的那個值，避免每次重繪蓋掉正在打的字
+
+function fillDeadlineFields() {
+    const dl = S.meta.deadline || 0;
+    $('org-deadline-now').textContent = dl ? T.deadlineNowFmt(fmtDeadline(dl)) : T.deadlineNowNone;
+    if (dl === deadlineShown) return;
+    deadlineShown = dl;
+    const dEl = $('org-deadline-date');
+    const tEl = $('org-deadline-time');
+    const lab = $('org-deadline-label');
+    if (!dl) {
+        dEl.value = ''; tEl.value = ''; delete dEl.dataset.iso;
+        if (lab) lab.textContent = '';
+        return;
+    }
+    const d = new Date(dl);
+    const iso = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    dEl.value = iso.slice(5).replace('-', '/');
+    dEl.dataset.iso = iso;
+    if (lab) lab.textContent = iso.replace(/-/g, '/');
+    tEl.value = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+}
+
+async function writeDeadline(ms, okMsg) {
+    const msg = $('org-deadline-msg');
+    try {
+        await set(ref(db, `meet/polls/${pollId}/meta/deadline`), ms);
+        deadlineShown = null;          // 下一次重繪重新帶值
+        msg.textContent = okMsg;
+    } catch (err) {
+        msg.textContent = T.deadlineFailed + err.message;
+    }
+    setTimeout(() => { msg.textContent = ''; }, 2500);
+}
+
+$('org-deadline-save').addEventListener('click', () => {
+    const iso = normalizeDate($('org-deadline-date'));
+    const hm = normalizeTime($('org-deadline-time'));
+    if (!iso || !hm) { $('org-deadline-msg').textContent = T.deadlineBadInput; return; }
+    writeDeadline(new Date(`${iso}T${hm}`).getTime(), T.deadlineSaved);
+});
+
+// 延後一天：已經過期的話從現在算，還沒到就從原本那個時間往後推。
+$('org-deadline-plus1').addEventListener('click', () => {
+    const base = (S.meta.deadline && S.meta.deadline > Date.now()) ? S.meta.deadline : Date.now();
+    writeDeadline(base + 86400000, T.deadlineSaved);
+});
+
+$('org-deadline-clear').addEventListener('click', () => writeDeadline(0, T.deadlineCleared));
+
 function renderPollHeader() {
     $('p-id').textContent = 'POLL #' + pollId.slice(-6).toUpperCase();
     $('p-title').textContent = S.meta.title || '';
@@ -302,8 +370,13 @@ function renderPollHeader() {
     $('p-place').innerHTML = S.meta.place
         ? `<i class="fa-solid fa-location-dot mr-1.5"></i>${esc(S.meta.place)}` : '';
     $('p-deadline').innerHTML = S.meta.deadline
-        ? `<i class="fa-regular fa-calendar-xmark mr-1.5"></i>${T.deadlineLabel} ${fmtDate(S.meta.deadline)}`
+        ? `<i class="fa-regular fa-calendar-xmark mr-1.5"></i>${T.deadlineLabel} ${fmtDeadline(S.meta.deadline)}`
         : `<i class="fa-regular fa-calendar mr-1.5"></i>${T.noDeadline}`;
+    // 收不了票就把原因放在標題底下。只寫在送出列下方的話，手機上要滑很久才看得到。
+    const why = closedReason();
+    const banner = $('p-closed');
+    banner.innerHTML = why ? `<i class="fa-solid fa-circle-exclamation mr-2"></i>${esc(why)}` : '';
+    banner.classList.toggle('hidden', !why);
 }
 
 function renderAll() {
@@ -328,6 +401,8 @@ function renderAll() {
 
     $('p-copy').classList.toggle('hidden', !org);
     $('org-note-card').classList.toggle('hidden', !org);   // 分享網址只有發起人能複製
+    $('org-deadline-card').classList.toggle('hidden', !org);
+    if (org) fillDeadlineFields();
     if (org) { renderBars(); renderVoters(); } else renderCards();
     renderVerdict();
 }
@@ -498,7 +573,7 @@ function closedReason() {
     if (!S.meta) return '';
     if (S.meta.lockedSlot) return T.lockedDone;
     if (S.meta.state !== 'open') return T.votingClosed;
-    if (S.meta.deadline && S.meta.deadline > 0 && S.meta.deadline < Date.now()) return T.deadlinePassed;
+    if (S.meta.deadline && S.meta.deadline > 0 && S.meta.deadline < Date.now()) return T.deadlinePassedAt(fmtDeadline(S.meta.deadline));
     return '';
 }
 

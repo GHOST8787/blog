@@ -142,8 +142,10 @@
             <div id="mt-gate-org" class="text-gray-500 text-xs font-mono"></div>
             <!-- 會議備註：同事常把主旨寫在這裡，所以入口畫面就要看得到。超過三行截斷，完整版在投票頁的 p-note。 -->
             <p id="mt-gate-note" class="hidden text-gray-400 text-sm leading-relaxed max-w-md mx-auto mt-4 whitespace-pre-line line-clamp-3"></p>
+            <!-- 已經截止／已定案的話，選身分之前就要講，不要讓人進去按半天。 -->
+            <p id="mt-gate-closed" class="hidden text-sm font-medium max-w-md mx-auto mt-4" style="color:rgb(var(--c-warn))"></p>
             <div class="mb-8"></div>
-            <p class="text-gray-400 text-sm mb-5">選擇怎麼參加</p>
+            <p id="mt-gate-howto" class="text-gray-400 text-sm mb-5">選擇怎麼參加</p>
             <div class="flex flex-col items-center gap-3">
                 <div id="mt-gis-btn-gate"></div>
                 <button id="mt-gate-guest" class="text-xs font-mono text-gray-500 hover:text-accent-purple transition underline underline-offset-4">不登入，用訪客身分投票</button>
@@ -300,6 +302,8 @@
                         </div>
                     </div>
                 </div>
+                <!-- 收不了票的時候把原因放在最上面。原本只寫在送出列下方的小字，手機上滑不到。 -->
+                <div id="p-closed" class="hidden rounded-xl px-4 py-3 mb-4 text-sm" style="background:rgb(var(--c-warn)/.12);border:1px solid rgb(var(--c-warn)/.35);color:rgb(var(--c-warn))"></div>
                 <div class="flex flex-wrap items-center gap-x-6 gap-y-3 text-xs font-mono text-gray-500 border-t border-white/5 pt-4">
                     <span id="p-duration"></span>
                     <span id="p-place"></span>
@@ -315,6 +319,24 @@
                 <input id="mt-name" type="text" maxlength="40" class="mt-input rounded-lg px-3 py-2 text-sm flex-1 min-w-[160px]">
                 <button id="mt-name-save" class="px-4 py-2 rounded-full border border-white/10 text-xs font-mono text-gray-400 hover:text-white transition shrink-0">儲存</button>
                 <span id="mt-name-msg" class="font-mono text-[10px] text-gray-600"></span>
+            </div>
+
+            <!-- 發起人：截止時間。過了就沒人投得進來，改一次即可重新收票；0 代表不設截止。 -->
+            <div id="org-deadline-card" class="mt-card rounded-2xl p-4 sm:p-5 mb-5 hidden">
+                <div class="flex items-center justify-between gap-3 mb-3">
+                    <span class="font-mono text-[10px] text-gray-500 uppercase tracking-wider">截止時間</span>
+                    <span id="org-deadline-now" class="font-mono text-[10px] text-gray-600"></span>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <input id="org-deadline-date" type="text" inputmode="numeric" maxlength="10" placeholder="MM/DD" class="mt-input rounded-lg px-3 py-2 text-sm font-mono w-24">
+                    <span id="org-deadline-label" class="js-dlabel font-mono text-[11px] text-gray-600"></span>
+                    <input id="org-deadline-time" type="text" inputmode="numeric" maxlength="8" placeholder="HH:MM" class="mt-input rounded-lg px-3 py-2 text-sm font-mono w-24">
+                    <button id="org-deadline-save" type="button" class="px-4 py-2 rounded-full border border-white/10 text-xs font-mono text-gray-400 hover:text-white transition">儲存</button>
+                    <button id="org-deadline-plus1" type="button" class="px-4 py-2 rounded-full border border-white/10 text-xs font-mono text-gray-400 hover:text-white transition">延後一天</button>
+                    <button id="org-deadline-clear" type="button" class="px-4 py-2 rounded-full border border-white/10 text-xs font-mono text-gray-400 hover:text-white transition">取消截止</button>
+                    <span id="org-deadline-msg" class="font-mono text-[10px] text-gray-600"></span>
+                </div>
+                <p class="font-mono text-[10px] text-gray-600 mt-3">日期打 1003 或 20261003 都可以，時間打 1800 或 18:00。</p>
             </div>
 
             <!-- 發起人：比例橫條 -->

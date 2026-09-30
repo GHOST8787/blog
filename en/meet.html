@@ -147,8 +147,10 @@
             <div id="mt-gate-org" class="text-gray-500 text-xs font-mono"></div>
             <!-- Meeting note: colleagues often put the actual subject here, so the gate has to show it. Clamped to three lines; the full text lives in p-note on the voting view. -->
             <p id="mt-gate-note" class="hidden text-gray-400 text-sm leading-relaxed max-w-md mx-auto mt-4 whitespace-pre-line line-clamp-3"></p>
+            <!-- Closed or already locked: say it before the identity step, so nobody taps around for nothing. -->
+            <p id="mt-gate-closed" class="hidden text-sm font-medium max-w-md mx-auto mt-4" style="color:rgb(var(--c-warn))"></p>
             <div class="mb-8"></div>
-            <p class="text-gray-400 text-sm mb-5">Choose how to join</p>
+            <p id="mt-gate-howto" class="text-gray-400 text-sm mb-5">Choose how to join</p>
             <div class="flex flex-col items-center gap-3">
                 <div id="mt-gis-btn-gate"></div>
                 <button id="mt-gate-guest" class="text-xs font-mono text-gray-500 hover:text-accent-purple transition underline underline-offset-4">Vote as a guest without signing in</button>
@@ -307,6 +309,8 @@
                         </div>
                     </div>
                 </div>
+                <!-- When the poll cannot take replies, say so at the top. It used to be a small line under the submit row, out of reach on a phone. -->
+                <div id="p-closed" class="hidden rounded-xl px-4 py-3 mb-4 text-sm" style="background:rgb(var(--c-warn)/.12);border:1px solid rgb(var(--c-warn)/.35);color:rgb(var(--c-warn))"></div>
                 <div class="flex flex-wrap items-center gap-x-6 gap-y-3 text-xs font-mono text-gray-500 border-t border-white/5 pt-4">
                     <span id="p-duration"></span>
                     <span id="p-place"></span>
@@ -322,6 +326,24 @@
                 <input id="mt-name" type="text" maxlength="40" class="mt-input rounded-lg px-3 py-2 text-sm flex-1 min-w-[160px]">
                 <button id="mt-name-save" class="px-4 py-2 rounded-full border border-white/10 text-xs font-mono text-gray-400 hover:text-white transition shrink-0">Save</button>
                 <span id="mt-name-msg" class="font-mono text-[10px] text-gray-600"></span>
+            </div>
+
+            <!-- Organizer: the deadline. Once it passes nobody can vote; changing it reopens the poll. 0 means no deadline. -->
+            <div id="org-deadline-card" class="mt-card rounded-2xl p-4 sm:p-5 mb-5 hidden">
+                <div class="flex items-center justify-between gap-3 mb-3">
+                    <span class="font-mono text-[10px] text-gray-500 uppercase tracking-wider">Deadline</span>
+                    <span id="org-deadline-now" class="font-mono text-[10px] text-gray-600"></span>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <input id="org-deadline-date" type="text" inputmode="numeric" maxlength="10" placeholder="MM/DD" class="mt-input rounded-lg px-3 py-2 text-sm font-mono w-24">
+                    <span id="org-deadline-label" class="js-dlabel font-mono text-[11px] text-gray-600"></span>
+                    <input id="org-deadline-time" type="text" inputmode="numeric" maxlength="8" placeholder="HH:MM" class="mt-input rounded-lg px-3 py-2 text-sm font-mono w-24">
+                    <button id="org-deadline-save" type="button" class="px-4 py-2 rounded-full border border-white/10 text-xs font-mono text-gray-400 hover:text-white transition">Save</button>
+                    <button id="org-deadline-plus1" type="button" class="px-4 py-2 rounded-full border border-white/10 text-xs font-mono text-gray-400 hover:text-white transition">Add a day</button>
+                    <button id="org-deadline-clear" type="button" class="px-4 py-2 rounded-full border border-white/10 text-xs font-mono text-gray-400 hover:text-white transition">Remove deadline</button>
+                    <span id="org-deadline-msg" class="font-mono text-[10px] text-gray-600"></span>
+                </div>
+                <p class="font-mono text-[10px] text-gray-600 mt-3">Type the date as 1003 or 20261003, the time as 1800 or 18:00.</p>
             </div>
 
             <!-- Organizer: proportional bars -->
