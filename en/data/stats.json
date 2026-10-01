@@ -1,5 +1,5 @@
 {
   "_note": "Homepage Active stat ('Active in 30 days'). Written daily at 08:10 Asia/Taipei by .github/workflows/update-stats.yml (tools/count-active-repos.mjs, private repos included). Do not edit by hand. Read by en/index.html.",
   "activeLast30Days": 10,
-  "updatedAt": "2026-09-30"
+  "updatedAt": "2026-10-01"
 }
