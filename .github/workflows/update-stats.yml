@@ -1,0 +1,54 @@
+# 首頁 Active 那格的「本月持續開發」每天自己算一次。
+# 算法與限制寫在 tools/count-active-repos.mjs 的檔頭。
+#
+# 為什麼要另外一組 token：內建的 GITHUB_TOKEN 只看得到這個 repo，
+# 而這格要數的是「全部自有 repo 裡本月有 push 的」，其中 30 個是私人的。
+# 所以要一個帳號層級的 fine-grained PAT 放在 repo secret STATS_READ_TOKEN，
+# 權限只要 All repositories + Metadata: Read-only（不給 contents，不給寫）。
+# 寫檔與 commit 用內建的 GITHUB_TOKEN，跟那組讀取用的分開。
+#
+# 只吃 schedule 與手動觸發，不吃 push——否則它自己的 commit 會再觸發自己。
+# commit 訊息刻意用英文並走 -F 檔案：bot 的 commit 保持 ASCII 最不會出事。
+
+name: update-stats
+
+on:
+  schedule:
+    - cron: '10 0 * * *'        # UTC 00:10 = 台北 08:10
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-stats
+  cancel-in-progress: false
+
+jobs:
+  count:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: count repos pushed this month
+        env:
+          GH_TOKEN: ${{ secrets.STATS_READ_TOKEN }}
+        run: node tools/count-active-repos.mjs
+
+      - name: commit only when the number changed
+        run: |
+          if git diff --quiet -- data/stats.json en/data/stats.json; then
+            echo "stats.json unchanged, nothing to commit"
+            exit 0
+          fi
+          n=$(node -e "process.stdout.write(String(require('./data/stats.json').activeThisMonth))")
+          printf 'chore(stats): activeThisMonth=%s\n' "$n" > "$RUNNER_TEMP/msg.txt"
+          git config user.name  'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/stats.json en/data/stats.json
+          git commit -F "$RUNNER_TEMP/msg.txt"
+          git push

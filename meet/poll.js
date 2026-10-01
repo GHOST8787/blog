@@ -54,6 +54,7 @@ $('mt-name-save').addEventListener('click', async () => {
             payload[`meet/users/${S.me.uid}/${isOrganizer() ? 'organizerName' : 'participantName'}`] = kept;
         }
         await update(ref(db), payload);
+        rememberGuestName(kept);   // 匿名的人就靠這份，帳號那條路規則層走不通
         loadSavedNames();   // 下一次要帶的就是這個
         $('mt-name-msg').textContent = T.nameSaved;
         setTimeout(() => { $('mt-name-msg').textContent = ''; }, 1600);
@@ -171,6 +172,22 @@ function attachOrganizer() {
     $('mt-identity').classList.remove('hidden');
     $('mt-identity').classList.add('flex');
 }
+/* ---- 訪客名字留在本機 ----
+   匿名身分沒有帳號可以存：規則層把 meet/users/$uid/participantName 排除匿名，
+   寫進 polls/$id/private/participants 的那一份又只有發起人讀得到（private 的 .read）。
+   所以同一台裝置下次再開，名字只能靠這一份帶回來。票不受影響——votes/$uid 本人讀得到。
+   跟問卷無關：同一個訪客去回別人的問卷，用的也是同一個名字。 */
+const GUEST_NAME_KEY = 'mt-guest-name';
+function rememberGuestName(name) {
+    if (!S.me || !S.me.isAnonymous || !name) return;
+    try { localStorage.setItem(GUEST_NAME_KEY, name.slice(0, 40)); }
+    catch (e) { /* 無痕視窗或配額滿，下次要重打一次，不影響送出 */ }
+}
+function recallGuestName() {
+    try { return (localStorage.getItem(GUEST_NAME_KEY) || '').slice(0, 40); }
+    catch (e) { return ''; }
+}
+
 // 參與者那筆記錄的完整內容。匿名的人第一次寫進去就是整包，不會只有半筆。
 function participantRecord(name) {
     // 只留顯示名稱與「是不是訪客」。email 存過但畫面從來沒用過，公司環境下
@@ -186,8 +203,8 @@ function attachParticipant() {
     $('mt-identity').classList.remove('hidden');
     $('mt-identity').classList.add('flex');
     if (S.me.isAnonymous) {
-        // 留空 + 灰字提示，讓「還沒填」一眼看得出來；標籤同時標成必填。
-        $('mt-name').value = '';
+        // 本機記過就帶回來；沒記過才留空 + 灰字提示，讓「還沒填」一眼看得出來。
+        $('mt-name').value = recallGuestName();
         $('mt-name').placeholder = T.guestNamePlaceholder;
         $('mt-name-label').textContent = T.nameLabelRequired;
     } else {
@@ -770,6 +787,7 @@ $('p-submit').addEventListener('click', async e => {
 
     try {
         await update(ref(db), payload);
+        rememberGuestName(guestName);
         submittedOnce = true;
         renderCards();
         showSentCard();
@@ -1022,6 +1040,7 @@ $('add-slot').addEventListener('click', async () => {
     }
     try {
         await update(ref(db), payload);
+        rememberGuestName(guestName);
         // 自己提的時段預設幫你勾「可以」，但一樣要按送出才算數
         draft[slotId] = 'yes';
         renderCards();
