@@ -296,6 +296,24 @@
                     }
 
                     // 3) Fetch articles.json — drives Featured Articles list + Stats Latest counter
+                    /* Latest 那格 = 今天距「article 與 project 裡最新的那一篇」幾天。
+                       兩邊的日期各自 fetch 回來後丟進 latestDates，都到齊才算最大值——
+                       只看 article 的話，做了一整個月專案但沒寫文章，這格會一直往上長。
+                       專案日期由 tools/build-articles-meta.js 從每篇 HTML 的日期欄抽進 projects.json：
+                       只寫到月的算當月 1 號、寫區間的取後面那個（規則寫在該腳本註解）。 */
+                    var latestDates = [];
+                    function setLatest() {
+                        if (!latestDates.length) return;
+                        var sorted = latestDates.slice().sort();
+                        var parts = sorted[sorted.length - 1].split('.').map(Number);
+                        var dt = new Date(parts[0], parts[1] - 1, parts[2]);
+                        var today = new Date();
+                        today.setHours(0, 0, 0, 0);
+                        var days = Math.max(0, Math.round((today - dt) / 86400000));
+                        var el = document.querySelector('[data-stat-counter][data-stat="latest"]');
+                        if (el) el.setAttribute('data-target', String(days));
+                    }
+
                     var articlesReady = fetch(rootPath + 'data/articles.json')
                         .then(function (r) { return r.ok ? r.json() : []; })
                         .then(function (list) {
@@ -336,18 +354,10 @@
                             var artEl = document.querySelector('[data-stat-counter][data-stat="articles"]');
                             if (artEl) artEl.setAttribute('data-target', String(list.length));
 
-                            // 3c) Latest stat: 今天 - 最新發文日期 (天)
-                            var dates = list.map(function (it) { return it.date; }).filter(Boolean).sort();
-                            if (dates.length > 0) {
-                                var latest = dates[dates.length - 1];
-                                var parts = latest.split('.').map(Number);
-                                var latestDt = new Date(parts[0], parts[1] - 1, parts[2]);
-                                var today = new Date();
-                                today.setHours(0, 0, 0, 0);
-                                var days = Math.max(0, Math.round((today - latestDt) / 86400000));
-                                var latestEl = document.querySelector('[data-stat-counter][data-stat="latest"]');
-                                if (latestEl) latestEl.setAttribute('data-target', String(days));
-                            }
+                            // 3c) Latest stat: 日期先收進共用清單，等 projects 也回來才一起算
+                            //     （Latest 要看 article 與 project 兩邊最新的那一篇，見 setLatest）
+                            latestDates = latestDates.concat(
+                                list.map(function (it) { return it.date; }).filter(Boolean));
                         })
                         .catch(function () {
                             var c = document.getElementById('featured-articles-list');
@@ -361,6 +371,9 @@
                             if (!Array.isArray(list)) return;
                             var projEl = document.querySelector('[data-stat-counter][data-stat="projects"]');
                             if (projEl) projEl.setAttribute('data-target', String(list.length));
+                            // 專案的日期也要參加 Latest 的計算
+                            latestDates = latestDates.concat(
+                                list.map(function (it) { return it.date; }).filter(Boolean));
                         })
                         .catch(function () {});
 
@@ -376,6 +389,7 @@
 
                     // 4) Counter observer — 等 articles + projects + stats 都抽完才觸發，確保 data-target 已更新
                     Promise.all([articlesReady, projectsReady, statsReady]).finally(function () {
+                        setLatest();   // 先把天數算好，counter 才會動到正確的目標值
                         var counterObs = new IntersectionObserver(function (entries) {
                             entries.forEach(function (e) {
                                 if (e.isIntersecting) {

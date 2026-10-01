@@ -1,134 +1,177 @@
 [
   {
     "url": "EXP/project_01.html",
-    "category": "dev"
+    "category": "dev",
+    "date": "2026.01.31"
   },
   {
     "url": "EXP/project_02.html",
-    "category": "dev"
+    "category": "dev",
+    "date": "2026.02.19"
   },
   {
     "url": "EXP/project_03.html",
-    "category": "dev"
+    "category": "dev",
+    "date": "2026.02.19"
   },
   {
     "url": "EXP/project_04.html",
-    "category": "dev"
+    "category": "dev",
+    "date": "2026.02.19"
   },
   {
     "url": "EXP/project_05.html",
-    "category": "dev"
+    "category": "dev",
+    "date": "2026.02.20"
   },
   {
     "url": "EXP/project_06.html",
     "category": "dev",
-    "cover": "PNG/project_06.2.webp"
+    "cover": "PNG/project_06.2.webp",
+    "date": "2026.02.23"
   },
   {
     "url": "EXP/project_07.html",
     "category": "dev",
-    "cover": "PNG/project_07.2.webp"
+    "cover": "PNG/project_07.2.webp",
+    "date": "2026.03.02"
   },
   {
     "url": "EXP/project_08.html",
-    "category": "dev"
+    "category": "dev",
+    "date": "2026.03.12"
   },
   {
     "url": "EXP/project_09.html",
-    "category": "dev"
+    "category": "dev",
+    "date": "2026.04.03"
   },
   {
     "url": "EXP/project_10.html",
-    "category": "dev"
+    "category": "dev",
+    "date": "2026.04.20"
   },
   {
     "url": "EXP/project_11.html",
-    "category": "dev"
+    "category": "dev",
+    "date": "2026.04.20"
   },
   {
     "url": "EXP/project_12.html",
     "category": "dev",
-    "cover": "PNG/project_12.2.png"
+    "cover": "PNG/project_12.2.png",
+    "date": "2026.05.18"
   },
   {
     "url": "EXP/project_13.html",
-    "category": "dev"
+    "category": "dev",
+    "date": "2026.05.10"
   },
   {
     "url": "EXP/project_14.html",
     "category": "dev",
-    "cover": "PNG/project_14.8.png"
+    "cover": "PNG/project_14.8.png",
+    "date": "2026.05.19"
   },
   {
     "url": "EXP/project_15.html",
-    "category": "dev"
+    "category": "dev",
+    "date": "2023.08.01",
+    "dateRaw": "2023.07 — 2023.08"
   },
   {
     "url": "EXP/project_16.html",
-    "category": "dev"
+    "category": "dev",
+    "date": "2026.05.01",
+    "dateRaw": "2026.04 — 2026.05"
   },
   {
     "url": "EXP/project_17.html",
-    "category": "dev"
+    "category": "dev",
+    "date": "2026.05.22"
   },
   {
     "url": "EXP/project_18.html",
-    "category": "dev"
+    "category": "dev",
+    "date": "2026.06.01",
+    "dateRaw": "2026.04 — 2026.06"
   },
   {
     "url": "EXP/project_19.html",
-    "category": "dev"
+    "category": "dev",
+    "date": "2026.06.01",
+    "dateRaw": "2026.06"
   },
   {
     "url": "EXP/project_20.html",
-    "category": "dev"
+    "category": "dev",
+    "date": "2026.06.01",
+    "dateRaw": "2026.06"
   },
   {
     "url": "EXP/project_21.html",
-    "category": "dev"
+    "category": "dev",
+    "date": "2026.06.01",
+    "dateRaw": "2026.06"
   },
   {
     "url": "EXP/project_22.html",
-    "category": "dev"
+    "category": "dev",
+    "date": "2026.06.01",
+    "dateRaw": "2026.06"
   },
   {
     "url": "EXP/project_23.html",
-    "category": "dev"
+    "category": "dev",
+    "date": "2026.06.01",
+    "dateRaw": "2026.06"
   },
   {
     "url": "EXP/project_24.html",
-    "category": "dev"
+    "category": "dev",
+    "date": "2026.06.25"
   },
   {
     "url": "EXP/project_25.html",
-    "category": "dev"
+    "category": "dev",
+    "date": "2026.06.25"
   },
   {
     "url": "EXP/project_26.html",
-    "category": "dev"
+    "category": "dev",
+    "date": "2026.07.05"
   },
   {
     "url": "EXP/project_27.html",
-    "category": "dev"
+    "category": "dev",
+    "date": "2026.07.01",
+    "dateRaw": "2026.06 — 2026.07"
   },
   {
     "url": "EXP/project_28.html",
-    "category": "dev"
+    "category": "dev",
+    "date": "2026.07.01",
+    "dateRaw": "2026.06 — 2026.07"
   },
   {
     "url": "EXP/project_29.html",
-    "category": "dev"
+    "category": "dev",
+    "date": "2026.07.01",
+    "dateRaw": "2026.06 — 2026.07"
   },
   {
     "url": "EXP/project_30.html",
-    "category": "dev"
+    "category": "dev",
+    "date": "2026.09.25"
   },
   {
     "url": "EXP/project_31.html",
-    "category": "dev"
+    "category": "dev",
+    "date": "2026.09.25"
   },
   {
     "url": "EXP/project_32.html",
-    "category": "dev"
+    "category": "dev",
+    "date": "2026.09.27"
   }
 ]
