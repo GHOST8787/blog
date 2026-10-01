@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / P27 | GHOST.ouo</title>
+    <link rel="canonical" href="https://ghost8787.github.io/blog/en/EXP/project_27.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_27.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_27.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/project_27.html">
+
+    <link rel="icon" type="image/png" href="../../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../../PNG/pixelS2.png">
+
+    <script src="../../theme.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
+
+    <link rel="stylesheet" href="../../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script src="../../i18n.js" defer></script>
+    <script type="module" src="../../main.js" defer></script>
+    <!-- 預編譯的 Tailwind。原本是 cdn.tailwindcss.com 的同步 script，
+         會卡住 HTML 解析約 600ms。改檔後要跑 pnpm run build:css 重新產生。 -->
+    <link rel="stylesheet" href="../../tw.css">
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-bg">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / P27</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                NTUST MVC Lab W6&ndash;8:<br>
+                <span class="text-gradient text-2xl md:text-4xl">Open-set detection, semantic segmentation and reinforcement learning</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    AI &amp; Automation
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Deep Learning
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Coursework
+                </span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.06 &mdash; 2026.07</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
+                The previous entry indexed the first five MVC Lab assignments; this one records weeks six through eight. The work splits two ways: HW7 and HW8 train models from scratch, one a U-Net for semantic segmentation and one a DQN playing Ms. Pac-Man; HW6 takes an off-the-shelf pre-trained model for zero-shot detection, with the focus on researching how the prompt gets written. All three carry verifiable numbers, and the heaviest of them, the DQN, ran 1.5 million steps and scored 2990 on evaluation, clearing the 2000 full-marks threshold.
+            </p>
+
+            <p class="text-sm text-gray-500 italic mb-10">
+                In the second half of the course, each of the three assignments covers a different type of task: HW6 uses Grounding DINO for zero-shot detection, which makes the whole assignment a prompt engineering study; HW7 builds a U-Net from scratch and segments six land classes on Dubai aerial imagery; HW8 uses a DQN to learn Ms. Pac-Man from pixels, the heaviest of the three in training volume. The record of the first five assignments sits at <a href="project_16.html" class="text-accent-purple hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">EXP / P16</a>.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> The Three Assignments at a Glance
+            </h3>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">HW</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">Topic</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">Framework / model</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">Key metric</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">HW6</td>
+                            <td class="px-4 py-3">Grounding DINO open-set detection prompt study</td>
+                            <td class="px-4 py-3">grounding-dino-tiny (zero-shot)</td>
+                            <td class="px-4 py-3 font-mono">person bare noun precision 0.812</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">HW7</td>
+                            <td class="px-4 py-3">U-Net semantic segmentation (Dubai aerial)</td>
+                            <td class="px-4 py-3">PyTorch from scratch (7.76M parameters)</td>
+                            <td class="px-4 py-3 font-mono">pixel acc 0.8505 (threshold 0.84)</td>
+                        </tr>
+                        <tr class="border-t border-white/10 bg-white/5">
+                            <td class="px-4 py-3 font-bold text-white">HW8</td>
+                            <td class="px-4 py-3">DQN playing Ms. Pac-Man</td>
+                            <td class="px-4 py-3">PyTorch (Nature DQN)</td>
+                            <td class="px-4 py-3 font-mono font-bold text-white">eval 2990 (threshold 2000)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> One by One
+            </h3>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">HW6 &mdash; Grounding DINO: a prompt engineering study</h4>
+            <p>
+                This assignment contains no training step anywhere. It takes grounding-dino-tiny from HuggingFace for zero-shot open-set detection, and the object of study is the prompt itself: five COCO classes, three prompt forms each (bare noun, with an article, descriptive phrase), measuring precision@IoU=0.5 across 20 annotated images, with the winning form then applied to 150 unannotated images for qualitative observation.
+            </p>
+            <p>
+                The results are consistent: for classes that are common and visually distinct, the bare noun wins across the board &mdash; person 0.812, car 0.889, cat 0.429; adding an article or a descriptive clause only produces a pile of low-confidence boxes and drags precision down. bicycle and dog are pathological cases on this small annotation set, with too few GT instances and descriptive prompts over-triggering, so their numbers carry limited reference value.
+            </p>
+            <figure class="my-8">
+                <img src="../../PNG/project_27.1.webp"
+                     alt="HW6 dense scene failure case: a room with a photo wall producing 47 detection boxes"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">HW6: the box explosion failure mode in dense scenes, where a photo wall gets 46 person boxes out of the person prompt (47 boxes including the false positive)</figcaption>
+            </figure>
+            <p>
+                The failure modes are more instructive than the numbers. Dense scenes explode with boxes, and a room covered in a photo wall produced 46 person boxes; the descriptive dog prompt conjures dogs out of people and background texture; railings and limbs get read as bicycles. The conclusion lands on using it as an annotation aid: raise the confidence threshold to 0.40, add class-wise NMS, use bare nouns only. An annotator's bottleneck is deleting wrong boxes, which makes precision worth more than recall in this setting.
+            </p>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">HW7 &mdash; U-Net semantic segmentation</h4>
+            <p>
+                A 7.76M parameter U-Net built from scratch: the encoder compresses the whole way down, the bottleneck hands over, the decoder scales back up with transposed convolutions, and skip connections join the two sides along the channel dimension. The data is Dubai aerial imagery, 72 large images cut into roughly 1300 patches of 256&times;256, across six land classes. After 25 epochs, validation pixel accuracy came out at 0.8505, clearing the course threshold of 0.84.
+            </p>
+            <div class="overflow-x-auto my-6">
+                <table class="w-full table-fixed text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider w-1/2">Class</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider w-1/2">IoU</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10 bg-white/5"><td class="px-4 py-3 font-bold text-white">Water</td><td class="px-4 py-3 font-mono font-bold text-white">0.886</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">Land</td><td class="px-4 py-3 font-mono">0.810</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">Building</td><td class="px-4 py-3 font-mono">0.658</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">Vegetation</td><td class="px-4 py-3 font-mono">0.568</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">Road</td><td class="px-4 py-3 font-mono">0.527</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3 font-bold text-white">Unlabeled</td><td class="px-4 py-3 font-mono">0.000</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>
+                The ordering of per-class IoU matches intuition: water and bare land cover large areas with uniform texture and score highest; roads are thin and occupy little of the frame, landing at the bottom on 0.527, which is a long-standing problem in semantic segmentation. Unlabeled is a sparse catch-all class that the model almost never predicts on its own initiative, so its IoU sits at zero without affecting the pixel accuracy result.
+            </p>
+            <figure class="my-8">
+                <img src="../../PNG/project_27.2.webp"
+                     alt="HW7 U-Net training and validation loss curves across 25 epochs"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">HW7: train / val loss across 25 epochs, converging to 0.476 / 0.462</figcaption>
+            </figure>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">HW8 &mdash; DQN learning Ms. Pac-Man from pixels</h4>
+            <p>
+                The task is getting an agent to learn Atari's Ms. Pac-Man straight from the screen. Input is 4 stacked 84&times;84 greyscale frames, running the classic Nature DQN architecture: three convolutional layers into two fully connected layers, outputting a Q value for each of 9 actions. Stacking 4 frames lets the network read direction of movement, since a single static frame gives no way to tell which way a ghost is heading, chasing or fleeing.
+            </p>
+            <p>
+                Training holds up on three mechanisms: a replay buffer storing 60,000 transitions, sampled randomly to break temporal correlation; a target network synchronised only every fixed number of steps, which keeps the learning target steady; and &epsilon;-greedy decaying linearly from 0.9 to 0.05, wandering around to explore early and acting on Q values later. A discount factor of 0.99 keeps the agent interested in long-term return.
+            </p>
+            <div class="pl-6 border-l-2 border-accent-purple my-8">
+                <p class="text-white font-medium mb-2">Training volume is the score</p>
+                <p class="text-sm text-gray-400 m-0">
+                    The default 250,000 steps usually fails to reach the 2000-point full-marks threshold, so this run went straight to 1.5 million steps, taking just over eight hours on a single RTX 4060. Average score started around 400, crossed 1500 somewhere near 500,000 steps, and oscillated between 2200 and 3600 towards the end; the post-training evaluation scored 2990.
+                </p>
+            </div>
+            <figure class="my-8">
+                <img src="../../PNG/project_27.3.webp"
+                     alt="HW8 DQN training curves: evaluation reward and value loss against steps"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">HW8: evaluation reward (left) and value loss (right) across 1.5 million steps, with reward climbing throughout and loss rising as Q values grow, which is normal</figcaption>
+            </figure>
+            <figure class="my-8">
+                <img src="../../PNG/project_27.4.webp"
+                     alt="HW8 DQN terminal output on completion: eval score 2990 and the submission file list"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">HW8: 1.5 million steps complete, eval score 2990.0, producing the model file pacma_dqn.pt (6.4MB) and the gameplay recording mspacman.mp4</figcaption>
+            </figure>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Academic Integrity Statement
+            </h3>
+
+            <p>
+                This entry is a personal study record. The starter skeletons and teaching notebooks for all three assignments came from the course; the TODO implementations, prompt design and every experimental figure are my own runs. Course datasets and model weights are never bundled here, so obtain them through official channels. MVC Lab students currently taking the course should write it once themselves, and the structure and reasoning here are open to reference.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Technical Environment
+            </h3>
+
+            <ul class="list-none space-y-2 text-sm text-gray-400 font-light border-l-2 border-white/10 pl-5 my-6">
+                <li><strong class="text-gray-200">Language</strong> &mdash; Python 3.11</li>
+                <li><strong class="text-gray-200">Deep learning framework</strong> &mdash; PyTorch 2.x (HW7 / HW8)</li>
+                <li><strong class="text-gray-200">HW6</strong> &mdash; HuggingFace Transformers (IDEA-Research/grounding-dino-tiny)</li>
+                <li><strong class="text-gray-200">HW8</strong> &mdash; Gymnasium[atari] (ALE/MsPacman-v5)</li>
+                <li><strong class="text-gray-200">Hardware</strong> &mdash; RTX 4060 8GB (1.5 million steps for HW8 took around eight hours; scanning 150 images for HW6 took around 4 minutes)</li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Related Links
+            </h3>
+
+            <ul class="space-y-2 text-sm text-gray-400 list-none pl-0">
+                <li>
+                    <span class="text-accent-purple mr-2">●</span>
+                    <a href="https://github.com/GHOST8787/ntust-mvclab-2026" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        GitHub &mdash; GHOST8787/ntust-mvclab-2026
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">●</span>
+                    <a href="project_16.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        Record of the first five assignments &mdash; EXP / P16
+                    </a>
+                </li>
+            </ul>
+
+            <p class="text-sm text-gray-500 font-mono mt-4">
+                MIT License
+            </p>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="project_26.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Project
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Projects
+            </a>
+            <a href="project_28.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                Next Project &rarr;
+            </a>
+        </div>
+
+    </main>
+    <div id="footer-placeholder"></div>
+</body>
+</html>

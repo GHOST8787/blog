@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / P28 | GHOST.ouo</title>
+    <link rel="canonical" href="https://ghost8787.github.io/blog/en/EXP/project_28.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_28.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_28.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/project_28.html">
+
+    <link rel="icon" type="image/png" href="../../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../../PNG/pixelS2.png">
+
+    <script src="../../theme.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
+
+    <link rel="stylesheet" href="../../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script src="../../i18n.js" defer></script>
+    <script type="module" src="../../main.js" defer></script>
+    <!-- 預編譯的 Tailwind。原本是 cdn.tailwindcss.com 的同步 script，
+         會卡住 HTML 解析約 600ms。改檔後要跑 pnpm run build:css 重新產生。 -->
+    <link rel="stylesheet" href="../../tw.css">
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-bg">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / P28</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                NTUST MVC Lab W9&ndash;12:<br>
+                <span class="text-gradient text-2xl md:text-4xl">From Agentic RAG to diffusion models</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    AI &amp; Automation
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Generative AI
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Coursework
+                </span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.06 &mdash; 2026.07</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
+                Weeks nine through twelve of the MVC Lab course turn wholesale towards generative AI: W9 assembles retrieval into an agent that decides for itself with LangGraph, W10 runs image-text inference with CLIP and BLIP, and W11 and W12 cover two generative models &mdash; a VAE decoding from latent space and a DDPM denoising step by step from pure noise. All four units ran locally start to finish, with verifiable output from model downloads, training and generation, and the digits the DDPM generated after 20 epochs on MNIST are already legible on sight.
+            </p>
+
+            <p class="text-sm text-gray-500 italic mb-10">
+                The first eight weeks centred on recognition: classification, detection, segmentation, decision-making, where the model outputs a label, a box, an action. The models in these four weeks start producing things &mdash; looking up material to answer a question, describing an image, drawing a digit nobody wrote. The record of the first five assignments sits at <a href="project_16.html" class="text-accent-purple hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">EXP / P16</a>, and W6&ndash;W8 (open-set detection, semantic segmentation, reinforcement learning) sits in the previous entry.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> The Four Units at a Glance
+            </h3>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">Week</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">Topic</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">Tools / models</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">Key result</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">W9</td>
+                            <td class="px-4 py-3">Agentic RAG</td>
+                            <td class="px-4 py-3">LangGraph + Chroma + local LLM</td>
+                            <td class="px-4 py-3 font-mono">routing correct in both scenarios</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">W10</td>
+                            <td class="px-4 py-3">VLM image-text inference</td>
+                            <td class="px-4 py-3">CLIP ViT-B/32 + BLIP</td>
+                            <td class="px-4 py-3 font-mono">zero-shot classification 3/3 correct (0.89&ndash;1.00)</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">W11</td>
+                            <td class="px-4 py-3">VAE (MNIST generation)</td>
+                            <td class="px-4 py-3">PyTorch, 2-dimensional latent</td>
+                            <td class="px-4 py-3 font-mono">loss/sample 187.8 &rarr; 150.9</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">W12</td>
+                            <td class="px-4 py-3">DDPM (diffusion model)</td>
+                            <td class="px-4 py-3">MiniUNet, 1.37M parameters</td>
+                            <td class="px-4 py-3 font-mono">legible handwritten digits after 20 epochs</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Week by Week
+            </h3>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">W9 &mdash; Agentic RAG: letting the model decide whether to look things up</h4>
+            <p>
+                Two notebooks, both running locally: the LLM sits on an inference server on localhost, embeddings run on nomic-embed-text, and the vector store is Chroma. The knowledge base uses the public introduction to the NTUST AI Research Center as demo material, split into 10 chunks; every question has a definite reference answer, so whether retrieval pulled the right passage is verifiable on sight.
+            </p>
+            <p>
+                The first notebook does basic RAG: load, chunk, embed, retrieve, generate, all the way through. Two small experiments are worth recording: a single query at k=1 often pulls the wrong passage, and multi-query retrieval &mdash; having the LLM rewrite the question into several phrasings, retrieve on each, then merge &mdash; improved the hit rate visibly; query expansion rewrote "AI for farming" into a string of agricultural keywords before searching, which recovered passages the original query missed.
+            </p>
+            <p>
+                The second notebook wraps the retriever as a tool with LangGraph and hands the decision to the model. Four nodes on the flow graph: generate_query_or_respond first judges whether the question needs a lookup or a direct answer; a lookup goes to retrieve, and grade_documents assesses whether what came back is relevant; relevant goes to generate_answer to close out, and off-target goes to rewrite_question to rephrase and run again. Two scenarios verified: asking about the centre's research areas took the full retrieval path; on a conversational greeting the model generated an answer directly without retrieving.
+            </p>
+            <figure class="my-8">
+                <img src="../../PNG/project_28.1.webp"
+                     alt="W9 LangGraph agentic RAG flow graph: retrieve, grade, rewrite, answer across four nodes"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">W9: the agent flow assembled with LangGraph, where the model decides whether to retrieve and rewrites the question to start over when the content comes back off-target</figcaption>
+            </figure>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">W10 &mdash; VLM: CLIP aligns, BLIP speaks</h4>
+            <p>
+                No training this week. The assignment is three pure inference demos on six public COCO images. Demo A uses CLIP for zero-shot classification: encode five candidate descriptions of the form "a photo of a ..." and the image separately, then compare cosine similarity. All three test images came out correct &mdash; cat 0.982, bear 0.999, street scene 0.889 &mdash; with zero training and zero annotation in between.
+            </p>
+            <p>
+                Demo B runs the reverse as image-text retrieval: each of three query sentences finds the best-matching image among the six. "animals" ranked the bear first, "a vehicle on the street" the street scene, "something you can eat" the food image, with all three rankings correct. The similarity values all sit around 0.2, and the relative ordering is the signal CLIP is usable for.
+            </p>
+            <p>
+                Demo C uses BLIP to generate a caption, producing "two cats sleeping on a couch" for a photo of two cats, and then runs question answering: what is there (cats), how many (2), the colour of the subject (pink). CLIP aligns image and text into the same vector space for comparison, while BLIP feeds visual features into a language model for generation.
+            </p>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">W11 &mdash; VAE: compressing MNIST into 2 dimensions and drawing it back</h4>
+            <p>
+                A VAE trained on MNIST: the encoder compresses 784 pixel dimensions into a 2-dimensional latent (outputting mean and variance), the decoder reconstructs the image from the latent, and the loss is reconstruction error plus KL divergence. After 15 epochs, per-sample loss converged from 187.8 to 150.9. The 2-dimensional latent is a deliberate choice &mdash; the whole latent space can be laid out flat and looked at.
+            </p>
+            <figure class="my-8">
+                <img src="../../PNG/project_28.2.webp"
+                     alt="W11 the VAE's 2D latent manifold: digits morphing continuously across a 20x20 grid of decoded points"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">W11: cutting the 2D latent space into a 20&times;20 grid and decoding each point, with digits morphing continuously across the plane</figcaption>
+            </figure>
+            <p>
+                The image above is the most worthwhile thing in this demo: decoding 20&times;20 grid points across the latent plane shows 7, 9, 8, 1, 3, 6, 0 morphing continuously, with neighbouring points giving almost identical glyphs. The image below encodes ten thousand test images and colours them by their true digit, where each digit gathers into a cluster and classes with similar glyphs sit next to each other &mdash; the smoothness of generation and the clustering structure are two sides of the same thing.
+            </p>
+            <figure class="my-8">
+                <img src="../../PNG/project_28.3.webp"
+                     alt="W11 scatter plot of test images encoded into the 2D latent, coloured by digit class"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">W11: ten thousand test images encoded into the latent plane, coloured by true digit, with the ten classes clustering naturally</figcaption>
+            </figure>
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">W12 &mdash; DDPM: denoising step by step from pure noise</h4>
+            <p>
+                Training the diffusion model splits in two. First, 2-dimensional two-moons toy data verifies the principle: the forward process adds noise over 200 steps on a cosine schedule, with alpha_bar down to 6&times;10<sup>-8</sup> by the final step and the data turned into pure noise; the reverse process trains a small network to predict the noise at each step, sampling back from Gaussian noise gradually until the two-moons shape returns. The demo also runs a contrast: switching the stochastic term off during sampling and taking only the mean at each step collapses the point cloud onto a handful of average paths &mdash; generation at its core is sampling from a distribution, and taking only the most likely value at each step cannot express the variety the distribution holds.
+            </p>
+            <figure class="my-8">
+                <img src="../../PNG/project_28.4.webp"
+                     alt="W12 DDPM reverse denoising: five stages from pure noise at t=199 to the two-moons distribution at t=0"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">W12: five stages of reverse denoising, with pure noise at t=199 recovering the two-moons distribution at t=0</figcaption>
+            </figure>
+            <p>
+                The second part moves to MNIST: a 1.37M parameter MiniUNet with time embedding, 20 epochs taking 528 seconds on an RTX 4060, with loss dropping from 0.0605 to around 0.04. Sampling 64 images from pure noise produced digits mostly legible on sight, varying in stroke weight and slant &mdash; drawn by the model itself, and absent from the dataset.
+            </p>
+            <figure class="my-8">
+                <img src="../../PNG/project_28.5.webp"
+                     alt="W12 the 64 handwritten digits DDPM generated from pure noise after 20 epochs on MNIST"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">W12: the 64 handwritten digits generated after MiniUNet trained for 20 epochs, mostly legible on sight</figcaption>
+            </figure>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Academic Integrity Statement
+            </h3>
+
+            <p>
+                This entry records a personal learning process. W10 is a course assignment (pure inference), while W9, W11 and W12 are local reproductions of the course teaching notebooks. The notebook skeletons came from the course, and every execution output, training run and chart was produced on my own machine. The datasets (MNIST, sample COCO images) download from public sources through the code and are never bundled here. MVC Lab students currently taking the course should run it once themselves.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Technical Environment
+            </h3>
+
+            <ul class="list-none space-y-2 text-sm text-gray-400 font-light border-l-2 border-white/10 pl-5 my-6">
+                <li><strong class="text-gray-200">Language</strong> &mdash; Python 3.11, PyTorch 2.6 (CUDA 12.4)</li>
+                <li><strong class="text-gray-200">W9</strong> &mdash; LangChain / LangGraph, Chroma, local LLM inference server + nomic-embed-text</li>
+                <li><strong class="text-gray-200">W10</strong> &mdash; HuggingFace Transformers (CLIP ViT-B/32, BLIP captioning / VQA)</li>
+                <li><strong class="text-gray-200">W11 / W12</strong> &mdash; torchvision (MNIST), matplotlib; the DDPM is a 1.37M parameter MiniUNet</li>
+                <li><strong class="text-gray-200">Hardware</strong> &mdash; RTX 4060 8GB (VAE 15 epochs in minutes; DDPM 20 epochs in 528 seconds)</li>
+                <li><strong class="text-gray-200">Notes for reproducing on Windows</strong> &mdash; DataLoader needs num_workers=0 (spawn mode cannot pickle a lambda transform); pin transformers to 4.x (from 5.x the return type of get_image_features changed)</li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Related Links
+            </h3>
+
+            <ul class="space-y-2 text-sm text-gray-400 list-none pl-0">
+                <li>
+                    <span class="text-accent-purple mr-2">●</span>
+                    <a href="https://github.com/GHOST8787/ntust-mvclab-2026" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        GitHub &mdash; GHOST8787/ntust-mvclab-2026
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">●</span>
+                    <a href="project_16.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        Record of the first five assignments &mdash; EXP / P16
+                    </a>
+                </li>
+            </ul>
+
+            <p class="text-sm text-gray-500 font-mono mt-4">
+                MIT License
+            </p>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="project_27.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Project
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Projects
+            </a>
+            <a href="project_29.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                Next Project &rarr;
+            </a>
+        </div>
+
+    </main>
+    <div id="footer-placeholder"></div>
+</body>
+</html>

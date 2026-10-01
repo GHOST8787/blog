@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / P29 | GHOST.ouo</title>
+    <link rel="canonical" href="https://ghost8787.github.io/blog/en/EXP/project_29.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_29.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_29.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/project_29.html">
+
+    <link rel="icon" type="image/png" href="../../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../../PNG/pixelS2.png">
+
+    <script src="../../theme.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
+
+    <link rel="stylesheet" href="../../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script src="../../i18n.js" defer></script>
+    <script type="module" src="../../main.js" defer></script>
+    <!-- 預編譯的 Tailwind。原本是 cdn.tailwindcss.com 的同步 script，
+         會卡住 HTML 解析約 600ms。改檔後要跑 pnpm run build:css 重新產生。 -->
+    <link rel="stylesheet" href="../../tw.css">
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-bg">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / P29</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                Running the LLM deployment stack on one RTX 4060 laptop<br>
+                <span class="text-gradient text-2xl md:text-4xl">A self-study log from vLLM inference to K8s orchestration</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    AI &amp; Automation
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Self Learning
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Infrastructure
+                </span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.06 &mdash; 2026.07</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
+                On a single laptop with an RTX 4060 (8GB VRAM), I walked the whole LLM deployment skill tree from scratch: a vLLM inference service, an Ollama comparison, MLflow experiment tracking, Docker containerisation, K8s orchestration, the PyTorch training framework, and finally a read-through of Phison's aiDAPTIV+ storage-side inference acceleration. Every block was actually run and verified on the machine, the benchmark numbers are logged in MLflow, and every pitfall I hit is collected here.
+            </p>
+
+            <p class="text-sm text-gray-500 italic mb-10">
+                I was curious about the full path an LLM takes from training to production, and I wanted to walk it once on my own laptop to work out what problems inference engines, experiment tracking, containerisation and orchestration each solve, and how they connect. The hardware is a Windows 11 laptop with an RTX 4060 Laptop GPU (8GB VRAM) and Ubuntu on WSL2. Earlier coursework at NTUST MVC Lab already had me training DQN and U-Net in PyTorch, so the training end was covered; the gap was everything from inference to deployment.
+            </p>
+
+            <figure class="my-10 mx-auto">
+                <img src="../../PNG/project_29.2.webp"
+                     alt="The vLLM inference architecture on an RTX 4060 laptop"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    The vLLM inference service &mdash; running Qwen2.5-1.5B-Instruct on an 8GB RTX 4060
+                </figcaption>
+            </figure>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Six topics at a glance
+            </h3>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">Topic</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">Tooling</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">Verified by</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10 bg-accent-purple/5">
+                            <td class="px-4 py-3 font-bold text-white">LLM inference engine</td>
+                            <td class="px-4 py-3">vLLM 0.24 + Ollama 0.30</td>
+                            <td class="px-4 py-3 font-mono">WSL2 deployment + 4 benchmark runs</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">Experiment tracking</td>
+                            <td class="px-4 py-3">MLflow</td>
+                            <td class="px-4 py-3 font-mono">Logged benchmarks, compared in the UI</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">Containerisation</td>
+                            <td class="px-4 py-3">Docker 29.1.3</td>
+                            <td class="px-4 py-3 font-mono">hello-world &rarr; build &rarr; run &rarr; curl</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">Orchestration</td>
+                            <td class="px-4 py-3">k3s v1.36.2</td>
+                            <td class="px-4 py-3 font-mono">Deployment + NodePort Service</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">Training framework</td>
+                            <td class="px-4 py-3">PyTorch 2.11 + CUDA 13.0</td>
+                            <td class="px-4 py-3 font-mono">GPU linear-regression check</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">Storage-side acceleration</td>
+                            <td class="px-4 py-3">aiDAPTIV+</td>
+                            <td class="px-4 py-3 font-mono">Reading only, not implemented</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Block by block
+            </h3>
+
+            <!-- ===== 1. LLM inference engine ===== -->
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">LLM inference engine &mdash; vLLM and Ollama</h4>
+
+            <p>
+                Deploying vLLM on WSL2 breaks down into seven steps: create a Python 3.12 virtual environment with uv (the machine defaults to 3.13, and vLLM only supports 3.9 through 3.12), install the vllm package, download the Qwen2.5-1.5B-Instruct weights locally (about 3GB), install the missing gcc (needed to compile the C extension), then start the service with <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">vllm serve</code>. Running vLLM in 8GB of VRAM requires <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">--enforce-eager</code> to switch off CUDA graphs, so vLLM computes on the fly instead of pre-reserving the whole of VRAM, at the cost of throughput. Once it was up, curl against the OpenAI-compatible <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">/v1/chat/completions</code> endpoint returned a Traditional Chinese reply, so the service was live.
+            </p>
+            <p>
+                Re-running the startup flow turned up two basic bash traps: <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">@~</code> does not expand to the home path in some shell environments, so the full path or <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">$HOME</code> has to be written out; and the line-continuation <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">\</code> in a multi-line command cannot be followed by whitespace, or the next line is treated as a new command.
+            </p>
+            <p>
+                Ollama is installed on the Windows side (0.30.11), with <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">qwen2.5:1.5b</code> already pulled (986MB, Q4_K_M quantisation), and a single <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">ollama run qwen2.5:1.5b</code> is enough to start chatting. It serves the same OpenAI-compatible API (<code class="text-accent-purple bg-accent-purple/10 px-1 rounded">localhost:11434</code>), so moving a program from vLLM to Ollama only means swapping the URL and the model name, with no code changes.
+            </p>
+            <p>
+                Both sides ran the same Qwen2.5-1.5B over the same API, measured on two metrics: throughput (tok/s) and time to first token (TTFT). Results logged in MLflow:
+            </p>
+
+            <div class="overflow-x-auto my-6">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">Scenario</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">Ollama 0.30</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">vLLM 0.24</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">Gap</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">Single-request throughput</td>
+                            <td class="px-4 py-3 font-mono">47.3 tok/s</td>
+                            <td class="px-4 py-3 font-mono">31.5 tok/s</td>
+                            <td class="px-4 py-3 font-mono font-bold text-accent-purple">Ollama +50%</td>
+                        </tr>
+                        <tr class="border-t border-white/10">
+                            <td class="px-4 py-3 font-bold text-white">Total throughput, 8 concurrent requests</td>
+                            <td class="px-4 py-3 font-mono">119.4 tok/s</td>
+                            <td class="px-4 py-3 font-mono">102.4 tok/s</td>
+                            <td class="px-4 py-3 font-mono font-bold text-accent-purple">Ollama +17%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                On this 8GB laptop Ollama wins both. The reason is that vLLM is forced into enforce-eager mode, part of the VRAM is taken by WSL2 and other processes, and PagedAttention never gets to show its concurrency advantage. vLLM's strengths suit server-class GPUs (24GB and up), larger models and high-concurrency workloads.
+            </p>
+
+            <div class="pl-6 border-l-2 border-accent-purple my-8">
+                <p class="text-white font-medium mb-2">What model size changes</p>
+                <p class="text-sm text-gray-400 m-0">
+                    A 1.5B-parameter model is too small: asked "what is vLLM", both sides got it wrong and invented features that do not exist, a textbook small-model hallucination. The engine decides how fast it runs and how many people it can serve; the model decides how accurate the answer is. Those two belong in separate columns. Ollama running faster is a performance result, vLLM answering wrongly is a model-capability limit, and the two sit at different layers.
+                </p>
+            </div>
+
+            <!-- ===== 2. MLflow ===== -->
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">Experiment tracking &mdash; MLflow</h4>
+
+            <p>
+                MLflow is installed on Windows (<code class="text-accent-purple bg-accent-purple/10 px-1 rounded">pip install mlflow</code>) and holds the benchmark results above. Four runs are logged (vLLM single request, vLLM concurrent, Ollama single request, Ollama concurrent), <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">mlflow ui</code> opens the web interface, and the Compare page lays all four side by side on throughput and latency. The data lives in a SQLite file called <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">mlflow.db</code>, which the UI reads back automatically next time, so the results stay put.
+            </p>
+            <p>
+                One Windows pitfall: the MLflow web server starts several worker processes by default, Windows handles multiprocessing differently from Linux, and running it straight hangs. Capping it at a single process with <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">--workers 1</code> fixed it.
+            </p>
+            <figure class="my-8">
+                <img src="../../PNG/project_29.1.webp"
+                     alt="MLflow UI parallel coordinates plot comparing tokens_per_s for vLLM and Ollama"
+                     loading="lazy" class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">The MLflow Compare page: the two lines cross, showing Ollama at 47.3 tok/s against vLLM at 31.5 tok/s on a single request</figcaption>
+            </figure>
+
+            <!-- ===== 3. Docker ===== -->
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">Containerisation &mdash; Docker</h4>
+
+            <p>
+                Docker 29.1.3 is installed inside WSL2's Ubuntu, with the daemon managed by systemd. The practice route was: get <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">docker run hello-world</code> working to confirm the environment &rarr; write a small Flask API with a Dockerfile &rarr; <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">docker build</code> it into an image &rarr; <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">docker run</code> it as a container &rarr; curl the endpoint &rarr; clean up the container and the image.
+            </p>
+            <p>
+                Walking the whole flow once is walking "develop &rarr; package &rarr; deploy &rarr; verify" once. Stretch that route out and swap the small Flask API for a vLLM inference service, and it is the same set of moves used to deploy a real AI model.
+            </p>
+
+            <!-- ===== 4. K8s ===== -->
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">Orchestration &mdash; K8s (k3s)</h4>
+
+            <p>
+                I started with kind (Kubernetes IN Docker) on WSL2 and ran into a structural docker-in-docker problem: dockerd inside WSL2 occasionally restarts itself, and the knock-on effect kills the cluster kind created outright; after the restart, creating the cgroup scope also fails and the cluster cannot be recovered. Someone has reported this on kind's GitHub issues, and it counts as a known limitation under WSL.
+            </p>
+            <p>
+                I switched to k3s (v1.36.2+k3s1), which installs from a single script. k3s is lightweight K8s running directly on Linux, which removes the layer of running K8s inside a Docker container inside WSL2. After practice, <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">systemctl disable --now k3s</code> shuts it down to save resources, and <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">systemctl start k3s</code> wakes it up next time.
+            </p>
+            <p>
+                One thing to watch with K8s NodePort: it binds to the node IP, so <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">curl localhost:nodePort</code> may not get through. The fix is to look up the virtual IP WSL2 assigned with <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">hostname -I</code> and use that IP instead.
+            </p>
+
+            <!-- ===== 5. PyTorch ===== -->
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">Training framework &mdash; PyTorch</h4>
+
+            <p>
+                Installing vLLM already brought PyTorch along (torch 2.11 + CUDA 13.0, inside the vllm venv), so practising PyTorch needed nothing extra and ran in the same venv. I wrote a minimal GPU training script: linear regression <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">y = 2x + 3</code> on CUDA, with loss falling from 148 to 0.26, confirming the GPU training path works.
+            </p>
+            <p>
+                Earlier coursework at NTUST MVC Lab had already used PyTorch for DQN (1.5 million steps, evaluation score 2990) and U-Net semantic segmentation (pixel accuracy 0.8505), which covered training loops, loss curves and optimisers. What this round confirmed is that the local GPU environment works under WSL2, and that the training and inference ends run fine on the same card.
+            </p>
+
+            <!-- ===== 6. aiDAPTIV+ ===== -->
+
+            <h4 class="text-lg font-bold text-white mt-10 mb-4">Storage-side inference acceleration &mdash; aiDAPTIV+</h4>
+
+            <p>
+                aiDAPTIV+ is a product line from Phison Electronics that combines SSD storage with AI inference acceleration. Its design splits into three tiers: Cache handles staging and accelerating the KV cache during inference; Link covers distributed inference of a model across hosts; Pro moves part of the computation onto the SSD controller itself.
+            </p>
+            <p>
+                A few published figures: a configuration of two GPUs plus an 8TB SSD fine-tuning Llama 405B; SLC-grade dies rated at 100 DWPD to absorb the write volume of AI workloads; and Link 3.0 claiming to cut time to first token (TTFT) to a tenth.
+            </p>
+            <p>
+                Understanding vLLM's PagedAttention makes the design logic behind aiDAPTIV+ Cache clearer, since the two overlap in how they tackle KV cache management.
+            </p>
+
+            <!-- ===== Stack ===== -->
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Environment
+            </h3>
+
+            <ul class="list-none space-y-2 text-sm text-gray-400 font-light border-l-2 border-white/10 pl-5 my-6">
+                <li><strong class="text-gray-200">OS</strong> &mdash; Windows 11 + WSL2 Ubuntu 26.04</li>
+                <li><strong class="text-gray-200">GPU</strong> &mdash; NVIDIA RTX 4060 Laptop (8GB VRAM, driver 581.57)</li>
+                <li><strong class="text-gray-200">Python</strong> &mdash; 3.12 (vLLM venv, via uv) / 3.13 (Windows default)</li>
+                <li><strong class="text-gray-200">vLLM</strong> &mdash; 0.24 + Qwen2.5-1.5B-Instruct (native safetensors)</li>
+                <li><strong class="text-gray-200">Ollama</strong> &mdash; 0.30.11 + qwen2.5:1.5b (Q4_K_M, 986MB)</li>
+                <li><strong class="text-gray-200">MLflow</strong> &mdash; pip install, local SQLite store</li>
+                <li><strong class="text-gray-200">Docker</strong> &mdash; 29.1.3 (WSL2, systemd daemon)</li>
+                <li><strong class="text-gray-200">k3s</strong> &mdash; v1.36.2+k3s1 + kubectl v1.36.2</li>
+                <li><strong class="text-gray-200">PyTorch</strong> &mdash; 2.11 + CUDA 13.0 (bundled with vLLM)</li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Links
+            </h3>
+
+            <ul class="space-y-2 text-sm text-gray-400 list-none pl-0">
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="https://docs.vllm.ai/en/latest/getting_started/quickstart/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        vLLM Quickstart
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="https://ollama.com/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        Ollama
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="https://mlflow.org/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        MLflow
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="https://k3s.io/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        k3s
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="project_16.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        NTUST MVC Lab coursework log &mdash; EXP / P16
+                    </a>
+                </li>
+            </ul>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="project_28.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Project
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Projects
+            </a>
+            <a href="project_30.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                Next Project &rarr;
+            </a>
+        </div>
+
+    </main>
+    <div id="footer-placeholder"></div>
+</body>
+</html>

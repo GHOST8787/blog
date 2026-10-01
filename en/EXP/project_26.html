@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / P26 | GHOST.ouo</title>
+    <link rel="canonical" href="https://ghost8787.github.io/blog/en/EXP/project_26.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_26.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_26.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/project_26.html">
+
+    <link rel="icon" type="image/png" href="../../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../../PNG/pixelS2.png">
+
+    <script src="../../theme.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
+
+    <link rel="stylesheet" href="../../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script src="../../i18n.js" defer></script>
+    <script type="module" src="../../main.js" defer></script>
+    <!-- 預編譯的 Tailwind。原本是 cdn.tailwindcss.com 的同步 script，
+         會卡住 HTML 解析約 600ms。改檔後要跑 pnpm run build:css 重新產生。 -->
+    <link rel="stylesheet" href="../../tw.css">
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-bg">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / P26</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                One Map of Claude's Official Prompting Guides:<br>
+                <span class="text-gradient text-2xl md:text-4xl">Model choice, parameters, prompting techniques, migration traps</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">AI &amp; Automation</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Prompt Engineering</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Reference</span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.07.05</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
+                Anthropic publishes four prompt engineering guides in its official documentation: three covering a single model each (Sonnet 5, Opus 4.8, Fable 5), and one covering the general techniques shared across all models. Each stands as its own document, and using them in practice means jumping back and forth between pages. This entry pulls them into one working map, ordered by the decisions actually made when a new task arrives: pick the model, set the parameters, apply the prompting techniques, then check what breaks when carrying a prompt over from an older model.
+            </p>
+
+            <figure class="my-10 mx-auto">
+                <img src="../../PNG/project_26.1.webp"
+                     alt="Map of Claude's official prompting guides: model choice, parameters, prompting techniques, migration traps"
+                     class="w-full rounded-2xl border border-white/10 shadow-2xl">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    The four-layer map: model choice, parameters, prompting techniques, migration traps
+                </figcaption>
+            </figure>
+
+            <div class="pl-6 border-l-2 border-accent-purple my-8">
+                <p class="text-white font-medium mb-2">How this was assembled</p>
+                <p class="text-sm text-gray-400 m-0">
+                    Everything here comes from what the four documents actually state, and anything the documents leave out is marked as "not in the documentation." The priority order the documents set out is carried into the map in full: <strong class="text-white">model-specific guides first, then general techniques, then migration considerations</strong>. Where the two conflict, the model-specific guide wins. Parameter names and code stay as they are.
+                </p>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Layer One: Model Choice &mdash; Where Each of the Three Stands
+            </h3>
+
+            <p>
+                Model choice answers one question: how long an autonomous run does this task need? The positioning the documents give the three models lines up neatly, from a single-shot task through to autonomous execution across weeks.
+            </p>
+
+            <div class="w-full overflow-x-auto my-6">
+                <table class="w-full text-left border-collapse min-w-[640px]">
+                    <thead>
+                        <tr class="text-white font-mono text-xs uppercase tracking-wider">
+                            <th class="py-3 pr-4 border-b border-white/20 w-2/12">Model</th>
+                            <th class="py-3 px-4 border-b border-white/20 w-5/12">Strengths as stated in the docs</th>
+                            <th class="py-3 pl-4 border-b border-white/20 w-5/12">Where it fits</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 text-white font-bold">Sonnet 5</td>
+                            <td class="py-4 px-4 text-gray-300">Coding and agentic tasks</td>
+                            <td class="py-4 pl-4 text-gray-400">Existing Sonnet 4.6 prompts work out of the box; tool chains, structured extraction</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 text-white font-bold">Opus 4.8</td>
+                            <td class="py-4 px-4 text-gray-300">Long-horizon agentic work, knowledge work, vision, memory tasks</td>
+                            <td class="py-4 pl-4 text-gray-400">Interactive coding that has to hold coherence over a long horizon</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 pr-4 text-white font-bold">Fable 5</td>
+                            <td class="py-4 px-4 text-gray-300">End-to-end work that would take a human hours to weeks (same underlying model as Mythos 5)</td>
+                            <td class="py-4 pl-4 text-gray-400">The hardest unsolved problems; multi-day goal-directed autonomous execution</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                Fable 5 carries an explicit limit on its design scope: the documentation states it does not apply to offensive cybersecurity, biology or life sciences work. Requests of that kind may come straight back as <code class="text-accent-purple">stop_reason: "refusal"</code>. For either of those two categories, pick a different model from the start.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Layer Two: Parameters &mdash; effort Is the Main Control, thinking Defaults Differ Across All Three
+            </h3>
+
+            <p>
+                All three models share the same set of effort levels: <code class="text-accent-purple">max</code> &gt; <code class="text-accent-purple">xhigh</code> &gt; <code class="text-accent-purple">high</code> &gt; <code class="text-accent-purple">medium</code> &gt; <code class="text-accent-purple">low</code>. The levels match, and the starting points differ considerably:
+            </p>
+
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
+                <li><strong class="text-white">Sonnet 5</strong>: defaults to <code class="text-accent-purple">high</code> (same as 4.6); raise the hardest coding and agentic tasks to <code class="text-accent-purple">xhigh</code>.</li>
+                <li><strong class="text-white">Opus 4.8</strong>: start coding and agentic tasks at <code class="text-accent-purple">xhigh</code>; intelligence-sensitive tasks at <code class="text-accent-purple">high</code> or above. <code class="text-accent-purple">max</code> may see diminishing returns as tokens grow, and it overthinks readily.</li>
+                <li><strong class="text-white">Fable 5</strong>: most tasks on the <code class="text-accent-purple">high</code> default, the most sensitive on <code class="text-accent-purple">xhigh</code>, routine work down to <code class="text-accent-purple">medium</code> or <code class="text-accent-purple">low</code>. The documentation states outright that its low effort usually already exceeds the xhigh performance of earlier models.</li>
+            </ul>
+
+            <p>
+                Only the Sonnet 5 documentation gives a cross-model comparison: <code class="text-accent-purple">medium</code> on Sonnet 5 sits around <code class="text-accent-purple">high</code> on 4.6, and <code class="text-accent-purple">high</code> on Sonnet 5 sits around <code class="text-accent-purple">max</code> on 4.6. When comparing, going by observed thinking length works more reliably than going by the name.
+            </p>
+
+            <p>
+                All three models share one behaviour at <code class="text-accent-purple">low</code> and <code class="text-accent-purple">medium</code>: they hold the work strictly inside what was asked for. A task of moderate complexity on <code class="text-accent-purple">low</code> carries a risk of underthinking; the documentation lists "raise the effort" as the correct answer, with prompting as a patch for when latency is constrained. Where staying on <code class="text-accent-purple">low</code> is genuinely necessary, add this line:
+            </p>
+
+            <div class="my-6 p-6 bg-[var(--c-e3)] rounded-xl border border-white/10 text-sm text-gray-300 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">Low-effort reinforcement prompt</div>
+                <p class="m-0">This task requires multi-step reasoning. Think through the problem thoroughly before answering.</p>
+            </div>
+
+            <p>
+                The default state of thinking goes its own way on each of the three, and this is the cell most easily misjudged when carrying a prompt across:
+            </p>
+
+            <div class="w-full overflow-x-auto my-6">
+                <table class="w-full text-left border-collapse min-w-[640px]">
+                    <thead>
+                        <tr class="text-white font-mono text-xs uppercase tracking-wider">
+                            <th class="py-3 pr-4 border-b border-white/20 w-2/12">Model</th>
+                            <th class="py-3 px-4 border-b border-white/20 w-4/12">With the thinking parameter omitted</th>
+                            <th class="py-3 px-4 border-b border-white/20 w-3/12">How to turn it off</th>
+                            <th class="py-3 pl-4 border-b border-white/20 w-3/12">Manual extended thinking</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 text-white font-bold">Sonnet 5</td>
+                            <td class="py-4 px-4 text-gray-300">Adaptive thinking <strong class="text-white">on</strong></td>
+                            <td class="py-4 px-4 text-gray-400"><code>thinking: {type: "disabled"}</code></td>
+                            <td class="py-4 pl-4 text-gray-400">Using it returns 400</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 text-white font-bold">Opus 4.8</td>
+                            <td class="py-4 px-4 text-gray-300">Thinking <strong class="text-white">off</strong>; turning it on needs an explicit <code>{type: "adaptive"}</code></td>
+                            <td class="py-4 px-4 text-gray-400">Off by default</td>
+                            <td class="py-4 pl-4 text-gray-400">Not itemised in the docs</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 pr-4 text-white font-bold">Fable 5</td>
+                            <td class="py-4 px-4 text-gray-300">Adaptive only, <strong class="text-white">always on</strong>, emitting summarised thinking</td>
+                            <td class="py-4 px-4 text-gray-400">Not in the docs</td>
+                            <td class="py-4 pl-4 text-gray-400">No extended thinking budget</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                Models calibrate how deeply to think from two factors: the effort parameter, plus the complexity of the query itself. The old <code class="text-accent-purple">budget_tokens</code> is on its way out &mdash; Opus 4.6 and Sonnet 4.6 still accept it while marking it deprecated, and <strong class="text-white">Opus 4.7 onwards, Fable 5 and Mythos 5 return 400 if it is set</strong>. The migration is to swap the thinking budget for adaptive plus effort:
+            </p>
+
+            <div class="my-6 p-6 bg-[var(--c-e3)] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre class="m-0"><code># old form (4.7+ returns 400)
+thinking={"type": "enabled", "budget_tokens": 10000}
+
+# new form
+thinking={"type": "adaptive"}
+output_config={"effort": "high"}   # max_tokens acts as the hard ceiling</code></pre>
+            </div>
+
+            <p>
+                Token ceilings and sampling parameters follow their own rules per model: Sonnet 5 ships a new tokenizer, so the same text runs about 30% more tokens, and at high effort <code class="text-accent-purple">max_tokens</code> has to leave room for thinking and tools, with too little room producing "all thinking, truncated answer, <code class="text-accent-purple">stop_reason: "max_tokens"</code>"; sampling parameters (temperature, top_p, top_k) return 400 when set to anything other than the default. Opus 4.8 starts max_tokens at 64k on the max and xhigh tiers before adjusting; sampling restrictions are not itemised in that document. Fable 5 gives no max_tokens figure, its sampling restrictions are absent from the documentation, and a single request may run for minutes with autonomous execution running for hours, so client timeouts have to be extended to match.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Layer Three: Prompting Techniques &mdash; A General Skeleton, Plus Each Model's Temperament
+            </h3>
+
+            <p>
+                The general document states the basics plainly: think of Claude as a bright new hire who lacks context. The golden rule in one line &mdash; show your prompt to a colleague, and whatever confuses them will confuse Claude. Four fundamentals follow:
+            </p>
+
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
+                <li><strong class="text-white">Be clear and direct.</strong> Spell out any behaviour that goes beyond the expected; use a numbered list when the order of steps matters.</li>
+                <li><strong class="text-white">Explain the reason.</strong> State the motivation behind an instruction, and the model generalises more precise behaviour from the explanation.</li>
+                <li><strong class="text-white">Give examples.</strong> Three to five works best; they should be relevant, varied (covering edge cases), and wrapped in <code class="text-accent-purple">&lt;example&gt;</code> tags.</li>
+                <li><strong class="text-white">Structure with XML.</strong> When instructions, background, examples and input sit mixed together, separate them with <code class="text-accent-purple">&lt;instructions&gt;</code>, <code class="text-accent-purple">&lt;context&gt;</code> and <code class="text-accent-purple">&lt;input&gt;</code>.</li>
+            </ul>
+
+            <p>
+                Long context (20k tokens and above) has three practices with measurements behind them: put long documents at the top of the prompt and the query and instructions at the end, which can raise response quality by up to 30% on multi-document input; wrap each document in <code class="text-accent-purple">&lt;document&gt;</code> tags; ask the model to quote the relevant passages first and perform the task afterwards, which clears the interference from everything else.
+            </p>
+
+            <p>
+                Output format control has three moves, all pointing the same way: <strong class="text-white">use positive instructions</strong> (for prose, say "write in flowing prose paragraphs"), use XML format indicators, and make the prompt's own style resemble the output you want (strip markdown out of the prompt and less markdown comes back). The newest models are more direct, pragmatic and sparing with words, and may skip the verbal summary after a tool call; ask for the summary explicitly if it is wanted. Maths defaults to LaTeX, so plain text needs stating too.
+            </p>
+
+            <p>
+                Tools and subagents: the three models have completely different temperaments, and this section is worth committing to memory whole:
+            </p>
+
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
+                <li><strong class="text-white">Sonnet 5</strong> uses tools more aggressively than 4.6 and carries a self-verification loop. With thinking disabled its tool use drops in frequency, so turning thinking off while still depending on tools requires an explicit instruction in the system prompt.</li>
+                <li><strong class="text-white">Opus 4.8</strong> tends to reason first and reach for tools second, and raising the effort is the effective way to increase tool use; it leans towards fewer subagents by default, so when to delegate needs spelling out.</li>
+                <li><strong class="text-white">Fable 5</strong> dispatches parallel subagents more aggressively than earlier models, and the documentation recommends designing for asynchronous communication so the main flow does not block waiting.</li>
+            </ul>
+
+            <div class="my-6 p-6 bg-[var(--c-e3)] rounded-xl border border-white/10 text-sm text-gray-300 font-light leading-relaxed space-y-3">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-1">Opus 4.8 subagent guidance</div>
+                <p class="m-0">Do not spawn subagents for work you can complete directly within a single response. When several items need handling separately, or several files need reading at once, spawn multiple subagents in the same turn.</p>
+            </div>
+
+            <p>
+                One change here is worth recording: within the same model family, one version apart, the default inclination on "should subtasks (subagents) be spawned automatically" flips entirely. The previous generation, Opus 4.6, preferred spawning subtasks aggressively, even where a simple query would have sufficed, and the official documentation asks you to state when they should be used; by Opus 4.8 the default turned conservative, requiring active guidance before it delegates; and Fable 5 after it swings back to the aggressive end. Carrying the same prompt across versions makes the behaviour drift &mdash; <strong class="text-white">4.6 leans many, 4.8 leans few, Fable 5 leans many again</strong>.
+            </p>
+
+            <p>
+                Steering the thinking also has ready-made phrasings. Where a large system prompt triggers thinking too often, Sonnet 5 and Opus 4.8 share this passage: "Thinking adds latency, so use it only where it meaningfully improves answer quality, usually on problems that require multi-step reasoning. When in doubt, answer directly." Where Opus 4.6 at high effort explores too much up front, telling it to commit works: "When deciding how to solve a problem, pick one approach and stay with it." Two smaller points: general instructions ("think thoroughly") often beat a hand-written step-by-step plan; and Opus 4.5 with thinking disabled is sensitive to the word "think," so use consider, evaluate, reason through instead.
+            </p>
+
+            <p>
+                On long-horizon agents the general document supplies a whole framework. Sonnet 5, 4.6, 4.5 and Haiku 4.5 are context-aware and can track remaining tokens; inside a framework that auto-compacts context, state it explicitly &mdash; "your context window will be compacted automatically, you can keep working, and remaining tokens are not a reason to stop" &mdash; so the model does not wrap up early. State management divides up as: JSON for structured data, text for progress notes, git for state tracking &mdash; the documentation says the newest models perform particularly well at using git to track state across work sessions. On the safety side, the documentation lists three classes of action worth confirming first: destructive (deleting files, clearing tables), hard to reverse (force push, resetting history), and visible to others (pushing, commenting, sending messages).
+            </p>
+
+            <p>
+                For coding there are four directly reusable guard passages:
+            </p>
+
+            <div class="my-6 p-6 bg-[var(--c-e3)] rounded-xl border border-white/10 text-sm text-gray-300 font-light leading-relaxed space-y-3">
+                <p class="m-0"><span class="text-accent-purple font-mono mr-2">Passage 1</span>Clear away every temporary file or script created along the way when the work finishes.</p>
+                <p class="m-0"><span class="text-accent-purple font-mono mr-2">Passage 2</span>Avoid over-engineering: hold the scope to what was asked; add documentation, defensive code and abstraction layers only when asked or when clearly necessary.</p>
+                <p class="m-0"><span class="text-accent-purple font-mono mr-2">Passage 3</span>Write a high-quality, general solution. Never hard-code values for a specific test; the solution must be correct for all valid inputs, and passing the tests follows from that naturally.</p>
+                <p class="m-0"><span class="text-accent-purple font-mono mr-2">Passage 4</span>Investigate before answering: always read a file before discussing it; when the user mentions a specific file, open it first, and never describe code from guesswork.</p>
+            </div>
+
+            <p>
+                Frontend design is the one section where the model holds a fixed aesthetic. Opus 4.8's defaults are fairly stubborn: a warm off-white background (around <code class="text-accent-purple">#F4F1EA</code>), a serif display typeface, italic emphasis, terracotta and amber tones. Sonnet 5 also converges on a consistent default style (the documentation lists no specific colours), and the general document separately names the model's fondness for converging on the Space Grotesk typeface. Fable 5's guide has no section on design defaults. Two ways out: supply concrete specifications (explicit hex values and typeface names), or have the model propose four design directions before implementing. Generic adjectives ("clean and minimal" and the like) only make it jump to another fixed palette, which amounts to saying nothing.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Layer Four: Migration Traps &mdash; Where Carrying Prompts Over Commonly Fails
+            </h3>
+
+            <p>
+                This layer is entirely items that used to work and either error out or degrade once carried across. One by one:
+            </p>
+
+            <div class="w-full overflow-x-auto my-6">
+                <table class="w-full text-left border-collapse min-w-[640px]">
+                    <thead>
+                        <tr class="text-white font-mono text-xs uppercase tracking-wider">
+                            <th class="py-3 pr-4 border-b border-white/20 w-3/12">Item</th>
+                            <th class="py-3 px-4 border-b border-white/20 w-4/12">Symptom</th>
+                            <th class="py-3 pl-4 border-b border-white/20 w-5/12">What to do</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 text-gray-300">Sonnet 5's new tokenizer</td>
+                            <td class="py-4 px-4 text-gray-400">Same text runs about 30% more tokens, and the old max_tokens causes truncation</td>
+                            <td class="py-4 pl-4 text-gray-400">Re-estimate max_tokens, leaving room for thinking and tools at high effort</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 text-gray-300">Response prefill removed</td>
+                            <td class="py-4 px-4 text-gray-400">From the 4.6 generation and Mythos Preview onwards, prefilling the final assistant turn returns 400</td>
+                            <td class="py-4 pl-4 text-gray-400">Whatever prefill handled &mdash; format control, removing preambles, continuation &mdash; moves to format instructions; assistant messages elsewhere in the conversation stay as they were</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 text-gray-300">budget_tokens retired</td>
+                            <td class="py-4 px-4 text-gray-400">Opus 4.7+, Fable 5 and Mythos 5 return 400 if it is set</td>
+                            <td class="py-4 pl-4 text-gray-400">Switch to <code>{type:"adaptive"}</code> plus effort, with max_tokens as the hard ceiling</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 text-gray-300">Sampling parameters locked</td>
+                            <td class="py-4 px-4 text-gray-400">Sonnet 5 returns 400 on non-default temperature / top_p / top_k</td>
+                            <td class="py-4 pl-4 text-gray-400">Remove the sampling parameters; the documentation notes this restriction is new at the Sonnet tier</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-4 pr-4 text-gray-300">Wording intensity</td>
+                            <td class="py-4 px-4 text-gray-400">From Opus 4.5 / 4.6 onwards the models are more sensitive to system prompts, and "CRITICAL: You MUST" over-triggers</td>
+                            <td class="py-4 pl-4 text-gray-400">Drop back to ordinary descriptive sentences ("use this tool in this situation")</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 pr-4 text-gray-300">effort comparison</td>
+                            <td class="py-4 px-4 text-gray-400">The same level name produces about one tier's difference in actual thinking between old and new models</td>
+                            <td class="py-4 pl-4 text-gray-400">Compare by observed thinking length rather than by name</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                Fable 5 carries four further adjustments of its own, the first two tied directly to safety classifiers. It runs classifiers over three categories of content: offensive cybersecurity, biology and life sciences, and extraction of summarised thinking; benign work can trigger them by mistake. The documentation recommends setting a <strong class="text-white">fallback to Opus 4.8</strong> server-side or client-side, so refused requests redirect automatically. The second point is to avoid asking the model to reproduce its reasoning &mdash; requesting an echo or transcript of internal reasoning may trigger the <code class="text-accent-purple">reasoning_extraction</code> refusal category; where reasoning visibility is needed, read the structured thinking blocks instead.
+            </p>
+
+            <p>
+                The last two address long autonomous runs. Against fabricated progress: "Before reporting progress, check every claim against tool results from this work session. Report only work you can point to evidence for; where something has not been verified, say so plainly." Against stopping early: "You are operating autonomously, and the user is not watching in real time. For actions that match the original request and are reversible, go ahead without asking again. Before ending the turn, check your final passage: if it is a plan, an analysis, a question, or a promise about work not yet done, complete it now with a tool call."
+            </p>
+
+            <hr class="border-white/10 my-12">
+
+            <div class="mt-8 text-sm font-mono text-gray-500 border-l-2 border-accent-purple pl-4">
+                The way to use this reduces to a few steps: read the relevant model's own page first to set effort and thinking, return to the general page to lift the skeleton passages (XML structure, format control, agent guards), then run the migration checklist. On a conflict, the model-specific guide decides.
+            </div>
+
+            <hr class="border-white/10 my-12">
+            <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Related Links
+            </h3>
+
+            <ul class="space-y-2 text-sm text-gray-400 list-none pl-0">
+                <li>
+                    <span class="text-accent-purple mr-2">●</span>
+                    <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        Claude prompting best practices (general)
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">●</span>
+                    <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        Sonnet 5 prompting guide
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">●</span>
+                    <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-4-8" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        Opus 4.8 prompting guide
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">●</span>
+                    <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        Fable 5 prompting guide
+                    </a>
+                </li>
+            </ul>
+
+            <p class="text-sm text-gray-500 font-mono mt-4">
+                Source: platform.claude.com official documentation ・ Scope: Sonnet 5 ・ Opus 4.8 ・ Fable 5 ・ general best practices
+            </p>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="project_25.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Project
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Projects
+            </a>
+            <a href="project_27.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                Next Project &rarr;
+            </a>
+        </div>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+</body>
+</html>
