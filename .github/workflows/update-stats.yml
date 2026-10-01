@@ -45,8 +45,8 @@ jobs:
             echo "stats.json unchanged, nothing to commit"
             exit 0
           fi
-          n=$(node -e "process.stdout.write(String(require('./data/stats.json').activeThisMonth))")
-          printf 'chore(stats): activeThisMonth=%s\n' "$n" > "$RUNNER_TEMP/msg.txt"
+          n=$(node -e "process.stdout.write(String(require('./data/stats.json').activeLast30Days))")
+          printf 'chore(stats): activeLast30Days=%s\n' "$n" > "$RUNNER_TEMP/msg.txt"
           git config user.name  'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add data/stats.json en/data/stats.json
