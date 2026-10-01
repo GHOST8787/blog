@@ -249,7 +249,7 @@
                     <div class="stagger-item border border-white/5 hover:border-accent-purple/40 rounded-2xl p-4 transition-colors">
                         <div data-stat-counter data-stat="active" data-target="3" class="text-3xl font-bold text-accent-purple font-mono">0</div>
                         <div class="text-[10px] text-gray-500 uppercase tracking-wider mt-2">Active</div>
-                        <div class="text-[11px] text-gray-400 mt-1">本月持續開發</div>
+                        <div class="text-[11px] text-gray-400 mt-1">近 30 天持續開發</div>
                     </div>
                     <div class="stagger-item border border-white/5 hover:border-accent-purple/40 rounded-2xl p-4 transition-colors">
                         <div data-stat-counter data-stat="latest" data-target="0" class="text-3xl font-bold text-accent-purple font-mono">0</div>
@@ -354,7 +354,7 @@
                             if (c) c.innerHTML = '<div class="text-gray-500 text-sm text-center py-4">無法載入文章列表。<a href="articles.html" class="text-accent-purple hover:underline">直接看文章頁</a></div>';
                         });
 
-                    // 3d) Fetch projects.json — 動態算 Projects 篇數（「本月持續開發」含私人 repo 需後端排程，另計）
+                    // 3d) Fetch projects.json — 動態算 Projects 篇數（「近 30 天持續開發」另由 Actions 算，見 3e）
                     var projectsReady = fetch(rootPath + 'data/projects.json')
                         .then(function (r) { return r.ok ? r.json() : []; })
                         .then(function (list) {
@@ -364,13 +364,13 @@
                         })
                         .catch(function () {});
 
-                    // 3e) Fetch stats.json —「本月持續開發」由 GitHub Actions 每天算好（含私人 repo）寫入
+                    // 3e) Fetch stats.json —「近 30 天持續開發」由 GitHub Actions 每天算好（含私人 repo）寫入
                     var statsReady = fetch(rootPath + 'data/stats.json')
                         .then(function (r) { return r.ok ? r.json() : null; })
                         .then(function (s) {
-                            if (!s || typeof s.activeThisMonth !== 'number') return;
+                            if (!s || typeof s.activeLast30Days !== 'number') return;
                             var actEl = document.querySelector('[data-stat-counter][data-stat="active"]');
-                            if (actEl) actEl.setAttribute('data-target', String(s.activeThisMonth));
+                            if (actEl) actEl.setAttribute('data-target', String(s.activeLast30Days));
                         })
                         .catch(function () {});
 
