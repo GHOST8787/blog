@@ -43,7 +43,34 @@ module.exports = {
                     warn:    'rgb(var(--c-warn) / <alpha-value>)',
                     danger:  'rgb(var(--c-danger) / <alpha-value>)',
                     fill:    'rgb(var(--c-fill) / <alpha-value>)'
-                }
+                },
+
+                // 原生狀態色也接上主題變數（2026-10-03）：
+                // 之前只有 white/gray/accent-* 會翻轉，文章裡寫 text-green-400、
+                // text-red-400 這類原生色名就是深色專用的寫死值，淺色模式刺眼或看不見。
+                // 只接 100–600 階；900 階（tarot 結果框、index 漸層）在兩個主題
+                // 都是深色疊底的角色，刻意保留原值不接。
+                green:  { 300: 'rgb(var(--c-success) / <alpha-value>)',
+                          400: 'rgb(var(--c-success) / <alpha-value>)',
+                          500: 'rgb(var(--c-success) / <alpha-value>)' },
+                red:    { 200: 'rgb(var(--c-danger) / <alpha-value>)',
+                          300: 'rgb(var(--c-danger) / <alpha-value>)',
+                          400: 'rgb(var(--c-danger) / <alpha-value>)',
+                          500: 'rgb(var(--c-danger) / <alpha-value>)' },
+                yellow: { 300: 'rgb(var(--c-warn) / <alpha-value>)',
+                          400: 'rgb(var(--c-warn) / <alpha-value>)',
+                          500: 'rgb(var(--c-warn) / <alpha-value>)' },
+                amber:  { 100: 'rgb(var(--c-warn) / <alpha-value>)',
+                          200: 'rgb(var(--c-warn) / <alpha-value>)',
+                          400: 'rgb(var(--c-warn) / <alpha-value>)',
+                          500: 'rgb(var(--c-warn) / <alpha-value>)' },
+                blue:   { 400: 'rgb(var(--c-blue) / <alpha-value>)',
+                          500: 'rgb(var(--c-blue) / <alpha-value>)',
+                          600: 'rgb(var(--c-blue) / <alpha-value>)' },
+                purple: { 400: 'rgb(var(--c-purple) / <alpha-value>)',
+                          500: 'rgb(var(--c-purple) / <alpha-value>)',
+                          600: 'rgb(var(--c-purple) / <alpha-value>)' },
+                pink:   { 400: 'rgb(var(--c-heart) / <alpha-value>)' }
             },
             fontFamily: {
                 sans: ['"Plus Jakarta Sans"', 'sans-serif'],
