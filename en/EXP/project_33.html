@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / P33 | GHOST.ouo</title>
+    <link rel="canonical" href="https://ghost8787.github.io/blog/en/EXP/project_33.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_33.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_33.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/project_33.html">
+
+    <link rel="icon" type="image/png" href="../../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../../PNG/pixelS2.png">
+
+    <script src="../../theme.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
+
+    <link rel="stylesheet" href="../../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script src="../../i18n.js" defer></script>
+    <script type="module" src="../../main.js" defer></script>
+    <link rel="stylesheet" href="../../tw.css">
+
+    <style>
+        /* Palette for the 17 UML diagrams. They are inline SVG and read these
+           variables, so the drawings follow the site's light and dark themes. */
+        .uml {
+            --uml-ink: #E2E8F0;
+            --uml-sec: #CBD5E1;
+            --uml-muted: #94A3B8;
+            --uml-line: rgba(255, 255, 255, .18);
+            --uml-line2: rgba(255, 255, 255, .32);
+            --uml-surface: rgba(255, 255, 255, .05);
+            --uml-bg: #0A0A0A;
+            --uml-green: #34D399;  --uml-green-bg: rgba(52, 211, 153, .14);
+            --uml-purple: #BF94FF; --uml-purple-bg: rgba(191, 148, 255, .14);
+            --uml-orange: #FB923C; --uml-orange-bg: rgba(251, 146, 60, .14);
+            --uml-blue: #60A5FA;   --uml-blue-bg: rgba(96, 165, 250, .14);
+            --uml-lime: #A3E635;   --uml-lime-bg: rgba(163, 230, 53, .14);
+            --uml-amber: #FBBF24;  --uml-amber-bg: rgba(251, 191, 36, .14);
+
+            display: block;
+            width: 100%;
+            height: auto;
+            font-family: "Plus Jakarta Sans", "Noto Sans TC", sans-serif;
+            font-size: 16px;
+        }
+
+        /* Light theme values, taken from theme.css (#1D224A ink, #5A5CEA accent). */
+        :root[data-theme="light"] .uml {
+            --uml-ink: #1D224A;
+            --uml-sec: #3A3F66;
+            --uml-muted: #5B6087;
+            --uml-line: rgba(29, 34, 74, .20);
+            --uml-line2: rgba(29, 34, 74, .35);
+            --uml-surface: rgba(29, 34, 74, .04);
+            --uml-bg: #FFFFFF;
+            --uml-green: #15803D;  --uml-green-bg: rgba(21, 128, 61, .10);
+            --uml-purple: #5A5CEA; --uml-purple-bg: rgba(90, 92, 234, .10);
+            --uml-orange: #B45309; --uml-orange-bg: rgba(180, 83, 9, .10);
+            --uml-blue: #1D4ED8;   --uml-blue-bg: rgba(29, 78, 216, .10);
+            --uml-lime: #4D7C0F;   --uml-lime-bg: rgba(77, 124, 15, .10);
+            --uml-amber: #A16207;  --uml-amber-bg: rgba(161, 98, 7, .10);
+        }
+
+        /* Labels that carry no fill of their own take the ink colour. */
+        .uml text { fill: var(--uml-ink); }
+    </style>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-bg">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                Back to projects
+            </a>
+            <span class="opacity-50">EXP / P33</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                UML study notes<br>
+                <span class="text-gradient text-2xl md:text-4xl">14 diagrams and six relationship types</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    Engineering
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    System Design
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Reference
+                </span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.10.03</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
+                The architecture and flow diagrams I draw at work stop at boxes and lines: which modules exist, what connects to what. Whether two classes sit in an inheritance or a composition relationship, how an order moves between states, which side calls which first along a timeline &mdash; a box diagram has no symbol for any of that. UML 2.0 cuts those views into 14 diagrams, one concern each. This piece draws all 14 plus the six relationship types, and ends with a table for picking one.
+            </p>
+
+            <!-- ===== What UML is for ===== -->
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> What UML is for
+            </h3>
+
+            <p>
+                UML (Unified Modeling Language) is the visual modelling standard maintained by the Object Management Group, used to describe the structure and behaviour of software systems. The current line is UML 2.x and the specification itself is public on the <a href="https://www.omg.org/spec/UML/" target="_blank" rel="noopener" class="text-accent-purple hover:underline">OMG site</a>.
+            </p>
+
+            <p>
+                It covers two jobs. <strong class="text-white">Communication</strong>: turn program logic and system architecture into a picture with a fixed vocabulary, so a developer and a non-technical stakeholder read the same diagram and come away with the same understanding. <strong class="text-white">Blueprint</strong>: settle classes, objects and flows before any code exists, which brings design contradictions into the open ahead of implementation.
+            </p>
+
+            <p>
+                The fixed vocabulary carries the weight. In a hand-drawn flowchart, a box means whatever the person drawing it decided at the time. Every UML symbol has a defined meaning in the spec &mdash; a hollow triangle arrowhead is always generalization, a filled diamond is always composition, and the next person to read it arrives at the same conclusion.
+            </p>
+
+            <!-- ===== Three families ===== -->
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> How the 14 diagrams are grouped
+            </h3>
+
+            <p>
+                UML 2.0 defines 14 diagrams, split at the top level into seven structural and seven behavioural, with four of the behavioural ones further grouped as interaction diagrams.
+            </p>
+
+            <p>
+                The split follows what a diagram is describing. Structural diagrams show the system at rest: which classes exist, how modules are divided, which machine a component runs on. Behavioural diagrams show the system in motion: how a flow proceeds, how states change, what a user can do. Interaction diagrams focus on the messages objects send each other and the order they travel in.
+            </p>
+
+            <figure class="my-12">
+                <div class="overflow-x-auto rounded-2xl border border-white/10 shadow-2xl">
+                    <svg class="uml" viewBox="0 0 680 540" style="min-width:560px" xmlns="http://www.w3.org/2000/svg">
+<title style="fill:var(--uml-ink);stroke:none">UML 2.0 fourteen diagram types taxonomy</title>
+<desc style="fill:var(--uml-ink);stroke:none">The 14 UML 2.0 diagrams split into structural (7), behavioural (3) and interaction (4)</desc>
+<defs><marker id="a1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text x="340" y="30" text-anchor="middle" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500;text-anchor:middle">UML 2.0 — the 14 diagram types</text>
+<rect x="40" y="50" width="600" height="230" rx="12" fill="none" stroke="var(--uml-line2)" stroke-width="0.5" stroke-dasharray="6 4" style="fill:none;stroke:var(--uml-line2);stroke-width:0.5px;stroke-dasharray:6px, 4px"/>
+<text x="55" y="72" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500">Structural (7)</text>
+<text x="60" y="100" fill="var(--uml-sec)" style="fill:var(--uml-muted);stroke:none;font-size:12px">Static</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="130" y="85" width="130" height="36" rx="6" stroke-width="0.5" style="fill:var(--uml-purple-bg);stroke:var(--uml-purple);stroke-width:0.5px"/><text x="195" y="103" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-purple);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Class</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="275" y="85" width="130" height="36" rx="6" stroke-width="0.5" style="fill:var(--uml-purple-bg);stroke:var(--uml-purple);stroke-width:0.5px"/><text x="340" y="103" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-purple);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Object</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="420" y="85" width="130" height="36" rx="6" stroke-width="0.5" style="fill:var(--uml-purple-bg);stroke:var(--uml-purple);stroke-width:0.5px"/><text x="485" y="103" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-purple);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Package</text></g>
+<text x="60" y="148" fill="var(--uml-sec)" style="fill:var(--uml-muted);stroke:none;font-size:12px">Realisation</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="130" y="133" width="130" height="36" rx="6" stroke-width="0.5" style="fill:var(--uml-purple-bg);stroke:var(--uml-purple);stroke-width:0.5px"/><text x="195" y="151" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-purple);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Component</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="275" y="133" width="130" height="36" rx="6" stroke-width="0.5" style="fill:var(--uml-purple-bg);stroke:var(--uml-purple);stroke-width:0.5px"/><text x="340" y="151" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-purple);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Deployment</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="420" y="133" width="130" height="36" rx="6" stroke-width="0.5" style="fill:var(--uml-purple-bg);stroke:var(--uml-purple);stroke-width:0.5px"/><text x="485" y="151" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-purple);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Profile</text></g>
+<text x="60" y="198" fill="var(--uml-sec)" style="fill:var(--uml-muted);stroke:none;font-size:12px">Internals</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="130" y="183" width="160" height="36" rx="6" stroke-width="0.5" style="fill:var(--uml-purple-bg);stroke:var(--uml-purple);stroke-width:0.5px"/><text x="210" y="201" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-purple);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Composite</text></g>
+<text x="56" y="255" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px">Static structure, deployment topology, component makeup</text>
+<rect x="40" y="300" width="600" height="100" rx="12" fill="none" stroke="var(--uml-line2)" stroke-width="0.5" stroke-dasharray="6 4" style="fill:none;stroke:var(--uml-line2);stroke-width:0.5px;stroke-dasharray:6px, 4px"/>
+<text x="55" y="322" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500">Behavioural (3)</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="60" y="335" width="130" height="36" rx="6" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="125" y="353" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Activity</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="205" y="335" width="130" height="36" rx="6" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="270" y="353" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">State machine</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="350" y="335" width="150" height="36" rx="6" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="425" y="353" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Use case</text></g>
+<text x="56" y="388" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px">Dynamic behaviour, state transitions, user interaction</text>
+<rect x="40" y="410" width="600" height="110" rx="12" fill="none" stroke="var(--uml-line2)" stroke-width="0.5" stroke-dasharray="6 4" style="fill:none;stroke:var(--uml-line2);stroke-width:0.5px;stroke-dasharray:6px, 4px"/>
+<text x="55" y="432" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500">Interaction (4)</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="60" y="445" width="120" height="36" rx="6" stroke-width="0.5" style="fill:var(--uml-orange-bg);stroke:var(--uml-orange);stroke-width:0.5px"/><text x="120" y="463" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-orange);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Communication</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="195" y="445" width="140" height="36" rx="6" stroke-width="0.5" style="fill:var(--uml-orange-bg);stroke:var(--uml-orange);stroke-width:0.5px"/><text x="265" y="463" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-orange);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Overview</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="350" y="445" width="120" height="36" rx="6" stroke-width="0.5" style="fill:var(--uml-orange-bg);stroke:var(--uml-orange);stroke-width:0.5px"/><text x="410" y="463" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-orange);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Sequence</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="485" y="445" width="120" height="36" rx="6" stroke-width="0.5" style="fill:var(--uml-orange-bg);stroke:var(--uml-orange);stroke-width:0.5px"/><text x="545" y="463" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-orange);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Timing</text></g>
+<text x="56" y="500" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px">Message order and timing between objects</text>
+</svg>
+                </div>
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    The 14 diagrams, grouped
+                </figcaption>
+            </figure>
+
+            <!-- ===== Notation ===== -->
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Before reading any of them: the notation
+            </h3>
+
+            <p>
+                All 14 share one basic vocabulary of shapes. A class is a three-compartment rectangle &mdash; name, attributes, methods from top to bottom &mdash; with each member prefixed by <code class="text-xs">+</code> <code class="text-xs">-</code> <code class="text-xs">#</code> <code class="text-xs">~</code> for public, private, protected and package visibility.
+            </p>
+
+            <p>
+                An object instance reuses the same shape with the name underlined and written as <code class="text-xs">instance : Class</code>, and the attribute compartment holds actual values. An interface carries an <code class="text-xs">&laquo;interface&raquo;</code> marker above its name and usually shows methods only. A package is drawn as a folder with its name on the top-left tab.
+            </p>
+
+            <figure class="my-12">
+                <div class="overflow-x-auto rounded-2xl border border-white/10 shadow-2xl">
+                    <svg class="uml" viewBox="0 0 680 531.08" style="min-width:560px" xmlns="http://www.w3.org/2000/svg">
+<title style="fill:var(--uml-ink);stroke:none">UML basic notation: class, object, interface, package</title>
+<desc style="fill:var(--uml-ink);stroke:none">Standard notation for class, object, interface and package</desc>
+<defs><marker id="a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text x="170" y="28" text-anchor="middle" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500;text-anchor:middle">Class</text>
+<text x="510" y="28" text-anchor="middle" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500;text-anchor:middle">Object</text>
+<rect x="50" y="42" width="240" height="200" rx="4" fill="none" stroke="var(--uml-ink)" stroke-width="1" style="fill:none;stroke:var(--uml-ink)"/>
+<text x="170" y="68" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Student</text>
+<line x1="50" y1="85" x2="290" y2="85" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.8px"/>
+<text x="62" y="104" style="fill:var(--uml-muted);stroke:none;font-size:12px">+ name: string</text>
+<text x="62" y="122" style="fill:var(--uml-muted);stroke:none;font-size:12px">- id: int</text>
+<text x="62" y="140" style="fill:var(--uml-muted);stroke:none;font-size:12px">- gpa: float</text>
+<text x="62" y="158" style="fill:var(--uml-muted);stroke:none;font-size:12px"># class: string</text>
+<line x1="50" y1="172" x2="290" y2="172" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.8px"/>
+<text x="62" y="192" style="fill:var(--uml-muted);stroke:none;font-size:12px">+ EnrollClass()</text>
+<text x="62" y="210" style="fill:var(--uml-muted);stroke:none;font-size:12px">- CalculateGPA()</text>
+<text x="62" y="228" style="fill:var(--uml-muted);stroke:none;font-size:12px">~ GetInfo()</text>
+<text x="58" y="258" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px">+ public  - private</text>
+<text x="58" y="274" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px"># protected  ~ package</text>
+<rect x="390" y="42" width="240" height="140" rx="4" fill="none" stroke="var(--uml-ink)" stroke-width="1" style="fill:none;stroke:var(--uml-ink)"/>
+<text x="510" y="68" text-anchor="middle" dominant-baseline="central" text-decoration="underline" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">studentB : Student</text>
+<line x1="390" y1="85" x2="630" y2="85" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.8px"/>
+<text x="402" y="108" style="fill:var(--uml-muted);stroke:none;font-size:12px">+ name = "Alex"</text>
+<line x1="390" y1="122" x2="630" y2="122" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.8px"/>
+<text x="402" y="145" style="fill:var(--uml-muted);stroke:none;font-size:12px">+ EnrollClass()</text>
+<text x="402" y="163" style="fill:var(--uml-muted);stroke:none;font-size:12px">+ GetInfo()</text>
+<text x="398" y="204" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px">Underlined name = an instantiated object</text>
+<text x="398" y="220" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px">Only public (+) members shown</text>
+<text x="170" y="310" text-anchor="middle" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500;text-anchor:middle">Interface</text>
+<text x="510" y="310" text-anchor="middle" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500;text-anchor:middle">Package</text>
+<rect x="50" y="324" width="240" height="160" rx="4" fill="none" stroke="var(--uml-ink)" stroke-width="1" style="fill:none;stroke:var(--uml-ink)"/>
+<text x="170" y="348" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle;dominant-baseline:central">«interface»</text>
+<text x="170" y="370" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">ICatComms</text>
+<line x1="50" y1="385" x2="290" y2="385" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.8px"/>
+<line x1="50" y1="400" x2="290" y2="400" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.8px"/>
+<text x="62" y="420" style="fill:var(--uml-muted);stroke:none;font-size:12px">+ Shake()</text>
+<text x="62" y="438" style="fill:var(--uml-muted);stroke:none;font-size:12px">+ Feed()</text>
+<text x="62" y="456" style="fill:var(--uml-muted);stroke:none;font-size:12px">+ Purr()</text>
+<text x="58" y="502" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px">Marked with «interface»</text>
+<text x="58" y="518" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px">Usually methods only, no attributes</text>
+<rect x="390" y="324" width="80" height="20" rx="4" fill="none" stroke="var(--uml-ink)" stroke-width="1" style="fill:none;stroke:var(--uml-ink)"/>
+<text x="430" y="338" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle;dominant-baseline:central">Models</text>
+<rect x="390" y="344" width="240" height="140" rx="4" fill="none" stroke="var(--uml-ink)" stroke-width="1" style="fill:none;stroke:var(--uml-ink)"/>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="410" y="365" width="90" height="32" rx="4" stroke-width="0.5" style="fill:var(--uml-surface);stroke:var(--uml-muted);stroke-width:0.5px"/><text x="455" y="381" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-muted);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Student</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="520" y="365" width="90" height="32" rx="4" stroke-width="0.5" style="fill:var(--uml-surface);stroke:var(--uml-muted);stroke-width:0.5px"/><text x="565" y="381" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-muted);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Teacher</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="410" y="415" width="90" height="32" rx="4" stroke-width="0.5" style="fill:var(--uml-surface);stroke:var(--uml-muted);stroke-width:0.5px"/><text x="455" y="431" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-muted);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Course</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="520" y="415" width="90" height="32" rx="4" stroke-width="0.5" style="fill:var(--uml-surface);stroke:var(--uml-muted);stroke-width:0.5px"/><text x="565" y="431" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-muted);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Grade</text></g>
+<text x="398" y="502" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px">Top-left tab = package name</text>
+<text x="398" y="518" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px">Holds classes, interfaces, sub-packages</text>
+</svg>
+                </div>
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    Four base shapes and the visibility markers
+                </figcaption>
+            </figure>
+
+            <!-- ===== Six relationships ===== -->
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> The six relationship types
+            </h3>
+
+            <p>
+                In a class diagram the information lives on the lines. Two boxes are joined the same way every time; the line style and the endpoint symbol decide what the relationship is, and each of the six maps to a specific shape in code.
+            </p>
+
+            <figure class="my-12">
+                <div class="overflow-x-auto rounded-2xl border border-white/10 shadow-2xl">
+                    <svg class="uml" viewBox="0 0 680 490" style="min-width:560px" xmlns="http://www.w3.org/2000/svg">
+<title style="fill:var(--uml-ink);stroke:none">UML six relationship line types</title>
+<desc style="fill:var(--uml-ink);stroke:none">Arrowheads and line styles for the six UML relationship types</desc>
+<defs><marker id="a3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text x="340" y="28" text-anchor="middle" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500;text-anchor:middle">The six UML relationships</text>
+<text x="42" y="62" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500">Generalization</text>
+<text x="42" y="78" style="fill:var(--uml-muted);stroke:none;font-size:12px">extends</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="195" y="56" width="65" height="32" rx="6" stroke-width="0.5" style="fill:var(--uml-purple-bg);stroke:var(--uml-purple);stroke-width:0.5px"/><text x="228" y="72" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-purple);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Cat</text></g>
+<line x1="260" y1="72" x2="393" y2="72" stroke="var(--uml-ink)" stroke-width="1.2" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:1.2px"/>
+<polygon points="393,72 381,65 381,79" fill="none" stroke="var(--uml-ink)" stroke-width="1.2" style="fill:none;stroke:var(--uml-ink);stroke-width:1.2px"/>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="405" y="56" width="75" height="32" rx="6" stroke-width="0.5" style="fill:var(--uml-purple-bg);stroke:var(--uml-purple);stroke-width:0.5px"/><text x="443" y="72" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-purple);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Animal</text></g>
+<text x="500" y="68" style="fill:var(--uml-muted);stroke:none;font-size:12px">Solid line</text>
+<text x="500" y="82" style="fill:var(--uml-muted);stroke:none;font-size:12px">Hollow triangle</text>
+<text x="42" y="132" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500">Realization</text>
+<text x="42" y="148" style="fill:var(--uml-muted);stroke:none;font-size:12px">implements</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="195" y="126" width="65" height="32" rx="6" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="228" y="142" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Comms</text></g>
+<line x1="260" y1="142" x2="393" y2="142" stroke="var(--uml-ink)" stroke-width="1.2" stroke-dasharray="6 4" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:1.2px;stroke-dasharray:6px, 4px"/>
+<polygon points="393,142 381,135 381,149" fill="none" stroke="var(--uml-ink)" stroke-width="1.2" style="fill:none;stroke:var(--uml-ink);stroke-width:1.2px"/>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="405" y="126" width="75" height="32" rx="6" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="443" y="142" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">IComms</text></g>
+<text x="500" y="138" style="fill:var(--uml-muted);stroke:none;font-size:12px">Dashed line</text>
+<text x="500" y="152" style="fill:var(--uml-muted);stroke:none;font-size:12px">Hollow triangle</text>
+<text x="42" y="202" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500">Dependency</text>
+<text x="42" y="218" style="fill:var(--uml-muted);stroke:none;font-size:12px">method parameter</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="195" y="196" width="65" height="32" rx="6" stroke-width="0.5" style="fill:var(--uml-orange-bg);stroke:var(--uml-orange);stroke-width:0.5px"/><text x="228" y="212" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-orange);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Me</text></g>
+<line x1="260" y1="212" x2="405" y2="212" stroke="var(--uml-ink)" stroke-width="1.2" stroke-dasharray="6 4" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:1.2px;stroke-dasharray:6px, 4px"/>
+<path d="M397,205 L407,212 L397,219" fill="none" stroke="var(--uml-ink)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="fill:none;stroke:var(--uml-ink);stroke-width:1.2px;stroke-linecap:round;stroke-linejoin:round"/>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="415" y="196" width="65" height="32" rx="6" stroke-width="0.5" style="fill:var(--uml-orange-bg);stroke:var(--uml-orange);stroke-width:0.5px"/><text x="448" y="212" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-orange);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Stock</text></g>
+<text x="500" y="208" style="fill:var(--uml-muted);stroke:none;font-size:12px">Dashed line</text>
+<text x="500" y="222" style="fill:var(--uml-muted);stroke:none;font-size:12px">Open arrow</text>
+<text x="42" y="272" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500">Association</text>
+<text x="42" y="288" style="fill:var(--uml-muted);stroke:none;font-size:12px">injected field</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="195" y="266" width="65" height="32" rx="6" stroke-width="0.5" style="fill:var(--uml-blue-bg);stroke:var(--uml-blue);stroke-width:0.5px"/><text x="228" y="282" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-blue);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Chilli</text></g>
+<line x1="260" y1="282" x2="405" y2="282" stroke="var(--uml-ink)" stroke-width="1.2" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:1.2px"/>
+<path d="M397,275 L407,282 L397,289" fill="none" stroke="var(--uml-ink)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="fill:none;stroke:var(--uml-ink);stroke-width:1.2px;stroke-linecap:round;stroke-linejoin:round"/>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="415" y="266" width="65" height="32" rx="6" stroke-width="0.5" style="fill:var(--uml-blue-bg);stroke:var(--uml-blue);stroke-width:0.5px"/><text x="448" y="282" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-blue);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Weather</text></g>
+<text x="500" y="278" style="fill:var(--uml-muted);stroke:none;font-size:12px">Solid line</text>
+<text x="500" y="292" style="fill:var(--uml-muted);stroke:none;font-size:12px">Open arrow</text>
+<text x="42" y="342" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500">Aggregation</text>
+<text x="42" y="358" style="fill:var(--uml-muted);stroke:none;font-size:12px">List&lt;T&gt; field</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="195" y="336" width="65" height="32" rx="6" stroke-width="0.5" style="fill:var(--uml-lime-bg);stroke:var(--uml-lime);stroke-width:0.5px"/><text x="228" y="352" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-lime);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Group</text></g>
+<polygon points="262,352 274,345 286,352 274,359" fill="none" stroke="var(--uml-ink)" stroke-width="1.2" style="fill:none;stroke:var(--uml-ink);stroke-width:1.2px"/>
+<line x1="286" y1="352" x2="415" y2="352" stroke="var(--uml-ink)" stroke-width="1.2" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:1.2px"/>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="415" y="336" width="65" height="32" rx="6" stroke-width="0.5" style="fill:var(--uml-lime-bg);stroke:var(--uml-lime);stroke-width:0.5px"/><text x="448" y="352" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-lime);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Person</text></g>
+<text x="500" y="348" style="fill:var(--uml-muted);stroke:none;font-size:12px">Solid line</text>
+<text x="500" y="362" style="fill:var(--uml-muted);stroke:none;font-size:12px">Hollow diamond</text>
+<text x="42" y="412" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500">Composition</text>
+<text x="42" y="428" style="fill:var(--uml-muted);stroke:none;font-size:12px">new in constructor</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="195" y="406" width="65" height="32" rx="6" stroke-width="0.5" style="fill:var(--uml-amber-bg);stroke:var(--uml-amber);stroke-width:0.5px"/><text x="228" y="422" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-amber);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Actor</text></g>
+<polygon points="262,422 274,415 286,422 274,429" fill="var(--uml-ink)" stroke="var(--uml-ink)" stroke-width="1.2" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:1.2px"/>
+<line x1="286" y1="422" x2="415" y2="422" stroke="var(--uml-ink)" stroke-width="1.2" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:1.2px"/>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="415" y="406" width="65" height="32" rx="6" stroke-width="0.5" style="fill:var(--uml-amber-bg);stroke:var(--uml-amber);stroke-width:0.5px"/><text x="448" y="422" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-amber);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Hat</text></g>
+<text x="500" y="418" style="fill:var(--uml-muted);stroke:none;font-size:12px">Solid line</text>
+<text x="500" y="432" style="fill:var(--uml-muted);stroke:none;font-size:12px">Filled diamond</text>
+<line x1="40" y1="100" x2="640" y2="100" stroke="var(--uml-line)" stroke-width="0.5" style="fill:var(--uml-ink);stroke:var(--uml-line);stroke-width:0.5px"/>
+<line x1="40" y1="170" x2="640" y2="170" stroke="var(--uml-line)" stroke-width="0.5" style="fill:var(--uml-ink);stroke:var(--uml-line);stroke-width:0.5px"/>
+<line x1="40" y1="240" x2="640" y2="240" stroke="var(--uml-line)" stroke-width="0.5" style="fill:var(--uml-ink);stroke:var(--uml-line);stroke-width:0.5px"/>
+<line x1="40" y1="310" x2="640" y2="310" stroke="var(--uml-line)" stroke-width="0.5" style="fill:var(--uml-ink);stroke:var(--uml-line);stroke-width:0.5px"/>
+<line x1="40" y1="380" x2="640" y2="380" stroke="var(--uml-line)" stroke-width="0.5" style="fill:var(--uml-ink);stroke:var(--uml-line);stroke-width:0.5px"/>
+<text x="340" y="470" text-anchor="middle" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">The diamond sits on the whole (Group, Actor); the triangle points at the parent or interface</text>
+</svg>
+                </div>
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    Line styles and endpoint symbols for the six
+                </figcaption>
+            </figure>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">Generalization</p>
+            <p>
+                A subclass takes on every attribute and method of its parent and may override the parent&rsquo;s behaviour. In code that is Java&rsquo;s <code class="text-xs">extends</code> or C#&rsquo;s <code class="text-xs">: Parent</code>. The semantics are &ldquo;is a kind of&rdquo; &mdash; a cat is a kind of animal, inheriting <code class="text-xs">Walk()</code> and <code class="text-xs">Speak()</code> and rewriting them with its own version. In a single-inheritance language a class has exactly one parent.
+            </p>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">Realization</p>
+            <p>
+                A class commits to implementing every method signature an interface declares, while the interface itself only states which methods must exist. In code that is <code class="text-xs">implements</code> or <code class="text-xs">: IName</code>. If the interface declares <code class="text-xs">Shake()</code> and <code class="text-xs">Feed()</code>, the implementing class has to supply concrete logic for both, and leaving one out fails compilation. A class can realize several interfaces at once.
+            </p>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">Dependency</p>
+            <p>
+                A reaches for B during the execution of a method while holding no reference to it. B shows up briefly as a parameter, a local variable or a return value. <code class="text-xs">Me.GetRich()</code> takes a stock and a lottery ticket as arguments, the Me class has no fields for either, and the relationship disappears when the method returns. The loosest coupling of the six.
+            </p>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">Association</p>
+            <p>
+                A holds a reference to B in a field, injected from outside through a constructor or a setter. A chilli crop has a weather field, the weather object arrives through the constructor, and <code class="text-xs">Harvest()</code> reads from it via <code class="text-xs">this.weather.season()</code>. The weather object has a lifetime of its own, and deleting it leaves the crop standing.
+            </p>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">Aggregation</p>
+            <p>
+                The whole holds a collection of parts, and a part survives on its own. A group keeps its members in a <code class="text-xs">List&lt;Person&gt;</code>; a person joins through <code class="text-xs">Join()</code> from outside and can leave again. Disband the group and the people are still alive, and one person can belong to several groups at once. Drawn with a hollow diamond at the whole end.
+            </p>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">Composition</p>
+            <p>
+                The whole builds its parts during construction, and their lifetime is bound to it entirely. An actor&rsquo;s constructor runs <code class="text-xs">new SombreroHat()</code> and <code class="text-xs">new BaseballShirt()</code> directly, so the hat and the shirt come from the actor, vanish when the actor is deleted, and are never shared with another whole. Drawn with a filled diamond at the whole end.
+            </p>
+
+            <div class="bg-surface p-6 rounded-2xl border border-white/5 my-10">
+                <p class="text-sm text-gray-400 mb-3"><strong class="text-white">Coupling, loosest to tightest</strong></p>
+                <p class="font-mono text-sm text-accent-purple mb-5">dependency &rarr; association &rarr; aggregation &rarr; composition &rarr; realization &rarr; generalization</p>
+                <p class="text-sm text-gray-400 mb-3"><strong class="text-white">Three questions settle it in practice</strong></p>
+                <ol class="text-sm text-gray-400 space-y-1 list-decimal list-inside">
+                    <li>Does A hold B in a field?</li>
+                    <li>Is B passed in from outside, or does A <code class="text-xs">new</code> it up itself?</li>
+                    <li>When A is destroyed, does B go with it?</li>
+                </ol>
+            </div>
+
+            <!-- ===== Structural ===== -->
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Structural diagrams (7)
+            </h3>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">1 &mdash; Class diagram</p>
+            <p>
+                Shows each class with its fields, methods and visibility, plus the six relationship types between them. The most used diagram in UML, and the one design-pattern books lean on to express structure. Before writing code it settles how objects relate; afterwards it serves as the system documentation.
+            </p>
+            <figure class="my-10">
+                <div class="overflow-x-auto rounded-2xl border border-white/10 shadow-2xl">
+                    <svg class="uml" viewBox="0 0 680 310" style="min-width:560px" xmlns="http://www.w3.org/2000/svg">
+<title style="fill:var(--uml-ink);stroke:none">UML class diagram example</title>
+<desc style="fill:var(--uml-ink);stroke:none">Inheritance and association between Animal, Cat and Owner</desc>
+<defs><marker id="a4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect x="100" y="20" width="170" height="100" rx="4" fill="none" stroke="var(--uml-ink)" stroke-width="1" style="fill:none;stroke:var(--uml-ink)"/>
+<text x="185" y="42" text-anchor="middle" dominant-baseline="central" font-style="italic" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500;font-style:italic;text-anchor:middle;dominant-baseline:central">Animal</text>
+<line x1="100" y1="55" x2="270" y2="55" stroke="var(--uml-ink)" stroke-width="0.5" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.5px"/>
+<text x="112" y="72" style="fill:var(--uml-muted);stroke:none;font-size:12px">+ name: string</text>
+<line x1="100" y1="82" x2="270" y2="82" stroke="var(--uml-ink)" stroke-width="0.5" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.5px"/>
+<text x="112" y="99" style="fill:var(--uml-muted);stroke:none;font-size:12px">+ Speak()</text>
+<text x="112" y="115" style="fill:var(--uml-muted);stroke:none;font-size:12px">+ Walk()</text>
+<rect x="100" y="190" width="170" height="100" rx="4" fill="none" stroke="var(--uml-ink)" stroke-width="1" style="fill:none;stroke:var(--uml-ink)"/>
+<text x="185" y="212" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Cat</text>
+<line x1="100" y1="225" x2="270" y2="225" stroke="var(--uml-ink)" stroke-width="0.5" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.5px"/>
+<text x="112" y="242" style="fill:var(--uml-muted);stroke:none;font-size:12px">+ coat: string</text>
+<line x1="100" y1="252" x2="270" y2="252" stroke="var(--uml-ink)" stroke-width="0.5" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.5px"/>
+<text x="112" y="269" style="fill:var(--uml-muted);stroke:none;font-size:12px">+ Purr()</text>
+<line x1="185" y1="190" x2="185" y2="132" stroke="var(--uml-ink)" stroke-width="1" style="fill:var(--uml-ink);stroke:var(--uml-ink)"/>
+<polygon points="185,120 178,132 192,132" fill="none" stroke="var(--uml-ink)" stroke-width="1" style="fill:none;stroke:var(--uml-ink)"/>
+<rect x="420" y="190" width="170" height="100" rx="4" fill="none" stroke="var(--uml-ink)" stroke-width="1" style="fill:none;stroke:var(--uml-ink)"/>
+<text x="505" y="212" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Owner</text>
+<line x1="420" y1="225" x2="590" y2="225" stroke="var(--uml-ink)" stroke-width="0.5" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.5px"/>
+<text x="432" y="242" style="fill:var(--uml-muted);stroke:none;font-size:12px">+ name: string</text>
+<line x1="420" y1="252" x2="590" y2="252" stroke="var(--uml-ink)" stroke-width="0.5" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.5px"/>
+<text x="432" y="269" style="fill:var(--uml-muted);stroke:none;font-size:12px">+ Feed(Cat)</text>
+<line x1="420" y1="240" x2="282" y2="240" stroke="var(--uml-ink)" stroke-width="1" style="fill:var(--uml-ink);stroke:var(--uml-ink)"/>
+<path d="M280,233 L270,240 L280,247" fill="none" stroke="var(--uml-ink)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="fill:none;stroke:var(--uml-ink);stroke-linecap:round;stroke-linejoin:round"/>
+<text x="350" y="232" style="fill:var(--uml-muted);stroke:none;font-size:12px">association 1..*</text>
+<text x="155" y="165" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px">inherits</text>
+</svg>
+                </div>
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">Class diagram</figcaption>
+            </figure>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">2 &mdash; Object diagram</p>
+            <p>
+                A snapshot of a class diagram, showing the instances that have been <code class="text-xs">new</code>-ed up at one moment and the values each holds. A class diagram draws the specification; an object diagram draws the data at a point in time. It is how you check that a design still makes sense once real data flows through it.
+            </p>
+            <figure class="my-10">
+                <div class="overflow-x-auto rounded-2xl border border-white/10 shadow-2xl">
+                    <svg class="uml" viewBox="0 0 680 200" style="min-width:560px" xmlns="http://www.w3.org/2000/svg">
+<title style="fill:var(--uml-ink);stroke:none">UML object diagram example</title>
+<desc style="fill:var(--uml-ink);stroke:none">Two live instances, myCat and owner, holding concrete values</desc>
+<defs><marker id="a5" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect x="60" y="30" width="200" height="130" rx="4" fill="none" stroke="var(--uml-ink)" stroke-width="1" style="fill:none;stroke:var(--uml-ink)"/>
+<text x="160" y="55" text-anchor="middle" dominant-baseline="central" text-decoration="underline" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">myCat : Cat</text>
+<line x1="60" y1="68" x2="260" y2="68" stroke="var(--uml-ink)" stroke-width="0.5" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.5px"/>
+<text x="72" y="88" style="fill:var(--uml-muted);stroke:none;font-size:12px">name = "Mango"</text>
+<text x="72" y="106" style="fill:var(--uml-muted);stroke:none;font-size:12px">coat = "ginger"</text>
+<line x1="60" y1="118" x2="260" y2="118" stroke="var(--uml-ink)" stroke-width="0.5" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.5px"/>
+<text x="72" y="138" style="fill:var(--uml-muted);stroke:none;font-size:12px">+ Speak()</text>
+<text x="72" y="154" style="fill:var(--uml-muted);stroke:none;font-size:12px">+ Purr()</text>
+<rect x="400" y="30" width="200" height="110" rx="4" fill="none" stroke="var(--uml-ink)" stroke-width="1" style="fill:none;stroke:var(--uml-ink)"/>
+<text x="500" y="55" text-anchor="middle" dominant-baseline="central" text-decoration="underline" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">owner : Owner</text>
+<line x1="400" y1="68" x2="600" y2="68" stroke="var(--uml-ink)" stroke-width="0.5" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.5px"/>
+<text x="412" y="88" style="fill:var(--uml-muted);stroke:none;font-size:12px">name = "Sunny"</text>
+<line x1="400" y1="100" x2="600" y2="100" stroke="var(--uml-ink)" stroke-width="0.5" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.5px"/>
+<text x="412" y="120" style="fill:var(--uml-muted);stroke:none;font-size:12px">+ Feed(Cat)</text>
+<line x1="400" y1="90" x2="272" y2="90" stroke="var(--uml-ink)" stroke-width="1" style="fill:var(--uml-ink);stroke:var(--uml-ink)"/>
+<path d="M270,83 L260,90 L270,97" fill="none" stroke="var(--uml-ink)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="fill:none;stroke:var(--uml-ink);stroke-linecap:round;stroke-linejoin:round"/>
+</svg>
+                </div>
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">Object diagram</figcaption>
+            </figure>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">3 &mdash; Package diagram</p>
+            <p>
+                Groups classes, interfaces and sub-packages into modules, with dashed arrows marking which module depends on which. Large systems use it to confirm the module split holds up and that no dependency cycle exists.
+            </p>
+            <figure class="my-10">
+                <div class="overflow-x-auto rounded-2xl border border-white/10 shadow-2xl">
+                    <svg class="uml" viewBox="0 0 680 220" style="min-width:560px" xmlns="http://www.w3.org/2000/svg">
+<title style="fill:var(--uml-ink);stroke:none">UML package diagram example</title>
+<desc style="fill:var(--uml-ink);stroke:none">Dependencies between the UI, Service and Data packages</desc>
+<defs><marker id="a6" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect x="50" y="30" width="60" height="18" rx="3" fill="none" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:none;stroke:var(--uml-ink);stroke-width:0.8px"/>
+<rect x="50" y="48" width="140" height="80" rx="4" fill="none" stroke="var(--uml-ink)" stroke-width="1" style="fill:none;stroke:var(--uml-ink)"/>
+<text x="120" y="75" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">UI</text>
+<text x="120" y="95" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle;dominant-baseline:central">pages, widgets</text>
+<rect x="270" y="30" width="60" height="18" rx="3" fill="none" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:none;stroke:var(--uml-ink);stroke-width:0.8px"/>
+<rect x="270" y="48" width="140" height="80" rx="4" fill="none" stroke="var(--uml-ink)" stroke-width="1" style="fill:none;stroke:var(--uml-ink)"/>
+<text x="340" y="75" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Service</text>
+<text x="340" y="95" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle;dominant-baseline:central">business logic</text>
+<rect x="490" y="30" width="60" height="18" rx="3" fill="none" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:none;stroke:var(--uml-ink);stroke-width:0.8px"/>
+<rect x="490" y="48" width="140" height="80" rx="4" fill="none" stroke="var(--uml-ink)" stroke-width="1" style="fill:none;stroke:var(--uml-ink)"/>
+<text x="560" y="75" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Data</text>
+<text x="560" y="95" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle;dominant-baseline:central">data access</text>
+<line x1="190" y1="88" x2="268" y2="88" stroke="var(--uml-ink)" stroke-width="1" stroke-dasharray="6 4" marker-end="url(#a6)" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-dasharray:6px, 4px"/>
+<line x1="410" y1="88" x2="488" y2="88" stroke="var(--uml-ink)" stroke-width="1" stroke-dasharray="6 4" marker-end="url(#a6)" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-dasharray:6px, 4px"/>
+<text x="340" y="160" text-anchor="middle" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">Dashed arrow = direction of dependency (UI on Service, Service on Data)</text>
+<text x="340" y="178" text-anchor="middle" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">The direction never reverses — Data has no knowledge of UI</text>
+</svg>
+                </div>
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">Package diagram</figcaption>
+            </figure>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">4 &mdash; Component diagram</p>
+            <p>
+                One level coarser than a package diagram, describing which independently deployable units make up the system. A <code class="text-xs">.dll</code>, a microservice and an API module each count as a component. Components connect through a lollipop symbol (provided interface) meeting a socket symbol (required interface), which pins down deployment boundaries and interface contracts.
+            </p>
+            <figure class="my-10">
+                <div class="overflow-x-auto rounded-2xl border border-white/10 shadow-2xl">
+                    <svg class="uml" viewBox="0 0 680 200" style="min-width:560px" xmlns="http://www.w3.org/2000/svg">
+<title style="fill:var(--uml-ink);stroke:none">UML component diagram example</title>
+<desc style="fill:var(--uml-ink);stroke:none">The frontend app talks to the user service through ILogin</desc>
+<defs><marker id="a7" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<g style="fill:var(--uml-ink);stroke:none">
+<rect x="60" y="40" width="170" height="70" rx="6" stroke-width="0.5" style="fill:var(--uml-purple-bg);stroke:var(--uml-purple);stroke-width:0.5px"/>
+<text x="145" y="55" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-purple);stroke:none;font-size:12px;text-anchor:middle;dominant-baseline:central">«component»</text>
+<text x="145" y="78" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-purple);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Frontend app</text>
+</g>
+<g style="fill:var(--uml-ink);stroke:none">
+<rect x="430" y="40" width="190" height="70" rx="6" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/>
+<text x="525" y="55" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:12px;text-anchor:middle;dominant-baseline:central">«component»</text>
+<text x="525" y="78" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">User service</text>
+</g>
+<line x1="230" y1="75" x2="320" y2="75" stroke="var(--uml-ink)" stroke-width="1" style="fill:var(--uml-ink);stroke:var(--uml-ink)"/>
+<path d="M318,65 A10,10 0 0,0 318,85" fill="none" stroke="var(--uml-ink)" stroke-width="1" style="fill:none;stroke:var(--uml-ink)"/>
+<line x1="365" y1="75" x2="430" y2="75" stroke="var(--uml-ink)" stroke-width="1" style="fill:var(--uml-ink);stroke:var(--uml-ink)"/>
+<circle cx="365" cy="75" r="6" fill="none" stroke="var(--uml-ink)" stroke-width="1" style="fill:none;stroke:var(--uml-ink)"/>
+<text x="345" y="105" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle;dominant-baseline:central">ILogin</text>
+<text x="265" y="155" text-anchor="middle" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">◠ socket = required interface</text>
+<text x="430" y="155" text-anchor="middle" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">○ lollipop = provided interface</text>
+</svg>
+                </div>
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">Component diagram</figcaption>
+            </figure>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">5 &mdash; Deployment diagram</p>
+            <p>
+                Which hardware nodes the software components actually run on, and what protocol links those nodes. A node is a physical server, a VM or a container; components sit inside nodes and the connections are labelled HTTP, TCP or gRPC. This is the one to bring to a conversation with the ops team.
+            </p>
+            <figure class="my-10">
+                <div class="overflow-x-auto rounded-2xl border border-white/10 shadow-2xl">
+                    <svg class="uml" viewBox="0 0 680 230" style="min-width:560px" xmlns="http://www.w3.org/2000/svg">
+<title style="fill:var(--uml-ink);stroke:none">UML deployment diagram example</title>
+<desc style="fill:var(--uml-ink);stroke:none">A web server node and a DB server node linked over TCP</desc>
+<defs><marker id="a8" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect x="40" y="20" width="250" height="150" rx="12" fill="none" stroke="var(--uml-ink)" stroke-width="0.5" stroke-dasharray="6 4" style="fill:none;stroke:var(--uml-ink);stroke-width:0.5px;stroke-dasharray:6px, 4px"/>
+<text x="55" y="42" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500">«device» Web server</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="65" y="60" width="200" height="44" rx="6" stroke-width="0.5" style="fill:var(--uml-purple-bg);stroke:var(--uml-purple);stroke-width:0.5px"/><text x="165" y="82" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-purple);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Frontend app</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="65" y="115" width="200" height="44" rx="6" stroke-width="0.5" style="fill:var(--uml-purple-bg);stroke:var(--uml-purple);stroke-width:0.5px"/><text x="165" y="137" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-purple);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">API service</text></g>
+<rect x="390" y="20" width="250" height="150" rx="12" fill="none" stroke="var(--uml-ink)" stroke-width="0.5" stroke-dasharray="6 4" style="fill:none;stroke:var(--uml-ink);stroke-width:0.5px;stroke-dasharray:6px, 4px"/>
+<text x="405" y="42" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500">«device» DB server</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="415" y="60" width="200" height="44" rx="6" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="515" y="82" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">PostgreSQL</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="415" y="115" width="200" height="44" rx="6" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="515" y="137" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Redis Cache</text></g>
+<line x1="290" y1="95" x2="390" y2="95" stroke="var(--uml-ink)" stroke-width="1" style="fill:var(--uml-ink);stroke:var(--uml-ink)"/>
+<text x="340" y="88" text-anchor="middle" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">«TCP»</text>
+<text x="340" y="210" text-anchor="middle" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">Dashed box = hardware node; inner boxes = components deployed on it</text>
+</svg>
+                </div>
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">Deployment diagram</figcaption>
+            </figure>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">6 &mdash; Profile diagram</p>
+            <p>
+                Extends UML&rsquo;s own syntax by defining custom stereotypes, tagged values and constraints, so standard UML can describe concepts from a particular domain. Define a <code class="text-xs">&laquo;RESTful&raquo;</code> stereotype, apply it to a component, and the component now declares REST compliance. Reach for it when the standard vocabulary runs out.
+            </p>
+            <figure class="my-10">
+                <div class="overflow-x-auto rounded-2xl border border-white/10 shadow-2xl">
+                    <svg class="uml" viewBox="0 0 680 200" style="min-width:560px" xmlns="http://www.w3.org/2000/svg">
+<title style="fill:var(--uml-ink);stroke:none">UML profile diagram example</title>
+<desc style="fill:var(--uml-ink);stroke:none">A custom RESTful stereotype extending the Component metaclass</desc>
+<defs><marker id="a9" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect x="40" y="20" width="600" height="130" rx="12" fill="none" stroke="var(--uml-ink)" stroke-width="0.5" stroke-dasharray="6 4" style="fill:none;stroke:var(--uml-ink);stroke-width:0.5px;stroke-dasharray:6px, 4px"/>
+<text x="55" y="42" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500">«profile» Web API rules</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="70" y="60" width="200" height="70" rx="6" stroke-width="0.5" style="fill:var(--uml-orange-bg);stroke:var(--uml-orange);stroke-width:0.5px"/>
+<text x="170" y="78" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-orange);stroke:none;font-size:12px;text-anchor:middle;dominant-baseline:central">«stereotype»</text>
+<text x="170" y="100" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-orange);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">RESTful</text>
+<text x="170" y="118" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-orange);stroke:none;font-size:12px;text-anchor:middle;dominant-baseline:central">baseUrl: string</text>
+</g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="420" y="68" width="180" height="50" rx="6" stroke-width="0.5" style="fill:var(--uml-surface);stroke:var(--uml-muted);stroke-width:0.5px"/>
+<text x="510" y="85" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle;dominant-baseline:central">«metaclass»</text>
+<text x="510" y="103" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-muted);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Component</text>
+</g>
+<line x1="270" y1="95" x2="408" y2="95" stroke="var(--uml-ink)" stroke-width="1" marker-end="url(#a9)" style="fill:var(--uml-ink);stroke:var(--uml-ink)"/>
+<text x="340" y="88" text-anchor="middle" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">extension</text>
+<text x="340" y="175" text-anchor="middle" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">Apply the custom RESTful stereotype to a component and it declares REST compliance</text>
+</svg>
+                </div>
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">Profile diagram</figcaption>
+            </figure>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">7 &mdash; Composite structure diagram</p>
+            <p>
+                Opens up a class or component to show how its internal parts wire together through ports and connectors. A class diagram looks at relationships between classes; a composite structure diagram looks at the assembly inside one. Common in embedded and hardware modelling.
+            </p>
+            <figure class="my-10">
+                <div class="overflow-x-auto rounded-2xl border border-white/10 shadow-2xl">
+                    <svg class="uml" viewBox="0 0 680 230" style="min-width:560px" xmlns="http://www.w3.org/2000/svg">
+<title style="fill:var(--uml-ink);stroke:none">UML composite structure diagram example</title>
+<desc style="fill:var(--uml-ink);stroke:none">Inside the Car class: engine and gearbox joined by a driveshaft</desc>
+<defs><marker id="a10" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect x="60" y="20" width="560" height="160" rx="16" fill="none" stroke="var(--uml-ink)" stroke-width="1" style="fill:none;stroke:var(--uml-ink)"/>
+<text x="340" y="42" text-anchor="middle" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500;text-anchor:middle">Car</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="95" y="65" width="170" height="56" rx="6" stroke-width="0.5" style="fill:var(--uml-orange-bg);stroke:var(--uml-orange);stroke-width:0.5px"/><text x="180" y="86" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-orange);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">e : Engine</text><text x="180" y="106" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-orange);stroke:none;font-size:12px;text-anchor:middle;dominant-baseline:central">power out</text></g>
+<rect x="262" y="85" width="14" height="14" rx="2" fill="none" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:none;stroke:var(--uml-ink);stroke-width:0.8px"/>
+<rect x="402" y="85" width="14" height="14" rx="2" fill="none" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:none;stroke:var(--uml-ink);stroke-width:0.8px"/>
+<line x1="276" y1="92" x2="402" y2="92" stroke="var(--uml-ink)" stroke-width="1" style="fill:var(--uml-ink);stroke:var(--uml-ink)"/>
+<text x="340" y="82" text-anchor="middle" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">driveshaft</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="415" y="65" width="170" height="56" rx="6" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="500" y="86" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">t : Gearbox</text><text x="500" y="106" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:12px;text-anchor:middle;dominant-baseline:central">gear shift</text></g>
+<text x="340" y="205" text-anchor="middle" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">Small squares = ports; the line between them = the connector</text>
+</svg>
+                </div>
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">Composite structure diagram</figcaption>
+            </figure>
+
+            <!-- ===== Behavioural ===== -->
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Behavioural diagrams (3)
+            </h3>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">8 &mdash; Activity diagram</p>
+            <p>
+                The steps a flow passes through from start to finish, including decisions, parallel forks and loops. A diamond is a decision, matching an if/else in code; a thick horizontal bar is a fork or join for parallel work. Business processes, workflows and algorithm steps all use it, and it covers what a traditional flowchart does.
+            </p>
+            <figure class="my-10">
+                <div class="overflow-x-auto rounded-2xl border border-white/10 shadow-2xl">
+                    <svg class="uml" viewBox="0 0 680 380" style="min-width:560px" xmlns="http://www.w3.org/2000/svg">
+<title style="fill:var(--uml-ink);stroke:none">UML activity diagram example</title>
+<desc style="fill:var(--uml-ink);stroke:none">Login flow: enter credentials, verify, then branch on success or failure</desc>
+<defs><marker id="a11" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><mask id="imagine-text-gaps-ckw4su" maskUnits="userSpaceOnUse"><rect x="0" y="0" width="680" height="380" fill="var(--uml-bg)"/><rect x="308" y="69.33333587646484" width="64" height="21.33333396911621" fill="var(--uml-ink)" rx="2"/><rect x="308" y="139.33334350585938" width="64" height="21.33333396911621" fill="var(--uml-ink)" rx="2"/><rect x="302.74481201171875" y="213.33334350585938" width="14.666666984558105" height="19.33333396911621" fill="var(--uml-ink)" rx="2"/><rect x="416" y="198" width="32" height="19.33333396911621" fill="var(--uml-ink)" rx="2"/><rect x="528" y="209.33334350585938" width="64" height="21.33333396911621" fill="var(--uml-ink)" rx="2"/><rect x="256" y="198" width="32" height="19.33333396911621" fill="var(--uml-ink)" rx="2"/><rect x="93" y="209.33334350585938" width="64" height="21.33333396911621" fill="var(--uml-ink)" rx="2"/><rect x="171" y="128" width="32" height="19.33333396911621" fill="var(--uml-ink)" rx="2"/><rect x="186.8385467529297" y="346" width="306.32293701171875" height="19.33333396911621" fill="var(--uml-ink)" rx="2"/></mask></defs>
+<circle cx="340" cy="25" r="10" fill="var(--uml-ink)" style="fill:var(--uml-ink);stroke:none"/>
+<line x1="340" y1="35" x2="340" y2="55" marker-end="url(#a11)" style="fill:none;stroke:var(--uml-muted);stroke-width:1.5px"/>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="260" y="58" width="160" height="44" rx="20" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="340" y="80" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Enter credentials</text></g>
+<line x1="340" y1="102" x2="340" y2="125" marker-end="url(#a11)" style="fill:none;stroke:var(--uml-muted);stroke-width:1.5px"/>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="260" y="128" width="160" height="44" rx="20" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="340" y="150" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Verify credentials</text></g>
+<line x1="340" y1="172" x2="340" y2="195" marker-end="url(#a11)" style="fill:none;stroke:var(--uml-muted);stroke-width:1.5px"/>
+<polygon points="340,198 365,220 340,242 315,220" fill="none" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:none;stroke:var(--uml-ink);stroke-width:0.8px"/>
+<text x="340" y="220" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle;dominant-baseline:central">?</text>
+<line x1="365" y1="220" x2="480" y2="220" marker-end="url(#a11)" style="fill:none;stroke:var(--uml-muted);stroke-width:1.5px"/>
+<text x="420" y="212" style="fill:var(--uml-muted);stroke:none;font-size:12px">pass</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="485" y="198" width="150" height="44" rx="20" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="560" y="220" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Show home</text></g>
+<line x1="560" y1="242" x2="560" y2="290" stroke="var(--uml-ink)" stroke-width="1" style="fill:var(--uml-ink);stroke:var(--uml-ink)"/>
+<circle cx="560" cy="305" r="12" fill="none" stroke="var(--uml-ink)" stroke-width="2" style="fill:none;stroke:var(--uml-ink);stroke-width:2px"/>
+<circle cx="560" cy="305" r="6" fill="var(--uml-ink)" style="fill:var(--uml-ink);stroke:none"/>
+<line x1="315" y1="220" x2="200" y2="220" marker-end="url(#a11)" mask="url(#imagine-text-gaps-ckw4su)" style="fill:none;stroke:var(--uml-muted);stroke-width:1.5px"/>
+<text x="260" y="212" style="fill:var(--uml-muted);stroke:none;font-size:12px">fail</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="50" y="198" width="150" height="44" rx="20" stroke-width="0.5" style="fill:var(--uml-orange-bg);stroke:var(--uml-orange);stroke-width:0.5px"/><text x="125" y="220" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-orange);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Show error</text></g>
+<path d="M125 198 L125 150 L258 150" fill="none" stroke="var(--uml-ink)" stroke-width="1" marker-end="url(#a11)" style="fill:none;stroke:var(--uml-ink)"/>
+<text x="175" y="142" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px">retry</text>
+<text x="340" y="360" text-anchor="middle" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">Rounded box = action, diamond = decision, ● = start, ◉ = end</text>
+</svg>
+                </div>
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">Activity diagram</figcaption>
+            </figure>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">9 &mdash; State machine diagram</p>
+            <p>
+                The states an object passes through over its lifetime and the events that trigger each transition. A rounded rectangle is a state and the label on an arrow is the trigger. States nest (a state subdivided internally) and run concurrently (several sub-states at once). Order state machines, connection protocols and UI interaction states all live here.
+            </p>
+            <figure class="my-10">
+                <div class="overflow-x-auto rounded-2xl border border-white/10 shadow-2xl">
+                    <svg class="uml" viewBox="0 0 680 290" style="min-width:560px" xmlns="http://www.w3.org/2000/svg">
+<title style="fill:var(--uml-ink);stroke:none">UML state machine diagram example</title>
+<desc style="fill:var(--uml-ink);stroke:none">Order state machine: pending, processing, shipped, done, cancellable while processing</desc>
+<defs><marker id="a12" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<circle cx="55" cy="70" r="10" fill="var(--uml-ink)" style="fill:var(--uml-ink);stroke:none"/>
+<line x1="65" y1="70" x2="88" y2="70" marker-end="url(#a12)" style="fill:none;stroke:var(--uml-muted);stroke-width:1.5px"/>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="90" y="48" width="110" height="44" rx="20" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="145" y="70" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Pending</text></g>
+<line x1="200" y1="70" x2="238" y2="70" marker-end="url(#a12)" style="fill:none;stroke:var(--uml-muted);stroke-width:1.5px"/>
+<text x="220" y="40" style="fill:var(--uml-muted);stroke:none;font-size:12px">order</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="240" y="48" width="110" height="44" rx="20" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="295" y="70" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Processing</text></g>
+<line x1="350" y1="70" x2="388" y2="70" marker-end="url(#a12)" style="fill:none;stroke:var(--uml-muted);stroke-width:1.5px"/>
+<text x="370" y="40" style="fill:var(--uml-muted);stroke:none;font-size:12px">ship</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="390" y="48" width="110" height="44" rx="20" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="445" y="70" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Shipped</text></g>
+<line x1="500" y1="70" x2="538" y2="70" marker-end="url(#a12)" style="fill:none;stroke:var(--uml-muted);stroke-width:1.5px"/>
+<text x="520" y="40" style="fill:var(--uml-muted);stroke:none;font-size:12px">receive</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="540" y="48" width="110" height="44" rx="20" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="595" y="70" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Done</text></g>
+<line x1="595" y1="92" x2="595" y2="130" stroke="var(--uml-ink)" stroke-width="1" style="fill:var(--uml-ink);stroke:var(--uml-ink)"/>
+<circle cx="595" cy="145" r="12" fill="none" stroke="var(--uml-ink)" stroke-width="2" style="fill:none;stroke:var(--uml-ink);stroke-width:2px"/>
+<circle cx="595" cy="145" r="6" fill="var(--uml-ink)" style="fill:var(--uml-ink);stroke:none"/>
+<line x1="295" y1="92" x2="295" y2="178" marker-end="url(#a12)" style="fill:none;stroke:var(--uml-muted);stroke-width:1.5px"/>
+<text x="310" y="140" style="fill:var(--uml-muted);stroke:none;font-size:12px">cancel</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="240" y="180" width="110" height="44" rx="20" stroke-width="0.5" style="fill:var(--uml-orange-bg);stroke:var(--uml-orange);stroke-width:0.5px"/><text x="295" y="202" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-orange);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Cancelled</text></g>
+<text x="340" y="265" text-anchor="middle" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">Rounded box = state; the label on an arrow = the triggering event</text>
+</svg>
+                </div>
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">State machine diagram</figcaption>
+            </figure>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">10 &mdash; Use case diagram</p>
+            <p>
+                What the system offers, seen from the user&rsquo;s side, and which roles can reach which features. A stick figure is an actor, which can be a person, an external system or a scheduler; an ellipse is a use case; a rectangle frames the system boundary. Requirements work uses it to agree with a client on what the system does, staying clear of how.
+            </p>
+            <figure class="my-10">
+                <div class="overflow-x-auto rounded-2xl border border-white/10 shadow-2xl">
+                    <svg class="uml" viewBox="0 0 680 300" style="min-width:560px" xmlns="http://www.w3.org/2000/svg">
+<title style="fill:var(--uml-ink);stroke:none">UML use case diagram example</title>
+<desc style="fill:var(--uml-ink);stroke:none">Course enrolment system: student and admin map to different use cases</desc>
+<defs><marker id="a13" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect x="170" y="15" width="340" height="260" rx="12" fill="none" stroke="var(--uml-ink)" stroke-width="1" style="fill:none;stroke:var(--uml-ink)"/>
+<text x="340" y="35" text-anchor="middle" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500;text-anchor:middle">Enrolment system</text>
+<circle cx="80" cy="100" r="12" fill="none" stroke="var(--uml-ink)" stroke-width="1.2" style="fill:none;stroke:var(--uml-ink);stroke-width:1.2px"/>
+<line x1="80" y1="112" x2="80" y2="150" stroke="var(--uml-ink)" stroke-width="1.2" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:1.2px"/>
+<line x1="60" y1="130" x2="100" y2="130" stroke="var(--uml-ink)" stroke-width="1.2" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:1.2px"/>
+<line x1="80" y1="150" x2="60" y2="175" stroke="var(--uml-ink)" stroke-width="1.2" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:1.2px"/>
+<line x1="80" y1="150" x2="100" y2="175" stroke="var(--uml-ink)" stroke-width="1.2" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:1.2px"/>
+<text x="80" y="195" text-anchor="middle" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">Student</text>
+<circle cx="600" cy="100" r="12" fill="none" stroke="var(--uml-ink)" stroke-width="1.2" style="fill:none;stroke:var(--uml-ink);stroke-width:1.2px"/>
+<line x1="600" y1="112" x2="600" y2="150" stroke="var(--uml-ink)" stroke-width="1.2" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:1.2px"/>
+<line x1="580" y1="130" x2="620" y2="130" stroke="var(--uml-ink)" stroke-width="1.2" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:1.2px"/>
+<line x1="600" y1="150" x2="580" y2="175" stroke="var(--uml-ink)" stroke-width="1.2" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:1.2px"/>
+<line x1="600" y1="150" x2="620" y2="175" stroke="var(--uml-ink)" stroke-width="1.2" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:1.2px"/>
+<text x="600" y="195" text-anchor="middle" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">Admin</text>
+<g style="fill:var(--uml-ink);stroke:none"><ellipse cx="310" cy="70" rx="80" ry="22" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="310" y="70" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Sign up</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><ellipse cx="310" cy="130" rx="80" ry="22" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="310" y="130" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Enrol</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><ellipse cx="310" cy="190" rx="80" ry="22" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="310" y="190" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Check grades</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><ellipse cx="390" cy="245" rx="90" ry="22" stroke-width="0.5" style="fill:var(--uml-orange-bg);stroke:var(--uml-orange);stroke-width:0.5px"/><text x="390" y="245" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-orange);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Manage users</text></g>
+<line x1="100" y1="120" x2="228" y2="75" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.8px"/>
+<line x1="100" y1="130" x2="228" y2="130" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.8px"/>
+<line x1="100" y1="145" x2="228" y2="185" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.8px"/>
+<line x1="580" y1="145" x2="482" y2="240" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.8px"/>
+</svg>
+                </div>
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">Use case diagram</figcaption>
+            </figure>
+
+            <!-- ===== Interaction ===== -->
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Interaction diagrams (4)
+            </h3>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">11 &mdash; Sequence diagram</p>
+            <p>
+                Messages passing between objects in time order. The vertical axis is time running downward, the horizontal axis holds the participants, and each one drops a lifeline. A solid arrow is a method call labelled with its name; a dashed arrow is a return value. For tracing one operation end to end through the objects and calls it touches, this is the most direct view.
+            </p>
+            <figure class="my-10">
+                <div class="overflow-x-auto rounded-2xl border border-white/10 shadow-2xl">
+                    <svg class="uml" viewBox="0 0 680 340" style="min-width:560px" xmlns="http://www.w3.org/2000/svg">
+<title style="fill:var(--uml-ink);stroke:none">UML sequence diagram example</title>
+<desc style="fill:var(--uml-ink);stroke:none">Login sequence: user, frontend, backend, database</desc>
+<defs><marker id="a14" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="55" y="15" width="80" height="36" rx="6" stroke-width="0.5" style="fill:var(--uml-purple-bg);stroke:var(--uml-purple);stroke-width:0.5px"/><text x="95" y="33" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-purple);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">User</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="205" y="15" width="80" height="36" rx="6" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="245" y="33" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Frontend</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="375" y="15" width="80" height="36" rx="6" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="415" y="33" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Backend</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="545" y="15" width="80" height="36" rx="6" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="585" y="33" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Database</text></g>
+<line x1="95" y1="51" x2="95" y2="310" stroke="var(--uml-ink)" stroke-width="0.5" stroke-dasharray="4 4" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.5px;stroke-dasharray:4px, 4px"/>
+<line x1="245" y1="51" x2="245" y2="310" stroke="var(--uml-ink)" stroke-width="0.5" stroke-dasharray="4 4" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.5px;stroke-dasharray:4px, 4px"/>
+<line x1="415" y1="51" x2="415" y2="310" stroke="var(--uml-ink)" stroke-width="0.5" stroke-dasharray="4 4" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.5px;stroke-dasharray:4px, 4px"/>
+<line x1="585" y1="51" x2="585" y2="310" stroke="var(--uml-ink)" stroke-width="0.5" stroke-dasharray="4 4" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.5px;stroke-dasharray:4px, 4px"/>
+<rect x="90" y="80" width="10" height="60" rx="2" fill="var(--uml-sec)" opacity="0.3" style="fill:var(--uml-muted);stroke:none;opacity:0.3"/>
+<rect x="240" y="90" width="10" height="100" rx="2" fill="var(--uml-sec)" opacity="0.3" style="fill:var(--uml-muted);stroke:none;opacity:0.3"/>
+<rect x="410" y="120" width="10" height="80" rx="2" fill="var(--uml-sec)" opacity="0.3" style="fill:var(--uml-muted);stroke:none;opacity:0.3"/>
+<rect x="580" y="150" width="10" height="30" rx="2" fill="var(--uml-sec)" opacity="0.3" style="fill:var(--uml-muted);stroke:none;opacity:0.3"/>
+<line x1="100" y1="95" x2="238" y2="95" stroke="var(--uml-ink)" stroke-width="1" marker-end="url(#a14)" style="fill:var(--uml-ink);stroke:var(--uml-ink)"/>
+<text x="170" y="88" style="fill:var(--uml-muted);stroke:none;font-size:12px">Enter credentials</text>
+<line x1="250" y1="125" x2="408" y2="125" stroke="var(--uml-ink)" stroke-width="1" marker-end="url(#a14)" style="fill:var(--uml-ink);stroke:var(--uml-ink)"/>
+<text x="330" y="118" style="fill:var(--uml-muted);stroke:none;font-size:12px">POST /login</text>
+<line x1="420" y1="155" x2="578" y2="155" stroke="var(--uml-ink)" stroke-width="1" marker-end="url(#a14)" style="fill:var(--uml-ink);stroke:var(--uml-ink)"/>
+<text x="500" y="148" style="fill:var(--uml-muted);stroke:none;font-size:12px">SELECT user</text>
+<line x1="578" y1="175" x2="420" y2="175" stroke="var(--uml-ink)" stroke-width="1" stroke-dasharray="6 4" marker-end="url(#a14)" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-dasharray:6px, 4px"/>
+<text x="500" y="190" style="fill:var(--uml-muted);stroke:none;font-size:12px">user row</text>
+<line x1="408" y1="200" x2="250" y2="200" stroke="var(--uml-ink)" stroke-width="1" stroke-dasharray="6 4" marker-end="url(#a14)" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-dasharray:6px, 4px"/>
+<text x="330" y="215" style="fill:var(--uml-muted);stroke:none;font-size:12px">JWT token</text>
+<line x1="238" y1="230" x2="100" y2="230" stroke="var(--uml-ink)" stroke-width="1" stroke-dasharray="6 4" marker-end="url(#a14)" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-dasharray:6px, 4px"/>
+<text x="170" y="245" style="fill:var(--uml-muted);stroke:none;font-size:12px">logged in</text>
+<text x="340" y="325" text-anchor="middle" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">Dashed vertical = lifeline, solid arrow = call, dashed arrow = return</text>
+</svg>
+                </div>
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">Sequence diagram</figcaption>
+            </figure>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">12 &mdash; Communication diagram</p>
+            <p>
+                Describes the same thing as a sequence diagram, laid out in space instead. Objects sit freely and messages carry nested numbers (1, 1.1, 1.2, 2) to show the call hierarchy. A sequence diagram emphasises order; a communication diagram emphasises who is wired to whom. With many objects and a simple order, it reads better.
+            </p>
+            <figure class="my-10">
+                <div class="overflow-x-auto rounded-2xl border border-white/10 shadow-2xl">
+                    <svg class="uml" viewBox="0 0 680 260" style="min-width:560px" xmlns="http://www.w3.org/2000/svg">
+<title style="fill:var(--uml-ink);stroke:none">UML communication diagram example</title>
+<desc style="fill:var(--uml-ink);stroke:none">The same login flow laid out in space; the numbers carry the order</desc>
+<defs><marker id="a15" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="40" y="25" width="110" height="44" rx="6" stroke-width="0.5" style="fill:var(--uml-purple-bg);stroke:var(--uml-purple);stroke-width:0.5px"/><text x="95" y="47" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-purple);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">User</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="280" y="25" width="110" height="44" rx="6" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="335" y="47" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Frontend</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="280" y="140" width="110" height="44" rx="6" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="335" y="162" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Backend</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="520" y="140" width="110" height="44" rx="6" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="575" y="162" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Database</text></g>
+<line x1="150" y1="47" x2="278" y2="47" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.8px"/>
+<text x="196" y="40" style="fill:var(--uml-muted);stroke:none;font-size:12px">1: credentials</text>
+<line x1="335" y1="69" x2="335" y2="138" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.8px"/>
+<text x="348" y="108" style="fill:var(--uml-muted);stroke:none;font-size:12px">2: POST /login</text>
+<line x1="390" y1="162" x2="518" y2="162" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.8px"/>
+<text x="398" y="155" style="fill:var(--uml-muted);stroke:none;font-size:12px">2.1: SELECT user</text>
+<text x="340" y="235" text-anchor="middle" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">Number 2.1 marks a nested call made while handling message 2</text>
+</svg>
+                </div>
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">Communication diagram</figcaption>
+            </figure>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">13 &mdash; Interaction overview diagram</p>
+            <p>
+                A hybrid of activity and sequence diagrams. The outer layer is activity-diagram control flow, each node contains a small interaction diagram, and the decisions pick which path runs. Use it to string together a full flow made of several distinct interaction scenes.
+            </p>
+            <figure class="my-10">
+                <div class="overflow-x-auto rounded-2xl border border-white/10 shadow-2xl">
+                    <svg class="uml" viewBox="0 0 680 380" style="min-width:560px" xmlns="http://www.w3.org/2000/svg">
+<title style="fill:var(--uml-ink);stroke:none">UML interaction overview diagram example</title>
+<desc style="fill:var(--uml-ink);stroke:none">Small sequence fragments embedded in an activity flow, picked by the decision</desc>
+<defs><marker id="a16" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<circle cx="340" cy="20" r="10" fill="var(--uml-ink)" style="fill:var(--uml-ink);stroke:none"/>
+<line x1="340" y1="30" x2="340" y2="55" marker-end="url(#a16)" style="fill:none;stroke:var(--uml-muted);stroke-width:1.5px"/>
+<rect x="200" y="58" width="280" height="70" rx="6" fill="none" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:none;stroke:var(--uml-ink);stroke-width:0.8px"/>
+<text x="212" y="73" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px">sd Verify login</text>
+<text x="340" y="100" text-anchor="middle" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">user → frontend → backend: POST /login</text>
+<line x1="340" y1="128" x2="340" y2="148" marker-end="url(#a16)" style="fill:none;stroke:var(--uml-muted);stroke-width:1.5px"/>
+<polygon points="340,150 365,172 340,194 315,172" fill="none" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:none;stroke:var(--uml-ink);stroke-width:0.8px"/>
+<text x="340" y="176" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle;dominant-baseline:central">?</text>
+<line x1="315" y1="172" x2="150" y2="172" marker-end="url(#a16)" style="fill:none;stroke:var(--uml-muted);stroke-width:1.5px"/>
+<text x="230" y="164" style="fill:var(--uml-muted);stroke:none;font-size:12px">fail</text>
+<rect x="40" y="205" width="220" height="70" rx="6" fill="none" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:none;stroke:var(--uml-ink);stroke-width:0.8px"/>
+<text x="52" y="220" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px">sd Handle error</text>
+<text x="150" y="248" text-anchor="middle" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">backend → frontend: error 401</text>
+<line x1="365" y1="172" x2="500" y2="172" marker-end="url(#a16)" style="fill:none;stroke:var(--uml-muted);stroke-width:1.5px"/>
+<text x="430" y="164" style="fill:var(--uml-muted);stroke:none;font-size:12px">pass</text>
+<rect x="420" y="205" width="220" height="70" rx="6" fill="none" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:none;stroke:var(--uml-ink);stroke-width:0.8px"/>
+<text x="432" y="220" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px">sd Create session</text>
+<text x="530" y="248" text-anchor="middle" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">backend → frontend: JWT token</text>
+<path d="M150 275 L150 310 L520 310 L520 275" fill="none" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:none;stroke:var(--uml-ink);stroke-width:0.8px"/>
+<line x1="340" y1="310" x2="340" y2="330" marker-end="url(#a16)" style="fill:none;stroke:var(--uml-muted);stroke-width:1.5px"/>
+<circle cx="340" cy="345" r="12" fill="none" stroke="var(--uml-ink)" stroke-width="2" style="fill:none;stroke:var(--uml-ink);stroke-width:2px"/>
+<circle cx="340" cy="345" r="6" fill="var(--uml-ink)" style="fill:var(--uml-ink);stroke:none"/>
+<text x="340" y="375" text-anchor="middle" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">Each sd frame = an embedded sequence diagram; the activity flow strings them together</text>
+</svg>
+                </div>
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">Interaction overview diagram</figcaption>
+            </figure>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">14 &mdash; Timing diagram</p>
+            <p>
+                A waveform view with time on the horizontal axis and state values on the vertical one. A state diagram draws states and transitions; a timing diagram adds how long each state lasts, and several objects can be stacked to watch whether their timelines line up. Real-time systems and hardware protocols use it to check timing alignment.
+            </p>
+            <figure class="my-10">
+                <div class="overflow-x-auto rounded-2xl border border-white/10 shadow-2xl">
+                    <svg class="uml" viewBox="0 0 680 280" style="min-width:560px" xmlns="http://www.w3.org/2000/svg">
+<title style="fill:var(--uml-ink);stroke:none">UML timing diagram example</title>
+<desc style="fill:var(--uml-ink);stroke:none">Order state plotted against time: pending, processing, shipped, done</desc>
+<defs><marker id="a17" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text x="60" y="28" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500">Order</text>
+<text x="130" y="60" style="fill:var(--uml-muted);stroke:none;font-size:12px">Done</text>
+<text x="130" y="100" style="fill:var(--uml-muted);stroke:none;font-size:12px">Shipped</text>
+<text x="130" y="140" style="fill:var(--uml-muted);stroke:none;font-size:12px">Processing</text>
+<text x="130" y="180" style="fill:var(--uml-muted);stroke:none;font-size:12px">Pending</text>
+<line x1="180" y1="45" x2="180" y2="195" stroke="var(--uml-ink)" stroke-width="0.5" opacity="0.3" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.5px;opacity:0.3"/>
+<line x1="180" y1="195" x2="630" y2="195" stroke="var(--uml-ink)" stroke-width="0.5" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.5px"/>
+<line x1="180" y1="55" x2="630" y2="55" stroke="var(--uml-line)" stroke-width="0.3" stroke-dasharray="4 4" style="fill:var(--uml-ink);stroke:var(--uml-line);stroke-width:0.3px;stroke-dasharray:4px, 4px"/>
+<line x1="180" y1="95" x2="630" y2="95" stroke="var(--uml-line)" stroke-width="0.3" stroke-dasharray="4 4" style="fill:var(--uml-ink);stroke:var(--uml-line);stroke-width:0.3px;stroke-dasharray:4px, 4px"/>
+<line x1="180" y1="135" x2="630" y2="135" stroke="var(--uml-line)" stroke-width="0.3" stroke-dasharray="4 4" style="fill:var(--uml-ink);stroke:var(--uml-line);stroke-width:0.3px;stroke-dasharray:4px, 4px"/>
+<line x1="180" y1="175" x2="630" y2="175" stroke="var(--uml-line)" stroke-width="0.3" stroke-dasharray="4 4" style="fill:var(--uml-ink);stroke:var(--uml-line);stroke-width:0.3px;stroke-dasharray:4px, 4px"/>
+<path d="M180,175 L300,175 L310,135 L420,135 L430,95 L520,95 L530,55 L630,55" fill="none" stroke="var(--uml-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="fill:none;stroke:var(--uml-green);stroke-width:2px;stroke-linecap:round;stroke-linejoin:round"/>
+<circle cx="180" cy="175" r="4" fill="var(--uml-green)" style="fill:var(--uml-green);stroke:none"/>
+<circle cx="310" cy="135" r="4" fill="var(--uml-green)" style="fill:var(--uml-green);stroke:none"/>
+<circle cx="430" cy="95" r="4" fill="var(--uml-green)" style="fill:var(--uml-green);stroke:none"/>
+<circle cx="530" cy="55" r="4" fill="var(--uml-green)" style="fill:var(--uml-green);stroke:none"/>
+<text x="240" y="212" text-anchor="middle" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">T0</text>
+<text x="370" y="212" text-anchor="middle" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">T1</text>
+<text x="475" y="212" text-anchor="middle" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">T2</text>
+<text x="580" y="212" text-anchor="middle" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">T3</text>
+<line x1="310" y1="195" x2="310" y2="200" stroke="var(--uml-ink)" stroke-width="0.5" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.5px"/>
+<line x1="430" y1="195" x2="430" y2="200" stroke="var(--uml-ink)" stroke-width="0.5" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.5px"/>
+<line x1="530" y1="195" x2="530" y2="200" stroke="var(--uml-ink)" stroke-width="0.5" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.5px"/>
+<text x="245" y="165" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px">120 min</text>
+<text x="370" y="125" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px">480 min</text>
+<text x="475" y="85" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px">1440 min</text>
+<text x="400" y="250" text-anchor="middle" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">X axis = time, Y axis = state; each segment is labelled with its duration</text>
+<text x="400" y="268" text-anchor="middle" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">What a state diagram leaves out: how long each state actually lasts</text>
+</svg>
+                </div>
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">Timing diagram</figcaption>
+            </figure>
+
+            <!-- ===== Picking one ===== -->
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> What you want to see, and which diagram shows it
+            </h3>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">What you want to see</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">Diagram</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">Family</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">How classes relate</td><td class="px-4 py-3">Class</td><td class="px-4 py-3 text-gray-500">Structural</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">What the data looks like at one moment</td><td class="px-4 py-3">Object</td><td class="px-4 py-3 text-gray-500">Structural</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">Which module depends on which</td><td class="px-4 py-3">Package</td><td class="px-4 py-3 text-gray-500">Structural</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">Interface contracts between deployable units</td><td class="px-4 py-3">Component</td><td class="px-4 py-3 text-gray-500">Structural</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">Which machine the software runs on</td><td class="px-4 py-3">Deployment</td><td class="px-4 py-3 text-gray-500">Structural</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">Custom extensions to UML syntax</td><td class="px-4 py-3">Profile</td><td class="px-4 py-3 text-gray-500">Structural</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">How the parts inside one class are wired</td><td class="px-4 py-3">Composite structure</td><td class="px-4 py-3 text-gray-500">Structural</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">A flow with branches and parallel work</td><td class="px-4 py-3">Activity</td><td class="px-4 py-3 text-gray-500">Behavioural</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">How an object changes state</td><td class="px-4 py-3">State machine</td><td class="px-4 py-3 text-gray-500">Behavioural</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">What the system offers and to whom</td><td class="px-4 py-3">Use case</td><td class="px-4 py-3 text-gray-500">Behavioural</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">The order messages travel in</td><td class="px-4 py-3">Sequence</td><td class="px-4 py-3 text-gray-500">Interaction</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">Who interacts with whom, laid out in space</td><td class="px-4 py-3">Communication</td><td class="px-4 py-3 text-gray-500">Interaction</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">Several interaction scenes joined by a flow</td><td class="px-4 py-3">Interaction overview</td><td class="px-4 py-3 text-gray-500">Interaction</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">How long a state lasts, and timing alignment</td><td class="px-4 py-3">Timing</td><td class="px-4 py-3 text-gray-500">Interaction</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                In practice all 14 rarely come out. The four that get drawn regularly are class, activity, state machine and sequence, with the remaining ten available when the situation calls for one. Learn the semantics of the six relationship types first and a class diagram becomes readable; the symbols in the other diagrams can be looked up in the spec as needed.
+            </p>
+
+            <!-- ===== Reference ===== -->
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Reference
+            </h3>
+
+            <ul class="space-y-2 text-gray-400">
+                <li><a href="https://www.omg.org/spec/UML/" target="_blank" rel="noopener" class="text-accent-purple hover:underline">OMG &mdash; Unified Modeling Language specification</a> (the spec itself, with PDFs per version)</li>
+                <li>The 17 diagrams here are hand-built inline SVG; their colours follow the site&rsquo;s light and dark themes</li>
+            </ul>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="project_32.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Previous
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View all projects
+            </a>
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                Next &rarr;
+            </a>
+        </div>
+
+    </main>
+    <div id="footer-placeholder"></div>
+</body>
+</html>

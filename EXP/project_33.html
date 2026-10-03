@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / P33 | GHOST.ouo</title>
+    <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
+
+    <script src="../theme.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
+
+    <link rel="stylesheet" href="../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script src="../i18n.js" defer></script>
+    <script type="module" src="../main.js" defer></script>
+    <link rel="stylesheet" href="../tw.css">
+
+    <style>
+        /* 17 張 UML 示意圖的色票。圖是 inline SVG，顏色全部走這組變數，
+           所以深淺主題切換時圖跟著翻，不必準備兩套圖檔。 */
+        .uml {
+            --uml-ink: #E2E8F0;
+            --uml-sec: #CBD5E1;
+            --uml-muted: #94A3B8;
+            --uml-line: rgba(255, 255, 255, .18);
+            --uml-line2: rgba(255, 255, 255, .32);
+            --uml-surface: rgba(255, 255, 255, .05);
+            --uml-bg: #0A0A0A;
+            --uml-green: #34D399;  --uml-green-bg: rgba(52, 211, 153, .14);
+            --uml-purple: #BF94FF; --uml-purple-bg: rgba(191, 148, 255, .14);
+            --uml-orange: #FB923C; --uml-orange-bg: rgba(251, 146, 60, .14);
+            --uml-blue: #60A5FA;   --uml-blue-bg: rgba(96, 165, 250, .14);
+            --uml-lime: #A3E635;   --uml-lime-bg: rgba(163, 230, 53, .14);
+            --uml-amber: #FBBF24;  --uml-amber-bg: rgba(251, 191, 36, .14);
+
+            display: block;
+            width: 100%;
+            height: auto;
+            font-family: "Plus Jakarta Sans", "Noto Sans TC", sans-serif;
+            font-size: 16px;
+        }
+
+        /* 淡色主題的對應色，取自 theme.css 既有色票（主文字 #1D224A、主色 #5A5CEA）。 */
+        :root[data-theme="light"] .uml {
+            --uml-ink: #1D224A;
+            --uml-sec: #3A3F66;
+            --uml-muted: #5B6087;
+            --uml-line: rgba(29, 34, 74, .20);
+            --uml-line2: rgba(29, 34, 74, .35);
+            --uml-surface: rgba(29, 34, 74, .04);
+            --uml-bg: #FFFFFF;
+            --uml-green: #15803D;  --uml-green-bg: rgba(21, 128, 61, .10);
+            --uml-purple: #5A5CEA; --uml-purple-bg: rgba(90, 92, 234, .10);
+            --uml-orange: #B45309; --uml-orange-bg: rgba(180, 83, 9, .10);
+            --uml-blue: #1D4ED8;   --uml-blue-bg: rgba(29, 78, 216, .10);
+            --uml-lime: #4D7C0F;   --uml-lime-bg: rgba(77, 124, 15, .10);
+            --uml-amber: #A16207;  --uml-amber-bg: rgba(161, 98, 7, .10);
+        }
+
+        /* 沒有自己宣告 fill 的文字（圖裡大部分的標籤）吃主文字色。 */
+        .uml text { fill: var(--uml-ink); }
+    </style>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-bg">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / P33</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                UML 學習筆記<br>
+                <span class="text-gradient text-2xl md:text-4xl">14 種圖與六種關聯線</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    Engineering
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    System Design
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Reference
+                </span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.10.03</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
+                工作上畫的架構圖與流程圖停在方塊與連線這一層：有哪些模組、誰連誰。兩個類別之間是繼承還是組合、一張訂單的狀態怎麼轉、前後端在時間軸上誰先呼叫誰，這些資訊在方塊圖裡沒有對應的符號可以表達。UML 2.0 把這些視角切成 14 種圖，每種管一件事。這篇把 14 種圖與六種關聯線各畫一張示意圖，最後附一張選圖對照表。
+            </p>
+
+            <!-- ===== UML 在做什麼 ===== -->
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> UML 在做什麼
+            </h3>
+
+            <p>
+                UML（Unified Modeling Language，統一塑模語言）是由 Object Management Group 維護的視覺化建模語言標準，用來描述軟體系統的結構與行為。現行版本是 UML 2.x，規範本體公開在 <a href="https://www.omg.org/spec/UML/" target="_blank" rel="noopener" class="text-accent-purple hover:underline">OMG 官網</a>。
+            </p>
+
+            <p>
+                它處理兩件事。<strong class="text-white">溝通</strong>：把程式邏輯與系統架構轉成有固定語彙的圖，開發者跟非技術的利害關係人看同一張圖得到同一個理解。<strong class="text-white">藍圖</strong>：在寫程式之前先把類別、物件、流程規劃完，設計上的矛盾在編碼之前就攤開來。
+            </p>
+
+            <p>
+                固定語彙是整套東西的重點。自己畫的流程圖裡，一個方塊的意思由畫的人當場定義；UML 的每個符號在規範裡有明確語義——空心三角箭頭永遠是繼承，實心菱形永遠是組合，換一個人看得到同一個結論。
+            </p>
+
+            <!-- ===== 三個分類 ===== -->
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 14 種圖怎麼分類
+            </h3>
+
+            <p>
+                UML 2.0 定義 14 種圖，第一層切成結構圖 7 種與行為圖 7 種，行為圖裡有 4 種另外歸成互動圖子類。
+            </p>
+
+            <p>
+                分類依據是「這張圖在描述哪一面」。結構圖看系統靜止時長什麼樣：有哪些類別、模組怎麼切、元件跑在哪台機器上。行為圖看系統動起來做什麼：流程怎麼走、狀態怎麼變、使用者能操作什麼。互動圖專注在物件之間的訊息怎麼傳、按什麼順序傳。
+            </p>
+
+            <figure class="my-12">
+                <div class="overflow-x-auto rounded-2xl border border-white/10 shadow-2xl">
+                    <svg class="uml" viewBox="0 0 680 540" style="min-width:560px" xmlns="http://www.w3.org/2000/svg">
+<title style="fill:var(--uml-ink);stroke:none">UML 2.0 fourteen diagram types taxonomy</title>
+<desc style="fill:var(--uml-ink);stroke:none">UML 2.0 的 14 種圖表分成結構圖（7 種）、行為圖（3 種）、互動圖（4 種）三大類</desc>
+<defs><marker id="a1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text x="340" y="30" text-anchor="middle" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500;text-anchor:middle">UML 2.0 — 14 種圖表類型</text>
+<rect x="40" y="50" width="600" height="230" rx="12" fill="none" stroke="var(--uml-line2)" stroke-width="0.5" stroke-dasharray="6 4" style="fill:none;stroke:var(--uml-line2);stroke-width:0.5px;stroke-dasharray:6px, 4px"/>
+<text x="55" y="72" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500">結構圖 Structural (7)</text>
+<text x="60" y="100" fill="var(--uml-sec)" style="fill:var(--uml-muted);stroke:none;font-size:12px">靜態圖</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="130" y="85" width="130" height="36" rx="6" stroke-width="0.5" style="fill:var(--uml-purple-bg);stroke:var(--uml-purple);stroke-width:0.5px"/><text x="195" y="103" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-purple);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">類別圖</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="275" y="85" width="130" height="36" rx="6" stroke-width="0.5" style="fill:var(--uml-purple-bg);stroke:var(--uml-purple);stroke-width:0.5px"/><text x="340" y="103" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-purple);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">物件圖</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="420" y="85" width="130" height="36" rx="6" stroke-width="0.5" style="fill:var(--uml-purple-bg);stroke:var(--uml-purple);stroke-width:0.5px"/><text x="485" y="103" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-purple);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">套件圖</text></g>
+<text x="60" y="148" fill="var(--uml-sec)" style="fill:var(--uml-muted);stroke:none;font-size:12px">實現圖</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="130" y="133" width="130" height="36" rx="6" stroke-width="0.5" style="fill:var(--uml-purple-bg);stroke:var(--uml-purple);stroke-width:0.5px"/><text x="195" y="151" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-purple);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">組件圖</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="275" y="133" width="130" height="36" rx="6" stroke-width="0.5" style="fill:var(--uml-purple-bg);stroke:var(--uml-purple);stroke-width:0.5px"/><text x="340" y="151" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-purple);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">佈署圖</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="420" y="133" width="130" height="36" rx="6" stroke-width="0.5" style="fill:var(--uml-purple-bg);stroke:var(--uml-purple);stroke-width:0.5px"/><text x="485" y="151" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-purple);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">剖面圖</text></g>
+<text x="60" y="198" fill="var(--uml-sec)" style="fill:var(--uml-muted);stroke:none;font-size:12px">內部構造</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="130" y="183" width="160" height="36" rx="6" stroke-width="0.5" style="fill:var(--uml-purple-bg);stroke:var(--uml-purple);stroke-width:0.5px"/><text x="210" y="201" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-purple);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">複合結構圖</text></g>
+<text x="56" y="255" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px">描述系統的靜態結構、部署拓撲、元件組成</text>
+<rect x="40" y="300" width="600" height="100" rx="12" fill="none" stroke="var(--uml-line2)" stroke-width="0.5" stroke-dasharray="6 4" style="fill:none;stroke:var(--uml-line2);stroke-width:0.5px;stroke-dasharray:6px, 4px"/>
+<text x="55" y="322" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500">行為圖 Behavioural (3)</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="60" y="335" width="130" height="36" rx="6" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="125" y="353" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">活動圖</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="205" y="335" width="130" height="36" rx="6" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="270" y="353" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">狀態圖</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="350" y="335" width="150" height="36" rx="6" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="425" y="353" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">使用案例圖</text></g>
+<text x="56" y="388" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px">描述系統動態行為、狀態轉換、使用者互動</text>
+<rect x="40" y="410" width="600" height="110" rx="12" fill="none" stroke="var(--uml-line2)" stroke-width="0.5" stroke-dasharray="6 4" style="fill:none;stroke:var(--uml-line2);stroke-width:0.5px;stroke-dasharray:6px, 4px"/>
+<text x="55" y="432" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500">互動圖 Interaction (4)</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="60" y="445" width="120" height="36" rx="6" stroke-width="0.5" style="fill:var(--uml-orange-bg);stroke:var(--uml-orange);stroke-width:0.5px"/><text x="120" y="463" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-orange);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">通訊圖</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="195" y="445" width="140" height="36" rx="6" stroke-width="0.5" style="fill:var(--uml-orange-bg);stroke:var(--uml-orange);stroke-width:0.5px"/><text x="265" y="463" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-orange);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">互動摘要圖</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="350" y="445" width="120" height="36" rx="6" stroke-width="0.5" style="fill:var(--uml-orange-bg);stroke:var(--uml-orange);stroke-width:0.5px"/><text x="410" y="463" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-orange);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">時序圖</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="485" y="445" width="120" height="36" rx="6" stroke-width="0.5" style="fill:var(--uml-orange-bg);stroke:var(--uml-orange);stroke-width:0.5px"/><text x="545" y="463" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-orange);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">時間圖</text></g>
+<text x="56" y="500" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px">描述物件之間的訊息傳遞順序與時間關係</text>
+</svg>
+                </div>
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    14 種圖的分類樹
+                </figcaption>
+            </figure>
+
+            <!-- ===== 基本符號 ===== -->
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 讀圖之前：基本符號
+            </h3>
+
+            <p>
+                14 種圖共用一套基本圖形語彙。類別畫成三格矩形：名稱、屬性、方法由上而下分區，每個成員前面用 <code class="text-xs">+</code> <code class="text-xs">-</code> <code class="text-xs">#</code> <code class="text-xs">~</code> 標示 public、private、protected、package 四種可見性。
+            </p>
+
+            <p>
+                物件實例沿用同一個造型，名稱加底線並寫成 <code class="text-xs">實例名 : 類別名</code>，屬性區填的是實際值。介面在名稱上方加 <code class="text-xs">&laquo;interface&raquo;</code> 標記，通常只有方法區。封裝畫成資料夾造型，左上角標籤放封裝名稱。
+            </p>
+
+            <figure class="my-12">
+                <div class="overflow-x-auto rounded-2xl border border-white/10 shadow-2xl">
+                    <svg class="uml" viewBox="0 0 680 531.08" style="min-width:560px" xmlns="http://www.w3.org/2000/svg">
+<title style="fill:var(--uml-ink);stroke:none">UML basic notation: class, object, interface, package</title>
+<desc style="fill:var(--uml-ink);stroke:none">類別、物件、介面、封裝四種 UML 基本圖形元素的標準畫法</desc>
+<defs><marker id="a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text x="170" y="28" text-anchor="middle" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500;text-anchor:middle">類別 Class</text>
+<text x="510" y="28" text-anchor="middle" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500;text-anchor:middle">物件 Object</text>
+<rect x="50" y="42" width="240" height="200" rx="4" fill="none" stroke="var(--uml-ink)" stroke-width="1" style="fill:none;stroke:var(--uml-ink)"/>
+<text x="170" y="68" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">學生</text>
+<line x1="50" y1="85" x2="290" y2="85" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.8px"/>
+<text x="62" y="104" style="fill:var(--uml-muted);stroke:none;font-size:12px">+ 姓名: string</text>
+<text x="62" y="122" style="fill:var(--uml-muted);stroke:none;font-size:12px">- 學號: int</text>
+<text x="62" y="140" style="fill:var(--uml-muted);stroke:none;font-size:12px">- 成績: float</text>
+<text x="62" y="158" style="fill:var(--uml-muted);stroke:none;font-size:12px"># 班級: string</text>
+<line x1="50" y1="172" x2="290" y2="172" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.8px"/>
+<text x="62" y="192" style="fill:var(--uml-muted);stroke:none;font-size:12px">+ EnrollClass()</text>
+<text x="62" y="210" style="fill:var(--uml-muted);stroke:none;font-size:12px">- CalculateGPA()</text>
+<text x="62" y="228" style="fill:var(--uml-muted);stroke:none;font-size:12px">~ GetInfo()</text>
+<text x="58" y="258" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px">+ public  - private</text>
+<text x="58" y="274" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px"># protected  ~ package</text>
+<rect x="390" y="42" width="240" height="140" rx="4" fill="none" stroke="var(--uml-ink)" stroke-width="1" style="fill:none;stroke:var(--uml-ink)"/>
+<text x="510" y="68" text-anchor="middle" dominant-baseline="central" text-decoration="underline" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">studentB : 學生</text>
+<line x1="390" y1="85" x2="630" y2="85" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.8px"/>
+<text x="402" y="108" style="fill:var(--uml-muted);stroke:none;font-size:12px">+ 姓名 = "王小明"</text>
+<line x1="390" y1="122" x2="630" y2="122" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.8px"/>
+<text x="402" y="145" style="fill:var(--uml-muted);stroke:none;font-size:12px">+ EnrollClass()</text>
+<text x="402" y="163" style="fill:var(--uml-muted);stroke:none;font-size:12px">+ GetInfo()</text>
+<text x="398" y="204" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px">名稱加底線 = 已實例化的物件</text>
+<text x="398" y="220" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px">只顯示公開（+）成員</text>
+<text x="170" y="310" text-anchor="middle" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500;text-anchor:middle">介面 Interface</text>
+<text x="510" y="310" text-anchor="middle" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500;text-anchor:middle">封裝 Package</text>
+<rect x="50" y="324" width="240" height="160" rx="4" fill="none" stroke="var(--uml-ink)" stroke-width="1" style="fill:none;stroke:var(--uml-ink)"/>
+<text x="170" y="348" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle;dominant-baseline:central">«interface»</text>
+<text x="170" y="370" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">I人貓通訊介面</text>
+<line x1="50" y1="385" x2="290" y2="385" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.8px"/>
+<line x1="50" y1="400" x2="290" y2="400" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.8px"/>
+<text x="62" y="420" style="fill:var(--uml-muted);stroke:none;font-size:12px">+ 握手()</text>
+<text x="62" y="438" style="fill:var(--uml-muted);stroke:none;font-size:12px">+ 吃罐罐()</text>
+<text x="62" y="456" style="fill:var(--uml-muted);stroke:none;font-size:12px">+ 撒嬌()</text>
+<text x="58" y="502" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px">加 «interface» 標記</text>
+<text x="58" y="518" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px">通常只有方法區，無屬性</text>
+<rect x="390" y="324" width="80" height="20" rx="4" fill="none" stroke="var(--uml-ink)" stroke-width="1" style="fill:none;stroke:var(--uml-ink)"/>
+<text x="430" y="338" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle;dominant-baseline:central">Models</text>
+<rect x="390" y="344" width="240" height="140" rx="4" fill="none" stroke="var(--uml-ink)" stroke-width="1" style="fill:none;stroke:var(--uml-ink)"/>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="410" y="365" width="90" height="32" rx="4" stroke-width="0.5" style="fill:var(--uml-surface);stroke:var(--uml-muted);stroke-width:0.5px"/><text x="455" y="381" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-muted);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">學生</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="520" y="365" width="90" height="32" rx="4" stroke-width="0.5" style="fill:var(--uml-surface);stroke:var(--uml-muted);stroke-width:0.5px"/><text x="565" y="381" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-muted);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">老師</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="410" y="415" width="90" height="32" rx="4" stroke-width="0.5" style="fill:var(--uml-surface);stroke:var(--uml-muted);stroke-width:0.5px"/><text x="455" y="431" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-muted);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">課程</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="520" y="415" width="90" height="32" rx="4" stroke-width="0.5" style="fill:var(--uml-surface);stroke:var(--uml-muted);stroke-width:0.5px"/><text x="565" y="431" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-muted);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">成績</text></g>
+<text x="398" y="502" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px">左上角標籤 = 封裝名稱</text>
+<text x="398" y="518" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px">內容可放類別、介面、子封裝</text>
+</svg>
+                </div>
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    四個基本造型與可見性標記
+                </figcaption>
+            </figure>
+
+            <!-- ===== 六種關聯線 ===== -->
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 六種關聯線
+            </h3>
+
+            <p>
+                類別圖的資訊量集中在線上。同樣是兩個方塊相連，線的樣式與端點符號決定它們是什麼關係，這六種關係在程式碼裡各自對應一種寫法。
+            </p>
+
+            <figure class="my-12">
+                <div class="overflow-x-auto rounded-2xl border border-white/10 shadow-2xl">
+                    <svg class="uml" viewBox="0 0 680 490" style="min-width:560px" xmlns="http://www.w3.org/2000/svg">
+<title style="fill:var(--uml-ink);stroke:none">UML six relationship line types</title>
+<desc style="fill:var(--uml-ink);stroke:none">泛化、實現、依賴、關聯、聚合、組合六種 UML 關聯線的箭頭與線型示範</desc>
+<defs><marker id="a3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text x="340" y="28" text-anchor="middle" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500;text-anchor:middle">六種 UML 關聯線</text>
+<text x="42" y="62" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500">繼承（泛化）</text>
+<text x="42" y="78" style="fill:var(--uml-muted);stroke:none;font-size:12px">Generalization</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="195" y="56" width="65" height="32" rx="6" stroke-width="0.5" style="fill:var(--uml-purple-bg);stroke:var(--uml-purple);stroke-width:0.5px"/><text x="228" y="72" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-purple);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">貓</text></g>
+<line x1="260" y1="72" x2="393" y2="72" stroke="var(--uml-ink)" stroke-width="1.2" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:1.2px"/>
+<polygon points="393,72 381,65 381,79" fill="none" stroke="var(--uml-ink)" stroke-width="1.2" style="fill:none;stroke:var(--uml-ink);stroke-width:1.2px"/>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="405" y="56" width="75" height="32" rx="6" stroke-width="0.5" style="fill:var(--uml-purple-bg);stroke:var(--uml-purple);stroke-width:0.5px"/><text x="443" y="72" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-purple);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">動物</text></g>
+<text x="500" y="68" style="fill:var(--uml-muted);stroke:none;font-size:12px">實線</text>
+<text x="500" y="82" style="fill:var(--uml-muted);stroke:none;font-size:12px">空心三角箭頭</text>
+<text x="42" y="132" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500">實現</text>
+<text x="42" y="148" style="fill:var(--uml-muted);stroke:none;font-size:12px">Realization</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="195" y="126" width="65" height="32" rx="6" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="228" y="142" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">貓通訊</text></g>
+<line x1="260" y1="142" x2="393" y2="142" stroke="var(--uml-ink)" stroke-width="1.2" stroke-dasharray="6 4" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:1.2px;stroke-dasharray:6px, 4px"/>
+<polygon points="393,142 381,135 381,149" fill="none" stroke="var(--uml-ink)" stroke-width="1.2" style="fill:none;stroke:var(--uml-ink);stroke-width:1.2px"/>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="405" y="126" width="75" height="32" rx="6" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="443" y="142" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">I 介面</text></g>
+<text x="500" y="138" style="fill:var(--uml-muted);stroke:none;font-size:12px">虛線</text>
+<text x="500" y="152" style="fill:var(--uml-muted);stroke:none;font-size:12px">空心三角箭頭</text>
+<text x="42" y="202" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500">依賴</text>
+<text x="42" y="218" style="fill:var(--uml-muted);stroke:none;font-size:12px">Dependency</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="195" y="196" width="65" height="32" rx="6" stroke-width="0.5" style="fill:var(--uml-orange-bg);stroke:var(--uml-orange);stroke-width:0.5px"/><text x="228" y="212" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-orange);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Me</text></g>
+<line x1="260" y1="212" x2="405" y2="212" stroke="var(--uml-ink)" stroke-width="1.2" stroke-dasharray="6 4" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:1.2px;stroke-dasharray:6px, 4px"/>
+<path d="M397,205 L407,212 L397,219" fill="none" stroke="var(--uml-ink)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="fill:none;stroke:var(--uml-ink);stroke-width:1.2px;stroke-linecap:round;stroke-linejoin:round"/>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="415" y="196" width="65" height="32" rx="6" stroke-width="0.5" style="fill:var(--uml-orange-bg);stroke:var(--uml-orange);stroke-width:0.5px"/><text x="448" y="212" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-orange);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">股票</text></g>
+<text x="500" y="208" style="fill:var(--uml-muted);stroke:none;font-size:12px">虛線</text>
+<text x="500" y="222" style="fill:var(--uml-muted);stroke:none;font-size:12px">開放箭頭</text>
+<text x="42" y="272" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500">關聯</text>
+<text x="42" y="288" style="fill:var(--uml-muted);stroke:none;font-size:12px">Association</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="195" y="266" width="65" height="32" rx="6" stroke-width="0.5" style="fill:var(--uml-blue-bg);stroke:var(--uml-blue);stroke-width:0.5px"/><text x="228" y="282" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-blue);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">辣椒</text></g>
+<line x1="260" y1="282" x2="405" y2="282" stroke="var(--uml-ink)" stroke-width="1.2" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:1.2px"/>
+<path d="M397,275 L407,282 L397,289" fill="none" stroke="var(--uml-ink)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="fill:none;stroke:var(--uml-ink);stroke-width:1.2px;stroke-linecap:round;stroke-linejoin:round"/>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="415" y="266" width="65" height="32" rx="6" stroke-width="0.5" style="fill:var(--uml-blue-bg);stroke:var(--uml-blue);stroke-width:0.5px"/><text x="448" y="282" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-blue);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">天氣</text></g>
+<text x="500" y="278" style="fill:var(--uml-muted);stroke:none;font-size:12px">實線</text>
+<text x="500" y="292" style="fill:var(--uml-muted);stroke:none;font-size:12px">開放箭頭</text>
+<text x="42" y="342" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500">聚合</text>
+<text x="42" y="358" style="fill:var(--uml-muted);stroke:none;font-size:12px">Aggregation</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="195" y="336" width="65" height="32" rx="6" stroke-width="0.5" style="fill:var(--uml-lime-bg);stroke:var(--uml-lime);stroke-width:0.5px"/><text x="228" y="352" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-lime);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">團體</text></g>
+<polygon points="262,352 274,345 286,352 274,359" fill="none" stroke="var(--uml-ink)" stroke-width="1.2" style="fill:none;stroke:var(--uml-ink);stroke-width:1.2px"/>
+<line x1="286" y1="352" x2="415" y2="352" stroke="var(--uml-ink)" stroke-width="1.2" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:1.2px"/>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="415" y="336" width="65" height="32" rx="6" stroke-width="0.5" style="fill:var(--uml-lime-bg);stroke:var(--uml-lime);stroke-width:0.5px"/><text x="448" y="352" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-lime);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">人</text></g>
+<text x="500" y="348" style="fill:var(--uml-muted);stroke:none;font-size:12px">實線</text>
+<text x="500" y="362" style="fill:var(--uml-muted);stroke:none;font-size:12px">空心菱形</text>
+<text x="42" y="412" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500">組合</text>
+<text x="42" y="428" style="fill:var(--uml-muted);stroke:none;font-size:12px">Composition</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="195" y="406" width="65" height="32" rx="6" stroke-width="0.5" style="fill:var(--uml-amber-bg);stroke:var(--uml-amber);stroke-width:0.5px"/><text x="228" y="422" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-amber);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">演員</text></g>
+<polygon points="262,422 274,415 286,422 274,429" fill="var(--uml-ink)" stroke="var(--uml-ink)" stroke-width="1.2" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:1.2px"/>
+<line x1="286" y1="422" x2="415" y2="422" stroke="var(--uml-ink)" stroke-width="1.2" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:1.2px"/>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="415" y="406" width="65" height="32" rx="6" stroke-width="0.5" style="fill:var(--uml-amber-bg);stroke:var(--uml-amber);stroke-width:0.5px"/><text x="448" y="422" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-amber);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">帽子</text></g>
+<text x="500" y="418" style="fill:var(--uml-muted);stroke:none;font-size:12px">實線</text>
+<text x="500" y="432" style="fill:var(--uml-muted);stroke:none;font-size:12px">實心菱形</text>
+<line x1="40" y1="100" x2="640" y2="100" stroke="var(--uml-line)" stroke-width="0.5" style="fill:var(--uml-ink);stroke:var(--uml-line);stroke-width:0.5px"/>
+<line x1="40" y1="170" x2="640" y2="170" stroke="var(--uml-line)" stroke-width="0.5" style="fill:var(--uml-ink);stroke:var(--uml-line);stroke-width:0.5px"/>
+<line x1="40" y1="240" x2="640" y2="240" stroke="var(--uml-line)" stroke-width="0.5" style="fill:var(--uml-ink);stroke:var(--uml-line);stroke-width:0.5px"/>
+<line x1="40" y1="310" x2="640" y2="310" stroke="var(--uml-line)" stroke-width="0.5" style="fill:var(--uml-ink);stroke:var(--uml-line);stroke-width:0.5px"/>
+<line x1="40" y1="380" x2="640" y2="380" stroke="var(--uml-line)" stroke-width="0.5" style="fill:var(--uml-ink);stroke:var(--uml-line);stroke-width:0.5px"/>
+<text x="340" y="470" text-anchor="middle" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">菱形放在「整體」端（團體、演員）；三角箭頭指向「父類別 / 介面」</text>
+</svg>
+                </div>
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    六種關聯線的線型與端點符號
+                </figcaption>
+            </figure>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">繼承（泛化） Generalization</p>
+            <p>
+                子類別取得父類別的所有屬性與方法，可以覆寫父類別的行為。程式碼層級是 Java 的 <code class="text-xs">extends</code> 或 C# 的 <code class="text-xs">: 父類別</code>。語義上子類別「是一種」父類別——貓是一種動物，貓繼承動物的 <code class="text-xs">行走()</code>、<code class="text-xs">叫()</code> 再改寫成自己的版本。單繼承語言裡一個類別只能繼承一個父類別。
+            </p>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">實現 Realization</p>
+            <p>
+                類別承諾實作介面定義的全部方法簽章，介面本身只規定「必須有哪些方法」。程式碼層級是 <code class="text-xs">implements</code> 或 <code class="text-xs">: I介面名</code>。介面規定 <code class="text-xs">握手()</code> 和 <code class="text-xs">吃罐罐()</code>，實作類別必須把兩個方法都寫出具體邏輯，少一個就編譯失敗。一個類別可以同時實現多個介面。
+            </p>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">依賴 Dependency</p>
+            <p>
+                A 的某個方法在執行期間臨時用到 B，A 本身沒有持有 B 的參考。B 透過方法參數、區域變數或回傳值短暫出現。<code class="text-xs">Me.致富()</code> 接收股票和彩券當參數，Me 類別內部沒有這兩個屬性欄位，方法結束關係就消失。六種裡耦合最弱的一種。
+            </p>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">關聯 Association</p>
+            <p>
+                A 的屬性欄位持有 B 的參考，B 從外部注入（建構子傳入或 setter 設定）。辣椒作物有一個天氣屬性，天氣物件在建構子裡從外部傳進來，<code class="text-xs">成熟採收()</code> 靠 <code class="text-xs">this.天氣.目前季節()</code> 取資訊。天氣的生命週期獨立於辣椒作物，天氣被刪除時辣椒作物還在。
+            </p>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">聚合 Aggregation</p>
+            <p>
+                整體持有部分的集合，部分可以脫離整體獨立存在。團體的成員屬性是 <code class="text-xs">List&lt;人&gt;</code>，人透過 <code class="text-xs">加入團體()</code> 從外部加入，也能退出。團體解散之後人還活著，同一個人可以同時屬於多個團體。畫法是空心菱形放在整體那一端。
+            </p>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">組合 Composition</p>
+            <p>
+                整體在建構時自己建立部分，部分的生命週期完全綁定整體。演員的建構子內部直接 <code class="text-xs">new 墨西哥帽子()</code> 和 <code class="text-xs">new 棒球衣服()</code>，帽子跟衣服由演員自己產生，演員被刪除時一起消失，也不會被其他整體共用。畫法是實心菱形放在整體那一端。
+            </p>
+
+            <div class="bg-surface p-6 rounded-2xl border border-white/5 my-10">
+                <p class="text-sm text-gray-400 mb-3"><strong class="text-white">耦合強度由弱到強</strong></p>
+                <p class="font-mono text-sm text-accent-purple mb-5">依賴 &rarr; 關聯 &rarr; 聚合 &rarr; 組合 &rarr; 實現 &rarr; 繼承</p>
+                <p class="text-sm text-gray-400 mb-3"><strong class="text-white">實務上判斷只要問三題</strong></p>
+                <ol class="text-sm text-gray-400 space-y-1 list-decimal list-inside">
+                    <li>A 有沒有持有 B 的屬性欄位？</li>
+                    <li>B 是外部傳入的，還是 A 自己 <code class="text-xs">new</code> 出來的？</li>
+                    <li>A 消滅的時候 B 會不會跟著消滅？</li>
+                </ol>
+            </div>
+
+            <!-- ===== 結構圖 ===== -->
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 結構圖（7 種）
+            </h3>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">1 &mdash; 類別圖 Class Diagram</p>
+            <p>
+                標示每個類別的欄位、方法、可見性，以及類別之間的六種關聯線。UML 裡使用頻率最高的一張，設計模式的書幾乎都靠它表達結構。開發前用它確認物件關係，開發後它就是系統文件。
+            </p>
+            <figure class="my-10">
+                <div class="overflow-x-auto rounded-2xl border border-white/10 shadow-2xl">
+                    <svg class="uml" viewBox="0 0 680 310" style="min-width:560px" xmlns="http://www.w3.org/2000/svg">
+<title style="fill:var(--uml-ink);stroke:none">UML class diagram example</title>
+<desc style="fill:var(--uml-ink);stroke:none">動物、貓、飼主三個類別的繼承與關聯關係</desc>
+<defs><marker id="a4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect x="100" y="20" width="170" height="100" rx="4" fill="none" stroke="var(--uml-ink)" stroke-width="1" style="fill:none;stroke:var(--uml-ink)"/>
+<text x="185" y="42" text-anchor="middle" dominant-baseline="central" font-style="italic" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500;font-style:italic;text-anchor:middle;dominant-baseline:central">動物</text>
+<line x1="100" y1="55" x2="270" y2="55" stroke="var(--uml-ink)" stroke-width="0.5" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.5px"/>
+<text x="112" y="72" style="fill:var(--uml-muted);stroke:none;font-size:12px">+ 名稱: string</text>
+<line x1="100" y1="82" x2="270" y2="82" stroke="var(--uml-ink)" stroke-width="0.5" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.5px"/>
+<text x="112" y="99" style="fill:var(--uml-muted);stroke:none;font-size:12px">+ 叫()</text>
+<text x="112" y="115" style="fill:var(--uml-muted);stroke:none;font-size:12px">+ 行走()</text>
+<rect x="100" y="190" width="170" height="100" rx="4" fill="none" stroke="var(--uml-ink)" stroke-width="1" style="fill:none;stroke:var(--uml-ink)"/>
+<text x="185" y="212" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">貓</text>
+<line x1="100" y1="225" x2="270" y2="225" stroke="var(--uml-ink)" stroke-width="0.5" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.5px"/>
+<text x="112" y="242" style="fill:var(--uml-muted);stroke:none;font-size:12px">+ 花色: string</text>
+<line x1="100" y1="252" x2="270" y2="252" stroke="var(--uml-ink)" stroke-width="0.5" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.5px"/>
+<text x="112" y="269" style="fill:var(--uml-muted);stroke:none;font-size:12px">+ 撒嬌()</text>
+<line x1="185" y1="190" x2="185" y2="132" stroke="var(--uml-ink)" stroke-width="1" style="fill:var(--uml-ink);stroke:var(--uml-ink)"/>
+<polygon points="185,120 178,132 192,132" fill="none" stroke="var(--uml-ink)" stroke-width="1" style="fill:none;stroke:var(--uml-ink)"/>
+<rect x="420" y="190" width="170" height="100" rx="4" fill="none" stroke="var(--uml-ink)" stroke-width="1" style="fill:none;stroke:var(--uml-ink)"/>
+<text x="505" y="212" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">飼主</text>
+<line x1="420" y1="225" x2="590" y2="225" stroke="var(--uml-ink)" stroke-width="0.5" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.5px"/>
+<text x="432" y="242" style="fill:var(--uml-muted);stroke:none;font-size:12px">+ 姓名: string</text>
+<line x1="420" y1="252" x2="590" y2="252" stroke="var(--uml-ink)" stroke-width="0.5" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.5px"/>
+<text x="432" y="269" style="fill:var(--uml-muted);stroke:none;font-size:12px">+ 餵食(貓)</text>
+<line x1="420" y1="240" x2="282" y2="240" stroke="var(--uml-ink)" stroke-width="1" style="fill:var(--uml-ink);stroke:var(--uml-ink)"/>
+<path d="M280,233 L270,240 L280,247" fill="none" stroke="var(--uml-ink)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="fill:none;stroke:var(--uml-ink);stroke-linecap:round;stroke-linejoin:round"/>
+<text x="350" y="232" style="fill:var(--uml-muted);stroke:none;font-size:12px">關聯 1..*</text>
+<text x="155" y="165" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px">繼承</text>
+</svg>
+                </div>
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">類別圖</figcaption>
+            </figure>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">2 &mdash; 物件圖 Object Diagram</p>
+            <p>
+                類別圖的快照版，顯示某個時間點下已經被 <code class="text-xs">new</code> 出來的實例各自持有什麼值。類別圖畫的是規格，物件圖畫的是某一刻的實際資料。用來驗證類別圖的設計在真實資料跑起來時站不站得住。
+            </p>
+            <figure class="my-10">
+                <div class="overflow-x-auto rounded-2xl border border-white/10 shadow-2xl">
+                    <svg class="uml" viewBox="0 0 680 200" style="min-width:560px" xmlns="http://www.w3.org/2000/svg">
+<title style="fill:var(--uml-ink);stroke:none">UML object diagram example</title>
+<desc style="fill:var(--uml-ink);stroke:none">兩個已實例化的物件 myCat 和 owner，屬性帶有具體值</desc>
+<defs><marker id="a5" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect x="60" y="30" width="200" height="130" rx="4" fill="none" stroke="var(--uml-ink)" stroke-width="1" style="fill:none;stroke:var(--uml-ink)"/>
+<text x="160" y="55" text-anchor="middle" dominant-baseline="central" text-decoration="underline" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">myCat : 貓</text>
+<line x1="60" y1="68" x2="260" y2="68" stroke="var(--uml-ink)" stroke-width="0.5" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.5px"/>
+<text x="72" y="88" style="fill:var(--uml-muted);stroke:none;font-size:12px">名稱 = "小橘"</text>
+<text x="72" y="106" style="fill:var(--uml-muted);stroke:none;font-size:12px">花色 = "橘白"</text>
+<line x1="60" y1="118" x2="260" y2="118" stroke="var(--uml-ink)" stroke-width="0.5" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.5px"/>
+<text x="72" y="138" style="fill:var(--uml-muted);stroke:none;font-size:12px">+ 叫()</text>
+<text x="72" y="154" style="fill:var(--uml-muted);stroke:none;font-size:12px">+ 撒嬌()</text>
+<rect x="400" y="30" width="200" height="110" rx="4" fill="none" stroke="var(--uml-ink)" stroke-width="1" style="fill:none;stroke:var(--uml-ink)"/>
+<text x="500" y="55" text-anchor="middle" dominant-baseline="central" text-decoration="underline" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">owner : 飼主</text>
+<line x1="400" y1="68" x2="600" y2="68" stroke="var(--uml-ink)" stroke-width="0.5" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.5px"/>
+<text x="412" y="88" style="fill:var(--uml-muted);stroke:none;font-size:12px">姓名 = "Sunny"</text>
+<line x1="400" y1="100" x2="600" y2="100" stroke="var(--uml-ink)" stroke-width="0.5" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.5px"/>
+<text x="412" y="120" style="fill:var(--uml-muted);stroke:none;font-size:12px">+ 餵食(貓)</text>
+<line x1="400" y1="90" x2="272" y2="90" stroke="var(--uml-ink)" stroke-width="1" style="fill:var(--uml-ink);stroke:var(--uml-ink)"/>
+<path d="M270,83 L260,90 L270,97" fill="none" stroke="var(--uml-ink)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="fill:none;stroke:var(--uml-ink);stroke-linecap:round;stroke-linejoin:round"/>
+</svg>
+                </div>
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">物件圖</figcaption>
+            </figure>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">3 &mdash; 套件圖 Package Diagram</p>
+            <p>
+                把類別、介面、子套件分組打包，用虛線箭頭標示模組之間的依賴方向。大型系統靠它確認模組切分合理、沒有循環依賴。
+            </p>
+            <figure class="my-10">
+                <div class="overflow-x-auto rounded-2xl border border-white/10 shadow-2xl">
+                    <svg class="uml" viewBox="0 0 680 220" style="min-width:560px" xmlns="http://www.w3.org/2000/svg">
+<title style="fill:var(--uml-ink);stroke:none">UML package diagram example</title>
+<desc style="fill:var(--uml-ink);stroke:none">三個套件 UI、Service、Data 的依賴關係</desc>
+<defs><marker id="a6" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect x="50" y="30" width="60" height="18" rx="3" fill="none" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:none;stroke:var(--uml-ink);stroke-width:0.8px"/>
+<rect x="50" y="48" width="140" height="80" rx="4" fill="none" stroke="var(--uml-ink)" stroke-width="1" style="fill:none;stroke:var(--uml-ink)"/>
+<text x="120" y="75" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">UI</text>
+<text x="120" y="95" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle;dominant-baseline:central">頁面、元件</text>
+<rect x="270" y="30" width="60" height="18" rx="3" fill="none" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:none;stroke:var(--uml-ink);stroke-width:0.8px"/>
+<rect x="270" y="48" width="140" height="80" rx="4" fill="none" stroke="var(--uml-ink)" stroke-width="1" style="fill:none;stroke:var(--uml-ink)"/>
+<text x="340" y="75" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Service</text>
+<text x="340" y="95" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle;dominant-baseline:central">業務邏輯</text>
+<rect x="490" y="30" width="60" height="18" rx="3" fill="none" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:none;stroke:var(--uml-ink);stroke-width:0.8px"/>
+<rect x="490" y="48" width="140" height="80" rx="4" fill="none" stroke="var(--uml-ink)" stroke-width="1" style="fill:none;stroke:var(--uml-ink)"/>
+<text x="560" y="75" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Data</text>
+<text x="560" y="95" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle;dominant-baseline:central">資料存取</text>
+<line x1="190" y1="88" x2="268" y2="88" stroke="var(--uml-ink)" stroke-width="1" stroke-dasharray="6 4" marker-end="url(#a6)" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-dasharray:6px, 4px"/>
+<line x1="410" y1="88" x2="488" y2="88" stroke="var(--uml-ink)" stroke-width="1" stroke-dasharray="6 4" marker-end="url(#a6)" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-dasharray:6px, 4px"/>
+<text x="340" y="160" text-anchor="middle" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">虛線箭頭 = 依賴方向（UI 依賴 Service，Service 依賴 Data）</text>
+<text x="340" y="178" text-anchor="middle" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">依賴方向不可反轉 — Data 不應該知道 UI 的存在</text>
+</svg>
+                </div>
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">套件圖</figcaption>
+            </figure>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">4 &mdash; 組件圖 Component Diagram</p>
+            <p>
+                比套件圖粗一級，描述系統由哪些可獨立部署的單元組成。一個 <code class="text-xs">.dll</code>、一個微服務、一個 API 模組都算一個元件。元件之間用棒棒糖符號（提供介面）接半圓符號（需要介面），確認部署單元的邊界與介面契約。
+            </p>
+            <figure class="my-10">
+                <div class="overflow-x-auto rounded-2xl border border-white/10 shadow-2xl">
+                    <svg class="uml" viewBox="0 0 680 200" style="min-width:560px" xmlns="http://www.w3.org/2000/svg">
+<title style="fill:var(--uml-ink);stroke:none">UML component diagram example</title>
+<desc style="fill:var(--uml-ink);stroke:none">前端 App 透過 I登入介面 連接 使用者服務</desc>
+<defs><marker id="a7" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<g style="fill:var(--uml-ink);stroke:none">
+<rect x="60" y="40" width="170" height="70" rx="6" stroke-width="0.5" style="fill:var(--uml-purple-bg);stroke:var(--uml-purple);stroke-width:0.5px"/>
+<text x="145" y="55" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-purple);stroke:none;font-size:12px;text-anchor:middle;dominant-baseline:central">«component»</text>
+<text x="145" y="78" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-purple);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">前端 App</text>
+</g>
+<g style="fill:var(--uml-ink);stroke:none">
+<rect x="430" y="40" width="190" height="70" rx="6" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/>
+<text x="525" y="55" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:12px;text-anchor:middle;dominant-baseline:central">«component»</text>
+<text x="525" y="78" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">使用者服務</text>
+</g>
+<line x1="230" y1="75" x2="320" y2="75" stroke="var(--uml-ink)" stroke-width="1" style="fill:var(--uml-ink);stroke:var(--uml-ink)"/>
+<path d="M318,65 A10,10 0 0,0 318,85" fill="none" stroke="var(--uml-ink)" stroke-width="1" style="fill:none;stroke:var(--uml-ink)"/>
+<line x1="365" y1="75" x2="430" y2="75" stroke="var(--uml-ink)" stroke-width="1" style="fill:var(--uml-ink);stroke:var(--uml-ink)"/>
+<circle cx="365" cy="75" r="6" fill="none" stroke="var(--uml-ink)" stroke-width="1" style="fill:none;stroke:var(--uml-ink)"/>
+<text x="345" y="105" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle;dominant-baseline:central">I登入介面</text>
+<text x="265" y="155" text-anchor="middle" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">◠ 半圓 = 需要介面</text>
+<text x="430" y="155" text-anchor="middle" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">○ 棒棒糖 = 提供介面</text>
+</svg>
+                </div>
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">組件圖</figcaption>
+            </figure>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">5 &mdash; 佈署圖 Deployment Diagram</p>
+            <p>
+                軟體元件實際跑在哪些硬體節點上，節點之間用什麼協定連線。節點是一台實體伺服器、一個 VM 或一個容器，元件放在節點內部，連線標上 HTTP、TCP、gRPC。跟維運團隊討論基礎架構時用這張。
+            </p>
+            <figure class="my-10">
+                <div class="overflow-x-auto rounded-2xl border border-white/10 shadow-2xl">
+                    <svg class="uml" viewBox="0 0 680 230" style="min-width:560px" xmlns="http://www.w3.org/2000/svg">
+<title style="fill:var(--uml-ink);stroke:none">UML deployment diagram example</title>
+<desc style="fill:var(--uml-ink);stroke:none">Web Server 和 DB Server 兩個節點之間透過 TCP 連線</desc>
+<defs><marker id="a8" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect x="40" y="20" width="250" height="150" rx="12" fill="none" stroke="var(--uml-ink)" stroke-width="0.5" stroke-dasharray="6 4" style="fill:none;stroke:var(--uml-ink);stroke-width:0.5px;stroke-dasharray:6px, 4px"/>
+<text x="55" y="42" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500">«device» Web server</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="65" y="60" width="200" height="44" rx="6" stroke-width="0.5" style="fill:var(--uml-purple-bg);stroke:var(--uml-purple);stroke-width:0.5px"/><text x="165" y="82" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-purple);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">前端 App</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="65" y="115" width="200" height="44" rx="6" stroke-width="0.5" style="fill:var(--uml-purple-bg);stroke:var(--uml-purple);stroke-width:0.5px"/><text x="165" y="137" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-purple);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">API 服務</text></g>
+<rect x="390" y="20" width="250" height="150" rx="12" fill="none" stroke="var(--uml-ink)" stroke-width="0.5" stroke-dasharray="6 4" style="fill:none;stroke:var(--uml-ink);stroke-width:0.5px;stroke-dasharray:6px, 4px"/>
+<text x="405" y="42" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500">«device» DB server</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="415" y="60" width="200" height="44" rx="6" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="515" y="82" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">PostgreSQL</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="415" y="115" width="200" height="44" rx="6" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="515" y="137" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Redis Cache</text></g>
+<line x1="290" y1="95" x2="390" y2="95" stroke="var(--uml-ink)" stroke-width="1" style="fill:var(--uml-ink);stroke:var(--uml-ink)"/>
+<text x="340" y="88" text-anchor="middle" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">«TCP»</text>
+<text x="340" y="210" text-anchor="middle" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">虛線框 = 硬體節點，內部方塊 = 部署在該節點上的軟體元件</text>
+</svg>
+                </div>
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">佈署圖</figcaption>
+            </figure>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">6 &mdash; 剖面圖 Profile Diagram</p>
+            <p>
+                對 UML 本身的語法做擴充，定義自訂的標記（Stereotype）、標籤值、約束，讓標準 UML 能描述特定領域的概念。例如定義一個 <code class="text-xs">&laquo;RESTful&raquo;</code> 標記套用在元件上，表示這個元件遵守 REST 規範。標準語彙不夠用的時候用它擴充。
+            </p>
+            <figure class="my-10">
+                <div class="overflow-x-auto rounded-2xl border border-white/10 shadow-2xl">
+                    <svg class="uml" viewBox="0 0 680 200" style="min-width:560px" xmlns="http://www.w3.org/2000/svg">
+<title style="fill:var(--uml-ink);stroke:none">UML profile diagram example</title>
+<desc style="fill:var(--uml-ink);stroke:none">自訂 RESTful stereotype 擴充 Component 的語義</desc>
+<defs><marker id="a9" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect x="40" y="20" width="600" height="130" rx="12" fill="none" stroke="var(--uml-ink)" stroke-width="0.5" stroke-dasharray="6 4" style="fill:none;stroke:var(--uml-ink);stroke-width:0.5px;stroke-dasharray:6px, 4px"/>
+<text x="55" y="42" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500">«profile» Web API 規範</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="70" y="60" width="200" height="70" rx="6" stroke-width="0.5" style="fill:var(--uml-orange-bg);stroke:var(--uml-orange);stroke-width:0.5px"/>
+<text x="170" y="78" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-orange);stroke:none;font-size:12px;text-anchor:middle;dominant-baseline:central">«stereotype»</text>
+<text x="170" y="100" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-orange);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">RESTful</text>
+<text x="170" y="118" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-orange);stroke:none;font-size:12px;text-anchor:middle;dominant-baseline:central">baseUrl: string</text>
+</g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="420" y="68" width="180" height="50" rx="6" stroke-width="0.5" style="fill:var(--uml-surface);stroke:var(--uml-muted);stroke-width:0.5px"/>
+<text x="510" y="85" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle;dominant-baseline:central">«metaclass»</text>
+<text x="510" y="103" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-muted);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">Component</text>
+</g>
+<line x1="270" y1="95" x2="408" y2="95" stroke="var(--uml-ink)" stroke-width="1" marker-end="url(#a9)" style="fill:var(--uml-ink);stroke:var(--uml-ink)"/>
+<text x="340" y="88" text-anchor="middle" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">extension</text>
+<text x="340" y="175" text-anchor="middle" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">自訂 RESTful stereotype → 套用在 Component 上就代表該元件遵守 REST 規範</text>
+</svg>
+                </div>
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">剖面圖</figcaption>
+            </figure>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">7 &mdash; 複合結構圖 Composite Structure Diagram</p>
+            <p>
+                打開一個類別或元件的內部，顯示它的零件怎麼透過連接埠與連接器接線。類別圖看的是類別之間的關係，複合結構圖看的是一個類別內部的組裝方式。嵌入式系統與硬體建模常用。
+            </p>
+            <figure class="my-10">
+                <div class="overflow-x-auto rounded-2xl border border-white/10 shadow-2xl">
+                    <svg class="uml" viewBox="0 0 680 230" style="min-width:560px" xmlns="http://www.w3.org/2000/svg">
+<title style="fill:var(--uml-ink);stroke:none">UML composite structure diagram example</title>
+<desc style="fill:var(--uml-ink);stroke:none">汽車類別的內部結構：引擎和變速箱透過傳動軸連接</desc>
+<defs><marker id="a10" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect x="60" y="20" width="560" height="160" rx="16" fill="none" stroke="var(--uml-ink)" stroke-width="1" style="fill:none;stroke:var(--uml-ink)"/>
+<text x="340" y="42" text-anchor="middle" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500;text-anchor:middle">汽車</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="95" y="65" width="170" height="56" rx="6" stroke-width="0.5" style="fill:var(--uml-orange-bg);stroke:var(--uml-orange);stroke-width:0.5px"/><text x="180" y="86" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-orange);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">e : 引擎</text><text x="180" y="106" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-orange);stroke:none;font-size:12px;text-anchor:middle;dominant-baseline:central">馬力輸出</text></g>
+<rect x="262" y="85" width="14" height="14" rx="2" fill="none" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:none;stroke:var(--uml-ink);stroke-width:0.8px"/>
+<rect x="402" y="85" width="14" height="14" rx="2" fill="none" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:none;stroke:var(--uml-ink);stroke-width:0.8px"/>
+<line x1="276" y1="92" x2="402" y2="92" stroke="var(--uml-ink)" stroke-width="1" style="fill:var(--uml-ink);stroke:var(--uml-ink)"/>
+<text x="340" y="82" text-anchor="middle" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">傳動軸</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="415" y="65" width="170" height="56" rx="6" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="500" y="86" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">t : 變速箱</text><text x="500" y="106" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:12px;text-anchor:middle;dominant-baseline:central">齒輪切換</text></g>
+<text x="340" y="205" text-anchor="middle" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">小方塊 = 連接埠（Port），連接埠之間的線 = 連接器（Connector）</text>
+</svg>
+                </div>
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">複合結構圖</figcaption>
+            </figure>
+
+            <!-- ===== 行為圖 ===== -->
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 行為圖（3 種）
+            </h3>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">8 &mdash; 活動圖 Activity Diagram</p>
+            <p>
+                一個流程從起點到終點經過哪些步驟，包含判斷分支、平行分叉與迴圈。菱形是判斷，對應程式的 if/else；粗黑橫線是 Fork 與 Join，表示平行處理。業務流程、工作流程、演算法步驟都用它，功能上覆蓋傳統流程圖。
+            </p>
+            <figure class="my-10">
+                <div class="overflow-x-auto rounded-2xl border border-white/10 shadow-2xl">
+                    <svg class="uml" viewBox="0 0 680 380" style="min-width:560px" xmlns="http://www.w3.org/2000/svg">
+<title style="fill:var(--uml-ink);stroke:none">UML activity diagram example</title>
+<desc style="fill:var(--uml-ink);stroke:none">使用者登入流程：輸入帳密 → 驗證 → 成功/失敗分支</desc>
+<defs><marker id="a11" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><mask id="imagine-text-gaps-ckw4su" maskUnits="userSpaceOnUse"><rect x="0" y="0" width="680" height="380" fill="var(--uml-bg)"/><rect x="308" y="69.33333587646484" width="64" height="21.33333396911621" fill="var(--uml-ink)" rx="2"/><rect x="308" y="139.33334350585938" width="64" height="21.33333396911621" fill="var(--uml-ink)" rx="2"/><rect x="302.74481201171875" y="213.33334350585938" width="14.666666984558105" height="19.33333396911621" fill="var(--uml-ink)" rx="2"/><rect x="416" y="198" width="32" height="19.33333396911621" fill="var(--uml-ink)" rx="2"/><rect x="528" y="209.33334350585938" width="64" height="21.33333396911621" fill="var(--uml-ink)" rx="2"/><rect x="256" y="198" width="32" height="19.33333396911621" fill="var(--uml-ink)" rx="2"/><rect x="93" y="209.33334350585938" width="64" height="21.33333396911621" fill="var(--uml-ink)" rx="2"/><rect x="171" y="128" width="32" height="19.33333396911621" fill="var(--uml-ink)" rx="2"/><rect x="186.8385467529297" y="346" width="306.32293701171875" height="19.33333396911621" fill="var(--uml-ink)" rx="2"/></mask></defs>
+<circle cx="340" cy="25" r="10" fill="var(--uml-ink)" style="fill:var(--uml-ink);stroke:none"/>
+<line x1="340" y1="35" x2="340" y2="55" marker-end="url(#a11)" style="fill:none;stroke:var(--uml-muted);stroke-width:1.5px"/>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="260" y="58" width="160" height="44" rx="20" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="340" y="80" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">輸入帳密</text></g>
+<line x1="340" y1="102" x2="340" y2="125" marker-end="url(#a11)" style="fill:none;stroke:var(--uml-muted);stroke-width:1.5px"/>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="260" y="128" width="160" height="44" rx="20" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="340" y="150" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">驗證帳密</text></g>
+<line x1="340" y1="172" x2="340" y2="195" marker-end="url(#a11)" style="fill:none;stroke:var(--uml-muted);stroke-width:1.5px"/>
+<polygon points="340,198 365,220 340,242 315,220" fill="none" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:none;stroke:var(--uml-ink);stroke-width:0.8px"/>
+<text x="340" y="220" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle;dominant-baseline:central">?</text>
+<line x1="365" y1="220" x2="480" y2="220" marker-end="url(#a11)" style="fill:none;stroke:var(--uml-muted);stroke-width:1.5px"/>
+<text x="420" y="212" style="fill:var(--uml-muted);stroke:none;font-size:12px">成功</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="485" y="198" width="150" height="44" rx="20" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="560" y="220" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">顯示首頁</text></g>
+<line x1="560" y1="242" x2="560" y2="290" stroke="var(--uml-ink)" stroke-width="1" style="fill:var(--uml-ink);stroke:var(--uml-ink)"/>
+<circle cx="560" cy="305" r="12" fill="none" stroke="var(--uml-ink)" stroke-width="2" style="fill:none;stroke:var(--uml-ink);stroke-width:2px"/>
+<circle cx="560" cy="305" r="6" fill="var(--uml-ink)" style="fill:var(--uml-ink);stroke:none"/>
+<line x1="315" y1="220" x2="200" y2="220" marker-end="url(#a11)" mask="url(#imagine-text-gaps-ckw4su)" style="fill:none;stroke:var(--uml-muted);stroke-width:1.5px"/>
+<text x="260" y="212" style="fill:var(--uml-muted);stroke:none;font-size:12px">失敗</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="50" y="198" width="150" height="44" rx="20" stroke-width="0.5" style="fill:var(--uml-orange-bg);stroke:var(--uml-orange);stroke-width:0.5px"/><text x="125" y="220" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-orange);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">顯示錯誤</text></g>
+<path d="M125 198 L125 150 L258 150" fill="none" stroke="var(--uml-ink)" stroke-width="1" marker-end="url(#a11)" style="fill:none;stroke:var(--uml-ink)"/>
+<text x="175" y="142" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px">重試</text>
+<text x="340" y="360" text-anchor="middle" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">圓角矩形 = 活動，菱形 = 判斷分支，● = 起始，◉ = 結束</text>
+</svg>
+                </div>
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">活動圖</figcaption>
+            </figure>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">9 &mdash; 狀態圖 State Machine Diagram</p>
+            <p>
+                一個物件在生命週期裡會經過哪些狀態，以及什麼事件觸發狀態轉換。圓角矩形是狀態，箭頭上標觸發事件。狀態可以巢狀（一個狀態內部再細分）也可以併發（同時處於多個子狀態）。訂單狀態機、連線協定、UI 元件的互動狀態都靠它描述。
+            </p>
+            <figure class="my-10">
+                <div class="overflow-x-auto rounded-2xl border border-white/10 shadow-2xl">
+                    <svg class="uml" viewBox="0 0 680 290" style="min-width:560px" xmlns="http://www.w3.org/2000/svg">
+<title style="fill:var(--uml-ink);stroke:none">UML state machine diagram example</title>
+<desc style="fill:var(--uml-ink);stroke:none">訂單狀態機：待處理 → 處理中 → 已出貨 → 已完成，可從處理中取消</desc>
+<defs><marker id="a12" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<circle cx="55" cy="70" r="10" fill="var(--uml-ink)" style="fill:var(--uml-ink);stroke:none"/>
+<line x1="65" y1="70" x2="88" y2="70" marker-end="url(#a12)" style="fill:none;stroke:var(--uml-muted);stroke-width:1.5px"/>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="90" y="48" width="110" height="44" rx="20" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="145" y="70" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">待處理</text></g>
+<line x1="200" y1="70" x2="238" y2="70" marker-end="url(#a12)" style="fill:none;stroke:var(--uml-muted);stroke-width:1.5px"/>
+<text x="220" y="40" style="fill:var(--uml-muted);stroke:none;font-size:12px">下單</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="240" y="48" width="110" height="44" rx="20" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="295" y="70" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">處理中</text></g>
+<line x1="350" y1="70" x2="388" y2="70" marker-end="url(#a12)" style="fill:none;stroke:var(--uml-muted);stroke-width:1.5px"/>
+<text x="370" y="40" style="fill:var(--uml-muted);stroke:none;font-size:12px">出貨</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="390" y="48" width="110" height="44" rx="20" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="445" y="70" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">已出貨</text></g>
+<line x1="500" y1="70" x2="538" y2="70" marker-end="url(#a12)" style="fill:none;stroke:var(--uml-muted);stroke-width:1.5px"/>
+<text x="520" y="40" style="fill:var(--uml-muted);stroke:none;font-size:12px">簽收</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="540" y="48" width="110" height="44" rx="20" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="595" y="70" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">已完成</text></g>
+<line x1="595" y1="92" x2="595" y2="130" stroke="var(--uml-ink)" stroke-width="1" style="fill:var(--uml-ink);stroke:var(--uml-ink)"/>
+<circle cx="595" cy="145" r="12" fill="none" stroke="var(--uml-ink)" stroke-width="2" style="fill:none;stroke:var(--uml-ink);stroke-width:2px"/>
+<circle cx="595" cy="145" r="6" fill="var(--uml-ink)" style="fill:var(--uml-ink);stroke:none"/>
+<line x1="295" y1="92" x2="295" y2="178" marker-end="url(#a12)" style="fill:none;stroke:var(--uml-muted);stroke-width:1.5px"/>
+<text x="310" y="140" style="fill:var(--uml-muted);stroke:none;font-size:12px">取消</text>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="240" y="180" width="110" height="44" rx="20" stroke-width="0.5" style="fill:var(--uml-orange-bg);stroke:var(--uml-orange);stroke-width:0.5px"/><text x="295" y="202" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-orange);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">已取消</text></g>
+<text x="340" y="265" text-anchor="middle" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">圓角矩形 = 狀態，箭頭上的文字 = 觸發事件</text>
+</svg>
+                </div>
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">狀態圖</figcaption>
+            </figure>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">10 &mdash; 使用案例圖 Use Case Diagram</p>
+            <p>
+                從使用者角度描述系統提供哪些功能、哪些角色能操作哪些功能。火柴人是演員，可以是人、外部系統或排程器；橢圓是一個使用案例；矩形框起系統邊界。需求分析階段跟客戶確認「系統要做什麼」用這張，內容完全不涉及怎麼做。
+            </p>
+            <figure class="my-10">
+                <div class="overflow-x-auto rounded-2xl border border-white/10 shadow-2xl">
+                    <svg class="uml" viewBox="0 0 680 300" style="min-width:560px" xmlns="http://www.w3.org/2000/svg">
+<title style="fill:var(--uml-ink);stroke:none">UML use case diagram example</title>
+<desc style="fill:var(--uml-ink);stroke:none">學生選課系統：學生和管理員兩個角色對應不同使用案例</desc>
+<defs><marker id="a13" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect x="170" y="15" width="340" height="260" rx="12" fill="none" stroke="var(--uml-ink)" stroke-width="1" style="fill:none;stroke:var(--uml-ink)"/>
+<text x="340" y="35" text-anchor="middle" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500;text-anchor:middle">選課系統</text>
+<circle cx="80" cy="100" r="12" fill="none" stroke="var(--uml-ink)" stroke-width="1.2" style="fill:none;stroke:var(--uml-ink);stroke-width:1.2px"/>
+<line x1="80" y1="112" x2="80" y2="150" stroke="var(--uml-ink)" stroke-width="1.2" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:1.2px"/>
+<line x1="60" y1="130" x2="100" y2="130" stroke="var(--uml-ink)" stroke-width="1.2" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:1.2px"/>
+<line x1="80" y1="150" x2="60" y2="175" stroke="var(--uml-ink)" stroke-width="1.2" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:1.2px"/>
+<line x1="80" y1="150" x2="100" y2="175" stroke="var(--uml-ink)" stroke-width="1.2" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:1.2px"/>
+<text x="80" y="195" text-anchor="middle" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">學生</text>
+<circle cx="600" cy="100" r="12" fill="none" stroke="var(--uml-ink)" stroke-width="1.2" style="fill:none;stroke:var(--uml-ink);stroke-width:1.2px"/>
+<line x1="600" y1="112" x2="600" y2="150" stroke="var(--uml-ink)" stroke-width="1.2" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:1.2px"/>
+<line x1="580" y1="130" x2="620" y2="130" stroke="var(--uml-ink)" stroke-width="1.2" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:1.2px"/>
+<line x1="600" y1="150" x2="580" y2="175" stroke="var(--uml-ink)" stroke-width="1.2" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:1.2px"/>
+<line x1="600" y1="150" x2="620" y2="175" stroke="var(--uml-ink)" stroke-width="1.2" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:1.2px"/>
+<text x="600" y="195" text-anchor="middle" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">管理員</text>
+<g style="fill:var(--uml-ink);stroke:none"><ellipse cx="310" cy="70" rx="80" ry="22" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="310" y="70" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">註冊帳號</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><ellipse cx="310" cy="130" rx="80" ry="22" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="310" y="130" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">選課</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><ellipse cx="310" cy="190" rx="80" ry="22" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="310" y="190" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">查詢成績</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><ellipse cx="390" cy="245" rx="90" ry="22" stroke-width="0.5" style="fill:var(--uml-orange-bg);stroke:var(--uml-orange);stroke-width:0.5px"/><text x="390" y="245" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-orange);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">管理使用者</text></g>
+<line x1="100" y1="120" x2="228" y2="75" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.8px"/>
+<line x1="100" y1="130" x2="228" y2="130" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.8px"/>
+<line x1="100" y1="145" x2="228" y2="185" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.8px"/>
+<line x1="580" y1="145" x2="482" y2="240" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.8px"/>
+</svg>
+                </div>
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">使用案例圖</figcaption>
+            </figure>
+
+            <!-- ===== 互動圖 ===== -->
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 互動圖（4 種）
+            </h3>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">11 &mdash; 時序圖 Sequence Diagram</p>
+            <p>
+                物件之間按時間順序傳遞訊息的過程。垂直軸是時間由上往下，水平軸是參與的物件，每個物件底下有一條生命線。實線箭頭是方法呼叫並標上方法名，虛線箭頭是回傳值。追一個操作從頭到尾經過哪些物件、呼叫哪些方法，這張最直接。
+            </p>
+            <figure class="my-10">
+                <div class="overflow-x-auto rounded-2xl border border-white/10 shadow-2xl">
+                    <svg class="uml" viewBox="0 0 680 340" style="min-width:560px" xmlns="http://www.w3.org/2000/svg">
+<title style="fill:var(--uml-ink);stroke:none">UML sequence diagram example</title>
+<desc style="fill:var(--uml-ink);stroke:none">使用者登入流程的時序圖：使用者 → 前端 → 後端 → 資料庫</desc>
+<defs><marker id="a14" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="55" y="15" width="80" height="36" rx="6" stroke-width="0.5" style="fill:var(--uml-purple-bg);stroke:var(--uml-purple);stroke-width:0.5px"/><text x="95" y="33" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-purple);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">使用者</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="205" y="15" width="80" height="36" rx="6" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="245" y="33" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">前端</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="375" y="15" width="80" height="36" rx="6" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="415" y="33" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">後端</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="545" y="15" width="80" height="36" rx="6" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="585" y="33" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">資料庫</text></g>
+<line x1="95" y1="51" x2="95" y2="310" stroke="var(--uml-ink)" stroke-width="0.5" stroke-dasharray="4 4" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.5px;stroke-dasharray:4px, 4px"/>
+<line x1="245" y1="51" x2="245" y2="310" stroke="var(--uml-ink)" stroke-width="0.5" stroke-dasharray="4 4" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.5px;stroke-dasharray:4px, 4px"/>
+<line x1="415" y1="51" x2="415" y2="310" stroke="var(--uml-ink)" stroke-width="0.5" stroke-dasharray="4 4" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.5px;stroke-dasharray:4px, 4px"/>
+<line x1="585" y1="51" x2="585" y2="310" stroke="var(--uml-ink)" stroke-width="0.5" stroke-dasharray="4 4" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.5px;stroke-dasharray:4px, 4px"/>
+<rect x="90" y="80" width="10" height="60" rx="2" fill="var(--uml-sec)" opacity="0.3" style="fill:var(--uml-muted);stroke:none;opacity:0.3"/>
+<rect x="240" y="90" width="10" height="100" rx="2" fill="var(--uml-sec)" opacity="0.3" style="fill:var(--uml-muted);stroke:none;opacity:0.3"/>
+<rect x="410" y="120" width="10" height="80" rx="2" fill="var(--uml-sec)" opacity="0.3" style="fill:var(--uml-muted);stroke:none;opacity:0.3"/>
+<rect x="580" y="150" width="10" height="30" rx="2" fill="var(--uml-sec)" opacity="0.3" style="fill:var(--uml-muted);stroke:none;opacity:0.3"/>
+<line x1="100" y1="95" x2="238" y2="95" stroke="var(--uml-ink)" stroke-width="1" marker-end="url(#a14)" style="fill:var(--uml-ink);stroke:var(--uml-ink)"/>
+<text x="170" y="88" style="fill:var(--uml-muted);stroke:none;font-size:12px">輸入帳密</text>
+<line x1="250" y1="125" x2="408" y2="125" stroke="var(--uml-ink)" stroke-width="1" marker-end="url(#a14)" style="fill:var(--uml-ink);stroke:var(--uml-ink)"/>
+<text x="330" y="118" style="fill:var(--uml-muted);stroke:none;font-size:12px">POST /login</text>
+<line x1="420" y1="155" x2="578" y2="155" stroke="var(--uml-ink)" stroke-width="1" marker-end="url(#a14)" style="fill:var(--uml-ink);stroke:var(--uml-ink)"/>
+<text x="500" y="148" style="fill:var(--uml-muted);stroke:none;font-size:12px">SELECT user</text>
+<line x1="578" y1="175" x2="420" y2="175" stroke="var(--uml-ink)" stroke-width="1" stroke-dasharray="6 4" marker-end="url(#a14)" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-dasharray:6px, 4px"/>
+<text x="500" y="190" style="fill:var(--uml-muted);stroke:none;font-size:12px">user row</text>
+<line x1="408" y1="200" x2="250" y2="200" stroke="var(--uml-ink)" stroke-width="1" stroke-dasharray="6 4" marker-end="url(#a14)" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-dasharray:6px, 4px"/>
+<text x="330" y="215" style="fill:var(--uml-muted);stroke:none;font-size:12px">JWT token</text>
+<line x1="238" y1="230" x2="100" y2="230" stroke="var(--uml-ink)" stroke-width="1" stroke-dasharray="6 4" marker-end="url(#a14)" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-dasharray:6px, 4px"/>
+<text x="170" y="245" style="fill:var(--uml-muted);stroke:none;font-size:12px">登入成功</text>
+<text x="340" y="325" text-anchor="middle" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">虛線 = 生命線，實線箭頭 = 呼叫，虛線箭頭 = 回傳</text>
+</svg>
+                </div>
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">時序圖</figcaption>
+            </figure>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">12 &mdash; 通訊圖 Communication Diagram</p>
+            <p>
+                描述的事情跟時序圖一樣，改用空間佈局呈現。物件自由擺放，訊息標上巢狀編號（1、1.1、1.2、2）表示呼叫層級。時序圖強調先後順序，通訊圖強調誰跟誰有連線。物件多而互動順序單純的時候比時序圖好讀。
+            </p>
+            <figure class="my-10">
+                <div class="overflow-x-auto rounded-2xl border border-white/10 shadow-2xl">
+                    <svg class="uml" viewBox="0 0 680 260" style="min-width:560px" xmlns="http://www.w3.org/2000/svg">
+<title style="fill:var(--uml-ink);stroke:none">UML communication diagram example</title>
+<desc style="fill:var(--uml-ink);stroke:none">使用者登入流程的通訊圖：物件自由擺放，訊息編號表示順序</desc>
+<defs><marker id="a15" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="40" y="25" width="110" height="44" rx="6" stroke-width="0.5" style="fill:var(--uml-purple-bg);stroke:var(--uml-purple);stroke-width:0.5px"/><text x="95" y="47" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-purple);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">使用者</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="280" y="25" width="110" height="44" rx="6" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="335" y="47" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">前端</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="280" y="140" width="110" height="44" rx="6" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="335" y="162" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">後端</text></g>
+<g style="fill:var(--uml-ink);stroke:none"><rect x="520" y="140" width="110" height="44" rx="6" stroke-width="0.5" style="fill:var(--uml-green-bg);stroke:var(--uml-green);stroke-width:0.5px"/><text x="575" y="162" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-green);stroke:none;font-size:14px;font-weight:500;text-anchor:middle;dominant-baseline:central">資料庫</text></g>
+<line x1="150" y1="47" x2="278" y2="47" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.8px"/>
+<text x="196" y="40" style="fill:var(--uml-muted);stroke:none;font-size:12px">1: 輸入帳密</text>
+<line x1="335" y1="69" x2="335" y2="138" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.8px"/>
+<text x="348" y="108" style="fill:var(--uml-muted);stroke:none;font-size:12px">2: POST /login</text>
+<line x1="390" y1="162" x2="518" y2="162" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.8px"/>
+<text x="398" y="155" style="fill:var(--uml-muted);stroke:none;font-size:12px">2.1: SELECT user</text>
+<text x="340" y="235" text-anchor="middle" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">編號 2.1 表示在訊息 2 的處理過程中發出的子呼叫</text>
+</svg>
+                </div>
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">通訊圖</figcaption>
+            </figure>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">13 &mdash; 互動摘要圖 Interaction Overview Diagram</p>
+            <p>
+                活動圖與時序圖的混合體。外層是活動圖的控制流程，每個節點裡面放一張小型互動圖，判斷分支決定走哪條路。一個完整流程包含多段不同的互動場景時，用它串起全貌。
+            </p>
+            <figure class="my-10">
+                <div class="overflow-x-auto rounded-2xl border border-white/10 shadow-2xl">
+                    <svg class="uml" viewBox="0 0 680 380" style="min-width:560px" xmlns="http://www.w3.org/2000/svg">
+<title style="fill:var(--uml-ink);stroke:none">UML interaction overview diagram example</title>
+<desc style="fill:var(--uml-ink);stroke:none">活動圖流程中嵌入小型時序圖片段，依判斷分支走不同互動場景</desc>
+<defs><marker id="a16" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<circle cx="340" cy="20" r="10" fill="var(--uml-ink)" style="fill:var(--uml-ink);stroke:none"/>
+<line x1="340" y1="30" x2="340" y2="55" marker-end="url(#a16)" style="fill:none;stroke:var(--uml-muted);stroke-width:1.5px"/>
+<rect x="200" y="58" width="280" height="70" rx="6" fill="none" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:none;stroke:var(--uml-ink);stroke-width:0.8px"/>
+<text x="212" y="73" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px">sd 登入驗證</text>
+<text x="340" y="100" text-anchor="middle" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">使用者 → 前端 → 後端：POST /login</text>
+<line x1="340" y1="128" x2="340" y2="148" marker-end="url(#a16)" style="fill:none;stroke:var(--uml-muted);stroke-width:1.5px"/>
+<polygon points="340,150 365,172 340,194 315,172" fill="none" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:none;stroke:var(--uml-ink);stroke-width:0.8px"/>
+<text x="340" y="176" text-anchor="middle" dominant-baseline="central" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle;dominant-baseline:central">?</text>
+<line x1="315" y1="172" x2="150" y2="172" marker-end="url(#a16)" style="fill:none;stroke:var(--uml-muted);stroke-width:1.5px"/>
+<text x="230" y="164" style="fill:var(--uml-muted);stroke:none;font-size:12px">失敗</text>
+<rect x="40" y="205" width="220" height="70" rx="6" fill="none" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:none;stroke:var(--uml-ink);stroke-width:0.8px"/>
+<text x="52" y="220" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px">sd 錯誤處理</text>
+<text x="150" y="248" text-anchor="middle" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">後端 → 前端：error 401</text>
+<line x1="365" y1="172" x2="500" y2="172" marker-end="url(#a16)" style="fill:none;stroke:var(--uml-muted);stroke-width:1.5px"/>
+<text x="430" y="164" style="fill:var(--uml-muted);stroke:none;font-size:12px">成功</text>
+<rect x="420" y="205" width="220" height="70" rx="6" fill="none" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:none;stroke:var(--uml-ink);stroke-width:0.8px"/>
+<text x="432" y="220" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px">sd 建立 session</text>
+<text x="530" y="248" text-anchor="middle" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">後端 → 前端：JWT token</text>
+<path d="M150 275 L150 310 L520 310 L520 275" fill="none" stroke="var(--uml-ink)" stroke-width="0.8" style="fill:none;stroke:var(--uml-ink);stroke-width:0.8px"/>
+<line x1="340" y1="310" x2="340" y2="330" marker-end="url(#a16)" style="fill:none;stroke:var(--uml-muted);stroke-width:1.5px"/>
+<circle cx="340" cy="345" r="12" fill="none" stroke="var(--uml-ink)" stroke-width="2" style="fill:none;stroke:var(--uml-ink);stroke-width:2px"/>
+<circle cx="340" cy="345" r="6" fill="var(--uml-ink)" style="fill:var(--uml-ink);stroke:none"/>
+<text x="340" y="375" text-anchor="middle" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">每個 sd 框 = 一張嵌入的小型時序圖，外層用活動圖串接</text>
+</svg>
+                </div>
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">互動摘要圖</figcaption>
+            </figure>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">14 &mdash; 時間圖 Timing Diagram</p>
+            <p>
+                波形圖風格，橫軸是時間刻度，縱軸是狀態值。狀態圖畫狀態與轉換，時間圖多了每個狀態持續多久這層資訊，而且可以疊放多個物件的時間軸觀察同步狀況。即時系統與硬體協定的時序對齊靠這張檢查。
+            </p>
+            <figure class="my-10">
+                <div class="overflow-x-auto rounded-2xl border border-white/10 shadow-2xl">
+                    <svg class="uml" viewBox="0 0 680 280" style="min-width:560px" xmlns="http://www.w3.org/2000/svg">
+<title style="fill:var(--uml-ink);stroke:none">UML timing diagram example</title>
+<desc style="fill:var(--uml-ink);stroke:none">訂單物件的狀態隨時間變化的波形圖：待處理 → 處理中 → 已出貨 → 已完成</desc>
+<defs><marker id="a17" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text x="60" y="28" style="fill:var(--uml-ink);stroke:none;font-size:14px;font-weight:500">訂單</text>
+<text x="130" y="60" style="fill:var(--uml-muted);stroke:none;font-size:12px">已完成</text>
+<text x="130" y="100" style="fill:var(--uml-muted);stroke:none;font-size:12px">已出貨</text>
+<text x="130" y="140" style="fill:var(--uml-muted);stroke:none;font-size:12px">處理中</text>
+<text x="130" y="180" style="fill:var(--uml-muted);stroke:none;font-size:12px">待處理</text>
+<line x1="180" y1="45" x2="180" y2="195" stroke="var(--uml-ink)" stroke-width="0.5" opacity="0.3" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.5px;opacity:0.3"/>
+<line x1="180" y1="195" x2="630" y2="195" stroke="var(--uml-ink)" stroke-width="0.5" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.5px"/>
+<line x1="180" y1="55" x2="630" y2="55" stroke="var(--uml-line)" stroke-width="0.3" stroke-dasharray="4 4" style="fill:var(--uml-ink);stroke:var(--uml-line);stroke-width:0.3px;stroke-dasharray:4px, 4px"/>
+<line x1="180" y1="95" x2="630" y2="95" stroke="var(--uml-line)" stroke-width="0.3" stroke-dasharray="4 4" style="fill:var(--uml-ink);stroke:var(--uml-line);stroke-width:0.3px;stroke-dasharray:4px, 4px"/>
+<line x1="180" y1="135" x2="630" y2="135" stroke="var(--uml-line)" stroke-width="0.3" stroke-dasharray="4 4" style="fill:var(--uml-ink);stroke:var(--uml-line);stroke-width:0.3px;stroke-dasharray:4px, 4px"/>
+<line x1="180" y1="175" x2="630" y2="175" stroke="var(--uml-line)" stroke-width="0.3" stroke-dasharray="4 4" style="fill:var(--uml-ink);stroke:var(--uml-line);stroke-width:0.3px;stroke-dasharray:4px, 4px"/>
+<path d="M180,175 L300,175 L310,135 L420,135 L430,95 L520,95 L530,55 L630,55" fill="none" stroke="var(--uml-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="fill:none;stroke:var(--uml-green);stroke-width:2px;stroke-linecap:round;stroke-linejoin:round"/>
+<circle cx="180" cy="175" r="4" fill="var(--uml-green)" style="fill:var(--uml-green);stroke:none"/>
+<circle cx="310" cy="135" r="4" fill="var(--uml-green)" style="fill:var(--uml-green);stroke:none"/>
+<circle cx="430" cy="95" r="4" fill="var(--uml-green)" style="fill:var(--uml-green);stroke:none"/>
+<circle cx="530" cy="55" r="4" fill="var(--uml-green)" style="fill:var(--uml-green);stroke:none"/>
+<text x="240" y="212" text-anchor="middle" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">T0</text>
+<text x="370" y="212" text-anchor="middle" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">T1</text>
+<text x="475" y="212" text-anchor="middle" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">T2</text>
+<text x="580" y="212" text-anchor="middle" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">T3</text>
+<line x1="310" y1="195" x2="310" y2="200" stroke="var(--uml-ink)" stroke-width="0.5" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.5px"/>
+<line x1="430" y1="195" x2="430" y2="200" stroke="var(--uml-ink)" stroke-width="0.5" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.5px"/>
+<line x1="530" y1="195" x2="530" y2="200" stroke="var(--uml-ink)" stroke-width="0.5" style="fill:var(--uml-ink);stroke:var(--uml-ink);stroke-width:0.5px"/>
+<text x="245" y="165" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px">120 分鐘</text>
+<text x="370" y="125" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px">480 分鐘</text>
+<text x="475" y="85" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px">1440 分鐘</text>
+<text x="400" y="250" text-anchor="middle" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">橫軸 = 時間，縱軸 = 狀態，每個區段標示持續時長</text>
+<text x="400" y="268" text-anchor="middle" fill="var(--uml-muted)" style="fill:var(--uml-muted);stroke:none;font-size:12px;text-anchor:middle">跟狀態圖的差異：時間圖多了「每個狀態停留多久」的資訊</text>
+</svg>
+                </div>
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">時間圖</figcaption>
+            </figure>
+
+            <!-- ===== 對照表 ===== -->
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 要看什麼，用哪張圖
+            </h3>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">想看的東西</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">用哪張圖</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">類別</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">類別之間的關係</td><td class="px-4 py-3">類別圖</td><td class="px-4 py-3 text-gray-500">結構</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">某一刻的實際資料長什麼樣</td><td class="px-4 py-3">物件圖</td><td class="px-4 py-3 text-gray-500">結構</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">模組之間的依賴方向</td><td class="px-4 py-3">套件圖</td><td class="px-4 py-3 text-gray-500">結構</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">可部署元件的介面契約</td><td class="px-4 py-3">組件圖</td><td class="px-4 py-3 text-gray-500">結構</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">軟體跑在哪台機器上</td><td class="px-4 py-3">佈署圖</td><td class="px-4 py-3 text-gray-500">結構</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">自訂 UML 語法擴充</td><td class="px-4 py-3">剖面圖</td><td class="px-4 py-3 text-gray-500">結構</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">一個類別內部的零件接線</td><td class="px-4 py-3">複合結構圖</td><td class="px-4 py-3 text-gray-500">結構</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">流程步驟有分支和平行</td><td class="px-4 py-3">活動圖</td><td class="px-4 py-3 text-gray-500">行為</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">物件的狀態轉換</td><td class="px-4 py-3">狀態圖</td><td class="px-4 py-3 text-gray-500">行為</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">系統提供哪些功能給誰用</td><td class="px-4 py-3">使用案例圖</td><td class="px-4 py-3 text-gray-500">行為</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">物件之間的訊息傳遞順序</td><td class="px-4 py-3">時序圖</td><td class="px-4 py-3 text-gray-500">互動</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">誰跟誰有互動（空間佈局）</td><td class="px-4 py-3">通訊圖</td><td class="px-4 py-3 text-gray-500">互動</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">多段互動場景用流程串接</td><td class="px-4 py-3">互動摘要圖</td><td class="px-4 py-3 text-gray-500">互動</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">狀態持續多久、時間對齊</td><td class="px-4 py-3">時間圖</td><td class="px-4 py-3 text-gray-500">互動</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                實務上 14 種圖不會全部用上。日常最常畫的是類別圖、活動圖、狀態圖、時序圖這四張，剩下十種按需要取用。先把六種關聯線的語義記熟，類別圖就讀得動，其他圖的符號再查規範補。
+            </p>
+
+            <!-- ===== 參考 ===== -->
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 參考
+            </h3>
+
+            <ul class="space-y-2 text-gray-400">
+                <li><a href="https://www.omg.org/spec/UML/" target="_blank" rel="noopener" class="text-accent-purple hover:underline">OMG &mdash; Unified Modeling Language 規範</a>（官方規範本體，含各版本 PDF）</li>
+                <li>本篇 17 張示意圖為自製 inline SVG，配色跟著站上深淺主題切換</li>
+            </ul>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="project_32.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; 上一篇
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                查看所有專案
+            </a>
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                下一篇 &rarr;
+            </a>
+        </div>
+
+    </main>
+    <div id="footer-placeholder"></div>
+</body>
+</html>
