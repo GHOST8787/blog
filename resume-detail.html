@@ -201,13 +201,13 @@
         .resume-body .edu-years{
             font-family:'JetBrains Mono',monospace;
             font-size:.78rem;
-            color:var(--c-n99);
+            color:var(--c-ncc);
             letter-spacing:.05em;
             white-space:nowrap;
             flex-shrink:0;
         }
         .resume-body .edu-dept{
-            color:var(--c-n99);
+            color:var(--c-ncc);
             font-size:.85rem;
             margin-bottom:10px;
         }
@@ -241,6 +241,26 @@
             padding-top:8px;
             border-top:1px dashed rgb(var(--c-ink)/.08);
         }
+
+        /* 尚未解鎖：名稱不在資料裡，畫面上只有一排遮罩 */
+        /* 履歷頁不提供語言切換：英文版沒有對應頁面，按下去只會被丟回英文首頁 */
+        #navbar-placeholder [role="group"][aria-label="Language"],
+        #mobile-menu [role="group"][aria-label="Language"]{ display:none !important; }
+        .masked{
+            display:inline-block; color:var(--c-sep); letter-spacing:.08em;
+            user-select:none; font-weight:400;
+        }
+
+        /* ---- 淡色模式：早期履歷的內容把深色色票寫死在 inline style 裡，
+               白字疊白底會整行看不見。按 inline 值逐一換回主題色，
+               之後改用 var() 的履歷不會被這幾條命中 ---- */
+        :root[data-theme="light"] .resume-body [style*="color:#fff"]{ color:rgb(var(--c-ink)) !important; }
+        :root[data-theme="light"] .resume-body [style*="color:#999"]{ color:var(--c-ncc) !important; }
+        :root[data-theme="light"] .resume-body [style*="color:#ccc"]{ color:var(--c-ncc) !important; }
+        :root[data-theme="light"] .resume-body [style*="color:#BF94FF"]{ color:rgb(var(--c-purple)) !important; }
+        :root[data-theme="light"] .resume-body [style*="rgba(255,255,255,.12)"]{ border-color:var(--c-border) !important; }
+        :root[data-theme="light"] .resume-body [style*="rgba(191,148,255,.06)"]{ background:rgb(var(--c-purple)/.06) !important; }
+        :root[data-theme="light"] .resume-body [style*="solid #BF94FF"]{ border-left-color:rgb(var(--c-purple)) !important; }
 
         /* ---- 列印（另存為 PDF）：白底深紫，A4，段落不切斷，連結保留可點 ---- */
         @media print {
@@ -371,7 +391,7 @@
                 <div class="lock-icon">
                     <i class="fas fa-lock"></i>
                 </div>
-                <h1 id="lock-company" class="text-2xl font-bold text-white mb-1">—</h1>
+                <h1 id="lock-company" class="text-2xl font-bold text-white mb-1"><span class="masked">████████████</span></h1>
                 <p class="text-gray-500 text-xs font-mono mb-6" id="lock-meta">—</p>
                 <form id="lock-form" autocomplete="off">
                     <input

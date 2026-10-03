@@ -27,6 +27,9 @@
 
     <style>
         /* 履歷列表卡片：版型沿用 .done-row，配色改紫色（accent-purple） */
+        /* 履歷頁不提供語言切換：英文版沒有對應頁面，按下去只會被丟回英文首頁 */
+        #navbar-placeholder [role="group"][aria-label="Language"],
+        #mobile-menu [role="group"][aria-label="Language"]{ display:none !important; }
         .resume-row{
             display:flex; align-items:center; gap:14px;
             padding:14px 18px;
@@ -50,6 +53,11 @@
             font-size:12px; flex-shrink:0;
         }
         .resume-row .text{ flex:1; color:var(--c-ndd); font-size:.95rem; font-weight:600; }
+        /* 尚未解鎖的那幾列：名稱不在資料裡，畫面上只有一排遮罩 */
+        .resume-row .masked{
+            display:inline-block; color:var(--c-sep); letter-spacing:.08em;
+            user-select:none; font-weight:400;
+        }
         .resume-row .meta{
             font-family:'JetBrains Mono',monospace; font-size:10px;
             color:rgb(var(--c-purple)); letter-spacing:.05em; white-space:nowrap;

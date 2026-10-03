@@ -89,6 +89,54 @@ function clearUnlockState(slug) {
     try { localStorage.removeItem(unlockStorageKey(slug)); } catch (e) {}
 }
 
+// ---- 顯示名稱（跟密碼 session 是兩回事）----
+// 公司名與職位不寫進 repo，解鎖時從履歷內容裡取出來存在這台瀏覽器，7 天後失效回到遮罩
+const NAME_TTL_MS = 7 * 24 * 60 * 60 * 1000;
+
+function nameKey(slug) { return 'resume:name:' + slug; }
+
+function rememberedName(slug) {
+    try {
+        const raw = localStorage.getItem(nameKey(slug));
+        if (!raw) return null;
+        const o = JSON.parse(raw);
+        if (!o || !o.name || !o.exp || Date.now() > o.exp) {
+            localStorage.removeItem(nameKey(slug));
+            return null;
+        }
+        return o.name;
+    } catch (e) {
+        return null;
+    }
+}
+
+function rememberName(slug, name) {
+    if (!name) return;
+    try {
+        localStorage.setItem(nameKey(slug), JSON.stringify({ name, exp: Date.now() + NAME_TTL_MS }));
+    } catch (e) {
+        console.warn('[resume-detail] name save failed', e);
+    }
+}
+
+// 履歷內容的 header 第一段就是職位列，拿它當這份履歷的顯示名
+function extractDisplayName(html) {
+    try {
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        const p = doc.querySelector('.resume-header p');
+        let t = p && p.textContent.trim().replace(/\s+/g, ' ');
+        if (!t) return null;
+        // 職位列前半是技能標籤，列表上只要後半那段職稱
+        if (t.includes('—')) t = t.split('—').pop().trim();
+        if (t.includes('：')) t = t.split('：').pop().trim();
+        return t.replace(/^應徵\s*/, '') || null;
+    } catch (e) {
+        return null;
+    }
+}
+
+const MASK_HTML = '<span class="masked" aria-label="尚未解鎖">████████████</span>';
+
 async function loadMeta() {
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
@@ -101,21 +149,24 @@ async function loadMeta() {
     }
     state.id = id;
     try {
-        const list = await fetchJson('resumes.json');
-        const item = Array.isArray(list) ? list.find(r => r.slug === id) : null;
-        if (!item) {
-            $lockCompany.textContent = '找不到此履歷';
-            $lockMeta.textContent = `id: ${id}`;
-            $pwdInput.disabled = true;
-            $pwdSubmit.disabled = true;
-            return;
+        // 清單只負責列表頁顯示；沒列在清單上的履歷仍可用網址直接開（未公開履歷）
+        let list = [];
+        try {
+            list = await fetchJson('data/resumes.json');
+        } catch (e) {
+            console.warn('[resume-detail] resume list unavailable, fall back to direct access', e);
         }
+        const found = Array.isArray(list) ? list.find(r => r.slug === id) : null;
+        const item = found || { slug: id, date: '', number: null };
         state.meta = item;
-        $lockCompany.textContent = item.company || '(未命名)';
+        // 解過鎖且還在 7 天內才顯示真名，否則整列遮起來
+        const known = rememberedName(id);
+        state.displayName = known;
+        if (known) { $lockCompany.textContent = known; } else { $lockCompany.innerHTML = MASK_HTML; }
         const num = item.number != null ? `#${pad3(item.number)}` : '';
         const dt = formatDate(item.date);
         $lockMeta.textContent = [num, dt].filter(Boolean).join(' · ');
-        document.title = `${item.company || 'Resume'} | GHOST.ouo`;
+        document.title = known ? `${known} | GHOST.ouo` : 'Resume | GHOST.ouo';
 
         // 同瀏覽器 10 分鐘內，且 enc.json 沒重 encrypt 過 → 跳過密碼直接顯示
         const cached = loadUnlockState(id);
@@ -193,9 +244,22 @@ function showView(payload) {
     $viewSection.classList.remove('hidden');
     state.unlocked = true;
 
-    $viewCompany.textContent = state.meta.company || '(未命名)';
-    $viewBadge.textContent = `#${pad3(state.meta.number || 0)}`;
-    $viewDate.textContent = formatDate(state.meta.date);
+    // 名稱只有解開之後才知道，順手記在這台瀏覽器讓列表頁也看得到
+    const name = extractDisplayName(payload.html) || state.displayName;
+    if (name) {
+        rememberName(state.id, name);
+        state.displayName = name;
+        document.title = `${name} | GHOST.ouo`;
+    }
+    $viewCompany.textContent = name || '';
+    $viewCompany.classList.toggle('hidden', !name);
+    // 沒有編號與日期時整格隱藏，比顯示 #000 乾淨
+    const hasNumber = state.meta.number != null;
+    $viewBadge.textContent = hasNumber ? `#${pad3(state.meta.number)}` : '';
+    $viewBadge.classList.toggle('hidden', !hasNumber);
+    const dateText = formatDate(state.meta.date);
+    $viewDate.textContent = dateText;
+    $viewDate.classList.toggle('hidden', !dateText || dateText === '—');
 
     $viewBody.innerHTML = payload.html || '<p class="text-gray-500">（履歷內容為空）</p>';
 
@@ -233,6 +297,11 @@ function relock() {
         state.pdfBlobUrl = null;
     }
     clearUnlockState(state.id);
+    // 上鎖就是整份藏回去，名稱一起忘掉，列表頁也會跟著變回遮罩
+    try { localStorage.removeItem(nameKey(state.id)); } catch (e) {}
+    state.displayName = null;
+    $lockCompany.innerHTML = MASK_HTML;
+    document.title = 'Resume | GHOST.ouo';
     $viewBody.innerHTML = '';
     $viewSection.classList.add('hidden');
     $lockSection.classList.remove('hidden');
