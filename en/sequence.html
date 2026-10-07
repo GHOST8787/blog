@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UML Sequence Diagram | GHOST.ouo</title>
+    <meta name="description" content="Draw UML sequence diagrams with the keyboard. Arrow keys wire the messages, Enter edits the text, files stay on your own machine.">
+    <meta property="og:title" content="UML Sequence Diagram | GHOST.ouo">
+    <meta property="og:description" content="Draw UML sequence diagrams with the keyboard. Arrow keys wire the messages, Enter edits the text, files stay on your own machine.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ghost8787.github.io/blog/en/sequence.html">
+    <meta property="og:image" content="https://ghost8787.github.io/blog/PNG/pixelS2.png">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:locale:alternate" content="zh_TW">
+    <link rel="canonical" href="https://ghost8787.github.io/blog/en/sequence.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/sequence.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/sequence.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/sequence.html">
+    <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
+
+    <link rel="stylesheet" href="../style.css">
+    <script>
+        window.siteRoot = '';
+    </script>
+    <script src="../i18n.js" defer></script>
+    <script type="module" src="../main.js"></script>
+    <script src="../theme.js"></script>
+    <script type="module" src="../sequence/app.js"></script>
+
+    <style>
+        /* 這一頁是整片工作區，不走站上文章頁那套置中欄寬。 */
+        body { overflow-x: auto; }
+        /* 導覽列展開時整塊往下讓位，收起來就把空間收回去，畫面全給畫布 */
+        .seq-app { padding-top: 84px; transition: padding-top .35s cubic-bezier(.22,1,.36,1); }
+        body.nav-tuck .seq-app { padding-top: 10px; }
+        .seq-app { max-width: 1180px; margin: 0 auto;
+                   border-left: 1px solid var(--c-border); border-right: 1px solid var(--c-border);
+                   min-height: 100vh; font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas,
+                   'Noto Sans TC', 'Microsoft JhengHei', sans-serif; font-size: 13px; line-height: 1.6;
+                   color: rgb(var(--c-body)); }
+
+        /* 導覽列：10 秒沒動作就往上收，滑鼠回到畫面頂端再滑出來 */
+        /* placeholder 本身高度是 0，要動的是裡面那個 fixed 的 nav。
+           它帶著 Tailwind 的 -translate-x-1/2，所以收起時要把 X 的 -50% 一起寫回去。 */
+        #navbar-placeholder nav,
+        #navbar-placeholder #mobile-menu-btn {
+            transition: transform .35s cubic-bezier(.22,1,.36,1), opacity .25s ease;
+        }
+        #navbar-placeholder.nav-tucked nav {
+            transform: translateX(-50%) translateY(-220%) !important;
+            opacity: 0; pointer-events: none;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            #navbar-placeholder nav { transition: none; }
+        }
+
+        /* 頂上三條跟著捲動釘住：操作時要一直看得到自己在哪一層 */
+        .seq-bars { position: sticky; top: 84px; z-index: 30; background: rgb(var(--c-bg));
+                    transition: top .35s cubic-bezier(.22,1,.36,1); }
+        body.nav-tuck .seq-bars { top: 0; }
+        .seq-head { display: flex; align-items: center; gap: 12px; padding: 14px 16px;
+                    border-bottom: 1px solid var(--c-border); }
+        .seq-head h1 { font-size: 14px; margin: 0; font-weight: 500; letter-spacing: .02em; }
+        .seq-head .tag { font-size: 11px; color: var(--c-dim); }
+        .seq-head .spacer { flex: 1; }
+
+        .seq-bar { display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+                   padding: 10px 16px; border-bottom: 1px solid var(--c-border);
+                   background: rgb(var(--c-surface)); }
+        .seq-bar button { font: inherit; font-size: 12px; padding: 5px 11px; border-radius: 6px;
+                          background: transparent; border: 1px solid var(--c-border);
+                          color: rgb(var(--c-body)); cursor: pointer; }
+        .seq-bar button:hover { border-color: rgb(var(--c-purple) / .5); color: rgb(var(--c-purple)); }
+        .seq-bar .div { width: 1px; height: 18px; background: var(--c-border); margin: 0 4px; }
+
+        .seq-status { display: flex; align-items: baseline; gap: 12px; padding: 7px 16px;
+                      border-bottom: 1px solid var(--c-border); background: rgb(var(--c-ink) / .02);
+                      font-size: 11.5px; min-height: 32px; }
+        .seq-status .what { color: rgb(var(--c-purple)); white-space: nowrap; }
+        .seq-status .keys { color: var(--c-dim); flex: 1; min-width: 0;
+                            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .seq-status .keys .more { opacity: .65; }
+        .seq-status .keys b { color: rgb(var(--c-body)); font-weight: 400; }
+
+        /* 畫布：自己不捲，長出來的部分交給整頁的捲軸 */
+        .seq-stage { position: relative; padding: 12px 0 18px; }
+        #sv { display: block; margin: 0 auto; }
+        #sv text { user-select: none; }
+        #ed { position: absolute; display: none; font: inherit; font-size: 12.5px;
+              background: rgb(var(--c-surface)); color: rgb(var(--c-body));
+              border: 1px solid rgb(var(--c-purple) / .7); border-radius: 5px;
+              padding: 3px 7px; outline: none; z-index: 20; }
+
+        /* 匯入 SVG 之後的報告：認出什麼、哪些認不出來 */
+        .seq-report { border-bottom: 1px solid var(--c-border); background: rgb(var(--c-ink) / .03); }
+        .seq-report .r-head { display: flex; align-items: center; gap: 12px; padding: 9px 16px; }
+        .seq-report .r-sum { flex: 1; font-size: 12px; color: rgb(var(--c-body)); }
+        .seq-report .r-sum b { color: rgb(var(--c-purple)); font-weight: 500; }
+        .seq-report .r-sum .warn { color: rgb(var(--c-warn)); }
+        .seq-report button { font: inherit; font-size: 11px; padding: 3px 10px; border-radius: 6px;
+                             background: transparent; border: 1px solid var(--c-border);
+                             color: var(--c-dim); cursor: pointer; }
+        .seq-report button:hover { color: rgb(var(--c-body)); }
+        .seq-report .r-body { padding: 0 16px 12px; font-size: 11.5px; color: var(--c-dim);
+                              max-height: 190px; overflow: auto; }
+        .seq-report .r-body:empty { display: none; }
+        .seq-report .r-body div { padding: 1px 0; }
+        .seq-report .r-body code { color: rgb(var(--c-body)); }
+
+        /* 圖／分割／原始碼三段檢視，分割時左碼右圖、邊打邊套用 */
+        .seq-body { display: flex; align-items: stretch; }
+        /* 畫布要吃滿剩下的寬度，裡面的 svg 才有空間置中 */
+        .seq-stage { flex: 1 1 auto; min-width: 0; }
+        /* 分割時畫布比可用寬度還寬，置中會把開頭切掉，所以改靠左 */
+        body.view-split #sv { margin-left: 0; }
+        /* 只看原始碼時也收成一欄置中，不要攤成整片 */
+        body.view-source .seq-src .head,
+        body.view-source #mm { max-width: 880px; margin-left: auto; margin-right: auto; }
+        .seq-src { display: none; flex: 0 0 44%; min-width: 0;
+                   border-right: 1px solid var(--c-border); background: rgb(var(--c-surface)); }
+        .seq-src .head { display: flex; align-items: center; gap: 10px; padding: 9px 16px; }
+        .seq-src .head span { font-size: 10px; letter-spacing: .14em; color: var(--c-dim); }
+        .seq-src .head .err { color: rgb(var(--c-danger)); letter-spacing: 0; font-size: 11px;
+                              letter-spacing: 0; }
+        #mm { width: 100%; height: calc(100vh - 220px); min-height: 320px; resize: none; display: block;
+              background: rgb(var(--c-bg)); color: rgb(var(--c-body)); font: inherit; font-size: 12px;
+              border: 0; border-top: 1px solid var(--c-border); padding: 12px 16px; outline: none;
+              position: sticky; top: 160px; }
+        body.view-split .seq-src, body.view-source .seq-src { display: block; }
+        body.view-source .seq-src { flex: 1 1 100%; border-right: 0; }
+        body.view-source .seq-stage { display: none; }
+        body.view-split .seq-stage { overflow-x: auto; }
+
+        /* 三段切換鈕 */
+        .seq-bar .grp { font-size: 10px; letter-spacing: .14em; color: var(--c-dim); margin-right: 2px; }
+        .seq-bar .seg { display: inline-flex; border: 1px solid var(--c-border); border-radius: 6px;
+                        overflow: hidden; }
+        .seq-bar .seg button { border: 0; border-radius: 0; padding: 5px 12px; }
+        .seq-bar .seg button + button { border-left: 1px solid var(--c-border); }
+        .seq-bar .seg button.on { background: rgb(var(--c-purple) / .16); color: rgb(var(--c-purple)); }
+        .seq-head .count { font-size: 11px; color: var(--c-dim); white-space: nowrap;
+                           overflow: hidden; text-overflow: ellipsis; max-width: 46%; }
+        @media (max-width: 720px) { .seq-head .count { display: none; } }
+
+        /* 問號：快捷鍵教學 */
+        .help { position: relative; }
+        .help-btn { width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--c-border);
+                    background: rgb(var(--c-surface)); color: rgb(var(--c-purple)); font: inherit;
+                    font-size: 13px; cursor: pointer; display: grid; place-items: center; padding: 0; }
+        .help-btn:hover, .help.pinned .help-btn { border-color: rgb(var(--c-purple) / .5);
+                    background: rgb(var(--c-purple) / .12); }
+        .help-panel { position: absolute; top: 34px; right: 0; width: min(470px, calc(100vw - 32px));
+                      max-height: min(78vh, 760px); overflow: auto; background: rgb(var(--c-surface));
+                      border: 1px solid var(--c-border); border-radius: 10px; padding: 14px 16px;
+                      z-index: 50; display: none; box-shadow: 0 18px 50px rgb(var(--c-ink-inv) / .5); }
+        .help:hover .help-panel, .help.pinned .help-panel { display: block; }
+        .help-panel h3 { margin: 0 0 4px; font-size: 12px; color: rgb(var(--c-purple)); font-weight: 500; }
+        .help-panel h3 + p { margin: 0 0 12px; font-size: 11px; color: var(--c-dim); }
+        .help-panel section { margin-bottom: 13px; }
+        .help-panel .sh { font-size: 10px; color: var(--c-dim); letter-spacing: .14em; margin-bottom: 5px; }
+        .help-panel .sh b { color: rgb(var(--c-purple)); font-weight: 500; letter-spacing: 0; }
+        .help-row { display: flex; gap: 10px; align-items: baseline; padding: 2px 0; }
+        .help-row .k { flex: 0 0 138px; display: flex; gap: 4px; flex-wrap: wrap; align-items: baseline; }
+        .help-row .k .plain { font-size: 11.5px; color: rgb(var(--c-body)); }
+        .help-row .k .sep { color: var(--c-dim); }
+        .help-row .d { flex: 1; font-size: 12px; }
+        .help-panel kbd { display: inline-block; min-width: 20px; text-align: center; padding: 1px 6px;
+                          border-radius: 4px; font: inherit; font-size: 11px;
+                          background: rgb(var(--c-ink) / .07); border: 1px solid var(--c-sep);
+                          border-bottom-width: 2px; color: rgb(var(--c-body)); }
+        .help-pin { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--c-border);
+                    font-size: 11px; color: var(--c-dim); }
+        .help-pin b { color: rgb(var(--c-purple)); font-weight: 500; }
+
+        @media (max-width: 640px) {
+            /* 疊成兩行。主軸轉直的時候 min-width 管不到寬度，要靠 stretch 把兩行壓回容器寬，
+               不然 keys 那行照自己的內容長度長出去、ellipsis 不會生效。 */
+            .seq-status { flex-direction: column; gap: 2px; align-items: stretch; }
+            .seq-status .what { white-space: normal; }
+        }
+    </style>
+    <!-- 預編譯的 Tailwind。導覽列與頁尾吃這一支，改檔後要跑 pnpm run build:css 重新產生。 -->
+    <link rel="stylesheet" href="../tw.css">
+</head>
+<body class="font-sans">
+
+    <div id="navbar-placeholder"></div>
+
+    <div class="seq-app">
+        <div class="seq-bars">
+            <div class="seq-head">
+                <h1 id="seqTitle">UML Sequence Diagram</h1>
+                <span class="tag" id="seqSub"></span>
+                <span class="spacer"></span>
+                <span class="count" id="foot"></span>
+                <div class="help" id="help">
+                    <button class="help-btn" id="helpBtn" aria-label="Keyboard shortcuts">?</button>
+                    <div class="help-panel" id="helpBody" role="dialog" aria-label="Keyboard shortcuts"></div>
+                </div>
+            </div>
+
+            <div class="seq-bar">
+                <span class="grp" id="grpFile"></span>
+                <button data-act="open" data-btn="open" data-tip="openTip"></button>
+                <span class="div"></span>
+                <button data-act="save" data-btn="save" data-tip="saveTip"></button>
+                <button data-act="svg" data-btn="svg" data-tip="svgTip"></button>
+                <button data-act="png" data-btn="png" data-tip="pngTip"></button>
+                <button data-act="copy" data-btn="copy" data-tip="copyTip"></button>
+                <span class="div"></span>
+                <span class="grp" id="grpView"></span>
+                <div class="seg" role="group">
+                    <button data-view="diagram" data-btn="viewDiagram" class="on"></button>
+                    <button data-view="split" data-btn="viewSplit"></button>
+                    <button data-view="source" data-btn="viewSource"></button>
+                </div>
+                <span class="div"></span>
+                <button data-act="clear" data-btn="clear" data-tip="clearTip"></button>
+                <input type="file" id="filePick" accept=".json,.svg,application/json,image/svg+xml" hidden>
+            </div>
+
+            <div class="seq-status">
+                <span class="what" id="stWhat"></span>
+                <span class="keys" id="stKeys"></span>
+            </div>
+        </div>
+
+        <div class="seq-report" id="report" hidden>
+            <div class="r-head">
+                <span class="r-sum" id="rSum"></span>
+                <button type="button" id="rClose"></button>
+            </div>
+            <div class="r-body" id="rBody"></div>
+        </div>
+
+        <div class="seq-body">
+            <div class="seq-src" id="srcPane">
+                <div class="head">
+                    <span id="mmHead"></span>
+                    <span class="err" id="mmErr"></span>
+                </div>
+                <textarea id="mm" spellcheck="false" aria-label="Mermaid source"></textarea>
+            </div>
+
+            <div class="seq-stage" id="stage">
+                <svg id="sv" xmlns="http://www.w3.org/2000/svg"></svg>
+                <input id="ed" spellcheck="false" aria-label="Edit text">
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

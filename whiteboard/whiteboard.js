@@ -176,7 +176,8 @@ async function renderDoneItem(item, uid) {
         </button>
     `;
 
-    if (!item.linkUrl) {
+    // 沒有文章也沒有工具連結，就是純文字一列
+    if (!item.linkUrl && !item.toolUrl) {
         return `
             <div class="done-row">
                 <div class="check"><i class="fas fa-check"></i></div>
@@ -204,13 +205,15 @@ async function renderDoneItem(item, uid) {
             </div>
         `;
     }
-    let label = '→ 開啟連結 ↗';
+    // 只有工具沒有文章時，整列就是那顆工具連結
+    const onlyUrl = item.linkUrl || item.toolUrl;
+    let label = item.linkUrl ? '→ 開啟連結 ↗' : '→ 開啟工具 ↗';
     if (isInternalLink(item.linkUrl)) {
         const title = await getTitleFromHtml(item.linkUrl);
         if (title) label = `→ ${escapeHtml(title)} ↗`;
     }
-    const safeUrl = escapeHtml(item.linkUrl);
-    const isExternal = /^https?:\/\//i.test(item.linkUrl);
+    const safeUrl = escapeHtml(onlyUrl);
+    const isExternal = /^https?:\/\//i.test(onlyUrl);
     const target = isExternal ? ' target="_blank" rel="noopener"' : '';
     return `
         <a href="${safeUrl}"${target} class="done-row linked">
