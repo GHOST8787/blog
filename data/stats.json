@@ -1,5 +1,5 @@
 {
   "_note": "首頁 Active 那格『近 30 天持續開發』的數字。由 .github/workflows/update-stats.yml 每天台北 08:10 自動算（tools/count-active-repos.mjs，含私人 repo），不要手改——本機改了下次 pull 會被蓋掉。前端 index.html 讀 activeLast30Days。",
-  "activeLast30Days": 11,
-  "updatedAt": "2026-10-04"
+  "activeLast30Days": 7,
+  "updatedAt": "2026-10-06"
 }
