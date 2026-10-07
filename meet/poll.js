@@ -2,7 +2,7 @@
 import {
     ref, onValue, push, update, set, get, serverTimestamp,
     app, db, auth, S, T, LANG, $, $state, $home, $poll, pollId, MAX_POLLS,
-    ICONS, SEGCLS, SEGCOLOR,
+    ICONS,
     esc, fmtRange, fmtDate, sortedSlots, displayName, voterUids, voteOf, rawVoteOf, normVotes,
     isOrganizer, votingOpen, showState, addMinutes, parseHM, normalizeTime, markField,
     normalizeDate, wireCellRow, focusCell,
@@ -120,6 +120,7 @@ export function decidePollView() {
     if (!S.meta) {
         showState('');
         $poll.classList.add('hidden');
+        $('mt-back-link').classList.add('hidden');
         $gate.classList.add('hidden');
         $('mt-gone').classList.remove('hidden');
         return;
@@ -141,11 +142,13 @@ export function decidePollView() {
         $('mt-gate-howto').textContent = why ? T.gateHowtoClosed : T.gateHowtoOpen;
         $('mt-gate-guest').textContent = why ? T.gateGuestClosed : T.gateGuestOpen;
         $poll.classList.add('hidden');
+        $('mt-back-link').classList.add('hidden');
         $gate.classList.remove('hidden');
         return;
     }
     $gate.classList.add('hidden');
     $poll.classList.remove('hidden');
+    $('mt-back-link').classList.remove('hidden');
     attachRole();
     renderPollHeader();
     renderAll();
@@ -480,46 +483,35 @@ function deleteSlotPayload(slotId) {
 }
 
 function renderBars() {
+    // 發起人看到的列跟參與者看到的是同一組樣式（.slot-pick），差別只在這裡不可點、
+    // 沒有勾選框，另外多了提議人、最多人可參加／已定案的標記與刪除鈕。
     // 只有兩個狀態：可參加、無法參加。沒送出過的人不算進任何一邊，
-    // 把他們塞進「無法參加」等於替他們說了沒說過的話；「還有幾個人沒回」
-    // 已經由上面那行「已有 N 人回覆」在講。
+    // 把他們塞進「無法參加」等於替他們說了沒說過的話。
     const best = bestSlotId();
     $('slot-bars').innerHTML = sortedSlots().map(s => {
         const c = { yes: countBy(s.id, 'yes'), no: countBy(s.id, 'no') };
         const headcount = c.yes + c.no;          // 這個時段真的有人表態的人數
-        const total = headcount || 1;            // 寬度用的分母保底 1
+        // 底色長度＝可參加的比例，不讀數字也看得出哪一列最滿
+        const fill = headcount ? Math.round(c.yes / headcount * 100) : 0;
         const isBest = s.id === best && !S.meta.lockedSlot;
         const isLocked = s.id === S.meta.lockedSlot;
         const r = fmtRange(s.start, s.end);
 
-        const segs = ['yes', 'no'].filter(k => c[k] > 0).map(k =>
-            `<div class="seg ${SEGCLS[k]}" style="width:${c[k] / total * 100}%" data-slot="${s.id}" data-state="${k}"></div>`
-        ).join('');
-
         const badge = isLocked
-            ? `<span class="ml-2 font-mono text-[12px] px-1.5 py-0.5 rounded whitespace-nowrap bg-accent-success/15 text-accent-success border border-accent-success/30">${T.lockedBadge}</span>`
-            : (isBest ? `<span class="ml-2 font-mono text-[12px] px-1.5 py-0.5 rounded whitespace-nowrap bg-accent-purple/15 text-accent-purple border border-accent-purple/30">${T.bestBadge}</span>` : '');
+            ? `<span class="ml-1.5 font-mono text-[12px] px-1.5 py-0.5 rounded whitespace-nowrap bg-accent-success/15 text-accent-success border border-accent-success/30">${T.lockedBadge}</span>`
+            : (isBest ? `<span class="ml-1.5 font-mono text-[12px] px-1.5 py-0.5 rounded whitespace-nowrap bg-accent-purple/15 text-accent-purple border border-accent-purple/30">${T.bestBadge}</span>` : '');
 
         const owner = S.slotOwners[s.id];
         const by = (owner && owner !== S.meta.organizer)
-            ? `<span class="font-mono text-[12px] text-gray-600 ml-2">${esc(T.proposedBy(displayName(owner)))}</span>` : '';
+            ? `<span class="font-mono text-[12px] text-gray-600 ml-1.5">${esc(T.proposedBy(displayName(owner)))}</span>` : '';
 
-        const num = k => `<span class="whitespace-nowrap" data-slot="${s.id}" data-state="${k}">
-            <span class="inline-block w-2 h-2 rounded-sm align-middle mr-1" style="background:${SEGCOLOR[k]}"></span>${c[k]}</span>`;
+        const num = k => `<span class="sp-num is-${k}" data-slot="${s.id}" data-state="${k}"><i class="${ICONS[k]}"></i>${c[k]}</span>`;
 
-        return `<div class="slot-row px-5 py-4 ${isBest ? 'is-best' : ''} ${isLocked ? 'is-locked' : ''}">
-            <div class="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 mb-2.5">
-                <div><span class="text-base text-white font-semibold">${r.day}</span>
-                    <span class="font-mono text-sm text-gray-500 ml-2">${r.time}</span>${by}${badge}</div>
-                <div class="flex items-center gap-3">
-                    <div class="font-mono text-sm ${isLocked ? 'text-accent-success' : (isBest ? 'text-accent-purple' : 'text-gray-400')}">${T.yesCount(c.yes, headcount)}</div>
-                    <button type="button" class="js-del-slot shrink-0 px-2 py-1 rounded-full border border-white/10 text-[13px] font-mono text-gray-600 hover:text-red-300 hover:border-red-400/30 transition" data-slot="${s.id}" title="${T.delSlot}"><i class="fa-regular fa-trash-can"></i></button>
-                </div>
-            </div>
-            <div class="bar mb-2">${segs}</div>
-            <div class="flex flex-wrap gap-x-4 gap-y-1 font-mono text-[13px] text-gray-500">
-                ${num('yes')}${num('no')}
-            </div>
+        return `<div class="slot-pick is-view ${isBest ? 'is-best' : ''} ${isLocked ? 'is-locked' : ''}">
+            <span class="sp-fill" style="width:${fill}%"></span>
+            <span class="sp-when"><span class="sp-day">${r.day}</span><span class="sp-time font-mono">${r.time}</span>${by}${badge}</span>
+            <span class="sp-tally font-mono">${num('yes')}${num('no')}</span>
+            <button type="button" class="js-del-slot shrink-0 w-8 h-8 rounded-lg border border-white/10 text-[13px] font-mono text-gray-600 hover:text-red-300 hover:border-red-400/30 transition" data-slot="${s.id}" title="${T.delSlot}"><i class="fa-regular fa-trash-can"></i></button>
         </div>`;
     }).join('');
 }
@@ -552,7 +544,7 @@ function moveTip(x, y) {
 function hideTip() {
     if (pinned) return;
     tip.classList.remove('show');
-    document.querySelectorAll('.seg.on').forEach(e => e.classList.remove('on'));
+    document.querySelectorAll('.sp-num.on').forEach(e => e.classList.remove('on'));
 }
 const $bars = $('slot-bars');
 $bars.addEventListener('mouseover', e => {
@@ -571,8 +563,8 @@ $bars.addEventListener('click', e => {
     pinned = null;
     showTip(t.dataset.slot, t.dataset.state, e.clientX, e.clientY);
     pinned = key;
-    document.querySelectorAll('.seg.on').forEach(el => el.classList.remove('on'));
-    if (t.classList.contains('seg')) t.classList.add('on');
+    document.querySelectorAll('.sp-num.on').forEach(el => el.classList.remove('on'));
+    if (t.classList.contains('sp-num')) t.classList.add('on');
 });
 document.addEventListener('click', e => { if (!e.target.closest('#slot-bars')) { pinned = null; hideTip(); } });
 

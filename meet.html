@@ -31,21 +31,6 @@
     <script type="module" src="meet/app.js"></script>
 
     <style>
-        /* 比例橫條（發起人看結果用） */
-        .bar { display:flex; height:16px; border-radius:999px; overflow:hidden;
-               background:rgb(var(--c-ink)/.04); border:1px solid rgb(var(--c-ink)/.06); }
-        .seg { height:100%; cursor:pointer; transition:filter .15s ease; }
-        .seg:hover { filter:brightness(1.35); }
-        .seg.on { box-shadow:inset 0 0 0 1px rgb(var(--c-ink)/.35); }
-        .seg-yes { background:rgb(var(--c-success)); }
-        .seg-no { background:rgb(var(--c-warn)); }
-        .seg-pend { background:rgb(var(--c-ink)/.10); }
-
-        .slot-row { transition:background .15s ease; }
-        .slot-row:hover { background:rgb(var(--c-ink)/.015); }
-        .slot-row.is-best { background:rgb(var(--c-purple)/.06); }
-        .slot-row.is-locked { background:rgb(var(--c-success)/.06); }
-
         /* 名單浮層 */
         #tip { position:fixed; z-index:60; pointer-events:none; opacity:0; transform:translateY(4px);
                transition:opacity .12s ease, transform .12s ease; background:var(--c-e4);
@@ -86,6 +71,23 @@
         .slot-pick.is-on .sp-fill { background:linear-gradient(90deg, rgb(var(--c-success)/.16) 0%, rgb(var(--c-success)/.13) 62%, rgb(var(--c-success)/0) 100%); }
         .slot-pick.is-on .sp-box { background:rgb(var(--c-success)); border-color:rgb(var(--c-success)); color:rgb(var(--c-ink-inv)); }
         .slot-pick.is-on .sp-day { color:rgb(var(--c-ink)); font-weight:600; }
+        /* 發起人看結果的那幾列：共用上面同一組 .slot-pick 樣式，差別是不可點、沒有勾選框。
+           兩個身分看到的東西長得一樣，所以這裡不另外寫一套比例橫條。 */
+        .slot-pick.is-view { cursor:default; }
+        .slot-pick.is-view:hover { border-color:rgb(var(--c-ink)/.09); }
+        .slot-pick.is-best { border-color:rgb(var(--c-purple)/.38); background:rgb(var(--c-purple)/.05); }
+        .slot-pick.is-locked { border-color:rgb(var(--c-success)/.45); background:rgb(var(--c-success)/.07); }
+        /* 人數膠囊就是查名單的熱區，釘住時沿著自己的顏色描一圈 */
+        .slot-pick.is-view .sp-num { cursor:pointer; transition:filter .15s ease; }
+        .slot-pick.is-view .sp-num:hover { filter:brightness(1.25); }
+        .sp-num.on { box-shadow:inset 0 0 0 1px currentColor; }
+        /* 參與者清單：摺疊起來，預設收合。這裡平常不看，攤開會把投票結果擠到上面去。
+           用原生 details／summary，鍵盤與螢幕閱讀器都認，不必自己接開合的 JS。 */
+        .vt-box > summary { cursor:pointer; list-style:none; }
+        .vt-box > summary::-webkit-details-marker { display:none; }
+        .vt-box > summary:hover .vt-caret { color:rgb(var(--c-g400)); }
+        .vt-caret { transition:transform .15s ease; }
+        .vt-box[open] > summary .vt-caret { transform:rotate(180deg); }
         @media (max-width:480px) {
             .slot-pick { gap:9px; padding:12px 11px; }
             .sp-when { font-size:14px; line-height:1.35; }
@@ -143,24 +145,27 @@
 
     <main class="relative z-10 max-w-4xl mx-auto px-6 sm:px-8 lg:px-10 pt-24 md:pt-28 pb-24">
 
-        <!-- 頁首壓成一列：左邊標題、右邊帳號，不再置中佔掉整個首屏 -->
-        <header class="flex flex-wrap sm:flex-nowrap items-end justify-between gap-x-6 gap-y-3 mb-8">
-            <div class="min-w-0">
+        <!-- 頁首分兩層：上層標題（w-full 逼下面的項目換行），下層一列放「返回我的會議」與帳號膠囊。
+             返回連結原本只在投票頁最底下，要把整頁時段捲完才找得到；它跟登出同屬「離開這一場」
+             的動作，併到同一列放在視線起點。兩個都隱藏時只剩一個 flex item，gap-y 不生效，不留空白。 -->
+        <header class="flex flex-wrap items-center gap-x-4 gap-y-4 mb-8">
+            <div class="w-full min-w-0">
                 <div class="font-mono text-[13px] text-accent-purple uppercase tracking-wider mb-1.5">MEETING POLL</div>
                 <h1 class="text-2xl sm:text-3xl font-extrabold text-gradient leading-tight">one link. everyone’s time.</h1>
                 <p class="text-gray-500 text-sm sm:text-base mt-1">一個網址，收齊每個人的時間。</p>
             </div>
-            <div class="min-w-0 flex flex-wrap items-end justify-start sm:justify-end gap-2">
-            <div id="mt-user-badge" class="hidden max-w-full min-w-0 items-center gap-2 px-4 py-2 bg-accent-purple/10 border border-accent-purple/20 rounded-full text-sm text-accent-purple">
+            <a id="mt-back-link" href="meet.html" class="hidden shrink-0 text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                <i class="fa-solid fa-arrow-left mr-1.5"></i>返回我的會議
+            </a>
+            <div id="mt-user-badge" class="hidden ml-auto max-w-full min-w-0 items-center gap-2 px-4 py-2 bg-accent-purple/10 border border-accent-purple/20 rounded-full text-sm text-accent-purple">
                 <span id="mt-user-email" class="font-mono text-sm truncate min-w-0">—</span>
                 <span id="mt-role-badge" class="font-mono text-[12px] px-2 py-0.5 rounded border border-white/10 text-gray-400"></span>
                 <button id="mt-logout-btn" class="text-gray-500 hover:text-white text-sm ml-1 border-l border-white/10 pl-2 shrink-0 whitespace-nowrap">登出</button>
                 <button id="mt-joined-btn" class="hidden text-gray-500 hover:text-white text-sm border-l border-white/10 pl-2 shrink-0 whitespace-nowrap">我回過的會議</button>
             </div>
-            </div>
         </header>
 
-        <!-- 登入區獨立一塊放在標題底下置中；右上角只留已登入的帳號膠囊 -->
+        <!-- 登入區獨立一塊放在標題底下置中；帳號膠囊在上面那一列，登入後才出現 -->
         <div id="mt-login-prompt" class="hidden flex-col items-center gap-3 py-6 mb-2">
             <span class="text-gray-500 text-sm font-mono">使用 Google 登入以建立會議</span>
             <div id="mt-gis-btn"></div>
@@ -239,12 +244,6 @@
                 <i class="fa-solid fa-plus mr-2"></i>開一場新的會議
             </button>
 
-            <!-- 我回過的會議（送出過票的場次） -->
-            <div id="mt-joined-wrap" class="mt-10 hidden">
-                <h2 class="font-mono text-sm text-gray-400 uppercase tracking-wider mb-3">我回過的會議</h2>
-                <div id="mt-joined" class="space-y-3"></div>
-            </div>
-
             <!-- 建立表單 -->
             <div id="mt-create" class="hidden mt-card rounded-2xl p-5 sm:p-7 space-y-6 mt-6">
                 <div>
@@ -318,6 +317,13 @@
                     <button id="c-cancel" class="px-6 border border-white/10 text-gray-400 rounded-full text-sm hover:border-white/30 transition">取消</button>
                 </div>
             </div>
+
+            <!-- 我回過的會議（送出過票的場次） -->
+            <div id="mt-joined-wrap" class="mt-10 hidden">
+                <h2 class="font-mono text-sm text-gray-400 uppercase tracking-wider mb-3">我回過的會議</h2>
+                <div id="mt-joined" class="space-y-3"></div>
+            </div>
+
         </section>
 
         <!-- ===== B. 投票頁（有 ?id= 時） ===== -->
@@ -390,9 +396,9 @@
             <div id="organizer-view" class="mt-card rounded-2xl overflow-hidden mb-5 hidden">
                 <div class="flex flex-wrap items-center justify-between gap-2 px-5 py-4 border-b border-white/5">
                     <h3 class="font-mono text-sm text-gray-400 uppercase tracking-wider">投票結果（只有發起人可見）</h3>
-                    <span class="font-mono text-[13px] text-gray-600"><i class="fa-solid fa-hand-pointer mr-1"></i>將游標移至色塊查看名單；手機請點選色塊</span>
+                    <span class="font-mono text-[13px] text-gray-600"><i class="fa-solid fa-hand-pointer mr-1"></i>將游標移至人數查看名單；手機請點選人數</span>
                 </div>
-                <div id="slot-bars" class="divide-y divide-white/5"></div>
+                <div id="slot-bars" class="px-4 py-4 space-y-2"></div>
                 <div id="add-slot-mount-org">
                     <!-- 提議新時段：預設收合，按下「新增時段」才展開。renderAll 會依角色把這塊
                          搬到發起人的比例橫條下方、或參與者的時段卡下方。 -->
@@ -420,15 +426,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="px-5 py-4 border-t border-white/5 flex items-center justify-between gap-3">
-                    <h4 class="font-mono text-[13px] text-gray-500 uppercase tracking-wider">參與者 (<span id="voter-count">0</span>)</h4>
-                    <span class="font-mono text-[13px] text-gray-600">移除後，該參與者將可重新投票。</span>
-                </div>
-                <div id="voter-list" class="divide-y divide-white/5"></div>
-                <div class="px-5 py-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-[13px] font-mono text-gray-500 border-t border-white/5">
-                    <span><span class="inline-block w-3 h-3 rounded-sm align-middle mr-1.5" style="background:rgb(var(--c-success))"></span>可參加</span>
-                    <span><span class="inline-block w-3 h-3 rounded-sm align-middle mr-1.5" style="background:rgb(var(--c-warn))"></span>無法參加</span>
-                </div>
+                <details class="vt-box border-t border-white/5">
+                    <summary class="px-5 py-4 flex items-center justify-between gap-3">
+                        <h4 class="font-mono text-[13px] text-gray-500 uppercase tracking-wider">參與者 (<span id="voter-count">0</span>)</h4>
+                        <i class="fa-solid fa-chevron-down vt-caret text-gray-600 text-[12px]"></i>
+                    </summary>
+                    <p class="px-5 pb-3 font-mono text-[13px] text-gray-600">移除後，該參與者將可重新投票。</p>
+                    <div id="voter-list" class="divide-y divide-white/5 border-t border-white/5"></div>
+                </details>
             </div>
 
             <!-- 參與者：兩選一 -->
@@ -466,12 +471,6 @@
 
 
             <div id="verdict" class="rounded-2xl p-5 border border-accent-purple/25 bg-accent-purple/[0.06]"></div>
-
-            <div class="mt-6 text-center">
-                <a href="meet.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
-                    <i class="fa-solid fa-arrow-left mr-1.5"></i>返回我的會議
-                </a>
-            </div>
         </section>
 
     </main>

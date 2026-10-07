@@ -2,7 +2,7 @@
 import {
     ref, onValue, push, update, set, get, serverTimestamp,
     app, db, auth, S, T, LANG, $, $state, $home, $poll, pollId, MAX_POLLS,
-    STATES, ICONS, SEGCLS, SEGCOLOR,
+    STATES, ICONS,
     esc, fmtRange, fmtDate, sortedSlots, displayName, voterUids, voteOf,
     isOrganizer, votingOpen, showState, addMinutes, parseHM, normalizeTime, markField,
     normalizeDate, wireCellRow, focusCell,

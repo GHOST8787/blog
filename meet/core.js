@@ -56,8 +56,6 @@ export const S = {
 // 所以不必重發布規則；顯示層一律把 notice 當成 no（Sunny 2026-09-30 拍板）。
 export const STATES = ['yes', 'no'];
 export const ICONS = { yes: 'fa-solid fa-check', no: 'fa-solid fa-xmark' };
-export const SEGCLS = { yes: 'seg-yes', no: 'seg-no', pend: 'seg-pend' };
-export const SEGCOLOR = { yes: 'rgb(var(--c-success))', no: 'rgb(var(--c-warn))', pend: 'rgb(var(--c-ink)/.12)' };
 
 // 舊值收斂。畫面、統計、名單全部走這支，寫入前的加減才看原始值。
 export function normVote(v) { return v === 'notice' ? 'no' : (v || null); }

@@ -29,7 +29,6 @@ export const T = {
     proposedBy: (n) => `proposed by ${n}`,
     youProposed: 'you proposed',
     otherProposed: 'proposed by a participant',
-    yesCount: (a, b) => `${a}/${b} available`,
     answeredFmt: (a, b) => `Reply sent: you can make ${a} of ${b} times`,
     notSubmittedYet: 'You have not sent a reply yet',
     myYes: 'Marked as available: ',

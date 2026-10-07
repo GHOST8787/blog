@@ -36,7 +36,6 @@ export const T = {
     proposedBy: (n) => `由 ${n} 提議`,
     youProposed: '由您提議',
     otherProposed: '由其他人提議',
-    yesCount: (a, b) => `${a}/${b} 可參加`,
     answeredFmt: (a, b) => `您已送出回覆：${b} 個時段中有 ${a} 個可參加`,
     notSubmittedYet: '您還沒送出回覆',
     myYes: '您選擇「可參加」的時段：',
