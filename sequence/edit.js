@@ -89,7 +89,7 @@ export function addRow(kind) {
     } else {
         const from = cur && cur.kind === 'msg' ? cur.to : S.parts[0].id;
         const to = S.parts[(pIdx(from) + 1) % S.parts.length].id;
-        r = { id: nid('r'), kind: 'msg', from, to, type: 'sync', tone: 'solid', text: T.msg.newRow, dy: {} };
+        r = { id: nid('r'), kind: 'msg', from, to, type: 'sync', tone: 'solid', text: T.msg.newRow };
     }
     S.rows.splice(at, 0, r);
     shiftBlocks(at, 1);
@@ -126,13 +126,6 @@ export function delSel() {
         return;
     }
     if (L === 'block') { push(); S.blocks.splice(S.sel.bi, 1); S.sel.layer = 'row'; return; }
-    if (L === 'point') {
-        const r = S.rows[S.sel.i];
-        if (!r || !r.dy) return;
-        push();
-        r.dy[S.sel.end] = 0;
-        return;
-    }
     const [a, b] = selRange();
     if (b < a) return;
     push();
@@ -205,11 +198,4 @@ export function togglePartKind() {
     if (!p) return;
     push();
     p.kind = p.kind === 'actor' ? 'object' : 'actor';
-}
-export function nudge(end, d) {
-    const r = S.rows[S.sel.i];
-    if (!r || r.kind !== 'msg') return;
-    push();
-    r.dy = r.dy || {};
-    r.dy[end] = Math.max(-18, Math.min(18, (r.dy[end] || 0) + d));
 }

@@ -30,8 +30,8 @@ export const layer = {
     partKeys: '<b>←→</b> 選隔壁 · <b>Alt+←→</b> 搬欄位 · <b>Tab</b> actor／object · <b>打字</b> 改名',
     blockWhat: (kind, label, a, b) => `區塊 ${kind}「${label}」第 ${a}–${b} 列`,
     blockKeys: '<b>Shift+↑↓</b> 改結束列 · <b>Alt+↑↓</b> 整塊搬 · <b>Tab</b> loop/alt/opt · <b>打字</b> 改名',
-    pointWhat: (who, name, dy) => `端點 · ${who} @ ${name}${dy ? `（高度 ${dy > 0 ? '+' : ''}${dy}）` : ''}`,
-    pointKeys: '<b>←→</b> 換 lifeline · <b>↑↓</b> 微調高度 · <b>Tab</b> 換另一顆 · <b>Esc</b> 回列',
+    pointWhat: (who, name) => `端點 · ${who} @ ${name}`,
+    pointKeys: '<b>←→</b> 換 lifeline · <b>↑↓</b> 換上下一列 · <b>Tab</b> 換另一顆 · <b>Esc</b> 回列',
     rowKeys: '<b>←→</b> 接收方 · <b>Shift+←→</b> 發送方 · <b>Tab</b> 型別 · <b>Shift+Tab</b> 線條 · <b>打字</b> 改內容',
     emptyWhat: '空白',
     emptyKeys: '<b>Alt+M</b> 新增訊息 · <b>Alt+S</b> 階段帶 · <b>Alt+P</b> 參與者',
@@ -128,9 +128,9 @@ export const help = {
         ],
         point: [
             ['←→', '這一顆端點換到別條 lifeline'],
-            ['↑↓', '微調這一顆的高度，箭頭可以畫斜的（按住 Alt 更細）'],
+            ['↑↓', '直接換上下一列，順便退回列層，不用先按 Esc'],
             ['Tab', '在頭 / 尾兩顆之間切'],
-            ['Backspace', '把高度微調歸零'],
+            ['Backspace', '刪掉這一列'],
         ],
         block: [
             ['↑↓', '在同一位置的多層區塊之間換'],

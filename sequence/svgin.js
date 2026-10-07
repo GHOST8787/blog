@@ -115,7 +115,7 @@ export function parseSVG(text) {
         rows.push({ y: y1, r: {
             id: nid('r'), kind: 'msg', from: parts[a].id, to: parts[b].id,
             type: dash ? 'return' : 'sync', tone: dash ? 'dash' : 'solid',
-            text: pickText(texts, Math.min(x1, x2), Math.max(x1, x2), y1), dy: {},
+            text: pickText(texts, Math.min(x1, x2), Math.max(x1, x2), y1),
         } });
     });
 
@@ -135,7 +135,7 @@ export function parseSVG(text) {
                 rows.push({ y: y + 8, r: {
                     id: nid('r'), kind: 'msg', from: parts[lane].id, to: parts[lane].id,
                     type: 'self', tone: p.getAttribute('stroke-dasharray') ? 'dash' : 'solid',
-                    text: t ? t.s : '（未命名）', dy: {},
+                    text: t ? t.s : '（未命名）',
                 } });
                 return;
             }
@@ -210,7 +210,7 @@ function pickText(texts, xa, xb, y) {
 
 function normalize(d) {
     d.rows.forEach((r) => {
-        if (r.kind === 'msg' && !r.dy) r.dy = {};
+        delete r.dy;
         if (!r.tone) r.tone = 'solid';
     });
     return { parts: d.parts, rows: d.rows, blocks: Array.isArray(d.blocks) ? d.blocks : [],

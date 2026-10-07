@@ -4,7 +4,7 @@
 import {
     S, T, TYPES, PAD_X, COL_W, HEAD_Y, HEAD_H, BOX_W, ROW_Y0, ROW_H,
     SELF_W, SELF_H, BLK_HEAD, BLK_FOOT, PHASE_H,
-    px, pxOf, pIdx, nameOf, selRange,
+    px, pxOf, pIdx, nameOf, selRange, autoSave,
 } from './state.js';
 import { toMermaid } from './io.js';
 
@@ -174,7 +174,7 @@ export function render() {
             g.appendChild(t);
         } else if (r.from === r.to) {
             const last = pIdx(r.from) === n - 1;
-            const x = pxOf(r.from), d = last ? -1 : 1, yy = y + ((r.dy || {}).from || 0);
+            const x = pxOf(r.from), d = last ? -1 : 1, yy = y;
             g.appendChild(el('path', {
                 d: `M${x},${yy - SELF_H / 2} h${d * SELF_W} v${SELF_H} h${-d * (SELF_W - 7)}`,
                 fill: 'none', stroke: col, 'stroke-width': 1.4,
@@ -185,9 +185,8 @@ export function render() {
             g.appendChild(t);
             handle(g, x, yy - SELF_H / 2, i, 'from', inSel, C_ON);
         } else {
-            const dy = r.dy || {};
             const x1 = pxOf(r.from), x2 = pxOf(r.to);
-            const y1 = y + (dy.from || 0), y2 = y + (dy.to || 0);
+            const y1 = y, y2 = y;
             const dir = x2 > x1 ? 1 : -1;
             g.appendChild(el('line', {
                 x1, y1, x2: x2 - dir * 7, y2, stroke: col, 'stroke-width': 1.4,
@@ -230,7 +229,8 @@ export function render() {
     if (document.activeElement !== mm) mm.value = toMermaid();
 
     const key = JSON.stringify(S.sel);
-    if (key !== lastSelKey) { lastSelKey = key; keepInView(); }
+    if (key !== lastSelKey) { lastSelKey = key; if (!skipScroll) keepInView(); }
+    autoSave();
 }
 
 function handle(g, x, y, i, end, inSel, C_ON) {
@@ -262,7 +262,7 @@ function paintStatus() {
     }
     if (L === 'point' && r && r.kind === 'msg') {
         const who = S.sel.end === 'from' ? T.layer.sender : T.layer.receiver;
-        w.textContent = T.layer.pointWhat(who, nameOf(r[S.sel.end]), (r.dy || {})[S.sel.end] || 0);
+        w.textContent = T.layer.pointWhat(who, nameOf(r[S.sel.end]));
         k.innerHTML = T.layer.pointKeys;
         return;
     }
@@ -291,6 +291,10 @@ function paintFoot() {
 /* 選取跑到視窗外時把頁面捲過去。上方釘住那幾條的高度要扣掉。 */
 let lastSelKey = '';
 export function resetSelKey() { lastSelKey = ''; }
+
+/* 滑鼠點的東西本來就在畫面上，不需要把頁面捲過去；只有鍵盤移動才追。 */
+let skipScroll = false;
+export function setSkipScroll(v) { skipScroll = v; }
 
 function keepInView() {
     if (S.drag || S.editing) return;

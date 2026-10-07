@@ -3,16 +3,19 @@
 import {
     S, push, undo, redo, px, pIdx, clampPart, blocksAt, laneOfRow,
 } from './state.js';
-import { render, sv, rowY } from './render.js';
+import { render, sv, rowY, setSkipScroll } from './render.js';
 import {
     editRow, editPart, editBlock, editLegend, editCurrent, closeEd,
     addRow, addPart, delSel, wrapBlock, unwrapBlock,
-    moveEnd, moveRow, movePart, cycleType, cycleTone, cycleBlockKind, togglePartKind, nudge,
+    moveEnd, moveRow, movePart, cycleType, cycleTone, cycleBlockKind, togglePartKind,
 } from './edit.js';
 
 const mmBox = document.getElementById('mm');
 
 export function initKeys() {
+    // 捲動只服務鍵盤：滑鼠按下先關掉，下一次敲鍵盤再打開
+    document.addEventListener('pointerdown', () => setSkipScroll(true), true);
+    document.addEventListener('keydown', () => setSkipScroll(false), true);
     document.addEventListener('keydown', onKey);
     sv.addEventListener('mousedown', onDown);
     sv.addEventListener('click', onClick);
@@ -121,7 +124,10 @@ function onKey(e) {
         }
         if (k === 'ArrowUp' || k === 'ArrowDown') {
             e.preventDefault();
-            nudge(S.sel.end, (k === 'ArrowUp' ? -1 : 1) * (e.altKey ? 2 : 6));
+            // ↑↓ 就是換上下一列，順手退回列層，不用再按一次 Esc
+            const d = k === 'ArrowUp' ? -1 : 1;
+            const i = Math.max(0, Math.min(S.rows.length - 1, S.sel.i + d));
+            S.sel = { ...S.sel, layer: 'row', i, j: i };
             render();
             return;
         }
@@ -213,7 +219,7 @@ function onDown(e) {
         const i = +pt.dataset.pt, end = pt.dataset.end;
         push();
         S.sel = { ...S.sel, layer: 'point', i, j: i, end };
-        S.drag = { kind: 'point', i, end, y0: svPos(e).y, base: (S.rows[i].dy || {})[end] || 0, lane: null };
+        S.drag = { kind: 'point', i, end, lane: null };
         render();
         return;
     }
@@ -285,8 +291,6 @@ function onMove(e) {
     if (d.kind === 'point') {
         const r = S.rows[d.i];
         if (!r) return;
-        r.dy = r.dy || {};
-        r.dy[d.end] = Math.max(-18, Math.min(18, Math.round((d.base + (y - d.y0)) / 2) * 2));
         if (S.parts[lane]) r[d.end] = S.parts[lane].id;
         d.lane = lane;
     } else if (d.kind === 'note') {

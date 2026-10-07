@@ -30,8 +30,8 @@ export const layer = {
     partKeys: '<b>←→</b> neighbour · <b>Alt+←→</b> move column · <b>Tab</b> actor／object · <b>type</b> to rename',
     blockWhat: (kind, label, a, b) => `Block ${kind} "${label}" rows ${a}–${b}`,
     blockKeys: '<b>Shift+↑↓</b> last row · <b>Alt+↑↓</b> move block · <b>Tab</b> loop/alt/opt · <b>type</b> to rename',
-    pointWhat: (who, name, dy) => `Endpoint · ${who} @ ${name}${dy ? ` (offset ${dy > 0 ? '+' : ''}${dy})` : ''}`,
-    pointKeys: '<b>←→</b> change lifeline · <b>↑↓</b> nudge height · <b>Tab</b> other end · <b>Esc</b> back',
+    pointWhat: (who, name) => `Endpoint · ${who} @ ${name}`,
+    pointKeys: '<b>←→</b> change lifeline · <b>↑↓</b> next row · <b>Tab</b> other end · <b>Esc</b> back',
     rowKeys: '<b>←→</b> receiver · <b>Shift+←→</b> sender · <b>Tab</b> type · <b>Shift+Tab</b> line · <b>type</b> to edit',
     emptyWhat: 'Empty',
     emptyKeys: '<b>Alt+M</b> message · <b>Alt+S</b> phase · <b>Alt+P</b> participant',
@@ -128,9 +128,9 @@ export const help = {
         ],
         point: [
             ['←→', 'move this endpoint to another lifeline'],
-            ['↑↓', 'nudge its height so the arrow can slant (hold Alt for finer steps)'],
+            ['↑↓', 'go to the row above or below, dropping back to the row level'],
             ['Tab', 'switch between head and tail'],
-            ['Backspace', 'reset the height'],
+            ['Backspace', 'delete this row'],
         ],
         block: [
             ['↑↓', 'switch between nested blocks at this position'],

@@ -3,7 +3,7 @@
 
 import * as zh from './strings.zh.js';
 import * as en from './strings.en.js';
-import { S, setStrings, sampleDiagram, loadDiagram, push } from './state.js';
+import { S, setStrings, sampleDiagram, loadDiagram, loadSaved, push } from './state.js';
 import { render, resetSelKey } from './render.js';
 import { initKeys } from './keys.js';
 import { toMermaid, fromMermaid, saveFile, saveSVG, readFile, exportPNG } from './io.js';
@@ -22,9 +22,9 @@ document.getElementById('grpView').textContent = L.hint.view;
 document.getElementById('rClose').textContent = L.msg.impClose;
 buildHelp();
 
-const sample = sampleDiagram();
+/* 上次留在這台電腦上的圖優先，沒有才給示範圖 */
 S.legend = L.legendInit.map((x) => ({ ...x }));
-loadDiagram(sample);
+loadDiagram(loadSaved() || sampleDiagram());
 initKeys();
 render();
 
@@ -156,7 +156,8 @@ addEventListener('resize', render);
 
 /* ── 導覽列自動收起 ──────────────────────
    這一頁要整片畫布，站上那條固定導覽列放著會一直擋住。
-   10 秒沒有任何操作就往上收，滑鼠靠近畫面頂端、碰到它本身、或按 Esc 就滑回來。 */
+   10 秒沒有任何操作就往上收，滑鼠在畫面頂端停一秒、或碰到它本身才滑回來。
+   不綁任何鍵盤觸發：Esc 在這一頁是退回上一層，一綁就變成每退一層導覽列彈一次。 */
 const HIDE_AFTER = 10000;
 let navTimer = null;
 
@@ -196,7 +197,6 @@ addEventListener('mousemove', (e) => {
     }
 }, { passive: true });
 
-addEventListener('keydown', (e) => { if (e.key === 'Escape') showNav(); });
 
 /* navbar 是 main.js 之後才 fetch 進來的，等它出現再開始倒數 */
 const navWait = setInterval(() => {

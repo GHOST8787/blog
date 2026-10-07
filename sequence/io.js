@@ -78,7 +78,7 @@ export function fromMermaid(src) {
             if (txt.startsWith('※')) { tone = 'dash'; txt = txt.slice(1).trim(); }
             const a = m[2];
             const type = a === '-)' ? 'async' : (a.startsWith('--') ? 'return' : 'sync');
-            rows.push({ id: nid('r'), kind: 'msg', from: m[1], to: m[3], type, tone, text: txt, dy: {} });
+            rows.push({ id: nid('r'), kind: 'msg', from: m[1], to: m[3], type, tone, text: txt });
             continue;
         }
         throw { line: n + 1, msg: T.msg.errUnknown(t.slice(0, 30)) };
@@ -146,7 +146,7 @@ export async function readFile(file) {
     if (!o || !Array.isArray(o.parts) || !Array.isArray(o.rows) || !o.parts.length) {
         throw new Error(T.msg.errFile);
     }
-    o.rows.forEach((r) => { if (r.kind === 'msg' && !r.dy) r.dy = {}; if (!r.tone) r.tone = 'solid'; });
+    o.rows.forEach((r) => { delete r.dy; if (!r.tone) r.tone = 'solid'; });
     return {
         parts: o.parts,
         rows: o.rows,

@@ -30,7 +30,7 @@ export const S = {
 export function sampleDiagram() {
     const X = T.sample, [A, B, C, D] = X.parts.map((n, i) => ({ id: 'ABCD'[i], name: n, kind: i ? 'object' : 'actor' }));
     const r = X.rows;
-    const msg = (from, to, type, tone, text) => ({ id: nid('r'), kind: 'msg', from, to, type, tone, text, dy: {} });
+    const msg = (from, to, type, tone, text) => ({ id: nid('r'), kind: 'msg', from, to, type, tone, text });
     return {
         parts: [A, B, C, D],
         rows: [
@@ -61,16 +61,45 @@ export function loadDiagram(d) {
     S.drag = null;
 }
 
+/* 自動存回這台電腦的瀏覽器，重新整理（含 Ctrl+Shift+R）不會把圖弄丟。
+   只存在使用者自己的瀏覽器裡，沒有送到任何地方。 */
+const LS_KEY = 'ghost.sequence.doc.v1';
+let dirty = false, saveTimer = 0;
+
+export function autoSave() {
+    if (!dirty) return;
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => {
+        try {
+            localStorage.setItem(LS_KEY, JSON.stringify({
+                v: 1, savedAt: Date.now(),
+                parts: S.parts, rows: S.rows, blocks: S.blocks, legend: S.legend,
+            }));
+        } catch { /* 無痕模式或空間滿了就不存，編輯照常 */ }
+    }, 400);
+}
+
+export function loadSaved() {
+    try {
+        const d = JSON.parse(localStorage.getItem(LS_KEY) || 'null');
+        if (!d || !Array.isArray(d.parts) || !Array.isArray(d.rows) || !d.parts.length) return null;
+        d.rows.forEach((r) => { if (!r.tone) r.tone = 'solid'; });
+        return { parts: d.parts, rows: d.rows, blocks: d.blocks || [], legend: d.legend };
+    } catch { return null; }
+}
+
 /* 復原。每次動資料之前呼叫 push()，存的是改動前的樣子。 */
 const undoStack = [], redoStack = [];
 const snap = () => JSON.stringify({ p: S.parts, r: S.rows, b: S.blocks, l: S.legend });
 
 export function push() {
+    dirty = true;
     undoStack.push(snap());
     if (undoStack.length > 80) undoStack.shift();
     redoStack.length = 0;
 }
 function restore(str) {
+    dirty = true;
     const o = JSON.parse(str);
     S.parts = o.p; S.rows = o.r; S.blocks = o.b; S.legend = o.l;
     S.sel.i = Math.min(S.sel.i, Math.max(0, S.rows.length - 1));
