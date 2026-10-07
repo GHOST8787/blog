@@ -200,8 +200,10 @@ export function render() {
             handle(g, x2, y2, i, 'to', inSel, C_ON);
         }
 
-        const hit = el('rect', { x: 0, y: y - 24, width: W, height: ROW_H - 8, fill: 'transparent' });
-        g.insertBefore(hit, g.firstChild);
+        if (!exporting) {
+            const hit = el('rect', { x: 0, y: y - 24, width: W, height: ROW_H - 8, fill: 'transparent' });
+            g.insertBefore(hit, g.firstChild);
+        }
         sv.appendChild(g);
     });
 
@@ -223,8 +225,11 @@ export function render() {
         sv.appendChild(t);
     });
 
-    paintStatus();
     paintFoot();
+    // 匯出那一瞬間的假選取不該寫進狀態列，也不該捲動畫面
+    if (exporting) return;
+
+    paintStatus();
     const mm = document.getElementById('mm');
     if (document.activeElement !== mm) mm.value = toMermaid();
 
@@ -234,6 +239,7 @@ export function render() {
 }
 
 function handle(g, x, y, i, end, inSel, C_ON) {
+    if (exporting) return;
     const on = inSel && S.sel.layer === 'point' && S.sel.end === end;
     g.appendChild(el('circle', {
         cx: x, cy: y, r: on ? 6 : 3.6,
@@ -295,6 +301,22 @@ export function resetSelKey() { lastSelKey = ''; }
 /* 滑鼠點的東西本來就在畫面上，不需要把頁面捲過去；只有鍵盤移動才追。 */
 let skipScroll = false;
 export function setSkipScroll(v) { skipScroll = v; }
+
+/* 匯出時把編輯用的記號全部拿掉：端點把手、點擊用的透明區、選取高亮。
+   畫一張乾淨的，交給 fn 去輸出，然後把畫面還原成原本選到的樣子。 */
+let exporting = false;
+export function withCleanSvg(fn) {
+    const keep = S.sel;
+    exporting = true;
+    S.sel = { layer: 'none', i: -1, j: -1, end: 'to', bi: -1 };
+    render();
+    try { return fn(); } finally {
+        exporting = false;
+        S.sel = keep;
+        resetSelKey();
+        render();
+    }
+}
 
 function keepInView() {
     if (S.drag || S.editing) return;

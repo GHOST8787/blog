@@ -2,6 +2,7 @@
 // 這一支不負責重畫，呼叫端拿到資料自己 render，所以不 import render.js。
 
 import { S, T, nid } from './state.js';
+import { withCleanSvg } from './render.js';
 import { parseSVG } from './svgin.js';
 
 const ARROW = { sync: '->>', return: '-->>', async: '-)' };
@@ -116,9 +117,14 @@ function stamp() {
 
 /* 把整張圖存成 .svg。資料原封不動嵌在 <metadata>，所以這張圖讀得回來也編輯得了。 */
 export function saveSVG() {
+    withCleanSvg(buildSVG);
+}
+
+function buildSVG() {
     const sv = document.getElementById('sv');
     const clone = sv.cloneNode(true);
     clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+    stripCursor(clone);
     // 畫布裡的文字寫的是 font-family:inherit，單獨開啟時沒有頁面可繼承，要在根節點給一份
     clone.setAttribute('font-family', "ui-monospace, 'JetBrains Mono', Menlo, Consolas, 'Noto Sans TC', sans-serif");
     const meta = document.createElementNS('http://www.w3.org/2000/svg', 'metadata');
@@ -157,9 +163,14 @@ export async function readFile(file) {
 }
 
 export function exportPNG() {
+    withCleanSvg(buildPNG);
+}
+
+function buildPNG() {
     const sv = document.getElementById('sv');
     const clone = sv.cloneNode(true);
     clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+    stripCursor(clone);
     const W = +sv.getAttribute('width'), H = +sv.getAttribute('height');
     const bg = getComputedStyle(document.documentElement).getPropertyValue('--c-bg').trim();
     const str = new XMLSerializer().serializeToString(clone);
@@ -174,6 +185,14 @@ export function exportPNG() {
         c.toBlob((b) => download(b, 'sequence.png'));
     };
     img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(str);
+}
+
+/* 編輯用的游標樣式不該跟著圖出去，單獨開啟那張 svg 時滑過去不會變成手指 */
+function stripCursor(root) {
+    root.querySelectorAll('[style]').forEach((e) => {
+        const v = e.getAttribute('style').replace(/cursor\s*:[^;]*;?/g, '').trim();
+        if (v) e.setAttribute('style', v); else e.removeAttribute('style');
+    });
 }
 
 function download(blob, name) {
