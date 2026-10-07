@@ -60,6 +60,9 @@ $('mt-logout-btn').addEventListener('click', () => {
     signOut(auth);
 });
 
+// 投票頁的頁首已經有「返回我的會議」，回部落格首頁的連結只放在我的會議那一頁
+if (pollId) $('mt-home-link').classList.add('hidden');
+
 let lastUid = null;
 onAuthStateChanged(auth, (user) => {
     const uid = user ? user.uid : null;
