@@ -49,46 +49,46 @@ export function measure(str, size, weight) {
     return Math.max(...textLines(str).map((s) => mctx.measureText(s).width));
 }
 
-/* 先替每一欄排位置：欄距取「跨過這一段的最長文字」撐開，左右各留固定邊距。
-   文字再長都放得下，排完才知道整張圖多寬。 */
+/* 欄距固定不動（線跟線之間維持原本的距離），文字長就讓它跨出去，
+   只把整張圖的左右邊界讓開到放得下。所以長文字會壓過隔壁的線，這是刻意的。 */
 function placeLanes() {
     const n = S.parts.length;
     const boxW = S.parts.map((p) => Math.max(BOX_W, measure(p.name, 12.5) + 30));
-    const gaps = new Array(Math.max(0, n - 1)).fill(COL_W);
-    for (let k = 0; k < gaps.length; k++) {
-        gaps[k] = Math.max(gaps[k], (boxW[k] + boxW[k + 1]) / 2 + 18);
-    }
-    const widen = (k, need) => { if (k >= 0 && k < gaps.length) gaps[k] = Math.max(gaps[k], need); };
-    // 左右邊距至少要塞得下半個頂框再加一點餘裕，框不要貼著畫布邊
-    let padL = Math.max(PAD_X, (boxW[0] || BOX_W) / 2 + 24);
-    let padR = Math.max(PAD_X, (boxW[n - 1] || BOX_W) / 2 + 24);
+    const rel = [];                       // 先用「第一欄為 0」的相對座標排
+    for (let i = 0; i < n; i++) rel.push(i * COL_W);
+    const last = n ? rel[n - 1] : 0;
+
+    let minX = -(boxW[0] || BOX_W) / 2;
+    let maxX = last + (boxW[n - 1] || BOX_W) / 2;
+    const span = (a, b) => { minX = Math.min(minX, a); maxX = Math.max(maxX, b); };
     let phaseNeed = 0;
     S.rows.forEach((r) => {
         if (r.kind === 'phase') { phaseNeed = Math.max(phaseNeed, measure(r.text, 12.5, 600) + 96); return; }
         if (r.kind === 'note') {
-            // Note 的框一律往右畫，最後一欄的就得靠右邊距讓位
-            const a = pIdx(r.at);
-            const w = Math.max(110, measure(r.text, 12) + 28);
-            if (a < n - 1) widen(a, 16 + w + 16);
-            else padR = Math.max(padR, 16 + w + 16);
+            const x = rel[Math.max(0, pIdx(r.at))] || 0;
+            span(x + 16, x + 16 + Math.max(110, measure(r.text, 12) + 28) + 6);
             return;
         }
-        const a = pIdx(r.from), b = pIdx(r.to);
-        const w = measure(r.text, 12.5);
-        if (a === b) { widen(a < n - 1 ? a : a - 1, SELF_W + 12 + w + 22); return; }
-        const lo = Math.min(a, b), hi = Math.max(a, b);
-        const per = (w + 46) / (hi - lo);
-        for (let k = lo; k < hi; k++) widen(k, per);
+        const a = pIdx(r.from), b = pIdx(r.to), w = measure(r.text, 12.5);
+        if (a === b) {
+            const x = rel[Math.max(0, a)] || 0;
+            if (a === n - 1) span(x - SELF_W - 12 - w - 6, x);
+            else span(x, x + SELF_W + 12 + w + 6);
+            return;
+        }
+        const c = ((rel[a] || 0) + (rel[b] || 0)) / 2;
+        span(c - w / 2 - 6, c + w / 2 + 6);
     });
-    const span = gaps.reduce((t, g) => t + g, 0);
-    // 階段帶橫跨整張圖，它比目前的寬度還長的話兩邊一起讓
-    const short = phaseNeed - (padL + span + padR);
+
+    let padL = Math.max(PAD_X, -minX + 24);
+    let padR = Math.max(PAD_X, maxX - last + 24);
+    // 階段帶橫跨整張圖，比現有寬度長的話兩邊一起讓
+    const short = phaseNeed - (padL + last + padR);
     if (short > 0) { padL += short / 2; padR += short / 2; }
-    const xs = []; let x = padL;
-    for (let i = 0; i < n; i++) { xs.push(Math.round(x)); x += gaps[i] || 0; }
-    LANE.x = xs;
+
+    LANE.x = rel.map((v) => Math.round(v + padL));
     LANE.boxW = boxW;
-    return Math.round(padL + span + padR);
+    return Math.round(padL + last + padR);
 }
 
 function layout() {
