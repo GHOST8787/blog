@@ -121,6 +121,7 @@ export const help = {
             ['Tab', 'arrow type (sync / return / async)'],
             ['Shift+Tab', 'line style (solid / dashed)'],
             ['Enter or just type', 'edit, text selected; Enter commits, Shift+Enter commits and starts the next row'],
+            ['Ctrl+Enter (while editing)', 'break the text onto a new line; messages, notes and phases can all be multi-line'],
             ['Alt+↑↓', 'move this row up or down'],
             ['Shift+↑↓', 'extend the selection (Shift+click works too)'],
             ['Ctrl+Enter', 'wrap the selected rows in a block'],

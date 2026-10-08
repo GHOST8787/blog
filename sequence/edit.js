@@ -17,8 +17,14 @@ function openEd(what, i, x, y, val, w) {
     ed.style.top = (y + 8 + (a.top - c.top)) + 'px';
     ed.style.width = (w || 220) + 'px';
     ed.value = val;
+    fitEd();
     ed.focus();
     ed.select();
+}
+
+/* 編輯框高度跟著行數走，不出現捲軸 */
+function fitEd() {
+    ed.rows = Math.min(8, ed.value.split('\n').length);
 }
 export function editRow(i) {
     const r = S.rows[i];
@@ -48,7 +54,11 @@ export function editCurrent() {
 
 export function commitEd(addNext) {
     if (!S.editing) return;
-    const { what, i } = S.editing, v = ed.value.trim();
+    const { what, i } = S.editing;
+    // 只有列的文字能多行；參與者名稱與區塊標籤的框高是固定的，換行一律壓成空白
+    const raw = ed.value.replace(/\r/g, '');
+    const v = (what === 'row' ? raw.split('\n').map((x) => x.trim()).join('\n')
+                              : raw.split('\n').join(' ')).trim();
     const cur = what === 'row' ? (S.rows[i] || {}).text
         : what === 'part' ? (S.parts[i] || {}).name
             : what === 'block' ? (S.blocks[i] || {}).label
@@ -69,10 +79,21 @@ export function closeEd() {
     ed.blur();           // 不放掉焦點的話，隱藏的 input 會繼續吃掉所有快捷鍵
 }
 ed.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') { e.preventDefault(); commitEd(e.shiftKey); }
-    else if (e.key === 'Escape') { e.preventDefault(); closeEd(); render(); }
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        // Ctrl+Enter 在文字裡斷一行，Enter 才是送出
+        if (e.ctrlKey || e.metaKey) insertBreak();
+        else commitEd(e.shiftKey);
+    } else if (e.key === 'Escape') { e.preventDefault(); closeEd(); render(); }
     e.stopPropagation();
 });
+
+function insertBreak() {
+    const a = ed.selectionStart, b = ed.selectionEnd;
+    ed.value = ed.value.slice(0, a) + '\n' + ed.value.slice(b);
+    ed.selectionStart = ed.selectionEnd = a + 1;
+    fitEd();
+}
 ed.addEventListener('blur', () => { if (S.editing) commitEd(false); });
 
 /* ── 新增 ───────────────────────────────── */

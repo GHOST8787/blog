@@ -25,14 +25,34 @@ export const rowY = (i) => (Y[i] !== undefined ? Y[i] : ROW_Y0 + i * ROW_H);
 
 /* 每列的 y 用累加算：一列上方開幾個區塊，就先讓出幾條標頭高度，
    嵌套區塊的標籤因此永遠錯開，不會疊在一起。 */
+/* 文字可以多行（編輯時 Ctrl+Enter 斷行）。畫的時候拆成 tspan，
+   每一行都要重新指定 x，不然會接在上一行尾巴。 */
+const LINE_H = 15;
+const textLines = (v) => String(v == null ? '' : v).split('\n');
+const extraH = (r) => (textLines(r.text).length - 1) * LINE_H;
+
+function setText(t, str, x) {
+    const ls = textLines(str);
+    if (ls.length === 1) { t.textContent = str; return; }
+    ls.forEach((line, k) => {
+        const sp = el('tspan', { x, dy: k ? LINE_H : 0 });
+        sp.textContent = line;
+        t.appendChild(sp);
+    });
+}
+
 function layout() {
     Y = []; BTOP = new Map(); BBOT = new Map();
     let y = ROW_Y0;
     for (let i = 0; i < S.rows.length; i++) {
         S.blocks.filter((b) => b.from === i).sort((a, b) => (b.to - b.from) - (a.to - a.from))
             .forEach((b) => { BTOP.set(b.id, y); y += BLK_HEAD; });
-        if (S.rows[i].kind === 'phase') { y += 14; Y.push(y + 20); y += PHASE_H + 10; }
-        else { y += 24; Y.push(y); y += ROW_H - 24; }
+        const r = S.rows[i], ex = extraH(r);
+        // 文字長在哪一邊，空間就留在哪一邊：訊息在線上方、Note 在框內往下、自呼叫置中
+        if (r.kind === 'phase') { y += 14 + ex / 2; Y.push(y + 20); y += PHASE_H + 10 + ex / 2; }
+        else if (r.kind === 'note') { y += 24; Y.push(y); y += ROW_H - 24 + ex; }
+        else if (r.from === r.to) { y += 24 + ex / 2; Y.push(y); y += ROW_H - 24 + ex / 2; }
+        else { y += 24 + ex; Y.push(y); y += ROW_H - 24; }
         S.blocks.filter((b) => b.to === i).sort((a, b) => (a.to - a.from) - (b.to - b.from))
             .forEach((b, k) => { BBOT.set(b.id, Y[i] + 20 + k * BLK_FOOT); y += BLK_FOOT; });
     }
@@ -154,23 +174,25 @@ export function render() {
         const mk = inSel ? 's' : (dashed ? 'd' : 'n');
         const g = el('g', { 'data-row': i, style: 'cursor:pointer' });
 
+        const ex = extraH(r);
         if (r.kind === 'phase') {
             g.appendChild(el('rect', {
-                x: 24, y: y - 20, width: W - 48, height: PHASE_H - 6, rx: 4,
+                x: 24, y: y - 20 - ex / 2, width: W - 48, height: PHASE_H - 6 + ex, rx: 4,
                 fill: inSel ? rgb('--c-purple', '.14') : rgb('--c-ink', '.05'),
                 stroke: inSel ? C_ON : rgb('--c-ink', '.1'),
             }));
-            const t = el('text', { x: W / 2, y: y + 5, 'text-anchor': 'middle', 'font-size': 12.5, 'font-family': 'inherit', 'font-weight': 600, fill: inSel ? C_ON : C_OFF });
-            t.textContent = r.text;
+            const t = el('text', { x: W / 2, y: y + 5 - ex / 2, 'text-anchor': 'middle', 'font-size': 12.5, 'font-family': 'inherit', 'font-weight': 600, fill: inSel ? C_ON : C_OFF });
+            setText(t, r.text, W / 2);
             g.appendChild(t);
         } else if (r.kind === 'note') {
-            const x = pxOf(r.at) + 16, w = Math.max(110, r.text.length * 8.6 + 22);
+            const widest = Math.max(...textLines(r.text).map((s0) => s0.length));
+            const x = pxOf(r.at) + 16, w = Math.max(110, widest * 8.6 + 22);
             g.appendChild(el('path', {
-                d: `M${x},${y - 15} h${w - 11} l11,11 v${26} h-${w} z`,
+                d: `M${x},${y - 15} h${w - 11} l11,11 v${26 + ex} h-${w} z`,
                 fill: rgb('--c-warn', '.1'), stroke: inSel ? col : rgb('--c-warn', '.55'),
             }));
             const t = el('text', { x: x + 10, y: y + 7, 'font-size': 12, 'font-family': 'inherit', fill: inSel ? col : C_WARN });
-            t.textContent = r.text;
+            setText(t, r.text, x + 10);
             g.appendChild(t);
         } else if (r.from === r.to) {
             const last = pIdx(r.from) === n - 1;
@@ -180,8 +202,9 @@ export function render() {
                 fill: 'none', stroke: col, 'stroke-width': 1.4,
                 'stroke-dasharray': dashed ? '6 4' : 'none', 'marker-end': `url(#mk-solid-${mk})`,
             }));
-            const t = el('text', { x: x + d * (SELF_W + 12), y: yy + 4, 'font-size': 12.5, 'font-family': 'inherit', 'text-anchor': last ? 'end' : 'start', fill: col });
-            t.textContent = r.text;
+            const tx = x + d * (SELF_W + 12);
+            const t = el('text', { x: tx, y: yy + 4 - ex / 2, 'font-size': 12.5, 'font-family': 'inherit', 'text-anchor': last ? 'end' : 'start', fill: col });
+            setText(t, r.text, tx);
             g.appendChild(t);
             handle(g, x, yy - SELF_H / 2, i, 'from', inSel, C_ON);
         } else {
@@ -193,15 +216,16 @@ export function render() {
                 'stroke-dasharray': (dashed || r.type === 'return') ? '6 4' : 'none',
                 'marker-end': `url(#mk-${r.type === 'sync' ? 'solid' : 'open'}-${mk})`,
             }));
-            const t = el('text', { x: (x1 + x2) / 2, y: Math.min(y1, y2) - 9, 'text-anchor': 'middle', 'font-size': 12.5, 'font-family': 'inherit', fill: col });
-            t.textContent = r.text;
+            const tx = (x1 + x2) / 2;
+            const t = el('text', { x: tx, y: Math.min(y1, y2) - 9 - ex, 'text-anchor': 'middle', 'font-size': 12.5, 'font-family': 'inherit', fill: col });
+            setText(t, r.text, tx);
             g.appendChild(t);
             handle(g, x1, y1, i, 'from', inSel, C_ON);
             handle(g, x2, y2, i, 'to', inSel, C_ON);
         }
 
         if (!exporting) {
-            const hit = el('rect', { x: 0, y: y - 24, width: W, height: ROW_H - 8, fill: 'transparent' });
+            const hit = el('rect', { x: 0, y: y - 24 - ex, width: W, height: ROW_H - 8 + ex * 2, fill: 'transparent' });
             g.insertBefore(hit, g.firstChild);
         }
         sv.appendChild(g);
@@ -276,7 +300,9 @@ function paintStatus() {
     const [a, b] = selRange();
     const span = T.layer.rowSpan(a + 1, b + 1);
     const tone = r.tone === 'dash' ? T.layer.dash : '';
-    if (r.kind === 'phase') w.textContent = `${span} · ${T.layer.phaseWhat(r.text)}`;
+    // 狀態列只有一行，多行文字在這裡壓成空白
+    const flat = (v) => textLines(v).join(' ');
+    if (r.kind === 'phase') w.textContent = `${span} · ${T.layer.phaseWhat(flat(r.text))}`;
     else if (r.kind === 'note') w.textContent = `${span} · Note @ ${nameOf(r.at)}`;
     else if (r.from === r.to) w.textContent = `${span} · ${T.layer.selfCall(nameOf(r.from))}${tone}`;
     else w.textContent = `${span} · ${nameOf(r.from)} → ${nameOf(r.to)} · ${T.typeLabel[r.type]}${tone}`;

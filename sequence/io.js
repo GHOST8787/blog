@@ -6,6 +6,9 @@ import { withCleanSvg } from './render.js';
 import { parseSVG } from './svgin.js';
 
 const ARROW = { sync: '->>', return: '-->>', async: '-)' };
+// Mermaid 一列就是一行，文字裡的換行照它的慣例寫成 <br/>
+const outNL = (t) => String(t).split('\n').join('<br/>');
+const inNL = (t) => t.replace(/<br\s*[/]?>/gi, '\n');
 
 export function toMermaid() {
     const L = ['sequenceDiagram'];
@@ -21,12 +24,12 @@ export function toMermaid() {
         const tag = r.tone === 'dash' ? '※ ' : '';
         if (r.kind === 'phase') {
             L.push(`${ind}rect rgb(236,238,251)`);
-            L.push(`${ind}    Note over ${S.parts[0].id},${S.parts[S.parts.length - 1].id}: ${r.text}`);
+            L.push(`${ind}    Note over ${S.parts[0].id},${S.parts[S.parts.length - 1].id}: ${outNL(r.text)}`);
             L.push(`${ind}end`);
         } else if (r.kind === 'note') {
-            L.push(`${ind}Note right of ${r.at}: ${tag}${r.text}`);
+            L.push(`${ind}Note right of ${r.at}: ${tag}${outNL(r.text)}`);
         } else {
-            L.push(`${ind}${r.from}${ARROW[r.from === r.to ? 'sync' : r.type]}${r.to}: ${tag}${r.text}`);
+            L.push(`${ind}${r.from}${ARROW[r.from === r.to ? 'sync' : r.type]}${r.to}: ${tag}${outNL(r.text)}`);
         }
         while (open.length && open[open.length - 1].to === i) {
             open.pop();
@@ -52,7 +55,7 @@ export function fromMermaid(src) {
         }
         if (/^rect\s/.test(t)) { pendingPhase = true; continue; }
         if ((m = t.match(/^Note\s+over\s+\S+\s*,\s*\S+\s*:\s*(.*)$/)) && pendingPhase) {
-            rows.push({ id: nid('r'), kind: 'phase', tone: 'solid', text: m[1].trim() });
+            rows.push({ id: nid('r'), kind: 'phase', tone: 'solid', text: inNL(m[1].trim()) });
             pendingPhase = 'awaitEnd';   // 這一組的 end 歸階段帶，不是區塊的
             continue;
         }
@@ -71,7 +74,7 @@ export function fromMermaid(src) {
         if ((m = t.match(/^Note\s+(right of|left of|over)\s+(\S+)\s*:\s*(.*)$/))) {
             let txt = m[3].trim(), tone = 'solid';
             if (txt.startsWith('※')) { tone = 'dash'; txt = txt.slice(1).trim(); }
-            rows.push({ id: nid('r'), kind: 'note', at: m[2], text: txt, tone });
+            rows.push({ id: nid('r'), kind: 'note', at: m[2], text: inNL(txt), tone });
             continue;
         }
         if ((m = t.match(/^(\S+?)\s*(--?>>|-\)|--?>)\s*(\S+?)\s*:\s*(.*)$/))) {
@@ -79,7 +82,7 @@ export function fromMermaid(src) {
             if (txt.startsWith('※')) { tone = 'dash'; txt = txt.slice(1).trim(); }
             const a = m[2];
             const type = a === '-)' ? 'async' : (a.startsWith('--') ? 'return' : 'sync');
-            rows.push({ id: nid('r'), kind: 'msg', from: m[1], to: m[3], type, tone, text: txt });
+            rows.push({ id: nid('r'), kind: 'msg', from: m[1], to: m[3], type, tone, text: inNL(txt) });
             continue;
         }
         throw { line: n + 1, msg: T.msg.errUnknown(t.slice(0, 30)) };
