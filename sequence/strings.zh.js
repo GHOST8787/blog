@@ -65,6 +65,8 @@ export const msg = {
     errOrphan: '有訊息指到沒宣告的參與者',
     errFile: '這個檔案看不懂，沒有載入',
     openTitle: '開啟 .json / .svg',
+    namePlaceholder: '這張圖的名字',
+    nameTip: '取個名字，下載 .json／.svg／.png 就用它當檔名',
     svgBadXml: 'SVG 檔壞了，XML 解析不過',
     svgNotSvg: '這不是 SVG 檔（根節點不是 <svg>）',
     svgNoLifelines: '找不到時序圖的垂直生命線，看起來不是時序圖',

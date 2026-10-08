@@ -3,7 +3,7 @@
 
 import * as zh from './strings.zh.js';
 import * as en from './strings.en.js';
-import { S, setStrings, sampleDiagram, loadDiagram, loadSaved, push } from './state.js';
+import { S, setStrings, sampleDiagram, loadDiagram, loadSaved, push, touch } from './state.js';
 import { render, resetSelKey } from './render.js';
 import { initKeys } from './keys.js';
 import { toMermaid, fromMermaid, saveFile, saveSVG, readFile, exportPNG } from './io.js';
@@ -20,11 +20,22 @@ document.querySelectorAll('[data-tip]').forEach((b) => { b.title = L.hint[b.data
 document.getElementById('grpFile').textContent = L.hint.file;
 document.getElementById('grpView').textContent = L.hint.view;
 document.getElementById('rClose').textContent = L.msg.impClose;
+const nameBox = document.getElementById('docName');
+nameBox.placeholder = L.msg.namePlaceholder;
+nameBox.title = L.msg.nameTip;
 buildHelp();
 
 /* 上次留在這台電腦上的圖優先，沒有才給示範圖 */
 S.legend = L.legendInit.map((x) => ({ ...x }));
 loadDiagram(loadSaved() || sampleDiagram());
+
+/* 命名欄：打字就寫進資料，存檔與匯出都用它當檔名。
+   畫面那一側由 render 的 paintName 回填，這裡只管使用者打進來的字。 */
+nameBox.addEventListener('input', () => { S.name = nameBox.value; touch(); render(); });
+nameBox.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === 'Escape') { e.preventDefault(); nameBox.blur(); }
+    e.stopPropagation();          // 不要讓畫布的快捷鍵吃掉這裡的按鍵
+});
 initKeys();
 render();
 
@@ -76,6 +87,7 @@ filePick.addEventListener('change', async () => {
         const d = await readFile(f);
         push();
         loadDiagram(d);
+        nameBox.value = S.name || '';     // 焦點還留在命名欄時 render 不會回填，這裡補上
         resetSelKey();
         mmErr.textContent = '';
         render();

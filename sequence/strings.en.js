@@ -55,7 +55,7 @@ export const msg = {
     blockLabel: 'condition',
     mmHead: 'MERMAID — applies to the diagram as you type',
     foot: (p, r, m, s, n, ph, b) =>
-        `${p} participants · ${r} rows (messages ${m}, self-calls ${s}, notes ${n}, phases ${ph}) · blocks ${b}`,
+        `${p} lifelines · ${r} rows (${m} msg, ${s} self, ${n} note, ${ph} phase) · ${b} block`,
     errLine: (n, m) => `Line ${n}: ${m}`,
     errFirst: 'the first line must be sequenceDiagram',
     errEnd: 'unmatched end',
@@ -65,6 +65,8 @@ export const msg = {
     errOrphan: 'a message points at an undeclared participant',
     errFile: 'that file could not be read, nothing was loaded',
     openTitle: 'Open .json / .svg',
+    namePlaceholder: 'Name this diagram',
+    nameTip: 'Name it and the .json / .svg / .png downloads use that as the filename',
     svgBadXml: 'the SVG is malformed, XML parsing failed',
     svgNotSvg: 'not an SVG file (root element is not <svg>)',
     svgNoLifelines: 'no vertical lifelines found, this does not look like a sequence diagram',

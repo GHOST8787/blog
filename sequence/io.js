@@ -98,18 +98,25 @@ export function fromMermaid(src) {
     return { parts, rows, blocks };
 }
 
+/* 檔名用這張圖的名字，沒取名就退回日期。擋掉檔名不能用的字元。 */
+function fileBase() {
+    const n = String(S.name || '').replace(/[\\/:*?"<>|]/g, '').trim().slice(0, 60);
+    return n || `sequence-${stamp()}`;
+}
+
 /* ── 存成 .json 下載到使用者自己的電腦。站上不留任何東西。 ── */
 export function saveFile() {
     const data = {
         format: 'ghost.ouo/sequence',
         version: 1,
         savedAt: new Date().toISOString(),
+        name: S.name || '',
         parts: S.parts,
         rows: S.rows,
         blocks: S.blocks,
         legend: S.legend,
     };
-    download(new Blob([JSON.stringify(data, null, 1)], { type: 'application/json' }), `sequence-${stamp()}.json`);
+    download(new Blob([JSON.stringify(data, null, 1)], { type: 'application/json' }), `${fileBase()}.json`);
 }
 
 function stamp() {
@@ -133,12 +140,12 @@ function buildSVG() {
     const meta = document.createElementNS('http://www.w3.org/2000/svg', 'metadata');
     meta.setAttribute('data-format', 'ghost.ouo/sequence');
     meta.textContent = JSON.stringify({
-        version: 1, parts: S.parts, rows: S.rows, blocks: S.blocks, legend: S.legend,
+        version: 1, name: S.name || '', parts: S.parts, rows: S.rows, blocks: S.blocks, legend: S.legend,
     });
     clone.insertBefore(meta, clone.firstChild);
     const head = '<?xml version="1.0" encoding="UTF-8"?>';
     const str = head + '\n' + new XMLSerializer().serializeToString(clone);
-    download(new Blob([str], { type: 'image/svg+xml;charset=utf-8' }), `sequence-${stamp()}.svg`);
+    download(new Blob([str], { type: 'image/svg+xml;charset=utf-8' }), `${fileBase()}.svg`);
 }
 
 /* 讀回本機檔案。.json 走自己的格式，.svg 交給 svgin.js 反推。
@@ -157,6 +164,7 @@ export async function readFile(file) {
     }
     o.rows.forEach((r) => { delete r.dy; if (!r.tone) r.tone = 'solid'; });
     return {
+        name: typeof o.name === 'string' ? o.name : '',
         parts: o.parts,
         rows: o.rows,
         blocks: Array.isArray(o.blocks) ? o.blocks : [],
@@ -185,7 +193,7 @@ function buildPNG() {
         ctx.fillStyle = `rgb(${bg})`;
         ctx.fillRect(0, 0, c.width, c.height);
         ctx.drawImage(img, 0, 0, c.width, c.height);
-        c.toBlob((b) => download(b, 'sequence.png'));
+        c.toBlob((b) => download(b, `${fileBase()}.png`));
     };
     img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(str);
 }

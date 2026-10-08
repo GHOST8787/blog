@@ -213,6 +213,7 @@ function normalize(d) {
         delete r.dy;
         if (!r.tone) r.tone = 'solid';
     });
-    return { parts: d.parts, rows: d.rows, blocks: Array.isArray(d.blocks) ? d.blocks : [],
+    return { name: typeof d.name === 'string' ? d.name : '',
+             parts: d.parts, rows: d.rows, blocks: Array.isArray(d.blocks) ? d.blocks : [],
              legend: Array.isArray(d.legend) ? d.legend : undefined };
 }

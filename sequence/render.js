@@ -299,6 +299,7 @@ export function render() {
     });
 
     paintFoot();
+    paintName();
     // 圖比版面寬的時候，整塊工作區跟著長，工具列與狀態列才不會被圖甩在後面
     const app = document.querySelector('.seq-app');
     if (app) app.style.maxWidth = Math.max(1180, W + 24) + 'px';
@@ -359,6 +360,12 @@ function paintStatus() {
     else if (r.from === r.to) w.textContent = `${span} · ${T.layer.selfCall(nameOf(r.from))}${tone}`;
     else w.textContent = `${span} · ${nameOf(r.from)} → ${nameOf(r.to)} · ${T.typeLabel[r.type]}${tone}`;
     k.innerHTML = T.layer.rowKeys + ` <span class="more">· ${T.layer.more}</span>`;
+}
+
+/* 命名欄跟著資料走（讀檔、復原都會變）；使用者正在打字時不要蓋掉他 */
+function paintName() {
+    const nb = document.getElementById('docName');
+    if (nb && document.activeElement !== nb) nb.value = S.name || '';
 }
 
 function paintFoot() {

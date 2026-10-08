@@ -16,6 +16,7 @@ export let T = null;                       // 語言字串，app.js 開場就設
 export function setStrings(s) { T = s; }
 
 export const S = {
+    name: '',                              // 這張圖的名字，存檔與匯出拿它當檔名
     parts: [],
     rows: [],
     blocks: [],
@@ -52,6 +53,7 @@ export function sampleDiagram() {
 }
 
 export function loadDiagram(d) {
+    if (typeof d.name === 'string') S.name = d.name;
     S.parts = d.parts;
     S.rows = d.rows;
     S.blocks = d.blocks || [];
@@ -66,13 +68,16 @@ export function loadDiagram(d) {
 const LS_KEY = 'ghost.sequence.doc.v1';
 let dirty = false, saveTimer = 0;
 
+/* 改名這種不進復原堆疊、但要存起來的小改動用這個標記 */
+export function touch() { dirty = true; }
+
 export function autoSave() {
     if (!dirty) return;
     clearTimeout(saveTimer);
     saveTimer = setTimeout(() => {
         try {
             localStorage.setItem(LS_KEY, JSON.stringify({
-                v: 1, savedAt: Date.now(),
+                v: 1, savedAt: Date.now(), name: S.name,
                 parts: S.parts, rows: S.rows, blocks: S.blocks, legend: S.legend,
             }));
         } catch { /* 無痕模式或空間滿了就不存，編輯照常 */ }
@@ -84,13 +89,13 @@ export function loadSaved() {
         const d = JSON.parse(localStorage.getItem(LS_KEY) || 'null');
         if (!d || !Array.isArray(d.parts) || !Array.isArray(d.rows) || !d.parts.length) return null;
         d.rows.forEach((r) => { if (!r.tone) r.tone = 'solid'; });
-        return { parts: d.parts, rows: d.rows, blocks: d.blocks || [], legend: d.legend };
+        return { name: d.name || '', parts: d.parts, rows: d.rows, blocks: d.blocks || [], legend: d.legend };
     } catch { return null; }
 }
 
 /* 復原。每次動資料之前呼叫 push()，存的是改動前的樣子。 */
 const undoStack = [], redoStack = [];
-const snap = () => JSON.stringify({ p: S.parts, r: S.rows, b: S.blocks, l: S.legend });
+const snap = () => JSON.stringify({ p: S.parts, r: S.rows, b: S.blocks, l: S.legend, n: S.name });
 
 export function push() {
     dirty = true;
@@ -102,6 +107,7 @@ function restore(str) {
     dirty = true;
     const o = JSON.parse(str);
     S.parts = o.p; S.rows = o.r; S.blocks = o.b; S.legend = o.l;
+    if (typeof o.n === 'string') S.name = o.n;
     S.sel.i = Math.min(S.sel.i, Math.max(0, S.rows.length - 1));
     S.sel.j = S.sel.i;
     if (S.sel.layer === 'part') S.sel.i = Math.min(S.sel.i, S.parts.length - 1);
