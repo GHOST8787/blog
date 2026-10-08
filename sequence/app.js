@@ -87,6 +87,9 @@ filePick.addEventListener('change', async () => {
         const d = await readFile(f);
         push();
         loadDiagram(d);
+        // 檔名就是使用者給這張圖的名字，優先採用；自動產生的那種日期檔名不算
+        const base = f.name.replace(/[.][^.]+$/, '').trim();
+        if (base && !/^sequence-\d{8}-\d{4}$/.test(base)) S.name = base;
         nameBox.value = S.name || '';     // 焦點還留在命名欄時 render 不會回填，這裡補上
         resetSelKey();
         mmErr.textContent = '';
