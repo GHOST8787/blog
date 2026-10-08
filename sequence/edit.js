@@ -4,7 +4,7 @@ import {
     S, T, nid, push, TYPES, BLOCK_KINDS,
     HEAD_Y, SELF_W, px, pxOf, pIdx, clampPart, selRange, blocksAt, shiftBlocks,
 } from './state.js';
-import { render, rowY, BTOP, DOC_W, sv, stage } from './render.js';
+import { render, rowY, BTOP, DOC_W, sv, stage, measure } from './render.js';
 
 const ed = document.getElementById('ed');
 
@@ -29,13 +29,18 @@ function fitEd() {
 export function editRow(i) {
     const r = S.rows[i];
     if (!r) return;
-    const x = r.kind === 'phase' ? DOC_W / 2 - 110
+    // 編輯框跟著內容長，長文字不用擠在 230px 裡打
+    const w = Math.max(230, Math.min(DOC_W - 24, measure(r.text, 12.5) + 48));
+    const x = r.kind === 'phase' ? DOC_W / 2 - w / 2
         : r.kind === 'note' ? pxOf(r.at) + 22
             : r.from === r.to ? pxOf(r.from) + 46
-                : (pxOf(r.from) + pxOf(r.to)) / 2 - 110;
-    openEd('row', i, Math.max(6, x), rowY(i) - 32, r.text, 230);
+                : (pxOf(r.from) + pxOf(r.to)) / 2 - w / 2;
+    openEd('row', i, Math.max(6, Math.min(x, DOC_W - w - 6)), rowY(i) - 32, r.text, w);
 }
-export function editPart(i) { openEd('part', i, px(i) - 78, HEAD_Y + 6, S.parts[i].name, 156); }
+export function editPart(i) {
+    const w = Math.max(156, Math.min(DOC_W - 24, measure(S.parts[i].name, 12.5) + 44));
+    openEd('part', i, Math.max(6, px(i) - w / 2), HEAD_Y + 6, S.parts[i].name, w);
+}
 export function editBlock(i) {
     const b = S.blocks[i];
     if (!b) return;

@@ -4,7 +4,7 @@
 import {
     S, T, TYPES, PAD_X, COL_W, HEAD_Y, HEAD_H, BOX_W, ROW_Y0, ROW_H,
     SELF_W, SELF_H, BLK_HEAD, BLK_FOOT, PHASE_H,
-    px, pxOf, pIdx, nameOf, selRange, autoSave,
+    px, pxOf, pIdx, nameOf, selRange, autoSave, LANE, boxWOf,
 } from './state.js';
 import { toMermaid } from './io.js';
 
@@ -39,6 +39,56 @@ function setText(t, str, x) {
         sp.textContent = line;
         t.appendChild(sp);
     });
+}
+
+/* 文字實際有多寬，用 canvas 量，不用字數猜（中英混排猜不準）。 */
+let mctx = null;
+export function measure(str, size, weight) {
+    if (!mctx) mctx = document.createElement('canvas').getContext('2d');
+    mctx.font = `${weight || 400} ${size}px ${getComputedStyle(sv).fontFamily || 'sans-serif'}`;
+    return Math.max(...textLines(str).map((s) => mctx.measureText(s).width));
+}
+
+/* 先替每一欄排位置：欄距取「跨過這一段的最長文字」撐開，左右各留固定邊距。
+   文字再長都放得下，排完才知道整張圖多寬。 */
+function placeLanes() {
+    const n = S.parts.length;
+    const boxW = S.parts.map((p) => Math.max(BOX_W, measure(p.name, 12.5) + 30));
+    const gaps = new Array(Math.max(0, n - 1)).fill(COL_W);
+    for (let k = 0; k < gaps.length; k++) {
+        gaps[k] = Math.max(gaps[k], (boxW[k] + boxW[k + 1]) / 2 + 18);
+    }
+    const widen = (k, need) => { if (k >= 0 && k < gaps.length) gaps[k] = Math.max(gaps[k], need); };
+    // 左右邊距至少要塞得下半個頂框再加一點餘裕，框不要貼著畫布邊
+    let padL = Math.max(PAD_X, (boxW[0] || BOX_W) / 2 + 24);
+    let padR = Math.max(PAD_X, (boxW[n - 1] || BOX_W) / 2 + 24);
+    let phaseNeed = 0;
+    S.rows.forEach((r) => {
+        if (r.kind === 'phase') { phaseNeed = Math.max(phaseNeed, measure(r.text, 12.5, 600) + 96); return; }
+        if (r.kind === 'note') {
+            // Note 的框一律往右畫，最後一欄的就得靠右邊距讓位
+            const a = pIdx(r.at);
+            const w = Math.max(110, measure(r.text, 12) + 28);
+            if (a < n - 1) widen(a, 16 + w + 16);
+            else padR = Math.max(padR, 16 + w + 16);
+            return;
+        }
+        const a = pIdx(r.from), b = pIdx(r.to);
+        const w = measure(r.text, 12.5);
+        if (a === b) { widen(a < n - 1 ? a : a - 1, SELF_W + 12 + w + 22); return; }
+        const lo = Math.min(a, b), hi = Math.max(a, b);
+        const per = (w + 46) / (hi - lo);
+        for (let k = lo; k < hi; k++) widen(k, per);
+    });
+    const span = gaps.reduce((t, g) => t + g, 0);
+    // 階段帶橫跨整張圖，它比目前的寬度還長的話兩邊一起讓
+    const short = phaseNeed - (padL + span + padR);
+    if (short > 0) { padL += short / 2; padR += short / 2; }
+    const xs = []; let x = padL;
+    for (let i = 0; i < n; i++) { xs.push(Math.round(x)); x += gaps[i] || 0; }
+    LANE.x = xs;
+    LANE.boxW = boxW;
+    return Math.round(padL + span + padR);
 }
 
 function layout() {
@@ -77,7 +127,7 @@ export function render() {
     const C_ON = rgb('--c-purple'), C_OFF = rgb('--c-body'), C_DASH = rgb('--c-purple', '.72');
     const C_LINE = cvar('--c-sep'), C_CYAN = rgb('--c-cyan'), C_WARN = rgb('--c-warn');
     const n = S.parts.length;
-    const W = DOC_W = Math.max(560, PAD_X * 2 + (n - 1) * COL_W);
+    const W = DOC_W = Math.max(560, placeLanes());
     const leg = legendLayout(W);
     const legTop = (leg.rows - 1) * LEG_H;
     const H = Math.max(240, layout() + legTop);
@@ -150,14 +200,14 @@ export function render() {
         const on = L === 'part' && S.sel.i === i;
         const g = el('g', { 'data-part': i, style: 'cursor:grab' });
         g.appendChild(el('rect', {
-            x: px(i) - BOX_W / 2, y: HEAD_Y, width: BOX_W, height: HEAD_H, rx: 7,
+            x: px(i) - boxWOf(i) / 2, y: HEAD_Y, width: boxWOf(i), height: HEAD_H, rx: 7,
             fill: on ? rgb('--c-purple', '.14') : rgb('--c-surface'),
             stroke: on ? C_ON : (p.kind === 'actor' ? rgb('--c-purple', '.45') : rgb('--c-ink', '.14')),
             'stroke-width': on ? 1.6 : 1,
         }));
         if (p.kind === 'actor') {
-            g.appendChild(el('circle', { cx: px(i) - BOX_W / 2 + 16, cy: HEAD_Y + 17, r: 4.5, fill: 'none', stroke: rgb('--c-purple', '.75'), 'stroke-width': 1.2 }));
-            g.appendChild(el('path', { d: `M${px(i) - BOX_W / 2 + 10},${HEAD_Y + 33} q6,-9 12,0`, fill: 'none', stroke: rgb('--c-purple', '.75'), 'stroke-width': 1.2 }));
+            g.appendChild(el('circle', { cx: px(i) - boxWOf(i) / 2 + 16, cy: HEAD_Y + 17, r: 4.5, fill: 'none', stroke: rgb('--c-purple', '.75'), 'stroke-width': 1.2 }));
+            g.appendChild(el('path', { d: `M${px(i) - boxWOf(i) / 2 + 10},${HEAD_Y + 33} q6,-9 12,0`, fill: 'none', stroke: rgb('--c-purple', '.75'), 'stroke-width': 1.2 }));
         }
         const t = el('text', { x: px(i) + (p.kind === 'actor' ? 10 : 0), y: HEAD_Y + 28, 'text-anchor': 'middle', 'font-size': 12.5, 'font-family': 'inherit', fill: on ? C_ON : C_OFF });
         t.textContent = p.name;
@@ -185,8 +235,7 @@ export function render() {
             setText(t, r.text, W / 2);
             g.appendChild(t);
         } else if (r.kind === 'note') {
-            const widest = Math.max(...textLines(r.text).map((s0) => s0.length));
-            const x = pxOf(r.at) + 16, w = Math.max(110, widest * 8.6 + 22);
+            const x = pxOf(r.at) + 16, w = Math.max(110, measure(r.text, 12) + 28);
             g.appendChild(el('path', {
                 d: `M${x},${y - 15} h${w - 11} l11,11 v${26 + ex} h-${w} z`,
                 fill: rgb('--c-warn', '.1'), stroke: inSel ? col : rgb('--c-warn', '.55'),
@@ -250,6 +299,9 @@ export function render() {
     });
 
     paintFoot();
+    // 圖比版面寬的時候，整塊工作區跟著長，工具列與狀態列才不會被圖甩在後面
+    const app = document.querySelector('.seq-app');
+    if (app) app.style.maxWidth = Math.max(1180, W + 24) + 'px';
     // 匯出那一瞬間的假選取不該寫進狀態列，也不該捲動畫面
     if (exporting) return;
 
@@ -352,7 +404,7 @@ function keepInView() {
     let y1, y2, x1 = null, x2 = null;
     if (S.sel.layer === 'part') {
         y1 = HEAD_Y; y2 = HEAD_Y + HEAD_H;
-        x1 = px(S.sel.i) - BOX_W / 2; x2 = px(S.sel.i) + BOX_W / 2;
+        x1 = px(S.sel.i) - boxWOf(S.sel.i) / 2; x2 = px(S.sel.i) + boxWOf(S.sel.i) / 2;
     } else if (S.sel.layer === 'block') {
         const b = S.blocks[S.sel.bi];
         if (!b) return;

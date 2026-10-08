@@ -119,7 +119,11 @@ export function redo(after) {
 export const pIdx = (id) => S.parts.findIndex((p) => p.id === id);
 export const nameOf = (id) => (S.parts.find((p) => p.id === id) || { name: '?' }).name;
 export const clampPart = (i) => Math.max(0, Math.min(S.parts.length - 1, i));
-export const px = (i) => PAD_X + i * COL_W;
+/* 每一欄的中心位置與頂框寬度。render 依實際文字長度算好填進來，
+   欄距因此是浮動的：哪一段文字長，那一段的間距就撐開，不卡在固定寬度。 */
+export const LANE = { x: [], boxW: [] };
+export const px = (i) => (LANE.x[i] !== undefined ? LANE.x[i] : PAD_X + i * COL_W);
+export const boxWOf = (i) => (LANE.boxW[i] !== undefined ? LANE.boxW[i] : BOX_W);
 export const pxOf = (id) => px(Math.max(0, pIdx(id)));
 
 export function selRange() {
