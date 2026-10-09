@@ -772,7 +772,7 @@
 
             <ul class="list-none space-y-3 text-gray-300 font-light border-l-2 border-accent-purple pl-5 my-6">
                 <li><strong class="text-white">路 A &mdash; 寫 part-specific override</strong>：直接在 code 寫「對 BAV99W 強制 V_RRM = 150」這種規則。一格 +1，但這是 overfit train set 的定義，對任何未見的 PDF 都沒用。</li>
-                <li><strong class="text-white">路 B &mdash; 找到一條 generic 規則同時對這 5 顆都對</strong>：例如「對 multi-product datasheet 強制選某個變體」「對 BAV99W 系列 V_RRM 取某種附註」。但我嘗試過的 generic rule 都會在其他零件踩雷（trigger 太寬）或漏掉這顆（trigger 太窄）。</li>
+                <li><strong class="text-white">路 B &mdash; 找到一條 generic 規則同時對這 5 顆都對</strong>：例如「對 multi-product datasheet 強制選某個變體」「對 BAV99W 系列 V_RRM 取某種附註」。但我嘗試過的 generic rule 都會在其他零件誤觸發（trigger 太寬）或漏掉這顆（trigger 太窄）。</li>
             </ul>
 
             <p>

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / NP_11 | GHOST.ouo</title>
+    <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
+
+    <script src="../theme.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
+
+    <link rel="stylesheet" href="../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script src="../i18n.js" defer></script>
+    <script type="module" src="../main.js" defer></script>
+    <link rel="stylesheet" href="../tw.css">
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-bg">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / NP_11</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                用 17 道閘管住一個 AI<br>
+                <span class="text-gradient text-2xl md:text-4xl">三個月的基礎設施實驗</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    Engineering
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Infrastructure</span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.05 &mdash; 2026.10</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
+                用文字規則約束 AI 助手的行為，七個月沒用——岔題率從每百則 0.5 漲到 6.2。把規則換成程式碼閘門之後，三個月內岔題降三成、幻覺降七成、廢話降六成。這篇記錄整套度量怎麼算、五個月裡每個決策點觀察到什麼、做了什麼，以及最後數據怎麼說。
+            </p>
+
+            <figure style="display:none" class="my-12">
+                <img src="../PNG/NP_11.1.webp"
+                     alt="五項指標的基準與 30 天後對比"
+                     class="w-full rounded-2xl border border-white/10 shadow-2xl opacity-90 hover:opacity-100 transition-opacity"
+                     onload="this.closest('figure').style.display=''"
+                     onerror="this.closest('figure').remove()">
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">
+                    月報對比：基準 2026-09-05 → 2026-10-03
+                </figcaption>
+            </figure>
+
+            <!-- ===== 度量 ===== -->
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 度量
+            </h3>
+
+            <p>
+                每一則使用者訊息存進 SQLite。月報腳本讀取基準日之後的全部訊息，逐則比對五個類別各自的關鍵字表；命中數除以總數再乘 100，得到「每百則發生率」。不需要語意理解，純字串比對——能算就能重現。
+            </p>
+
+            <p>
+                五個類別各自偵測一種使用者動怒的方向。舉「岔題」為例：關鍵字包含「三小」「我是叫你」「沒問你」，偵測的是 AI 答非所問時使用者罵出來的話。使用者打了一句「三小我叫你查記憶你在那邊自己加功能」——命中一次。791 則裡 28 則命中，28 ÷ 791 × 100 = <code class="text-xs">3.54</code>。
+            </p>
+
+            <p>
+                「部署出包」追蹤推上線出問題：關鍵字「壞了」「推上去」「炸了」。觸發範例——「推上去結果 aria-disabled 沒拔乾淨」。「幻覺」追蹤 AI 編數字或沒查就答：「沒查」「唬爛」「瞎掰」。範例——「這個數字你根本沒查就跟我說 OK」。「跳針」追蹤重複犯同一個錯：「鬼打牆」「講幾次」「我說過」。範例——「我講幾次了不要用 npm」。「廢話」追蹤回覆太長太複雜：「廢話」「講白話」「太複雜」。範例——「太複雜了，系統化跟我講」。
+            </p>
+
+            <p>
+                這五個類別的共通點：關鍵字選的是怒氣表達，偵測的是「你惹到人了」。和日誌系統追的東西完全不同。
+            </p>
+
+            <!-- ===== 決策紀錄 ===== -->
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 五個月，八個決定
+            </h3>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">2026-05 — 第一版三道閘</p>
+            <p>
+                觀察到的問題：bash 裡跑 PowerShell 指令，<code class="text-xs">$env:USERPROFILE</code> 被 bash 直譯成空字串，整條指令靜默失敗。累積 240 次 Command Failed 才定位到根因。同時期另一個高頻錯誤是動手寫檔前沒查記憶，把已經拒絕過的方案重新提出來。
+            </p>
+            <p>
+                決定：上線三道硬閘。Shell 安全閘偵測到 bash 包 PowerShell 加 <code class="text-xs">$</code> 變數就擋——要用就用單引號或寫 .ps1 檔。記憶閘要求第一個寫檔動作前必須有記憶查詢紀錄。UI 改動閘要求截圖驗證。三道都是 PreToolUse hook，模型發出工具呼叫的瞬間攔截，exit code 非零就擋。
+            </p>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">2026-06 — 防幻覺 A/B 測試</p>
+            <p>
+                觀察到的問題：模型被問不確定的事會編一個看起來合理的答案，尤其是數字。拿陷阱題（刻意問不存在的東西）測兩組規則：舊版寫「你應該準確回答」；新版三條——允許說不知道、宣稱必須附來源、該答的直接答。
+            </p>
+            <p>
+                結果：新版在小模型上把「編數字」的分數從 8 翻到 9（滿分 10），正常題維持滿分，沒有變得不敢答。三條規則寫進全域設定。
+            </p>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">2026-07 — 交付物防幻覺</p>
+            <p>
+                觀察到的問題：模型在交出去的報告裡編金額和百分比。規則寫得再兇，交付物裡照樣出現沒有來源的數字。
+            </p>
+            <p>
+                決定：加來源標註閘——任何文字檔含具體數字但全文沒有來源標註就擋。同月加事實鎖：動公司文件前強制載入事實清單，數字直接從來源複製貼上，模型只負責把數字填進模板。兩道閘擋的位置不同：一個擋生成，一個擋流程入口。
+            </p>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">2026-08 中 — 狀態報告連錯四項</p>
+            <p>
+                觀察到的問題：同一天四次狀態回報全錯。根因都一樣——拿看板上的舊記載當事實，或用 <code class="text-xs">head</code> 截斷清單的前幾行就報數字。
+            </p>
+            <p>
+                決定：加截斷禁令——列舉指令接 <code class="text-xs">head</code> / <code class="text-xs">tail</code> 但沒附總數就擋。加計數閘——講了數量但當場沒有查證動作的證據，不准結束回合。
+            </p>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">2026-08 下旬 — 降噪</p>
+            <p>
+                觀察到的問題：閘太多本身成了成本。每次工具呼叫都要過十幾道檢查，延遲上升；無害操作（單引號指令、暫存檔寫入）頻繁觸發假警報。
+            </p>
+            <p>
+                決定：做一輪精簡。快取讀取結果減少重複 IO、放寬無害情境的判定條件、合併功能重疊的檢查。閘的數量沒變，但每道閘跑得更快，假警報降低。
+            </p>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">2026-09-05 — 轉折點</p>
+            <p>
+                把二月到九月的怒氣訊息按月拉出來分類，第一次看到完整趨勢。結果很清楚：有硬閘管的三項全部下降，只靠文字規則的兩項一路上漲。
+            </p>
+
+            <p class="text-sm text-gray-500 font-mono mb-2">
+                單位：每百則使用者訊息的發生率（命中數 ÷ 訊息總數 × 100）。二月到九月逐月累計。
+            </p>
+
+            <div class="overflow-x-auto my-4">
+                <table class="w-full text-sm rounded-lg overflow-hidden" style="border:1px solid rgb(var(--c-border,209 213 219)/.25)">
+                    <thead style="background:rgb(var(--c-fill,255 255 255)/.35)">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">類別</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">有閘？</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">趨勢（7 個月）</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr style="border-top:1px solid rgb(var(--c-border,209 213 219)/.15)">
+                            <td class="px-4 py-3">部署出包</td>
+                            <td class="px-4 py-3 text-green-400 font-mono text-xs">有</td>
+                            <td class="px-4 py-3 font-mono">3.0 → 0.7 <span class="text-green-400">↓</span></td>
+                        </tr>
+                        <tr style="border-top:1px solid rgb(var(--c-border,209 213 219)/.15)">
+                            <td class="px-4 py-3">跳針</td>
+                            <td class="px-4 py-3 text-green-400 font-mono text-xs">有</td>
+                            <td class="px-4 py-3 font-mono">0.6 → 0.0 <span class="text-green-400">↓</span></td>
+                        </tr>
+                        <tr style="border-top:1px solid rgb(var(--c-border,209 213 219)/.15)">
+                            <td class="px-4 py-3">幻覺</td>
+                            <td class="px-4 py-3 text-green-400 font-mono text-xs">有</td>
+                            <td class="px-4 py-3 font-mono">3.9 → 0.8 <span class="text-green-400">↓</span></td>
+                        </tr>
+                        <tr style="border-top:1px solid rgb(var(--c-border,209 213 219)/.15);background:rgb(var(--c-danger,239 68 68)/.08)">
+                            <td class="px-4 py-3">岔題</td>
+                            <td class="px-4 py-3 text-red-400 font-mono text-xs">無</td>
+                            <td class="px-4 py-3 font-mono">0.5 → 6.2 <span class="text-red-400">↑</span></td>
+                        </tr>
+                        <tr style="border-top:1px solid rgb(var(--c-border,209 213 219)/.15);background:rgb(var(--c-danger,239 68 68)/.08)">
+                            <td class="px-4 py-3">廢話</td>
+                            <td class="px-4 py-3 text-red-400 font-mono text-xs">無</td>
+                            <td class="px-4 py-3 font-mono">0 → 2.8 <span class="text-red-400">↑</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                這組數據直接推出三個決定。第一，加怒氣閘：偵測到怒句但整個回合沒有任何修改動作，就擋住收工——強制先改再答。設計依據來自 49 筆怒氣修正鏈的回測：「只查不改」的回合有 55% 會再收到同一種抱怨；「先改再答」降到 22%。
+            </p>
+            <p>
+                第二，修收工審計的判定邏輯。原本的審計對岔題的偵測被別的規則關鍵字吞掉，記了七個月記到零次，等於失明。重寫比對順序，讓每個類別獨立計分。
+            </p>
+            <p>
+                第三，全域設定瘦身。上下文裝了兩千多字的環境特性說明，模型每次都要讀過——上下文越長，出錯機率越高。環境特性全部搬進記憶系統，按需召回。瘦身後降到一千出頭。
+            </p>
+
+            <!-- ===== 三十天後 ===== -->
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 三十天後
+            </h3>
+
+            <p>
+                10 月 3 日月報出爐，基準日 9 月 5 日。讀取基準日之後的全部使用者訊息，逐則比對五個類別的關鍵字，命中數 ÷ 訊息總數 × 100 得到每百則發生率。
+            </p>
+
+            <div class="overflow-x-auto my-4">
+                <table class="w-full text-sm rounded-lg overflow-hidden" style="border:1px solid rgb(var(--c-border,209 213 219)/.25)">
+                    <thead style="background:rgb(var(--c-fill,255 255 255)/.35)">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">類別</th>
+                            <th class="text-right px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">基準</th>
+                            <th class="text-right px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">30 天後</th>
+                            <th class="text-right px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">變化</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr style="border-top:1px solid rgb(var(--c-border,209 213 219)/.15)">
+                            <td class="px-4 py-3">岔題</td>
+                            <td class="px-4 py-3 text-right font-mono">5.30</td>
+                            <td class="px-4 py-3 text-right font-mono">3.54</td>
+                            <td class="px-4 py-3 text-right font-mono text-green-400">↓ 1.76</td>
+                        </tr>
+                        <tr style="border-top:1px solid rgb(var(--c-border,209 213 219)/.15)">
+                            <td class="px-4 py-3">幻覺</td>
+                            <td class="px-4 py-3 text-right font-mono">0.91</td>
+                            <td class="px-4 py-3 text-right font-mono">0.25</td>
+                            <td class="px-4 py-3 text-right font-mono text-green-400">↓ 0.66</td>
+                        </tr>
+                        <tr style="border-top:1px solid rgb(var(--c-border,209 213 219)/.15)">
+                            <td class="px-4 py-3">廢話</td>
+                            <td class="px-4 py-3 text-right font-mono">1.28</td>
+                            <td class="px-4 py-3 text-right font-mono">0.51</td>
+                            <td class="px-4 py-3 text-right font-mono text-green-400">↓ 0.77</td>
+                        </tr>
+                        <tr style="border-top:1px solid rgb(var(--c-border,209 213 219)/.15)">
+                            <td class="px-4 py-3">部署出包</td>
+                            <td class="px-4 py-3 text-right font-mono">2.25</td>
+                            <td class="px-4 py-3 text-right font-mono">2.15</td>
+                            <td class="px-4 py-3 text-right font-mono text-green-400">↓ 0.10</td>
+                        </tr>
+                        <tr style="border-top:1px solid rgb(var(--c-border,209 213 219)/.15)">
+                            <td class="px-4 py-3">跳針</td>
+                            <td class="px-4 py-3 text-right font-mono">0.12</td>
+                            <td class="px-4 py-3 text-right font-mono">0.13</td>
+                            <td class="px-4 py-3 text-right font-mono text-gray-500">→</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                五項全降或持平。岔題從 5.30 降到 3.54，降三成——怒氣閘九月五日上線，作用在這裡。幻覺從 0.91 降到 0.25，降七成——來源標註閘、事實鎖、計數閘三層持續壓制的結果，從生成、流程入口、到收工各卡一關。廢話降六成，收工審計重寫判定邏輯之後，以前漏掉的模式開始被計入。
+            </p>
+
+            <p>
+                部署出包幾乎持平，因為它從第一版就有硬閘管，已經很低了；跳針同理，早就壓到接近零。這兩項的閘持續運作，邊際收益越來越小。
+            </p>
+
+            <!-- ===== 三件事 ===== -->
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 三件事
+            </h3>
+
+            <p>
+                <strong class="text-white">度量先行。</strong>沒有基準線就沒有對照組。五月上線第一版閘門的時候沒有月報機制，九月五日才開始追蹤——中間四個月的改善只能靠手感判斷，無法量化。月報從 9 月 5 日才有對照組，能說出具體數字。
+            </p>
+
+            <p>
+                <strong class="text-white">機械化優先。</strong>能用 exit code 判定的事就不要交給模型。Shell 變數被 bash 吃掉、文件沒標來源、列舉截斷——這些全部可以用字串比對和 exit code 處理。七個月的數據已經示範過文字規則的上限在哪。
+            </p>
+
+            <p>
+                <strong class="text-white">減法有效。</strong>全域設定從兩千多字精簡到一千出頭，五項指標反而全降。規則堆疊到一定量，本身就是噪音；精簡之後模型才分得清哪幾條是真的重要。
+            </p>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="NP_10.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Project
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Projects
+            </a>
+            <span class="text-gray-500 text-sm font-mono opacity-50 cursor-not-allowed" aria-disabled="true">
+                Next Project &rarr;
+            </span>
+        </div>
+
+    </main>
+    <div id="footer-placeholder"></div>
+</body>
+</html>
