@@ -53,9 +53,7 @@
                 <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
                     AI &amp; Automation
                 </span>
-                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Self Learning
-                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Self-Learning</span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
                     Infrastructure
                 </span>
@@ -74,7 +72,7 @@
             </p>
 
             <p class="text-sm text-gray-500 italic mb-10">
-                對 LLM 從訓練到上線的整條部署路徑感到好奇，想在自己的筆電上走過一遍，搞清楚推論引擎、實驗追蹤、容器化、容器編排這些工具各自解決什麼問題、彼此怎麼接。設備是一台 Windows 11 筆電，GPU 是 RTX 4060 Laptop（8GB 顯存），WSL2 裝了 Ubuntu。先前在 NTUST MVC Lab 的課程作業已經用 PyTorch 訓練過 DQN 和 U-Net，對訓練端有基礎，缺的是推論到部署這段。
+                對 LLM 從訓練到上線的整條部署路徑感到好奇，想在自己的筆電上走過一遍，釐清推論引擎、實驗追蹤、容器化、容器編排這些工具各自解決什麼問題、彼此怎麼接。設備是一台 Windows 11 筆電，GPU 是 RTX 4060 Laptop（8GB 顯存），WSL2 裝了 Ubuntu。先前在 NTUST MVC Lab 的課程作業已經用 PyTorch 訓練過 DQN 和 U-Net，對訓練端有基礎，缺的是推論到部署這段。
             </p>
 
             <figure class="my-10 mx-auto">
@@ -146,7 +144,7 @@
                 vLLM 在 WSL2 上的部署可以拆成七步：用 uv 建一個 Python 3.12 的虛擬環境（本機預設是 3.13，vLLM 只支援 3.9 到 3.12），裝 vllm 套件，把 Qwen2.5-1.5B-Instruct 的權重下載到本地（約 3GB），補裝缺少的 gcc（編譯 C extension 需要），然後用 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">vllm serve</code> 起服務。8GB 顯存跑 vLLM 需要加 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">--enforce-eager</code> 關閉 CUDA graph，讓 vLLM 用即時運算取代預先佔滿顯存的策略，代價是吞吐量降低。起來之後用 curl 打 OpenAI 相容的 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">/v1/chat/completions</code> 端點，拿到繁體中文回覆，服務通了。
             </p>
             <p>
-                重跑啟動流程時碰到兩個 bash 基本雷：<code class="text-accent-purple bg-accent-purple/10 px-1 rounded">@~</code> 在某些 shell 環境下不會自動展開成 home 路徑，要寫完整路徑或用 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">$HOME</code>；多行指令的斷行符 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">\</code> 後面不能跟空白字元，否則下一行被當成新指令。
+                重跑啟動流程時碰到兩個 bash 基本陷阱：<code class="text-accent-purple bg-accent-purple/10 px-1 rounded">@~</code> 在某些 shell 環境下不會自動展開成 home 路徑，要寫完整路徑或用 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">$HOME</code>；多行指令的斷行符 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">\</code> 後面不能跟空白字元，否則下一行被當成新指令。
             </p>
             <p>
                 Ollama 裝在 Windows 端（0.30.11），機器上已 pull 好 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">qwen2.5:1.5b</code>（986MB，Q4_K_M 量化），一條指令 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">ollama run qwen2.5:1.5b</code> 就能聊天。它同樣提供 OpenAI 相容 API（<code class="text-accent-purple bg-accent-purple/10 px-1 rounded">localhost:11434</code>），程式從 vLLM 切到 Ollama 只要換 URL 和模型名，不改程式碼。
