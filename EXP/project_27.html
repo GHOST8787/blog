@@ -73,6 +73,13 @@
                 上一篇整理了 MVC Lab 前五份作業的索引，這篇記錄第六到第八週的三份作業。路線分成兩條：HW7 與 HW8 從零訓練模型，一個是 U-Net 語意分割、一個是 DQN 玩 Ms. Pac-Man；HW6 拿現成的預訓練模型做 zero-shot 偵測，重點放在 prompt 寫法的研究。三份都有可驗證的數字，訓練量最大的 DQN 跑了 150 萬步，評估拿到 2990 分，站上滿分門檻的 2000。
             </p>
 
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">前情提要</div>
+                <p class="m-0">
+                    前五份作業走完分類、序列、檢索、偵測這條線，第六到第八週換了方向：HW6 不動訓練，拿現成的預訓練權重做 zero-shot 偵測，變數落在 prompt 怎麼寫；HW7 與 HW8 回到從零訓練，一個用 U-Net 把影像切成語意區塊，一個用 DQN 在 Ms. Pac-Man 上跑強化學習。同一個學期裡，「用別人的模型」與「自己訓一個」兩條路線各走了一次。
+                </p>
+            </div>
+
             <p class="text-sm text-gray-500 italic mb-10">
                 課程走到下半段，三份作業各占一種任務型態：HW6 用 Grounding DINO 做 zero-shot 偵測，整份作業其實是一個 prompt 工程研究；HW7 從零刻一個 U-Net，在杜拜空拍圖上分割六類地物；HW8 用 DQN 從像素學會玩 Ms. Pac-Man，是三份裡訓練量最大的一份。前五份作業的紀錄在 <a href="project_16.html" class="text-accent-purple hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">EXP / P16</a>。
             </p>
@@ -202,7 +209,7 @@
             </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 技術環境
+                <span class="text-accent-purple">#</span> 技術棧
             </h3>
 
             <ul class="list-none space-y-2 text-sm text-gray-400 font-light border-l-2 border-white/10 pl-5 my-6">
@@ -214,7 +221,7 @@
             </ul>
 
             <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 相關連結
+                <span class="text-accent-purple">#</span> Links
             </h3>
 
             <ul class="space-y-2 text-sm text-gray-400 list-none pl-0">

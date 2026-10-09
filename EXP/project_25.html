@@ -71,6 +71,13 @@
                 yt-digest 把一條 YouTube 連結變成一份結構化的中文整理。處理一小時以上的訪談時，最需要盯的一件事是：模型會不會把講者沒講過的東西，寫得像真的一樣。這篇紀錄這一輪替輸出把關的三個動作——用通用規則收緊、用逐字稿逐句對照驗證、用跨類型樣本確認修法沒有 overfit——以及順手修掉的一個會重複收費的併發 bug。
             </p>
 
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">前情提要</div>
+                <p class="m-0">
+                    這個工具的兩個世代與整體架構寫在<a href="project_12.html" class="text-accent-purple hover:text-white underline underline-offset-4 decoration-accent-purple/40 hover:decoration-white transition-colors">〈YouTube 整理工具的兩個世代〉</a>。這篇只處理一件事：當 AI 替你讀完一小時的內容，怎麼確定它摘出來的每一句都站得住。
+                </p>
+            </div>
+
             <p class="text-sm text-gray-500 italic mb-10">
                 這個工具的兩個世代與整體架構，寫在 <a href="project_12.html" class="text-accent-purple hover:text-white underline underline-offset-4 decoration-accent-purple/40 hover:decoration-white transition-colors">YouTube 整理工具的兩個世代</a>。這篇只談一件事：如何確保 AI 整理出來的一小時內容，每一句話都能經得起檢驗。
             </p>
@@ -285,7 +292,7 @@ async function processQueuedVideos() {
             <hr class="border-white/10 my-12">
 
             <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 相關連結
+                <span class="text-accent-purple">#</span> Links
             </h3>
 
             <ul class="space-y-2 text-sm text-gray-400 list-none pl-0">

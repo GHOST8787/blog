@@ -76,7 +76,7 @@
             </p>
 
             <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
-                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">Background</div>
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">Context</div>
                 <p class="m-0 mb-3">
                     Writing code is a hobby for me. And a hobby that only ever serves its owner feels like a waste &mdash; I would like it to carry some use and some value. The other thing I wanted was a channel: whoever lands on this site should have somewhere to say &ldquo;I want to read that one&rdquo;.
                 </p>
@@ -196,6 +196,20 @@
             </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Tech Stack
+            </h3>
+
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
+                <li><strong class="text-white">Frontend</strong>: vanilla JavaScript and Tailwind, one file, no framework and no bundler</li>
+                <li><strong class="text-white">Hosting</strong>: GitHub Pages</li>
+                <li><strong class="text-white">Data and permissions</strong>: Firebase Realtime Database with Security Rules; owner status comes from matching one fixed account</li>
+                <li><strong class="text-white">Sign-in</strong>: Google Identity Services, in-page, no popup</li>
+                <li><strong class="text-white">Live updates</strong>: listeners on the public and shipped nodes redraw the page whenever the data moves</li>
+                <li><strong class="text-white">Votes</strong>: a transaction for the total, plus a per-person cell recording who has voted</li>
+                <li><strong class="text-white">Shared</strong>: same Firebase project and same rules file as Meet, one top-level node each</li>
+            </ul>
+
+        <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Links
             </h3>
 
@@ -226,21 +240,7 @@
                 </li>
             </ul>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> Tech stack
-            </h3>
-
-            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
-                <li><strong class="text-white">Frontend</strong>: vanilla JavaScript and Tailwind, one file, no framework and no bundler</li>
-                <li><strong class="text-white">Hosting</strong>: GitHub Pages</li>
-                <li><strong class="text-white">Data and permissions</strong>: Firebase Realtime Database with Security Rules; owner status comes from matching one fixed account</li>
-                <li><strong class="text-white">Sign-in</strong>: Google Identity Services, in-page, no popup</li>
-                <li><strong class="text-white">Live updates</strong>: listeners on the public and shipped nodes redraw the page whenever the data moves</li>
-                <li><strong class="text-white">Votes</strong>: a transaction for the total, plus a per-person cell recording who has voted</li>
-                <li><strong class="text-white">Shared</strong>: same Firebase project and same rules file as Meet, one top-level node each</li>
-            </ul>
-
-        </article>
+            </article>
 
         <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
             <a href="project_29.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">

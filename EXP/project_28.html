@@ -70,8 +70,15 @@
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
             <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
-                MVC Lab 課程的第九到十二週，主題整批轉向生成式 AI：W9 用 LangGraph 把檢索組成會自己判斷的 agent，W10 用 CLIP 和 BLIP 做圖文推論，W11 和 W12 是兩種生成模型——VAE 從潛在空間解碼、DDPM 從純雜訊一步步去噪。四個單元全部在本機跑完，模型下載、訓練、生成都有可驗證的輸出，其中 DDPM 在 MNIST 上訓練 20 個 epoch 後生成的手寫數字已經可以直接辨認。
+                MVC Lab 課程的第九到十二週，主題整批轉向生成式 AI。四個單元：W9 用 LangGraph 把檢索組成會自己判斷的 agent，W10 用 CLIP 和 BLIP 做圖文推論，W11 和 W12 是兩種生成模型——VAE 從潛在空間解碼、DDPM 從純雜訊一步步去噪。四個單元全部在本機跑完，模型下載、訓練、生成都有可驗證的輸出，其中 DDPM 在 MNIST 上訓練 20 個 epoch 後生成的手寫數字已經可以直接辨認。
             </p>
+
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">前情提要</div>
+                <p class="m-0">
+                    第九到十二週的主題整批換到生成式 AI，四個單元剛好排成一條從「讀」到「生」的線：W9 把檢索包成會自己決定下一步的 agent，W10 讓模型同時讀圖與讀字，W11 用 VAE 從壓縮過的潛在空間解碼回影像，W12 用 DDPM 從一張純雜訊逐步去噪。前兩個單元處理既有內容的理解，後兩個單元處理新內容的生成。
+                </p>
+            </div>
 
             <p class="text-sm text-gray-500 italic mb-10">
                 前八週的主軸是辨識：分類、偵測、分割、決策，模型的輸出是一個標籤、一個框、一個動作。這四週的模型開始產東西——查資料回答問題、看圖說話、畫出沒見過的數字。前五份作業的紀錄在 <a href="project_16.html" class="text-accent-purple hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">EXP / P16</a>，W6&ndash;W8（開集偵測、語意分割、強化學習）在上一篇。
@@ -201,7 +208,7 @@
             </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 技術環境
+                <span class="text-accent-purple">#</span> 技術棧
             </h3>
 
             <ul class="list-none space-y-2 text-sm text-gray-400 font-light border-l-2 border-white/10 pl-5 my-6">
@@ -214,7 +221,7 @@
             </ul>
 
             <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 相關連結
+                <span class="text-accent-purple">#</span> Links
             </h3>
 
             <ul class="space-y-2 text-sm text-gray-400 list-none pl-0">
