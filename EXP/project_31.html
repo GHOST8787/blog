@@ -153,12 +153,8 @@
             </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 實作過程中的三個問題
+                <span class="text-accent-purple">#</span> 問題一：規則掛錯一層，整條被跳過
             </h3>
-
-            <h4 class="text-xl font-bold text-white mt-10 mb-4">
-                規則掛錯一層，整條被跳過
-            </h4>
             <p>
                 我原本以為，建立會議的時候資料庫會先檢查目前開著幾場、有沒有超過上限。實際去撞上限才發現，那條檢查從頭到尾沒有被執行過。第一版我把它掛在「一場會議」那一層的驗證規則上，語法合法，Console 沒有警告，正常測試也看不出異常。
             </p>
@@ -173,9 +169,9 @@
                 我把計數檢查往下搬一層，讓規則跟寫入路徑對齊，上限才開始生效。規則掛的位置跟寫入路徑對不上的時候，Firebase 不會報錯，它只是不評估那條規則，語法檢查也看不出來。
             </p>
 
-            <h4 class="text-xl font-bold text-white mt-10 mb-4">
-                繞過前端，直接拿憑證打資料庫
-            </h4>
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 問題二：繞過前端，直接拿憑證打資料庫
+            </h3>
             <p>
                 我一開始用「畫面上沒顯示」來判斷權限有沒有生效，後來發現這樣不算測：前端只是沒把資料畫出來，資料庫給不給是另一回事。所以我另外建立一個參與者身分，繞過網頁介面，用 Firebase 的 REST 介面（直接以 HTTP 請求存取資料庫的那條路）對資料庫發出讀寫請求，看它實際允許哪些操作。
             </p>
@@ -188,9 +184,9 @@
                 這組測試的結論跟前端畫面無關，所以它才有效。有人自己寫一支 client 去打同一個 API，資料庫回給那支 client 的答案，跟回給瀏覽器的答案是同一個。
             </p>
 
-            <h4 class="text-xl font-bold text-white mt-10 mb-4">
-                公司那條線要接到哪裡為止
-            </h4>
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 問題三：公司那條線要接到哪裡為止
+            </h3>
             <p>
                 最直覺的做法是讓公司那支工具直接把時段寫進 Meet 的資料庫，代價是公司機器上得長期保管一份能通過 Security Rules 的憑證。為了一個個人工具，這個代價高於它換來的便利，所以整合停在資料交換這一層：兩邊只傳一串簽章過的文字，格式大致是這樣（示意）：
             </p>
@@ -221,6 +217,23 @@
             </p>
 
             <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 技術棧
+            </h3>
+
+            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
+                <li><strong class="text-white">前端</strong>：原生 JavaScript ＋ Tailwind，無框架無打包工具</li>
+                <li><strong class="text-white">部署</strong>：GitHub Pages</li>
+                <li><strong class="text-white">資料庫與權限</strong>：Firebase Realtime Database ＋ Security Rules</li>
+                <li><strong class="text-white">登入</strong>：Google Identity Services，頁內登入不開彈窗</li>
+                <li><strong class="text-white">匿名投票</strong>：Firebase 匿名驗證，身分存在瀏覽器本機，同一台裝置回來還是同一個人</li>
+                <li><strong class="text-white">跨系統傳遞</strong>：base64url ＋ HMAC-SHA256，瀏覽器端用 Web Crypto API 驗章</li>
+                <li><strong class="text-white">共用</strong>：跟 Whiteboard 共用同一個 Firebase 專案與同一份權限檔，兩個工具各佔一個頂層節點</li>
+            </ul>
+
+            <p class="text-gray-400 text-sm">
+                GitHub Pages 的 COOP 標頭會干擾 Google 的彈窗登入流程，所以這裡走頁內登入，拿到憑證後在同一頁換成資料庫認得的身分。整套跑在 Firebase 的免費方案上，<a href="https://firebase.google.com/pricing" target="_blank" rel="noopener noreferrer" class="underline decoration-gray-600 underline-offset-4 hover:text-white transition-colors">官方定價頁</a>（2026-09-25 查證）列出的免費額度對這個用量還有很大空間。
+            </p>
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 參考連結
             </h3>
 
@@ -243,23 +256,6 @@
                 </li>
             </ul>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
-                <span class="text-accent-purple">#</span> 技術棧
-            </h3>
-
-            <ul class="list-disc pl-5 space-y-2 text-gray-300 font-light mb-6">
-                <li><strong class="text-white">前端</strong>：原生 JavaScript ＋ Tailwind，無框架無打包工具</li>
-                <li><strong class="text-white">部署</strong>：GitHub Pages</li>
-                <li><strong class="text-white">資料庫與權限</strong>：Firebase Realtime Database ＋ Security Rules</li>
-                <li><strong class="text-white">登入</strong>：Google Identity Services，頁內登入不開彈窗</li>
-                <li><strong class="text-white">匿名投票</strong>：Firebase 匿名驗證，身分存在瀏覽器本機，同一台裝置回來還是同一個人</li>
-                <li><strong class="text-white">跨系統傳遞</strong>：base64url ＋ HMAC-SHA256，瀏覽器端用 Web Crypto API 驗章</li>
-                <li><strong class="text-white">共用</strong>：跟 Whiteboard 共用同一個 Firebase 專案與同一份權限檔，兩個工具各佔一個頂層節點</li>
-            </ul>
-
-            <p class="text-gray-400 text-sm">
-                GitHub Pages 的 COOP 標頭會干擾 Google 的彈窗登入流程，所以這裡走頁內登入，拿到憑證後在同一頁換成資料庫認得的身分。整套跑在 Firebase 的免費方案上，<a href="https://firebase.google.com/pricing" target="_blank" rel="noopener noreferrer" class="underline decoration-gray-600 underline-offset-4 hover:text-white transition-colors">官方定價頁</a>（2026-09-25 查證）列出的免費額度對這個用量還有很大空間。
-            </p>
         </article>
 
         <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
