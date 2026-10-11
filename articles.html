@@ -17,8 +17,8 @@
     <script src="theme.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet"></noscript>
     <link rel="stylesheet" href="style.css">
     <script src="i18n.js" defer></script>
     <script type="module" src="main.js" defer></script>
@@ -139,16 +139,17 @@
 
 <main class="relative z-10 max-w-7xl mx-auto px-8 md:px-12 pt-32 pb-24">
 
-        <div class="mb-6 relative z-20 pointer-events-none">
-            <h1 class="text-3xl md:text-4xl font-extrabold mb-2 leading-tight tracking-tight text-gradient text-left w-fit">
-                Articles
-            </h1>
-            <p class="text-purple-400 font-mono text-xs uppercase tracking-wider">
-                Thoughts, Stories & Lessons learned.
-            </p>
+        <div class="list-head relative z-20">
+        <div class="list-hero pointer-events-none">
+            <h1 class="text-gradient">Articles</h1>
+            <p class="text-purple-400">Thoughts, stories &amp; lessons learned.</p>
         </div>
-
-        <div class="ar-filter mb-8" id="filter-bar">
+        <div class="list-controls">
+        <label class="list-search">
+            <i class="fas fa-search"></i>
+            <input type="search" id="ar-search" placeholder="搜尋文章" aria-label="搜尋文章" autocomplete="off">
+        </label>
+        <div class="ar-filter" id="filter-bar">
             <div class="ar-filter-trigger">
                 <i class="fas fa-filter"></i>
                 <span>FILTER ·</span>
@@ -178,9 +179,12 @@
                 </div>
             </div>
         </div>
+        </div>
+        </div>
 
         <div id="project-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
         </div>
+        <p id="ar-empty" class="list-empty" hidden>沒有符合的文章。</p>
 
     </main>
 
@@ -213,17 +217,19 @@
                 card.className = 'project-card-vertical group block opacity-0 translate-y-[30px]';
                 const number = parseNumberFromUrl(article.url, 'A');
                 card.innerHTML = `
-                    <div class="relative aspect-video overflow-hidden rounded-t-3xl bg-white/5">
+                    <div class="lc-cover relative aspect-video overflow-hidden rounded-t-3xl bg-white/5">
                         <img src="" alt="Loading..." class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
                     </div>
-                    <div class="p-8 flex flex-col flex-grow text-left">
-                        <div class="tag-box flex items-start gap-2 mb-4"></div>
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="date-box text-xs font-mono text-gray-500 flex items-center gap-2"></div>
-                            <span class="number-badge text-xs font-mono text-gray-500">${number}</span>
+                    <div class="flex flex-col flex-grow text-left">
+                        <div class="lc-top">
+                            <span class="number-badge">${number}</span>
+                            <span class="date-box"></span>
                         </div>
-                        <h4 class="text-lg font-bold text-white mb-3 group-hover:text-accent-purple transition-colors line-clamp-2">載入中...</h4>
-                        <p class="text-gray-400 text-sm leading-normal line-clamp-3"></p>
+                        <div class="lc-main">
+                            <h4 class="lc-title text-white mb-3 group-hover:text-accent-purple transition-colors">載入中...</h4>
+                            <p class="text-gray-400 text-sm leading-relaxed line-clamp-3"></p>
+                            <div class="tag-box lc-tags"></div>
+                        </div>
                     </div>
                 `;
                 container.appendChild(card);
@@ -248,21 +254,37 @@
             document.addEventListener('click', () => arFilter.classList.remove('open'));
             arFilter.addEventListener('click', (e) => e.stopPropagation());
 
+            // 分類與搜尋一起套用
+            const searchInput = document.getElementById('ar-search');
+            const emptyHint = document.getElementById('ar-empty');
+            let currentFilter = 'all';
+            const applyFilters = () => {
+                const q = searchInput.value.trim().toLowerCase();
+                let shown = 0;
+                document.querySelectorAll('.project-card-vertical').forEach(card => {
+                    const ok = (currentFilter === 'all' || card.dataset.category === currentFilter)
+                        && (!q || card.textContent.toLowerCase().includes(q));
+                    card.style.display = ok ? '' : 'none';
+                    if (ok) shown++;
+                });
+                const first = container.firstElementChild;
+                if (first) first.classList.toggle('lc-featured', currentFilter === 'all' && !q);
+                emptyHint.hidden = shown > 0;
+            };
+            searchInput.addEventListener('input', applyFilters);
+
             arOptions.forEach(opt => {
                 opt.addEventListener('click', () => {
-                    const filter = opt.dataset.filter;
-                    const label = opt.dataset.label;
+                    currentFilter = opt.dataset.filter;
 
                     arOptions.forEach(o => o.classList.remove('active'));
                     opt.classList.add('active');
-                    arCurrent.textContent = label;
+                    arCurrent.textContent = opt.dataset.label;
                     arFilter.classList.remove('open');
-
-                    document.querySelectorAll('.project-card-vertical').forEach(card => {
-                        card.style.display = (filter === 'all' || card.dataset.category === filter) ? '' : 'none';
-                    });
+                    applyFilters();
                 });
             });
+            applyFilters();
 
         } catch (error) {
             console.error("articles 初始化失敗:", error);
@@ -281,12 +303,30 @@
             const cardDateBox = card.querySelector('.date-box');
             if (dateIcon && dateIcon.parentElement && cardDateBox) {
                 const dateText = dateIcon.parentElement.textContent.trim();
-                cardDateBox.innerHTML = `<i class="far fa-calendar text-gray-600"></i> ${dateText}`;
+                cardDateBox.textContent = dateText;
             }
 
-            // 抓標題
+            // 文章 h1 是「主標<br><span>副標</span>」：主標、副標各自一行，主標尾端的冒號拿掉
             const titleEl = doc.querySelector('header h1');
-            if (titleEl) card.querySelector('h4').textContent = titleEl.innerText.trim();
+            if (titleEl) {
+                const h4 = card.querySelector('h4');
+                const sub = titleEl.querySelector('span');
+                const subText = sub ? sub.textContent.replace(/\s+/g, ' ').trim() : '';
+                let main = titleEl.textContent.replace(/\s+/g, ' ').trim();
+                if (subText && main.endsWith(subText)) main = main.slice(0, -subText.length);
+                main = main.trim().replace(/[：:]+$/, '').trim();
+                h4.textContent = '';
+                const mainEl = document.createElement('span');
+                mainEl.className = 'block';
+                mainEl.textContent = main;
+                h4.appendChild(mainEl);
+                if (subText) {
+                    const subEl = document.createElement('span');
+                    subEl.className = 'lc-sub block text-sm font-medium text-gray-400 mt-1 line-clamp-2';
+                    subEl.textContent = subText;
+                    h4.appendChild(subEl);
+                }
+            }
 
             // 抓圖、修正路徑
             const firstImg = doc.querySelector('article img') || doc.querySelector('figure img');
@@ -319,12 +359,7 @@
                 cardTagBox.innerHTML = '';
                 sourceTags.forEach(tag => {
                     const newTag = document.createElement('span');
-                    newTag.className = 'text-[9px] px-2 py-1 rounded font-bold uppercase tracking-wider text-center leading-tight';
-                    if (cardTagBox.children.length === 0) {
-                        newTag.classList.add('bg-accent-purple/10', 'border', 'border-accent-purple/20', 'text-accent-purple');
-                    } else {
-                        newTag.classList.add('bg-white/5', 'border', 'border-white/10', 'text-gray-400');
-                    }
+                    if (cardTagBox.children.length === 0) newTag.className = 'lc-tag-main';
                     newTag.textContent = tag.textContent.trim();
                     cardTagBox.appendChild(newTag);
                 });

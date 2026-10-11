@@ -524,3 +524,39 @@ a:focus-visible {
 .ar-related-foot a { display: inline-block; padding: .6rem 1.5rem; border: 1px solid var(--c-border); border-radius: 999px; font-size: .85rem; font-weight: 700; color: rgb(var(--c-ink)); text-decoration: none; }
 .ar-related-foot a:hover { border-color: rgb(var(--c-purple)); }
 @media (prefers-reduced-motion: reduce) { .ar-card, .ar-related-foot a { transition: none; } }
+
+/* 列表頁頁首（projects / articles 中英四頁共用）：標題與標語在左上，搜尋＋篩選在右上；手機上下疊 */
+.list-head { display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2.5rem; }
+.list-hero h1 { font-family: "Noto Serif TC", Georgia, serif; font-weight: 600; font-size: 2.75rem; line-height: 1.15; letter-spacing: 0; width: fit-content; }
+.list-hero p { margin-top: .6rem; font-size: 1rem; line-height: 1.6; }
+.list-controls { display: flex; align-items: center; gap: .75rem; }
+.list-controls .pj-filter-menu, .list-controls .ar-filter-menu { left: auto; right: 0; }
+.list-controls .pj-filter-trigger, .list-controls .ar-filter-trigger { white-space: nowrap; }
+.list-search { position: relative; flex: 1 1 auto; min-width: 0; }
+.list-search i { position: absolute; left: .85rem; top: 50%; transform: translateY(-50%); font-size: .75rem; color: rgb(var(--c-g400)); pointer-events: none; }
+.list-search input { width: 100%; padding: .55rem .9rem .55rem 2.2rem; font-size: .85rem; color: rgb(var(--c-ink)); background: rgb(var(--c-surface) / .8); border: 1px solid rgb(var(--c-ink) / .2); border-radius: 8px; outline: none; transition: border-color .2s; }
+.list-search input::placeholder { color: rgb(var(--c-g400)); }
+.list-search input:focus { border-color: rgb(var(--c-purple)); }
+.list-empty { margin-top: 3rem; text-align: center; font-size: .9rem; color: rgb(var(--c-g400)); }
+@media (min-width: 768px) {
+    .list-head { flex-direction: row; align-items: flex-end; justify-content: space-between; gap: 2rem; }
+    .list-hero h1 { font-size: 4rem; }
+    .list-hero p { font-size: 1.075rem; }
+    .list-search { flex: 0 0 16rem; }
+}
+
+/* 列表頁卡片（projects / articles 中英四頁共用）：封面、頂欄編號＋日期、襯線標題、標籤收到底部 */
+.lc-top { display: flex; justify-content: space-between; gap: .75rem; padding: .8rem 1.5rem; border-bottom: 1px solid rgb(var(--c-ink) / .08); font-family: "JetBrains Mono", monospace; font-size: .7rem; letter-spacing: .06em; color: rgb(var(--c-g400)); }
+.lc-main { display: flex; flex-direction: column; flex-grow: 1; padding: 1.5rem; }
+.lc-title { font-family: "Noto Serif TC", Georgia, serif; font-weight: 600; font-size: 1.3rem; line-height: 1.35; letter-spacing: 0; }
+.lc-title .lc-sub { font-family: 'Plus Jakarta Sans', sans-serif; }
+.lc-tags { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem 1rem; margin-top: auto; padding-top: 1.25rem; font-size: .75rem; line-height: 1.4; color: rgb(var(--c-g400)); }
+.lc-tags .lc-tag-main { color: rgb(var(--c-purple)); display: inline-flex; align-items: center; gap: .4rem; }
+.lc-tags .lc-tag-main::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+/* 最新一篇：桌機跨兩欄，文字在左、封面在右（封面維持 16:9 不裁）；篩選或搜尋時由頁面 JS 拿掉 */
+@media (min-width: 768px) {
+    .project-card-vertical.lc-featured { grid-column: span 2 / span 2; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center; }
+    .lc-featured .lc-cover { order: 2; margin: 1.5rem 1.5rem 1.5rem 0; border-radius: 1rem; }
+    .lc-featured .lc-title { font-size: 1.85rem; line-height: 1.25; }
+    .lc-featured .lc-main { padding: 2rem 1.75rem; }
+}
