@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth ar-serif">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,8 +15,8 @@
     <script src="../../theme.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet"></noscript>
 
     <link rel="stylesheet" href="../../style.css">
 
@@ -37,7 +37,7 @@
 
     <div id="navbar-placeholder"></div>
 
-    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+    <main class="relative z-10 ar-main mx-auto px-6 pt-32 pb-24">
 
         <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
             <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
@@ -53,16 +53,17 @@
                 NTUST MVC Lab W6&ndash;8:<br>
                 <span class="text-gradient text-2xl md:text-4xl">Open-set detection, semantic segmentation and reinforcement learning</span>
             </h1>
+            <p class="ar-standfirst">All three W6 to W8 assignments have numbers: the DQN trained for 1.5 million steps scored 2990 in evaluation, and the code is under the MIT license.</p>
 
             <div class="flex flex-wrap gap-3 mb-6">
                 <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
                     AI &amp; Automation
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Deep Learning
+                    NTUST
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Coursework
+                    Deep Learning
                 </span>
             </div>
 
@@ -72,6 +73,7 @@
             </div>
         </header>
 
+        <div class="ar-grid">
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
             <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
@@ -89,7 +91,7 @@
                 In the second half of the course, each of the three assignments covers a different type of task: HW6 uses Grounding DINO for zero-shot detection, which makes the whole assignment a prompt engineering study; HW7 builds a U-Net from scratch and segments six land classes on Dubai aerial imagery; HW8 uses a DQN to learn Ms. Pac-Man from pixels, the heaviest of the three in training volume. The record of the first five assignments sits at <a href="project_16.html" class="text-accent-purple hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">EXP / P16</a>.
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-1" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> The Three Assignments at a Glance
             </h3>
 
@@ -126,7 +128,7 @@
                 </table>
             </div>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-2" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> One by One
             </h3>
 
@@ -205,7 +207,7 @@
                 <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">HW8: 1.5 million steps complete, eval score 2990.0, producing the model file pacma_dqn.pt (6.4MB) and the gameplay recording mspacman.mp4</figcaption>
             </figure>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-3" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Academic Integrity Statement
             </h3>
 
@@ -213,7 +215,7 @@
                 This entry is a personal study record. The starter skeletons and teaching notebooks for all three assignments came from the course; the TODO implementations, prompt design and every experimental figure are my own runs. Course datasets and model weights are never bundled here, so obtain them through official channels. MVC Lab students currently taking the course should write it once themselves, and the structure and reasoning here are open to reference.
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-4" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Tech Stack
             </h3>
 
@@ -225,7 +227,7 @@
                 <li><strong class="text-gray-200">Hardware</strong> &mdash; RTX 4060 8GB (1.5 million steps for HW8 took around eight hours; scanning 150 images for HW6 took around 4 minutes)</li>
             </ul>
 
-            <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
+            <h3 id="sec-5" class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Links
             </h3>
 
@@ -249,6 +251,35 @@
             </p>
 
         </article>
+
+        <aside class="ar-aside">
+            <div class="ar-meta"><span class="ar-k">Type</span><span class="ar-v">Coursework</span></div>
+            <div class="ar-meta"><span class="ar-k">Field</span><span class="ar-v">AI &amp; Automation</span></div>
+            <div class="ar-meta"><span class="ar-k">Reading time</span><span class="ar-v">5 min</span></div>
+            <div class="ar-meta"><span class="ar-k">Share</span><button type="button" class="ar-copy" data-ar-copy data-ar-copied="Copied">Copy link</button></div>
+        </aside>
+        </div>
+
+        <section class="ar-related">
+            <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-2"><span class="text-accent-purple">#</span> Related</h3>
+            <div class="ar-cards">
+                <a class="ar-card" href="project_16.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.04 — 2026.05</span></div>
+                    <h4>NTUST MVC Lab, Five Assignments: From Classical Machine Learning Through Transformers to Object Detection</h4>
+                    <p>A collection of the five assignments from the National Taiwan University of Science and Technology MVC Lab (Multimedia and Computer Vision Lab) Spring 2025 course.</p>
+                </a>
+                <a class="ar-card" href="project_28.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.06 — 2026.07</span></div>
+                    <h4>NTUST MVC Lab W9–12: From Agentic RAG to diffusion models</h4>
+                    <p>Weeks nine through twelve of the MVC Lab course turn wholesale towards generative AI: W9 assembles retrieval into an agent that decides for itself with LangGraph, W10 runs image-text inference with CLIP and BLIP, and W11 and W12 cover two generative models — a VAE decoding from latent space and a DDPM denoising step by step from pure noise.</p>
+                </a>
+                <a class="ar-card" href="project_29.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.06 — 2026.07</span></div>
+                    <h4>Running the LLM deployment stack on one RTX 4060 laptop　A self-study log from vLLM inference to K8s orchestration</h4>
+                    <p>On a single laptop with an RTX 4060 (8GB VRAM), I walked the whole LLM deployment skill tree from scratch: a vLLM inference service, an Ollama comparison, MLflow experiment tracking, Docker containerisation, K8s orchestration, the PyTorch training framework, and finally a read-through of Phison's aiDAPTIV+ storage-side inference acceleration.</p>
+                </a>
+            </div>
+        </section>
 
         <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
             <a href="project_26.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">

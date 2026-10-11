@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-TW" class="scroll-smooth">
+<html lang="zh-TW" class="scroll-smooth ar-serif">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,8 +15,8 @@
     <script src="../theme.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet"></noscript>
 
     <link rel="stylesheet" href="../style.css">
 
@@ -37,7 +37,7 @@
 
     <div id="navbar-placeholder"></div>
 
-    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+    <main class="relative z-10 ar-main mx-auto px-6 pt-32 pb-24">
 
         <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
             <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
@@ -52,19 +52,20 @@
                 從非結構到可查詢：<br>
                 <span class="text-gradient text-2xl md:text-4xl">密室逃脫評級表的自動化整理</span>
             </h1>
+            <p class="ar-standfirst">Roger Song 的密室逃脫心得已整理成分地區 Google Sheets，含 9 個欄位，整理日期 2026.03.21。</p>
 
             <div class="flex flex-wrap gap-3 mb-6">
                 <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">AI &amp; Automation</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Automation</span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Web Scraping</span>
-                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Claude CoWork</span>
             </div>
-
             <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
                 <span><i class="far fa-calendar mr-2"></i>2026.04.20</span>
                 <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
             </div>
         </header>
 
+        <div class="ar-grid">
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
             <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
@@ -78,7 +79,7 @@
                 </p>
             </div>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-1" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 問題：完整但難以檢索的資訊
             </h3>
 
@@ -100,7 +101,7 @@
                 部落格原生介面僅支援 <code class="text-accent-purple bg-accent-purple/10 px-1 rounded">Ctrl+F</code> 關鍵字搜尋，無法同時以「評級＋地區＋人數」進行交叉篩選。每次查詢需在長文中反覆瀏覽，耗時約 1–2 分鐘。
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-2" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 方法：將爬梳流程交給 AI
             </h3>
 
@@ -162,7 +163,7 @@
                 整段流程僅下達 3&ndash;4 次指令，其餘由 AI 自主完成。
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-3" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 成果：兩層結構的查詢介面
             </h3>
 
@@ -219,7 +220,7 @@
                 從開啟試算表到決定店家，時間壓縮至一分鐘以內。
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-4" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 致謝與聲明
             </h3>
 
@@ -231,7 +232,7 @@
                 若原作者認為不妥，將立即撤下。
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-5" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Links
             </h3>
 
@@ -258,6 +259,35 @@
             <p class="text-sm text-gray-500 mt-4">黃色標記為個人玩過的店；不同「工作表」分頁代表不同地區，於 Sheets 下方切換。資料來源：Roger Song《密室逃脫無雷心得列表與推薦》，原文最後更新 2026.03.15，整理日期 2026.03.21。</p>
         </article>
 
+        <aside class="ar-aside">
+            <div class="ar-meta"><span class="ar-k">類型</span><span class="ar-v">實作紀錄</span></div>
+            <div class="ar-meta"><span class="ar-k">領域</span><span class="ar-v">AI &amp; Automation</span></div>
+            <div class="ar-meta"><span class="ar-k">閱讀時間</span><span class="ar-v">約 3 分鐘</span></div>
+            <div class="ar-meta"><span class="ar-k">分享</span><button type="button" class="ar-copy" data-ar-copy data-ar-copied="已複製">複製連結</button></div>
+        </aside>
+        </div>
+
+        <section class="ar-related">
+            <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-2"><span class="text-accent-purple">#</span> 相關文章</h3>
+            <div class="ar-cards">
+                <a class="ar-card" href="project_12.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.05.18</span></div>
+                    <h4>YouTube 整理工具的兩個世代： 從 n8n Excel 到 Vision Pipeline</h4>
+                    <p>同一個需求，把 YouTube 影片轉成可以帶走的中文整理，用兩種完全不同的工程方法各做了一次。</p>
+                </a>
+                <a class="ar-card" href="project_05.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.02.20</span></div>
+                    <h4>AI 客服自動化系統建置： Make、LLM 與知識庫之整合架構</h4>
+                    <p>本專案用 Make 平台搭了一套自動化客服系統，整合 LINE Messaging API、Google Workspace 與 LLM。</p>
+                </a>
+                <a class="ar-card" href="project_13.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.05.08 — 2026.05.10</span></div>
+                    <h4>NTUST AI 期末作業： V2 雙軸實驗 60.9%→76.4%</h4>
+                    <p>國立臺灣科技大學「 Cloud Solution Architect 培訓班 」2026 春季期末作業。</p>
+                </a>
+            </div>
+        </section>
+
         <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
             <a href="project_09.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
                 &larr; Prev Project
@@ -269,7 +299,6 @@
                 Next Project &rarr;
             </a>
         </div>
-
     </main>
     <div id="footer-placeholder"></div>
 </body>

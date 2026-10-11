@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth ar-serif">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,8 +15,8 @@
     <script src="../../theme.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet"></noscript>
 
     <link rel="stylesheet" href="../../style.css">
 
@@ -37,7 +37,7 @@
 
     <div id="navbar-placeholder"></div>
 
-    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+    <main class="relative z-10 ar-main mx-auto px-6 pt-32 pb-24">
 
         <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
             <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
@@ -53,6 +53,7 @@
                 Skills Progress Checker:<br>
                 <span class="text-gradient text-2xl md:text-4xl">A Chrome extension that lays out completion of 59 courses across three tracks on one page</span>
             </h1>
+            <p class="ar-standfirst">Skills Progress Checker is an open-source Chrome extension under the MIT license that lists completion status of 59 courses across three programs in one popup.</p>
 
             <div class="flex flex-wrap gap-3 mb-6">
                 <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
@@ -72,6 +73,7 @@
             </div>
         </header>
 
+        <div class="ar-grid">
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
             <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
@@ -85,7 +87,7 @@
                 </p>
             </div>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-1" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> The Problem It Solves
             </h3>
 
@@ -93,7 +95,7 @@
                 skills.google is a single-page application. Each course's completion status renders only when you browse to that page, and it is spread across several path pages. The platform gives you "a check per course," with no "how much is left across the whole program" view. To compute progress yourself, you have to copy down the three tracks' lists, click each page open, and check course by course, a tedious process that misses things easily. This extension automates it: you browse as usual, it remembers each course's completion in the background, and the moment you open the popup you get a per-track summary table.
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-2" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> How It Works
             </h3>
 
@@ -123,7 +125,7 @@
                 <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">The toolbar popup opens straight to the per-track summary: ✓ complete, ✗ incomplete, — not captured, with one-click scan or hide-completed</figcaption>
             </figure>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-3" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> The Master List and Three Tracks
             </h3>
 
@@ -165,7 +167,7 @@
                 </table>
             </div>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-4" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> A Few Engineering Decisions
             </h3>
 
@@ -176,7 +178,7 @@
                 <li><strong class="text-white">Hide completed</strong> &mdash; <span>checking one checkbox leaves only the courses still to do. The count is computed first and then hidden, so the "completed / total" figure stays unaffected, and the preference is also stored in storage.</span></li>
             </ul>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-5" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Privacy Boundary
             </h3>
 
@@ -184,7 +186,7 @@
                 The manifest needs one permission: <code class="text-accent-purple">storage</code>, used to store progress locally. The content script's injection scope is locked to the two domains skills.google and cloudskillsboost.google, and other pages are out of reach. The whole extension only reads pages and writes completion status into your own browser, with no outbound connections, no collection, and no upload.
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-6" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Tech Stack
             </h3>
 
@@ -195,7 +197,10 @@
                 <li><strong class="text-white">Master list currency</strong> &mdash; <span>the list was collected on 2026-06-05 from the program page and skills.google; if the program changes course content, <code class="text-accent-purple">master-list.js</code> needs to be updated in sync.</span></li>
             </ul>
 
-            <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
+            <h3 id="sec-start" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2"><span class="text-accent-purple">#</span> Getting started</h3>
+            <ol class="ar-steps"><li><span class="ar-step-n">1</span><div><strong>Browse courses as usual</strong><p>Browse course pages normally while the extension records each course's status.</p></div></li><li><span class="ar-step-n">2</span><div><strong>Open the toolbar popup</strong><p>The popup opens straight to a table grouped by program.</p></div></li><li><span class="ar-step-n">3</span><div><strong>Press scan all</strong><p>The button opens related path pages in the background and refreshes the table.</p></div></li></ol>
+
+            <h3 id="sec-7" class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Links
             </h3>
 
@@ -219,6 +224,35 @@
             </p>
 
         </article>
+
+        <aside class="ar-aside">
+            <div class="ar-meta"><span class="ar-k">Type</span><span class="ar-v">Build</span></div>
+            <div class="ar-meta"><span class="ar-k">Field</span><span class="ar-v">Engineering</span></div>
+            <div class="ar-meta"><span class="ar-k">Reading time</span><span class="ar-v">4 min</span></div>
+            <div class="ar-meta"><span class="ar-k">Share</span><button type="button" class="ar-copy" data-ar-copy data-ar-copied="Copied">Copy link</button></div>
+        </aside>
+        </div>
+
+        <section class="ar-related">
+            <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-2"><span class="text-accent-purple">#</span> Related</h3>
+            <div class="ar-cards">
+                <a class="ar-card" href="project_14.html">
+                    <div class="ar-card-top"><span>Engineering</span><span>2026.05.19</span></div>
+                    <h4>Device Tabs Opener v2.2.0: UI Redesign, Bilingual, and Per-Tab Checkboxes</h4>
+                    <p>v2.</p>
+                </a>
+                <a class="ar-card" href="project_11.html">
+                    <div class="ar-card-top"><span>Engineering</span><span>2026.04.20</span></div>
+                    <h4>Closing the Gap in Chrome's Synced Tabs: Device Tabs Opener</h4>
+                    <p>A Chrome Extension that solves one thing: opening tabs from other devices in batch.</p>
+                </a>
+                <a class="ar-card" href="project_20.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.06</span></div>
+                    <h4>2026 Google Digital Talent Exploration Program: An overview and notes covering 59 courses across three tracks</h4>
+                    <p>The "Google Digital Talent Exploration Program" is a free online learning program Google runs in Taiwan.</p>
+                </a>
+            </div>
+        </section>
 
         <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
             <a href="project_18.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">

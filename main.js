@@ -390,3 +390,31 @@ window.refreshAnimations = function() {
         observer.observe(el);
     });
 };
+
+/**
+ * 4. 專案頁側欄（2026-10-11）：複製連結、目錄跟著捲動標記。
+ *    HTML 是靜態的（狀態句、閱讀時間、相關文章都寫死在頁面裡），這裡只管兩個互動。
+ */
+document.addEventListener('DOMContentLoaded', () => {
+    const copy = document.querySelector('[data-ar-copy]');
+    if (copy) {
+        const label = copy.textContent;
+        copy.addEventListener('click', () => {
+            const done = () => { copy.textContent = copy.dataset.arCopied || '已複製'; setTimeout(() => { copy.textContent = label; }, 1500); };
+            if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(location.href).then(done, done);
+            else done();
+        });
+    }
+    const links = Array.from(document.querySelectorAll('.ar-toc a[href^="#"]'));
+    if (!links.length || !('IntersectionObserver' in window)) return;
+    const map = new Map();
+    links.forEach(a => { const el = document.getElementById(a.getAttribute('href').slice(1)); if (el) map.set(el, a); });
+    const io = new IntersectionObserver(entries => {
+        entries.forEach(en => {
+            if (!en.isIntersecting) return;
+            links.forEach(a => a.classList.remove('is-active'));
+            map.get(en.target).classList.add('is-active');
+        });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+    map.forEach((a, el) => io.observe(el));
+});

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth ar-serif">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,8 +15,8 @@
     <script src="../../theme.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet"></noscript>
 
     <link rel="stylesheet" href="../../style.css">
 
@@ -37,7 +37,7 @@
 
     <div id="navbar-placeholder"></div>
 
-    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+    <main class="relative z-10 ar-main mx-auto px-6 pt-32 pb-24">
 
         <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
             <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
@@ -53,16 +53,17 @@
                 NTUST MVC Lab, Five Assignments:<br>
                 <span class="text-gradient text-2xl md:text-4xl">From Classical Machine Learning Through Transformers to Object Detection</span>
             </h1>
+            <p class="ar-standfirst">An index of five MVC Lab assignments covering Kaggle, CNN, BiLSTM, BERT and YOLO11n, with metrics for each; the repo is public.</p>
 
             <div class="flex flex-wrap gap-3 mb-6">
                 <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
                     AI &amp; Automation
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Deep Learning
+                    NTUST
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Coursework
+                    Deep Learning
                 </span>
             </div>
 
@@ -72,6 +73,7 @@
             </div>
         </header>
 
+        <div class="ar-grid">
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
             <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
@@ -85,7 +87,7 @@
                 </p>
             </div>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-1" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Overview of the Five Assignments
             </h3>
 
@@ -134,7 +136,7 @@
                 </table>
             </div>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-2" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Breakdown by Assignment
             </h3>
 
@@ -224,7 +226,7 @@
                 <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">HW5: PR curves for the four classes, buffalo 0.959 / elephant 0.954 / rhino 0.969 / zebra 0.949, overall mAP@0.5 0.958</figcaption>
             </figure>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-3" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Academic Integrity Statement
             </h3>
 
@@ -232,7 +234,7 @@
                 This repo is published as a personal learning record, to make it easy to look back later and to share the learning path. The repo holds none of the original starter code provided by the TAs; the HW4 baseline notebook is my own version with the five TO-DOs filled in, with the source noted. The datasets provided by the course (documents.csv, intent/slot json, and so on) are all left out, so obtain them through proper channels. MVC Lab students still taking the course should write it once themselves; the structure and approach are open for reference.
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-4" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Tech Stack
             </h3>
 
@@ -244,7 +246,7 @@
                 <li><strong class="text-white">Not in the repo</strong> &mdash; model weights, original datasets, full training outputs; only the key training curves, PR / confusion matrices, and results.csv are kept</li>
             </ul>
 
-            <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
+            <h3 id="sec-5" class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Links
             </h3>
 
@@ -262,6 +264,35 @@
             </p>
 
         </article>
+
+        <aside class="ar-aside">
+            <div class="ar-meta"><span class="ar-k">Type</span><span class="ar-v">Coursework</span></div>
+            <div class="ar-meta"><span class="ar-k">Field</span><span class="ar-v">AI &amp; Automation</span></div>
+            <div class="ar-meta"><span class="ar-k">Reading time</span><span class="ar-v">4 min</span></div>
+            <div class="ar-meta"><span class="ar-k">Share</span><button type="button" class="ar-copy" data-ar-copy data-ar-copied="Copied">Copy link</button></div>
+        </aside>
+        </div>
+
+        <section class="ar-related">
+            <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-2"><span class="text-accent-purple">#</span> Related</h3>
+            <div class="ar-cards">
+                <a class="ar-card" href="project_27.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.06 — 2026.07</span></div>
+                    <h4>NTUST MVC Lab W6–8: Open-set detection, semantic segmentation and reinforcement learning</h4>
+                    <p>The previous entry indexed the first five MVC Lab assignments; this one records weeks six through eight.</p>
+                </a>
+                <a class="ar-card" href="project_28.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.06 — 2026.07</span></div>
+                    <h4>NTUST MVC Lab W9–12: From Agentic RAG to diffusion models</h4>
+                    <p>Weeks nine through twelve of the MVC Lab course turn wholesale towards generative AI: W9 assembles retrieval into an agent that decides for itself with LangGraph, W10 runs image-text inference with CLIP and BLIP, and W11 and W12 cover two generative models — a VAE decoding from latent space and a DDPM denoising step by step from pure noise.</p>
+                </a>
+                <a class="ar-card" href="project_13.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.05.08 — 2026.05.10</span></div>
+                    <h4>NTUST AI Final Project: Pushing 60.9% to 76.4% with a Two-Axis Experiment on School Azure Quota</h4>
+                    <p>Final project for the National Taiwan University of Science and Technology (NTUST)  Cloud Solution Architect training program , Spring 2026.</p>
+                </a>
+            </div>
+        </section>
 
         <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
             <a href="project_15.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">

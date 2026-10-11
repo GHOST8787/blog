@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth ar-serif">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,8 +15,8 @@
     <script src="../../theme.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet"></noscript>
 
     <link rel="stylesheet" href="../../style.css">
 
@@ -37,7 +37,7 @@
 
     <div id="navbar-placeholder"></div>
 
-    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+    <main class="relative z-10 ar-main mx-auto px-6 pt-32 pb-24">
 
         <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
             <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
@@ -52,6 +52,7 @@
                 Closing the Gap in Chrome's Synced Tabs:<br>
                 <span class="text-gradient text-2xl md:text-4xl">Device Tabs Opener</span>
             </h1>
+            <p class="ar-standfirst">Device Tabs Opener passed Chrome Web Store review and is listed under the MIT license, opening phone tabs in bulk in a new desktop window.</p>
 
             <div class="flex flex-wrap gap-3 mb-6">
                 <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">Engineering</span>
@@ -65,6 +66,7 @@
             </div>
         </header>
 
+        <div class="ar-grid">
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
             <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
@@ -78,7 +80,7 @@
                 </p>
             </div>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-1" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> The Problem: Feature Exists, UX Path Broken
             </h3>
 
@@ -98,7 +100,7 @@
                 Chrome already implemented the sync. What's missing is the batch action layer.
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-2" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Implementation: Three APIs, a Minimum Loop
             </h3>
 
@@ -183,7 +185,7 @@
                 </figcaption>
             </figure>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-3" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> The Submission Flow
             </h3>
 
@@ -244,7 +246,10 @@
 
             <hr class="border-white/10 my-12">
 
-            <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
+            <h3 id="sec-start" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2"><span class="text-accent-purple">#</span> Getting started</h3>
+            <ol class="ar-steps"><li><span class="ar-step-n">1</span><div><strong>Add from the store</strong><p>Click Add to Chrome in the Chrome Web Store to install.</p></div></li><li><span class="ar-step-n">2</span><div><strong>Select all from toolbar</strong><p>Click the toolbar icon to list tabs by device, then select all.</p></div></li><li><span class="ar-step-n">3</span><div><strong>Open selected tabs</strong><p>Press open selected tabs to open them in a new window.</p></div></li></ol>
+
+            <h3 id="sec-4" class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Links
             </h3>
 
@@ -268,6 +273,35 @@
             </p>
 
         </article>
+
+        <aside class="ar-aside">
+            <div class="ar-meta"><span class="ar-k">Type</span><span class="ar-v">Build</span></div>
+            <div class="ar-meta"><span class="ar-k">Field</span><span class="ar-v">Engineering</span></div>
+            <div class="ar-meta"><span class="ar-k">Reading time</span><span class="ar-v">3 min</span></div>
+            <div class="ar-meta"><span class="ar-k">Share</span><button type="button" class="ar-copy" data-ar-copy data-ar-copied="Copied">Copy link</button></div>
+        </aside>
+        </div>
+
+        <section class="ar-related">
+            <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-2"><span class="text-accent-purple">#</span> Related</h3>
+            <div class="ar-cards">
+                <a class="ar-card" href="project_14.html">
+                    <div class="ar-card-top"><span>Engineering</span><span>2026.05.19</span></div>
+                    <h4>Device Tabs Opener v2.2.0: UI Redesign, Bilingual, and Per-Tab Checkboxes</h4>
+                    <p>v2.</p>
+                </a>
+                <a class="ar-card" href="project_19.html">
+                    <div class="ar-card-top"><span>Engineering</span><span>2026.06</span></div>
+                    <h4>Skills Progress Checker: A Chrome extension that lays out completion of 59 courses across three tracks on one page</h4>
+                    <p>The "Google Digital Talent Exploration Program" requires finishing three tracks: AI workplace literacy, digital marketing, and Google Cloud, 59 courses in total, scattered across the various learning-path pages on skills.</p>
+                </a>
+                <a class="ar-card" href="project_06.html">
+                    <div class="ar-card-top"><span>Engineering</span><span>2026.02.23</span></div>
+                    <h4>LINE Message Analyzer: A Two-Day Deep Refactor Log</h4>
+                    <p>A deep refactor of the open-source tool  line-message-analyzer  — both the underlying architecture and the frontend.</p>
+                </a>
+            </div>
+        </section>
 
         <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
             <a href="project_10.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">

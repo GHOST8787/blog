@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-TW" class="scroll-smooth">
+<html lang="zh-TW" class="scroll-smooth ar-serif">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,8 +15,8 @@
     <script src="../theme.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet"></noscript>
 
     <link rel="stylesheet" href="../style.css">
 
@@ -37,7 +37,7 @@
 
     <div id="navbar-placeholder"></div>
 
-    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+    <main class="relative z-10 ar-main mx-auto px-6 pt-32 pb-24">
 
         <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
             <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
@@ -52,19 +52,20 @@
                 YouTube 整理工具的兩個世代：<br>
                 <span class="text-gradient text-2xl md:text-4xl">從 n8n Excel 到 Vision Pipeline</span>
             </h1>
+            <p class="ar-standfirst">yt-digest 第二代已開放公測，貼上 YouTube 連結幾分鐘後取得含章節跳轉的中文整理，每支約 0.10 至 0.20 美元。</p>
 
             <div class="flex flex-wrap gap-3 mb-6">
                 <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">AI &amp; Automation</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Automation</span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Vision Pipeline</span>
-                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Self-Hosted</span>
             </div>
-
             <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
                 <span><i class="far fa-calendar mr-2"></i>2026.05.18</span>
                 <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
             </div>
         </header>
 
+        <div class="ar-grid">
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
             <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
@@ -78,7 +79,7 @@
                 </p>
             </div>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-1" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 問題：30 分鐘影片只想帶走 5 條判斷
             </h3>
 
@@ -97,7 +98,7 @@
                 兩個世代都在解這個問題，差別在工程方法 &mdash; 以及這個方法能做到多深。
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-2" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> V1：n8n + Python + GEMINI + Excel
             </h3>
 
@@ -173,7 +174,7 @@
                 <li><strong class="text-white">改一條 prompt 要改 n8n。</strong>工作流的 visual editor 在原型階段方便，但版本控制、回滾、code review 都不順手。</li>
             </ul>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-3" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> V2：Next.js + Firebase + Claude Vision + 本機 Worker
             </h3>
 
@@ -255,7 +256,7 @@
                 這個透明度在 V1 看不到。每支影片成本與時間直接攤開後，要不要再做一次、要不要換模型，判斷依據變清楚。
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-4" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 中途的轉折：執行位置是設計決策
             </h3>
 
@@ -304,7 +305,7 @@
                 V2 最後的形態是<strong class="text-white">雲端 + 本機混合</strong>：認證、UI、queue 全在 Vercel + Firebase；實際下載與處理留在家用 IP 上。這個分工是被 YouTube 的反爬規則逼出來的，事後才定下來的。
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-5" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 兩個世代的對照
             </h3>
 
@@ -367,7 +368,7 @@
                 </table>
             </div>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-6" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 下一個轉折
             </h3>
 
@@ -383,7 +384,10 @@
 
             <hr class="border-white/10 my-12">
 
-            <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
+            <h3 id="sec-start" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2"><span class="text-accent-purple">#</span> 怎麼開始用</h3>
+            <ol class="ar-steps"><li><span class="ar-step-n">1</span><div><strong>開啟公測版並登入</strong><p>進入 yt-digest 公測版網頁並登入帳號。</p></div></li><li><span class="ar-step-n">2</span><div><strong>貼上 YouTube 連結</strong><p>把想整理的影片網址貼進網頁。</p></div></li><li><span class="ar-step-n">3</span><div><strong>幾分鐘後查看整理</strong><p>取得章節跳轉、重點段落與可帶走的判斷。</p></div></li></ol>
+
+            <h3 id="sec-7" class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Links
             </h3>
 
@@ -402,6 +406,35 @@
 
         </article>
 
+        <aside class="ar-aside">
+            <div class="ar-meta"><span class="ar-k">類型</span><span class="ar-v">成品</span></div>
+            <div class="ar-meta"><span class="ar-k">領域</span><span class="ar-v">AI &amp; Automation</span></div>
+            <div class="ar-meta"><span class="ar-k">閱讀時間</span><span class="ar-v">約 6 分鐘</span></div>
+            <div class="ar-meta"><span class="ar-k">分享</span><button type="button" class="ar-copy" data-ar-copy data-ar-copied="已複製">複製連結</button></div>
+        </aside>
+        </div>
+
+        <section class="ar-related">
+            <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-2"><span class="text-accent-purple">#</span> 相關文章</h3>
+            <div class="ar-cards">
+                <a class="ar-card" href="project_25.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.06.25</span></div>
+                    <h4>替 AI 影片摘要把關： 逐字稿對照與防 overfit 驗證</h4>
+                    <p>yt-digest 把一條 YouTube 連結變成一份結構化的中文整理。</p>
+                </a>
+                <a class="ar-card" href="project_05.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.02.20</span></div>
+                    <h4>AI 客服自動化系統建置： Make、LLM 與知識庫之整合架構</h4>
+                    <p>本專案用 Make 平台搭了一套自動化客服系統，整合 LINE Messaging API、Google Workspace 與 LLM。</p>
+                </a>
+                <a class="ar-card" href="project_10.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.04.20</span></div>
+                    <h4>從非結構到可查詢： 密室逃脫評級表的自動化整理</h4>
+                    <p>將一篇長篇部落格心得，透過 AI 自動化爬梳為可排序、可篩選的結構化資料表。</p>
+                </a>
+            </div>
+        </section>
+
         <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
             <a href="project_11.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
                 &larr; Prev Project
@@ -413,7 +446,6 @@
                 Next Project &rarr;
             </a>
         </div>
-
     </main>
 
     <div id="footer-placeholder"></div>

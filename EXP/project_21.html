@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-TW" class="scroll-smooth">
+<html lang="zh-TW" class="scroll-smooth ar-serif">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,8 +11,8 @@
     <script src="../theme.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet"></noscript>
 
     <link rel="stylesheet" href="../style.css">
 
@@ -32,7 +32,7 @@
 
     <div id="navbar-placeholder"></div>
 
-    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+    <main class="relative z-10 ar-main mx-auto px-6 pt-32 pb-24">
 
         <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
             <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
@@ -48,25 +48,26 @@
                 Google 數位人才 AI 職場通識學程：<br>
                 <span class="text-gradient text-2xl md:text-4xl">33 門課把生成式 AI 裝進日常工作</span>
             </h1>
+            <p class="ar-standfirst">AI 職場通識學程共 33 門課，分成四大類整理，其中 5 門生成式 AI 課程屬 Gen AI Leader 認證學習路徑。</p>
 
             <div class="flex flex-wrap gap-3 mb-6">
                 <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
                     AI &amp; Automation
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Gemini
+                    Google Skills
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    NotebookLM
+                    Gemini
                 </span>
             </div>
-
             <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
                 <span><i class="far fa-calendar mr-2"></i>2026.06</span>
                 <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
             </div>
         </header>
 
+        <div class="ar-grid">
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
             <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
@@ -86,7 +87,7 @@
                 </figcaption>
             </figure>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-1" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 學程在教什麼
             </h3>
 
@@ -94,7 +95,7 @@
                 學程從 AI 名詞的層級關係講起，帶到模型怎麼運作、企業怎麼導入，最後落到每個 Workspace App 的實際操作。其中 5 門「生成式 AI」系列課程是 Google Cloud <strong class="text-white">生成式 AI 領導者（Gen AI Leader）認證</strong>的官方學習路徑，有明確先後順序；修完五門並填完問卷，可以去報名認證測驗。其餘課程補足「學完能立刻動手」的實作層，教 Gemini 與 NotebookLM 怎麼用在寫作、研究、會議、簡報這些每天都在做的事。
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-2" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 一、生成式 AI 認證系列（5 門，Gen AI Leader）
             </h3>
 
@@ -110,7 +111,7 @@
                 <li><strong class="text-white">生成式 AI 代理：實現組織轉型</strong> &mdash; <span>取樣參數（溫度、Top-K、Top-P、token 換算）；代理三大元件（基礎模型、推論迴圈、工具）；ReAct 與 CoT 兩種推論方式；企業平台 Vertex AI Search、Agentspace。</span></li>
             </ul>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-3" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 二、Gemini for Workspace（9 門）
             </h3>
 
@@ -129,7 +130,7 @@
                 <li><strong class="text-white">運用 Google Vids 製作精彩影片</strong> &mdash; <span>Workspace 內建 AI 影片工具，從提示詞到大綱、範本、樣式、草稿，產出含媒體、文字、腳本、音軌的分鏡。</span></li>
             </ul>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-4" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 三、NotebookLM 系列（11 門）
             </h3>
 
@@ -151,7 +152,7 @@
                 <li><strong class="text-white">Research Hacks with NotebookLM</strong> &mdash; <span>研究三步：匯入、策略提問（辨識動力、挑戰、關鍵主題）、語音複習；提問深度決定洞察深度。</span></li>
             </ul>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-5" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 四、Gemini 進階應用情境（8 門）
             </h3>
 
@@ -174,7 +175,7 @@
                 （另有 Guided Learning with Gemini，把 Gemini 當協作式思考夥伴，用探問式問題把新知連到既有知識，適合備考與興趣探索。）
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
+            <h3 id="sec-6" class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 三個記憶點
             </h3>
 
@@ -184,7 +185,7 @@
                 <li><strong class="text-white">NotebookLM 把 500 筆客服逐字稿變成可問可聽的專案專家</strong> &mdash; <span>NotebookLM 可將 500 筆客服逐字稿轉化為可問可聽的專案助理，其最大特色在於 grounded：僅使用上傳的來源回答問題，附有可回溯的引註，若無相關資料則誠實回應「不知道」。同一份資料能變出讀、看、聽三種吸收方式（心智圖、說明影片、互動式 Podcast）。</span></li>
             </ul>
 
-            <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
+            <h3 id="sec-7" class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Links
             </h3>
 
@@ -205,6 +206,35 @@
 
         </article>
 
+        <aside class="ar-aside">
+            <div class="ar-meta"><span class="ar-k">類型</span><span class="ar-v">課程作業</span></div>
+            <div class="ar-meta"><span class="ar-k">領域</span><span class="ar-v">AI &amp; Automation</span></div>
+            <div class="ar-meta"><span class="ar-k">閱讀時間</span><span class="ar-v">約 7 分鐘</span></div>
+            <div class="ar-meta"><span class="ar-k">分享</span><button type="button" class="ar-copy" data-ar-copy data-ar-copied="已複製">複製連結</button></div>
+        </aside>
+        </div>
+
+        <section class="ar-related">
+            <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-2"><span class="text-accent-purple">#</span> 相關文章</h3>
+            <div class="ar-cards">
+                <a class="ar-card" href="project_20.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.06</span></div>
+                    <h4>2026 Google 數位人才探索計畫： 三學程 59 門課的總覽與筆記</h4>
+                    <p>「Google 數位人才探索計畫」是 Google 在台灣辦的免費線上學習計畫。</p>
+                </a>
+                <a class="ar-card" href="project_22.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.06</span></div>
+                    <h4>Google 數位人才 數位行銷學程： 用 Gemini 與 NotebookLM 做行銷的 15 門課</h4>
+                    <p>數位行銷學程是「Google 數位人才探索計畫」三學程之一，共 15 門課。</p>
+                </a>
+                <a class="ar-card" href="project_23.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.06</span></div>
+                    <h4>Google 數位人才 Google Cloud 學程： 11 門課建立雲端與數位轉型的整體視角</h4>
+                    <p>Google Cloud 學程是「Google 數位人才探索計畫」三學程之一，共 11 門課。</p>
+                </a>
+            </div>
+        </section>
+
         <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
             <a href="project_20.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
                 &larr; 上一篇
@@ -216,7 +246,6 @@
                 下一篇 &rarr;
             </a>
         </div>
-
     </main>
     <div id="footer-placeholder"></div>
 </body>

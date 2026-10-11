@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-TW" class="scroll-smooth">
+<html lang="zh-TW" class="scroll-smooth ar-serif">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,8 +15,8 @@
     <script src="../theme.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet"></noscript>
     
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../tarot/tarot_style.css">
@@ -39,7 +39,7 @@
 
     <div id="navbar-placeholder"></div>
 
-    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+    <main class="relative z-10 ar-main mx-auto px-6 pt-32 pb-24">
         
         <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
             <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
@@ -55,25 +55,26 @@
                 塔羅 Prompt 煉金術師<br>
                 <span class="text-gradient text-2xl md:text-4xl">生成式 AI 之動態提示詞工程實作</span>
             </h1>
+            <p class="ar-standfirst">塔羅抽牌網頁模組已可使用，單張抽牌後依領域、牌號與正逆位自動合成可貼進 LLM 的提示詞，文中說明 78 張牌的資料集。</p>
 
             <div class="flex flex-wrap gap-3 mb-6">
                 <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
                     Engineering
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Vanilla JS
+                    Web App
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
                     Prompt Engineering
                 </span>
             </div>
-            
             <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
                 <span><i class="far fa-calendar mr-2"></i>2026.02.19</span>
                 <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
             </div>
         </header>
 
+        <div class="ar-grid">
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
             
             <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
@@ -87,7 +88,7 @@
                 </p>
             </div>
             
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-1" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 技術架構與實作細節 (Technical Implementation)
             </h3>
 
@@ -118,7 +119,7 @@
                 </div>
             </div>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-2" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 領域知識 (Domain Knowledge)：塔羅系統邏輯解構
             </h3>
 
@@ -219,7 +220,7 @@
             </div>
             <hr class="border-white/10 my-12">
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-3" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Interactive Module: Prompt Generator
             </h3>
 
@@ -264,7 +265,20 @@
                 </div>
             </div>
 
+        
+            <h3 id="sec-start" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2"><span class="text-accent-purple">#</span> 怎麼開始用</h3>
+            <ol class="ar-steps"><li><span class="ar-step-n">1</span><div><strong>選擇詢問的主題</strong><p>在網頁上選擇事業、關係或健康等提問領域。</p></div></li><li><span class="ar-step-n">2</span><div><strong>點擊抽一張塔羅牌</strong><p>點擊抽牌後，網頁自動產生給 AI 工具的提問指令。</p></div></li><li><span class="ar-step-n">3</span><div><strong>複製指令貼進 AI</strong><p>按下複製指令，貼到 AI 對話框取得解牌結果。</p></div></li></ol>
+
+            
         </article>
+
+        <aside class="ar-aside">
+            <div class="ar-meta"><span class="ar-k">類型</span><span class="ar-v">成品</span></div>
+            <div class="ar-meta"><span class="ar-k">領域</span><span class="ar-v">Engineering</span></div>
+            <div class="ar-meta"><span class="ar-k">閱讀時間</span><span class="ar-v">約 4 分鐘</span></div>
+            <div class="ar-meta"><span class="ar-k">分享</span><button type="button" class="ar-copy" data-ar-copy data-ar-copied="已複製">複製連結</button></div>
+        </aside>
+        </div>
 
         <hr class="border-white/10 my-12">
 
@@ -281,6 +295,27 @@
             </li>
         </ul>
 
+        <section class="ar-related">
+            <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-2"><span class="text-accent-purple">#</span> 相關文章</h3>
+            <div class="ar-cards">
+                <a class="ar-card" href="project_26.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.07.05</span></div>
+                    <h4>Claude 官方提示指南的一張地圖： 選型、參數、提示技巧、遷移注意</h4>
+                    <p>Anthropic 在官方文件裡放了四份提示工程指南。</p>
+                </a>
+                <a class="ar-card" href="project_25.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.06.25</span></div>
+                    <h4>替 AI 影片摘要把關： 逐字稿對照與防 overfit 驗證</h4>
+                    <p>yt-digest 把一條 YouTube 連結變成一份結構化的中文整理。</p>
+                </a>
+                <a class="ar-card" href="project_05.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.02.20</span></div>
+                    <h4>AI 客服自動化系統建置： Make、LLM 與知識庫之整合架構</h4>
+                    <p>本專案用 Make 平台搭了一套自動化客服系統，整合 LINE Messaging API、Google Workspace 與 LLM。</p>
+                </a>
+            </div>
+        </section>
+
         <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
             <a href="project_03.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
                 &larr; Prev Project
@@ -292,7 +327,6 @@
                 Next Project &rarr;
             </a>
         </div>
-
     </main>
     <div id="footer-placeholder"></div>
 </body>

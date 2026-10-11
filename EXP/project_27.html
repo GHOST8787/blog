@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-TW" class="scroll-smooth">
+<html lang="zh-TW" class="scroll-smooth ar-serif">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,8 +11,8 @@
     <script src="../theme.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet"></noscript>
 
     <link rel="stylesheet" href="../style.css">
 
@@ -32,7 +32,7 @@
 
     <div id="navbar-placeholder"></div>
 
-    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+    <main class="relative z-10 ar-main mx-auto px-6 pt-32 pb-24">
 
         <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
             <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
@@ -48,25 +48,26 @@
                 NTUST MVC Lab W6&ndash;8：<br>
                 <span class="text-gradient text-2xl md:text-4xl">開集偵測、語意分割與強化學習</span>
             </h1>
+            <p class="ar-standfirst">W6 到 W8 三份作業皆有數字，DQN 訓練 150 萬步後評估 2990 分，程式採 MIT 授權。</p>
 
             <div class="flex flex-wrap gap-3 mb-6">
                 <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
                     AI &amp; Automation
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Deep Learning
+                    NTUST
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Coursework
+                    Deep Learning
                 </span>
             </div>
-
             <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
                 <span><i class="far fa-calendar mr-2"></i>2026.06 &mdash; 2026.07</span>
                 <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
             </div>
         </header>
 
+        <div class="ar-grid">
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
             <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
@@ -84,7 +85,7 @@
                 課程走到下半段，三份作業各占一種任務型態：HW6 用 Grounding DINO 做 zero-shot 偵測，整份作業其實是一個 prompt 工程研究；HW7 從零刻一個 U-Net，在杜拜空拍圖上分割六類地物；HW8 用 DQN 從像素學會玩 Ms. Pac-Man，是三份裡訓練量最大的一份。前五份作業的紀錄在 <a href="project_16.html" class="text-accent-purple hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">EXP / P16</a>。
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-1" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 三份作業總覽
             </h3>
 
@@ -121,7 +122,7 @@
                 </table>
             </div>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-2" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 逐份拆解
             </h3>
 
@@ -200,7 +201,7 @@
                 <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">HW8：150 萬步訓練完成，eval score 2990.0，產出模型檔 pacma_dqn.pt（6.4MB）與遊戲錄影 mspacman.mp4</figcaption>
             </figure>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-3" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 學術誠信聲明
             </h3>
 
@@ -208,7 +209,7 @@
                 本文為個人學習紀錄。三份作業的 starter 骨架與教學 notebook 由課程提供，TODO 實作、prompt 設計與所有實驗數據是自己跑出來的；課程資料集與模型權重一律不隨附，請透過正規管道取得。在學的 MVC Lab 學生請自己寫過一次，歡迎參考結構與思路。
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-4" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 技術棧
             </h3>
 
@@ -220,7 +221,7 @@
                 <li><strong class="text-gray-200">硬體</strong> &mdash; RTX 4060 8GB（HW8 的 150 萬步約八小時；HW6 掃 150 張影像約 4 分鐘）</li>
             </ul>
 
-            <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
+            <h3 id="sec-5" class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Links
             </h3>
 
@@ -245,6 +246,35 @@
 
         </article>
 
+        <aside class="ar-aside">
+            <div class="ar-meta"><span class="ar-k">類型</span><span class="ar-v">課程作業</span></div>
+            <div class="ar-meta"><span class="ar-k">領域</span><span class="ar-v">AI &amp; Automation</span></div>
+            <div class="ar-meta"><span class="ar-k">閱讀時間</span><span class="ar-v">約 4 分鐘</span></div>
+            <div class="ar-meta"><span class="ar-k">分享</span><button type="button" class="ar-copy" data-ar-copy data-ar-copied="已複製">複製連結</button></div>
+        </aside>
+        </div>
+
+        <section class="ar-related">
+            <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-2"><span class="text-accent-purple">#</span> 相關文章</h3>
+            <div class="ar-cards">
+                <a class="ar-card" href="project_16.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.04 — 2026.05</span></div>
+                    <h4>NTUST MVC Lab HW1–5： 從傳統 ML 到 Transformer 與物件偵測</h4>
+                    <p>國立臺灣科技大學 MVC Lab（多媒體與電腦視覺實驗室）2025 春季課程的五份作業合集。</p>
+                </a>
+                <a class="ar-card" href="project_28.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.06 — 2026.07</span></div>
+                    <h4>NTUST MVC Lab W9–12： 從 Agentic RAG 到擴散模型</h4>
+                    <p>MVC Lab 課程的第九到十二週，主題整批轉向生成式 AI。</p>
+                </a>
+                <a class="ar-card" href="project_29.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.06 — 2026.07</span></div>
+                    <h4>一台 RTX 4060 筆電跑 LLM 部署　從 vLLM 推論到 K8s 編排的自學紀錄</h4>
+                    <p>用一台搭載 RTX 4060（8GB 顯存）的筆電，從零走了一遍 LLM 部署的技能樹。</p>
+                </a>
+            </div>
+        </section>
+
         <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
             <a href="project_26.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
                 &larr; 上一篇
@@ -256,7 +286,6 @@
                 下一篇 &rarr;
             </a>
         </div>
-
     </main>
     <div id="footer-placeholder"></div>
 </body>

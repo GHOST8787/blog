@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-TW" class="scroll-smooth">
+<html lang="zh-TW" class="scroll-smooth ar-serif">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,8 +15,8 @@
     <script src="../theme.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet"></noscript>
     
     <link rel="stylesheet" href="../style.css">
     
@@ -37,7 +37,7 @@
 
     <div id="navbar-placeholder"></div>
 
-    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+    <main class="relative z-10 ar-main mx-auto px-6 pt-32 pb-24">
         
         <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
             <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
@@ -52,19 +52,20 @@
                 Claude Code 架構解構 (下)：<br>
                 <span class="text-gradient text-2xl md:text-4xl">工程實踐、工具治理與驗證閉環</span>
             </h1>
+            <p class="ar-standfirst">系列下篇，整理工具設計原則、Subagents 的四項配置、高頻指令與三個演化階段，內容參考 Tw93 的文章。</p>
 
             <div class="flex flex-wrap gap-3 mb-6">
                 <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">Engineering</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Claude Code</span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Tool Design</span>
-                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Workflow</span>
             </div>
-            
             <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
                 <span><i class="far fa-calendar mr-2"></i>2026.04.03</span>
                 <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
             </div>
         </header>
 
+        <div class="ar-grid">
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
             
             <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
@@ -88,7 +89,7 @@
             </figure>
 
             <section class="mb-16">
-                <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <h3 id="sec-1" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                     <span class="text-accent-purple">#</span> 工具設計：讓 Claude 少選錯
                 </h3>
                 
@@ -127,7 +128,7 @@
             </section>
 
             <section class="mb-16">
-                <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <h3 id="sec-2" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                     <span class="text-accent-purple">#</span> Subagents：隔離比並行更重要
                 </h3>
 
@@ -145,7 +146,7 @@
             </section>
 
             <section class="mb-16">
-                <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <h3 id="sec-3" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                     <span class="text-accent-purple">#</span> 高頻指令的工程意義
                 </h3>
 
@@ -160,7 +161,7 @@
             </section>
 
             <section class="mb-10">
-                <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <h3 id="sec-4" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                     <span class="text-accent-purple">#</span> 演化軌跡與驗證法則
                 </h3>
 
@@ -178,7 +179,7 @@
 
             <hr class="border-white/10 my-16">
 
-                        <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                        <h3 id="sec-5" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Links
             </h3>
 
@@ -193,6 +194,36 @@
 
         </article>
 
+        <aside class="ar-aside">
+            <div class="ar-meta"><span class="ar-k">類型</span><span class="ar-v">整理筆記</span></div>
+            <div class="ar-meta"><span class="ar-k">領域</span><span class="ar-v">Engineering</span></div>
+            <div class="ar-meta"><span class="ar-k">閱讀時間</span><span class="ar-v">約 3 分鐘</span></div>
+            <div class="ar-meta"><span class="ar-k">分享</span><button type="button" class="ar-copy" data-ar-copy data-ar-copied="已複製">複製連結</button></div>
+            <div class="ar-meta ar-toc-wrap"><span class="ar-k">目錄</span><ol class="ar-toc"><li><a href="#sec-1">工具設計：讓 Claude 少選錯</a></li><li><a href="#sec-2">Subagents：隔離比並行更重要</a></li><li><a href="#sec-3">高頻指令的工程意義</a></li><li><a href="#sec-4">演化軌跡與驗證法則</a></li><li><a href="#sec-5">Links</a></li></ol></div>
+        </aside>
+        </div>
+
+        <section class="ar-related">
+            <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-2"><span class="text-accent-purple">#</span> 相關文章</h3>
+            <div class="ar-cards">
+                <a class="ar-card" href="project_08.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.03.12</span></div>
+                    <h4>Claude Code 架構解構 (上)： 系統分層、上下文邊界與緩存機制</h4>
+                    <p>本篇整理自近半年深度使用 Claude Code 的踩坑經驗。</p>
+                </a>
+                <a class="ar-card" href="project_07.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.03.02</span></div>
+                    <h4>AI Agent 生態系的機制解構： 從 Pixel Agents 改寫經驗談 Skills 的定位</h4>
+                    <p>從開源專案改寫經驗出發，釐清 Claude 生態系中 Skills 與 Custom Commands、MCP、Subagents 的本質差異。</p>
+                </a>
+                <a class="ar-card" href="project_26.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.07.05</span></div>
+                    <h4>Claude 官方提示指南的一張地圖： 選型、參數、提示技巧、遷移注意</h4>
+                    <p>Anthropic 在官方文件裡放了四份提示工程指南。</p>
+                </a>
+            </div>
+        </section>
+
         <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
             <a href="project_08.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
                 &larr; Prev Project
@@ -204,7 +235,6 @@
                 Next Project &rarr;
             </a>
         </div>
-
     </main>
     <div id="footer-placeholder"></div>
 </body>

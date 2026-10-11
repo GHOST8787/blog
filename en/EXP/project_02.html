@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth ar-serif">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,8 +15,8 @@
     <script src="../../theme.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet"></noscript>
 
     <link rel="stylesheet" href="../../style.css">
 
@@ -37,7 +37,7 @@
 
     <div id="navbar-placeholder"></div>
 
-    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+    <main class="relative z-10 ar-main mx-auto px-6 pt-32 pb-24">
 
         <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
             <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
@@ -53,16 +53,17 @@
                 Deploying an AI Assistant Framework (Part 1):<br>
                 <span class="text-gradient text-2xl md:text-4xl">Infrastructure and Daemonized Services</span>
             </h1>
+            <p class="ar-standfirst">Clawdbot runs on an Azure virtual machine as a systemd background service, reached through an SSH tunnel, and Telegram send-and-receive tests pass.</p>
 
             <div class="flex flex-wrap gap-3 mb-6">
                 <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
                     Engineering
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Cloud Infrastructure
+                    Deployment
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Deployment
+                    Cloud Infrastructure
                 </span>
             </div>
 
@@ -72,6 +73,7 @@
             </div>
         </header>
 
+        <div class="ar-grid">
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
             <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
@@ -88,7 +90,7 @@
                 </p>
             </div>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-1" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Stage 1: Prerequisites
             </h3>
 
@@ -99,7 +101,7 @@
                 <li><strong class="text-white">Local control:</strong> a workstation with PowerShell or a comparable CLI terminal already set up.</li>
             </ul>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-2" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Stage 2: Secure Connection (SSH)
             </h3>
 
@@ -109,7 +111,7 @@
 ssh -i &lt;YOUR_KEY.pem&gt; &lt;YOUR_VM_USER&gt;@&lt;YOUR_VM_IP&gt;</code></pre>
             </div>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-3" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Stage 3: Core Service Setup and Daemonization
             </h3>
 
@@ -129,7 +131,7 @@ systemctl --user start clawdbot-gateway.service
 systemctl --user status clawdbot-gateway.service</code></pre>
             </div>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-4" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Stage 4: Edge Case &mdash; Port Conflict Resolution
             </h3>
 
@@ -150,7 +152,7 @@ systemctl --user reset-failed clawdbot-gateway.service
 systemctl --user start clawdbot-gateway.service</code></pre>
             </div>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-5" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Stage 5: SSH Tunneling and Dashboard Access
             </h3>
 
@@ -177,7 +179,7 @@ systemctl --user start clawdbot-gateway.service</code></pre>
 
             <hr class="border-white/10 my-12">
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-6" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Stage Validation
             </h3>
 
@@ -193,6 +195,35 @@ systemctl --user start clawdbot-gateway.service</code></pre>
             </figure>
 
         </article>
+
+        <aside class="ar-aside">
+            <div class="ar-meta"><span class="ar-k">Type</span><span class="ar-v">Build Log</span></div>
+            <div class="ar-meta"><span class="ar-k">Field</span><span class="ar-v">Engineering</span></div>
+            <div class="ar-meta"><span class="ar-k">Reading time</span><span class="ar-v">3 min</span></div>
+            <div class="ar-meta"><span class="ar-k">Share</span><button type="button" class="ar-copy" data-ar-copy data-ar-copied="Copied">Copy link</button></div>
+        </aside>
+        </div>
+
+        <section class="ar-related">
+            <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-2"><span class="text-accent-purple">#</span> Related</h3>
+            <div class="ar-cards">
+                <a class="ar-card" href="project_03.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.02.19</span></div>
+                    <h4>Deploying an AI Assistant Framework (Part 2): Google Workspace Integration in Practice</h4>
+                    <p>Picking up from Part 1, this part installs the Gog skill and wires the AI assistant to a Google account — so it can run Gmail and Calendar directly.</p>
+                </a>
+                <a class="ar-card" href="project_29.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.06 — 2026.07</span></div>
+                    <h4>Running the LLM deployment stack on one RTX 4060 laptop　A self-study log from vLLM inference to K8s orchestration</h4>
+                    <p>On a single laptop with an RTX 4060 (8GB VRAM), I walked the whole LLM deployment skill tree from scratch: a vLLM inference service, an Ollama comparison, MLflow experiment tracking, Docker containerisation, K8s orchestration, the PyTorch training framework, and finally a read-through of Phison's aiDAPTIV+ storage-side inference acceleration.</p>
+                </a>
+                <a class="ar-card" href="project_12.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.05.18</span></div>
+                    <h4>Two Generations of a YouTube Digest Tool: From n8n &amp; Excel to a Vision Pipeline</h4>
+                    <p>Same requirement — turn a YouTube video into a Chinese digest I can actually keep — built twice with two completely different engineering approaches.</p>
+                </a>
+            </div>
+        </section>
 
         <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
             <a href="project_01.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">

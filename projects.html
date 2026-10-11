@@ -219,7 +219,7 @@
                             <span class="number-badge text-xs font-mono text-gray-500">${number}</span>
                         </div>
 
-                        <h4 class="text-lg font-bold text-white mb-3 group-hover:text-accent-purple transition-colors line-clamp-2">載入中...</h4>
+                        <h4 class="text-lg font-bold text-white mb-3 group-hover:text-accent-purple transition-colors">載入中...</h4>
                         <p class="text-gray-400 text-sm leading-normal line-clamp-3"></p>
                     </div>
                 `;
@@ -289,8 +289,29 @@
                 cardDateBox.innerHTML = `<i class="far fa-calendar text-gray-600"></i> ${dateText}`;
             }            
             // 抓取標題
+            // 文章 h1 是「主標：<br><span>副標</span>」。原本用 innerText 整串塞進卡片，
+            // <br> 變成空格、全形冒號後面再多一格，看起來像標題中間破了一個洞；
+            // 改成主標、副標各自一行，主標尾端的冒號拿掉。
             const titleEl = doc.querySelector('header h1');
-            if (titleEl) card.querySelector('h4').textContent = titleEl.innerText.trim();
+            if (titleEl) {
+                const h4 = card.querySelector('h4');
+                const sub = titleEl.querySelector('span');
+                const subText = sub ? sub.textContent.replace(/\\s+/g, ' ').trim() : '';
+                let main = titleEl.textContent.replace(/\\s+/g, ' ').trim();
+                if (subText && main.endsWith(subText)) main = main.slice(0, -subText.length);
+                main = main.trim().replace(/[：:]+$/, '').trim();
+                h4.textContent = '';
+                const mainEl = document.createElement('span');
+                mainEl.className = 'block';
+                mainEl.textContent = main;
+                h4.appendChild(mainEl);
+                if (subText) {
+                    const subEl = document.createElement('span');
+                    subEl.className = 'block text-sm font-medium text-gray-400 mt-1 line-clamp-2';
+                    subEl.textContent = subText;
+                    h4.appendChild(subEl);
+                }
+            }
 
             // 抓取圖片：cover (projects.json 指定) 優先，否則 fallback 抓文章第一張並修正路徑
             const cardImg = card.querySelector('img');

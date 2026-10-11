@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth ar-serif">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,8 +15,8 @@
     <script src="../../theme.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet"></noscript>
 
     <link rel="stylesheet" href="../../style.css">
 
@@ -37,7 +37,7 @@
 
     <div id="navbar-placeholder"></div>
 
-    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+    <main class="relative z-10 ar-main mx-auto px-6 pt-32 pb-24">
 
         <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
             <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
@@ -53,6 +53,7 @@
                 One Map of Claude's Official Prompting Guides:<br>
                 <span class="text-gradient text-2xl md:text-4xl">Model choice, parameters, prompting techniques, migration traps</span>
             </h1>
+            <p class="ar-standfirst">Four official Anthropic prompting guides become one map of model choice, parameters, techniques and migration notes, with gaps marked "not in the documents".</p>
 
             <div class="flex flex-wrap gap-3 mb-6">
                 <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">AI &amp; Automation</span>
@@ -66,6 +67,7 @@
             </div>
         </header>
 
+        <div class="ar-grid">
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
             <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
@@ -88,7 +90,7 @@
                 </p>
             </div>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-1" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Layer One: Model Choice &mdash; Where Each of the Three Stands
             </h3>
 
@@ -129,7 +131,7 @@
                 Fable 5 carries an explicit limit on its design scope: the documentation states it does not apply to offensive cybersecurity, biology or life sciences work. Requests of that kind may come straight back as <code class="text-accent-purple">stop_reason: "refusal"</code>. For either of those two categories, pick a different model from the start.
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-2" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Layer Two: Parameters &mdash; effort Is the Main Control, thinking Defaults Differ Across All Three
             </h3>
 
@@ -210,7 +212,7 @@ output_config={"effort": "high"}   # max_tokens acts as the hard ceiling</code><
                 Token ceilings and sampling parameters follow their own rules per model: Sonnet 5 ships a new tokenizer, so the same text runs about 30% more tokens, and at high effort <code class="text-accent-purple">max_tokens</code> has to leave room for thinking and tools, with too little room producing "all thinking, truncated answer, <code class="text-accent-purple">stop_reason: "max_tokens"</code>"; sampling parameters (temperature, top_p, top_k) return 400 when set to anything other than the default. Opus 4.8 starts max_tokens at 64k on the max and xhigh tiers before adjusting; sampling restrictions are not itemised in that document. Fable 5 gives no max_tokens figure, its sampling restrictions are absent from the documentation, and a single request may run for minutes with autonomous execution running for hours, so client timeouts have to be extended to match.
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-3" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Layer Three: Prompting Techniques &mdash; A General Skeleton, Plus Each Model's Temperament
             </h3>
 
@@ -275,7 +277,7 @@ output_config={"effort": "high"}   # max_tokens acts as the hard ceiling</code><
                 Frontend design is the one section where the model holds a fixed aesthetic. Opus 4.8's defaults are fairly stubborn: a warm off-white background (around <code class="text-accent-purple">#F4F1EA</code>), a serif display typeface, italic emphasis, terracotta and amber tones. Sonnet 5 also converges on a consistent default style (the documentation lists no specific colours), and the general document separately names the model's fondness for converging on the Space Grotesk typeface. Fable 5's guide has no section on design defaults. Two ways out: supply concrete specifications (explicit hex values and typeface names), or have the model propose four design directions before implementing. Generic adjectives ("clean and minimal" and the like) only make it jump to another fixed palette, which amounts to saying nothing.
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-4" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Layer Four: Migration Traps &mdash; Where Carrying Prompts Over Commonly Fails
             </h3>
 
@@ -342,7 +344,7 @@ output_config={"effort": "high"}   # max_tokens acts as the hard ceiling</code><
             </div>
 
             <hr class="border-white/10 my-12">
-            <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
+            <h3 id="sec-5" class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Links
             </h3>
 
@@ -378,6 +380,36 @@ output_config={"effort": "high"}   # max_tokens acts as the hard ceiling</code><
             </p>
 
         </article>
+
+        <aside class="ar-aside">
+            <div class="ar-meta"><span class="ar-k">Type</span><span class="ar-v">Notes</span></div>
+            <div class="ar-meta"><span class="ar-k">Field</span><span class="ar-v">AI &amp; Automation</span></div>
+            <div class="ar-meta"><span class="ar-k">Reading time</span><span class="ar-v">10 min</span></div>
+            <div class="ar-meta"><span class="ar-k">Share</span><button type="button" class="ar-copy" data-ar-copy data-ar-copied="Copied">Copy link</button></div>
+            <div class="ar-meta ar-toc-wrap"><span class="ar-k">Contents</span><ol class="ar-toc"><li><a href="#sec-1">Layer One: Model Choice — Where Each of the Three Stands</a></li><li><a href="#sec-2">Layer Two: Parameters — effort Is the Main Control, thinking Defaults Differ Across All Three</a></li><li><a href="#sec-3">Layer Three: Prompting Techniques — A General Skeleton, Plus Each Model's Temperament</a></li><li><a href="#sec-4">Layer Four: Migration Traps — Where Carrying Prompts Over Commonly Fails</a></li><li><a href="#sec-5">Links</a></li></ol></div>
+        </aside>
+        </div>
+
+        <section class="ar-related">
+            <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-2"><span class="text-accent-purple">#</span> Related</h3>
+            <div class="ar-cards">
+                <a class="ar-card" href="project_08.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.03.12</span></div>
+                    <h4>Claude Code Architecture, Part 1: System Layers, Context Boundaries, and Caching</h4>
+                    <p>Written from six months of going in circles with Claude Code.</p>
+                </a>
+                <a class="ar-card" href="project_09.html">
+                    <div class="ar-card-top"><span>Engineering</span><span>2026.04.03</span></div>
+                    <h4>Claude Code Architecture, Part 2: Engineering Practice, Tool Governance, and the Verification Loop</h4>
+                    <p>Part 1 set up the macro boundaries and the context rules.</p>
+                </a>
+                <a class="ar-card" href="project_07.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.03.02</span></div>
+                    <h4>Decomposing the AI Agent Ecosystem: From Rewriting Pixel Agents to Placing Skills</h4>
+                    <p>Coming out of an open-source rewrite, I want to draw a clear line between Skills, Custom Commands, MCP, and Subagents in the Claude ecosystem.</p>
+                </a>
+            </div>
+        </section>
 
         <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
             <a href="project_25.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">

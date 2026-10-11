@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-TW" class="scroll-smooth">
+<html lang="zh-TW" class="scroll-smooth ar-serif">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,8 +11,8 @@
     <script src="../theme.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet"></noscript>
 
     <link rel="stylesheet" href="../style.css">
 
@@ -32,7 +32,7 @@
 
     <div id="navbar-placeholder"></div>
 
-    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+    <main class="relative z-10 ar-main mx-auto px-6 pt-32 pb-24">
 
         <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
             <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
@@ -47,19 +47,20 @@
                 Claude 官方提示指南的一張地圖：<br>
                 <span class="text-gradient text-2xl md:text-4xl">選型、參數、提示技巧、遷移注意</span>
             </h1>
+            <p class="ar-standfirst">四份 Anthropic 官方提示指南依選型、參數、提示技巧、遷移注意四層收成一張地圖，文件未提及的部分標註為「文件裡沒有」。</p>
 
             <div class="flex flex-wrap gap-3 mb-6">
                 <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">AI &amp; Automation</span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Prompt Engineering</span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Reference</span>
             </div>
-
             <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
                 <span><i class="far fa-calendar mr-2"></i>2026.07.05</span>
                 <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
             </div>
         </header>
 
+        <div class="ar-grid">
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
             <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
@@ -82,7 +83,7 @@
                 </p>
             </div>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-1" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 第一層：選型——三個模型各自站在哪
             </h3>
 
@@ -123,7 +124,7 @@
                 Fable 5 的設計範圍有明確限制，文件指出其不適用於攻擊性網路安全、生物學及生命科學相關工作。此類請求可能直接回傳 <code class="text-accent-purple">stop_reason: "refusal"</code>。要跑這兩類任務，從一開始就換別的模型。
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-2" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 第二層：參數——effort 是主控，thinking 三家預設不同
             </h3>
 
@@ -204,7 +205,7 @@ output_config={"effort": "high"}   # max_tokens 當硬性上限</code></pre>
                 token 上限與取樣參數各家的規矩：Sonnet 5 換了新分詞器，相同文字約多三成 token，高 effort 時 <code class="text-accent-purple">max_tokens</code> 要預留思考與工具空間，留不夠就出現「全思考＋截斷答案＋<code class="text-accent-purple">stop_reason: "max_tokens"</code>」；取樣參數（temperature、top_p、top_k）設非預設值回 400。Opus 4.8 在 max 和 xhigh 檔的 max_tokens 從 64k 起跳再調；取樣限制文件本身未明列。Fable 5 沒給 max_tokens 數字，取樣限制的敘述文件裡沒有，但單一請求可能跑數分鐘、自主執行數小時，用戶端逾時要跟著調長。
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-3" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 第三層：提示技巧——通用骨架，加上各模型的脾氣
             </h3>
 
@@ -269,7 +270,7 @@ output_config={"effort": "high"}   # max_tokens 當硬性上限</code></pre>
                 前端設計是唯一一個「模型有固定審美」的段落。Opus 4.8 的預設相當頑固：溫暖米白背景（約 <code class="text-accent-purple">#F4F1EA</code>）、襯線展示字體、斜體強調、赤陶琥珀色調。Sonnet 5 也會收斂到一套一致的預設風格（文件未列具體顏色），通用文件另外點名模型愛收斂到 Space Grotesk 這個字體。Fable 5 的指南沒有設計預設值的段落。解決方法有兩種：提供具體規格（如明確的 hex 值與字體名稱），或讓模型先提出四種設計方向後再進行實作。通用形容詞（「乾淨簡約」這類）只會讓它跳到另一組固定配色，等於沒說。
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-4" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 第四層：遷移注意——從舊模型搬過來常見的失敗點
             </h3>
 
@@ -337,7 +338,7 @@ output_config={"effort": "high"}   # max_tokens 當硬性上限</code></pre>
 
             <hr class="border-white/10 my-12">
 
-            <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
+            <h3 id="sec-5" class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Links
             </h3>
 
@@ -374,6 +375,36 @@ output_config={"effort": "high"}   # max_tokens 當硬性上限</code></pre>
 
         </article>
 
+        <aside class="ar-aside">
+            <div class="ar-meta"><span class="ar-k">類型</span><span class="ar-v">整理筆記</span></div>
+            <div class="ar-meta"><span class="ar-k">領域</span><span class="ar-v">AI &amp; Automation</span></div>
+            <div class="ar-meta"><span class="ar-k">閱讀時間</span><span class="ar-v">約 9 分鐘</span></div>
+            <div class="ar-meta"><span class="ar-k">分享</span><button type="button" class="ar-copy" data-ar-copy data-ar-copied="已複製">複製連結</button></div>
+            <div class="ar-meta ar-toc-wrap"><span class="ar-k">目錄</span><ol class="ar-toc"><li><a href="#sec-1">第一層：選型——三個模型各自站在哪</a></li><li><a href="#sec-2">第二層：參數——effort 是主控，thinking 三家預設不同</a></li><li><a href="#sec-3">第三層：提示技巧——通用骨架，加上各模型的脾氣</a></li><li><a href="#sec-4">第四層：遷移注意——從舊模型搬過來常見的失敗點</a></li><li><a href="#sec-5">Links</a></li></ol></div>
+        </aside>
+        </div>
+
+        <section class="ar-related">
+            <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-2"><span class="text-accent-purple">#</span> 相關文章</h3>
+            <div class="ar-cards">
+                <a class="ar-card" href="project_08.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.03.12</span></div>
+                    <h4>Claude Code 架構解構 (上)： 系統分層、上下文邊界與緩存機制</h4>
+                    <p>本篇整理自近半年深度使用 Claude Code 的踩坑經驗。</p>
+                </a>
+                <a class="ar-card" href="project_09.html">
+                    <div class="ar-card-top"><span>Engineering</span><span>2026.04.03</span></div>
+                    <h4>Claude Code 架構解構 (下)： 工程實踐、工具治理與驗證閉環</h4>
+                    <p>本篇是「Claude Code 架構解構」系列下篇，視角轉向執行層面。</p>
+                </a>
+                <a class="ar-card" href="project_07.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.03.02</span></div>
+                    <h4>AI Agent 生態系的機制解構： 從 Pixel Agents 改寫經驗談 Skills 的定位</h4>
+                    <p>從開源專案改寫經驗出發，釐清 Claude 生態系中 Skills 與 Custom Commands、MCP、Subagents 的本質差異。</p>
+                </a>
+            </div>
+        </section>
+
         <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
             <a href="project_25.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
                 &larr; 上一篇
@@ -385,7 +416,6 @@ output_config={"effort": "high"}   # max_tokens 當硬性上限</code></pre>
                 下一篇 &rarr;
             </a>
         </div>
-
     </main>
 
     <div id="footer-placeholder"></div>

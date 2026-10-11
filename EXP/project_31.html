@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-TW" class="scroll-smooth">
+<html lang="zh-TW" class="scroll-smooth ar-serif">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,8 +15,8 @@
     <script src="../theme.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet"></noscript>
 
     <link rel="stylesheet" href="../style.css">
 
@@ -36,7 +36,7 @@
 
     <div id="navbar-placeholder"></div>
 
-    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+    <main class="relative z-10 ar-main mx-auto px-6 pt-32 pb-24">
 
         <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
             <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
@@ -51,6 +51,7 @@
                 快速敲定會議小工具：<br>
                 <span class="text-gradient text-2xl md:text-4xl">Meet Poll</span>
             </h1>
+            <p class="ar-standfirst">Meet Poll 於 2026-09-24 定稿，跑在 GitHub Pages 與 Firebase 免費方案，參與者只讀得到自己的票。</p>
 
             <p class="text-lg text-gray-500 font-light mb-6 leading-relaxed">
                 零後端的會議時段投票工具，從簡化投票流程到資料權限設計的實作紀錄
@@ -58,16 +59,16 @@
 
             <div class="flex flex-wrap gap-3 mb-6">
                 <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">Engineering</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Web App</span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Firebase</span>
-                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Tooling</span>
             </div>
-
             <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
                 <span><i class="far fa-calendar mr-2"></i>2026.09.25</span>
                 <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
             </div>
         </header>
 
+        <div class="ar-grid">
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
             <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
                 Meet 是一個約會議時間的小工具：發起人填一張表單拿到網址，收到的人點進去勾時段，發起人回來看結果。整套跑在 GitHub Pages 上，沒有後端。這篇寫它怎麼做出來，重點放在權限——瀏覽器直接對資料庫讀寫的站，要讓參與者看不到別人的答案，只能從資料結構下手。
@@ -80,7 +81,7 @@
                 </p>
             </div>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-1" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 設計目標與三個限制
             </h3>
 
@@ -110,7 +111,7 @@
             </figure>
 
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-2" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 架構：權限從資料結構開始設計
             </h3>
 
@@ -141,7 +142,7 @@
                 <p class="text-gray-200 m-0 leading-relaxed">權限在資料結構這一層就決定完了，比任何事後補上的檢查都早一步。</p>
             </blockquote>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-3" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 使用流程與跨系統匯入
             </h3>
 
@@ -152,7 +153,7 @@
                 我還接了一條路進來。公司電腦上有一支我自己寫的小工具，它讀行事曆、算出大家的共同空檔；我讓那支工具把算好的時段編成一串可貼的文字，貼進建立表單的匯入欄位就展開成候選時段，省掉我手動輸入。兩套系統完全不連線，中間只有剪貼簿。
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-4" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 問題一：規則掛錯一層，整條被跳過
             </h3>
             <p>
@@ -169,7 +170,7 @@
                 我把計數檢查往下搬一層，讓規則跟寫入路徑對齊，上限才開始生效。規則掛的位置跟寫入路徑對不上的時候，Firebase 不會報錯，它只是不評估那條規則，語法檢查也看不出來。
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-5" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 問題二：繞過前端，直接拿憑證打資料庫
             </h3>
             <p>
@@ -184,7 +185,7 @@
                 這組測試的結論跟前端畫面無關，所以它才有效。有人自己寫一支 client 去打同一個 API，資料庫回給那支 client 的答案，跟回給瀏覽器的答案是同一個。
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-6" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 問題三：公司那條線要接到哪裡為止
             </h3>
             <p>
@@ -202,7 +203,7 @@
                 這個設計有一個已知且刻意保留的限制：金鑰放在瀏覽器裡，任何人打開開發者工具都找得到，所以知道金鑰的人仍然偽造得出一組通得過的簽章。這道簽章的作用範圍是偵測意外的改動——複製時少了一段、貼到錯的欄位、手動改掉幾個字元、格式在傳遞中壞掉。要讓參與者拿不到金鑰，我得把驗證搬到伺服器上，那個版本會失去 Meet 現在零後端、零成本、純靜態的形狀。
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-7" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 上線之後
             </h3>
 
@@ -216,7 +217,7 @@
                 有想到更好的做法、或覺得哪裡有漏洞，都歡迎跟我說。程式碼公開在 <a href="https://github.com/GHOST8787/blog" target="_blank" rel="noopener noreferrer" class="underline decoration-gray-600 underline-offset-4 hover:text-white transition-colors">GitHub</a>，開 issue、丟 PR 或給一顆 star 我都收得到。想直接許願也可以去 <a href="../whiteboard.html" class="underline decoration-gray-600 underline-offset-4 hover:text-white transition-colors">許願板</a> 貼一則。
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-8" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 技術棧
             </h3>
 
@@ -233,7 +234,10 @@
             <p class="text-gray-400 text-sm">
                 GitHub Pages 的 COOP 標頭會干擾 Google 的彈窗登入流程，所以這裡走頁內登入，拿到憑證後在同一頁換成資料庫認得的身分。整套跑在 Firebase 的免費方案上，<a href="https://firebase.google.com/pricing" target="_blank" rel="noopener noreferrer" class="underline decoration-gray-600 underline-offset-4 hover:text-white transition-colors">官方定價頁</a>（2026-09-25 查證）列出的免費額度對這個用量還有很大空間。
             </p>
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-start" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2"><span class="text-accent-purple">#</span> 怎麼開始用</h3>
+            <ol class="ar-steps"><li><span class="ar-step-n">1</span><div><strong>發起人填表單拿網址</strong><p>發起人填一張表單，建立會議後拿到一個網址。</p></div></li><li><span class="ar-step-n">2</span><div><strong>把網址貼給參與者</strong><p>收到網址的人點進去，對每個時段三選一。</p></div></li><li><span class="ar-step-n">3</span><div><strong>回同一頁看結果定案</strong><p>發起人回到同一頁看四色比例條，挑一格定案。</p></div></li></ol>
+
+            <h3 id="sec-9" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Links
             </h3>
 
@@ -258,6 +262,35 @@
 
         </article>
 
+        <aside class="ar-aside">
+            <div class="ar-meta"><span class="ar-k">類型</span><span class="ar-v">成品</span></div>
+            <div class="ar-meta"><span class="ar-k">領域</span><span class="ar-v">Engineering</span></div>
+            <div class="ar-meta"><span class="ar-k">閱讀時間</span><span class="ar-v">約 7 分鐘</span></div>
+            <div class="ar-meta"><span class="ar-k">分享</span><button type="button" class="ar-copy" data-ar-copy data-ar-copied="已複製">複製連結</button></div>
+        </aside>
+        </div>
+
+        <section class="ar-related">
+            <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-2"><span class="text-accent-purple">#</span> 相關文章</h3>
+            <div class="ar-cards">
+                <a class="ar-card" href="project_30.html">
+                    <div class="ar-card-top"><span>Engineering</span><span>2026.09.25</span></div>
+                    <h4>公開許願板小工具： Idea Whiteboard</h4>
+                    <p>這個站上有一面許願板。</p>
+                </a>
+                <a class="ar-card" href="project_32.html">
+                    <div class="ar-card-top"><span>Engineering</span><span>2026.09.27</span></div>
+                    <h4>Meet 使用說明： 一個網址收齊每個人的時間</h4>
+                    <p>Meet 是這個站上的會議時段投票工具，跟 Google Meet 沒有關係。</p>
+                </a>
+                <a class="ar-card" href="project_11.html">
+                    <div class="ar-card-top"><span>Engineering</span><span>2026.04.20</span></div>
+                    <h4>補上 Chrome 同步分頁的操作缺口： Device Tabs Opener</h4>
+                    <p>一支解決「從其他裝置批次開啟分頁」需求的 Chrome Extension。</p>
+                </a>
+            </div>
+        </section>
+
         <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
             <a href="project_30.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
                 &larr; 上一篇
@@ -269,7 +302,6 @@
                 下一篇 &rarr;
             </a>
         </div>
-
     </main>
     <div id="footer-placeholder"></div>
 </body>

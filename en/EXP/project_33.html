@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth ar-serif">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,8 +15,8 @@
     <script src="../../theme.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet"></noscript>
 
     <link rel="stylesheet" href="../../style.css">
 
@@ -81,7 +81,7 @@
 
     <div id="navbar-placeholder"></div>
 
-    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+    <main class="relative z-10 ar-main mx-auto px-6 pt-32 pb-24">
 
         <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
             <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
@@ -97,6 +97,7 @@
                 UML study notes<br>
                 <span class="text-gradient text-2xl md:text-4xl">14 diagrams and six relationship types</span>
             </h1>
+            <p class="ar-standfirst">UML 2.0's 14 diagram types and six relationship lines each get a custom illustration, with a chooser table at the end; four types are the ones drawn most often.</p>
 
             <div class="flex flex-wrap gap-3 mb-6">
                 <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
@@ -106,7 +107,7 @@
                     System Design
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Reference
+                    UML
                 </span>
             </div>
 
@@ -116,6 +117,7 @@
             </div>
         </header>
 
+        <div class="ar-grid">
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
             <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
@@ -123,7 +125,7 @@
             </p>
 
             <!-- ===== What UML is for ===== -->
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-1" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> What UML is for
             </h3>
 
@@ -140,7 +142,7 @@
             </p>
 
             <!-- ===== Three families ===== -->
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-2" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> How the 14 diagrams are grouped
             </h3>
 
@@ -193,7 +195,7 @@
             </figure>
 
             <!-- ===== Notation ===== -->
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-3" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Before reading any of them: the notation
             </h3>
 
@@ -264,7 +266,7 @@
             </figure>
 
             <!-- ===== Six relationships ===== -->
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-4" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> The six relationship types
             </h3>
 
@@ -382,7 +384,7 @@
             </div>
 
             <!-- ===== Structural ===== -->
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-5" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Structural diagrams (7)
             </h3>
 
@@ -600,7 +602,7 @@
             </figure>
 
             <!-- ===== Behavioural ===== -->
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-6" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Behavioural diagrams (3)
             </h3>
 
@@ -711,7 +713,7 @@
             </figure>
 
             <!-- ===== Interaction ===== -->
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-7" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Interaction diagrams (4)
             </h3>
 
@@ -863,7 +865,7 @@
             </figure>
 
             <!-- ===== Picking one ===== -->
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-8" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> What you want to see, and which diagram shows it
             </h3>
 
@@ -900,7 +902,7 @@
             </p>
 
             <!-- ===== Reference ===== -->
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-9" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Links
             </h3>
 
@@ -910,6 +912,36 @@
             </ul>
 
         </article>
+
+        <aside class="ar-aside">
+            <div class="ar-meta"><span class="ar-k">Type</span><span class="ar-v">Notes</span></div>
+            <div class="ar-meta"><span class="ar-k">Field</span><span class="ar-v">Engineering</span></div>
+            <div class="ar-meta"><span class="ar-k">Reading time</span><span class="ar-v">8 min</span></div>
+            <div class="ar-meta"><span class="ar-k">Share</span><button type="button" class="ar-copy" data-ar-copy data-ar-copied="Copied">Copy link</button></div>
+            <div class="ar-meta ar-toc-wrap"><span class="ar-k">Contents</span><ol class="ar-toc"><li><a href="#sec-1">What UML is for</a></li><li><a href="#sec-2">How the 14 diagrams are grouped</a></li><li><a href="#sec-3">Before reading any of them: the notation</a></li><li><a href="#sec-4">The six relationship types</a></li><li><a href="#sec-5">Structural diagrams (7)</a></li><li><a href="#sec-6">Behavioural diagrams (3)</a></li><li><a href="#sec-7">Interaction diagrams (4)</a></li><li><a href="#sec-8">What you want to see, and which diagram shows it</a></li><li><a href="#sec-9">Links</a></li></ol></div>
+        </aside>
+        </div>
+
+        <section class="ar-related">
+            <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-2"><span class="text-accent-purple">#</span> Related</h3>
+            <div class="ar-cards">
+                <a class="ar-card" href="project_09.html">
+                    <div class="ar-card-top"><span>Engineering</span><span>2026.04.03</span></div>
+                    <h4>Claude Code Architecture, Part 2: Engineering Practice, Tool Governance, and the Verification Loop</h4>
+                    <p>Part 1 set up the macro boundaries and the context rules.</p>
+                </a>
+                <a class="ar-card" href="project_07.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.03.02</span></div>
+                    <h4>Decomposing the AI Agent Ecosystem: From Rewriting Pixel Agents to Placing Skills</h4>
+                    <p>Coming out of an open-source rewrite, I want to draw a clear line between Skills, Custom Commands, MCP, and Subagents in the Claude ecosystem.</p>
+                </a>
+                <a class="ar-card" href="project_01.html">
+                    <div class="ar-card-top"><span>Engineering</span><span>2026.01.31</span></div>
+                    <h4>Building This Site: Static Stack, GitHub Pages, AI Co-Development</h4>
+                    <p>A log of building this personal site (v1.</p>
+                </a>
+            </div>
+        </section>
 
         <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
             <a href="project_32.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">

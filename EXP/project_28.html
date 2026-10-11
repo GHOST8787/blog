@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-TW" class="scroll-smooth">
+<html lang="zh-TW" class="scroll-smooth ar-serif">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,8 +11,8 @@
     <script src="../theme.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet"></noscript>
 
     <link rel="stylesheet" href="../style.css">
 
@@ -32,7 +32,7 @@
 
     <div id="navbar-placeholder"></div>
 
-    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+    <main class="relative z-10 ar-main mx-auto px-6 pt-32 pb-24">
 
         <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
             <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
@@ -48,25 +48,26 @@
                 NTUST MVC Lab W9&ndash;12：<br>
                 <span class="text-gradient text-2xl md:text-4xl">從 Agentic RAG 到擴散模型</span>
             </h1>
+            <p class="ar-standfirst">W9 到 W12 四個生成式 AI 單元都在本機跑完，DDPM 訓練 20 個 epoch 後生成的數字多數可辨認。</p>
 
             <div class="flex flex-wrap gap-3 mb-6">
                 <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
                     AI &amp; Automation
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Generative AI
+                    NTUST
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Coursework
+                    Generative AI
                 </span>
             </div>
-
             <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
                 <span><i class="far fa-calendar mr-2"></i>2026.06 &mdash; 2026.07</span>
                 <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
             </div>
         </header>
 
+        <div class="ar-grid">
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
             <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
@@ -84,7 +85,7 @@
                 前八週的主軸是辨識：分類、偵測、分割、決策，模型的輸出是一個標籤、一個框、一個動作。這四週的模型開始產東西——查資料回答問題、看圖說話、畫出沒見過的數字。前五份作業的紀錄在 <a href="project_16.html" class="text-accent-purple hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">EXP / P16</a>，W6&ndash;W8（開集偵測、語意分割、強化學習）在上一篇。
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-1" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 四個單元總覽
             </h3>
 
@@ -127,7 +128,7 @@
                 </table>
             </div>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-2" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 逐週拆解
             </h3>
 
@@ -199,7 +200,7 @@
                 <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">W12：MiniUNet 訓練 20 epoch 後生成的 64 張手寫數字，多數可直接辨認</figcaption>
             </figure>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-3" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 學術誠信聲明
             </h3>
 
@@ -207,7 +208,7 @@
                 這篇文章記錄了個人的學習過程。W10 是課程作業（純推論），W9、W11、W12 則是課程教學 notebook 的本機重現。notebook 的骨架由課程提供，所有執行輸出、訓練資料與圖表均由本人在本機完成。資料集（MNIST、COCO 樣圖）由程式自公開來源下載，一律不隨附。在學的 MVC Lab 學生請自己跑過一次。
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-4" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 技術棧
             </h3>
 
@@ -220,7 +221,7 @@
                 <li><strong class="text-gray-200">Windows 重現注意</strong> &mdash; DataLoader 要設 num_workers=0（spawn 模式無法 pickle lambda transform）；transformers 固定 4.x（5.x 起 get_image_features 回傳型別改變）</li>
             </ul>
 
-            <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
+            <h3 id="sec-5" class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Links
             </h3>
 
@@ -245,6 +246,35 @@
 
         </article>
 
+        <aside class="ar-aside">
+            <div class="ar-meta"><span class="ar-k">類型</span><span class="ar-v">課程作業</span></div>
+            <div class="ar-meta"><span class="ar-k">領域</span><span class="ar-v">AI &amp; Automation</span></div>
+            <div class="ar-meta"><span class="ar-k">閱讀時間</span><span class="ar-v">約 5 分鐘</span></div>
+            <div class="ar-meta"><span class="ar-k">分享</span><button type="button" class="ar-copy" data-ar-copy data-ar-copied="已複製">複製連結</button></div>
+        </aside>
+        </div>
+
+        <section class="ar-related">
+            <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-2"><span class="text-accent-purple">#</span> 相關文章</h3>
+            <div class="ar-cards">
+                <a class="ar-card" href="project_27.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.06 — 2026.07</span></div>
+                    <h4>NTUST MVC Lab W6–8： 開集偵測、語意分割與強化學習</h4>
+                    <p>上一篇整理了 MVC Lab 前五份作業的索引，這篇記錄第六到第八週的三份作業。</p>
+                </a>
+                <a class="ar-card" href="project_16.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.04 — 2026.05</span></div>
+                    <h4>NTUST MVC Lab HW1–5： 從傳統 ML 到 Transformer 與物件偵測</h4>
+                    <p>國立臺灣科技大學 MVC Lab（多媒體與電腦視覺實驗室）2025 春季課程的五份作業合集。</p>
+                </a>
+                <a class="ar-card" href="project_29.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.06 — 2026.07</span></div>
+                    <h4>一台 RTX 4060 筆電跑 LLM 部署　從 vLLM 推論到 K8s 編排的自學紀錄</h4>
+                    <p>用一台搭載 RTX 4060（8GB 顯存）的筆電，從零走了一遍 LLM 部署的技能樹。</p>
+                </a>
+            </div>
+        </section>
+
         <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
             <a href="project_27.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
                 &larr; 上一篇
@@ -256,7 +286,6 @@
                 下一篇 &rarr;
             </a>
         </div>
-
     </main>
     <div id="footer-placeholder"></div>
 </body>

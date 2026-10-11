@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-TW" class="scroll-smooth">
+<html lang="zh-TW" class="scroll-smooth ar-serif">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,8 +15,8 @@
     <script src="../theme.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet"></noscript>
 
     <link rel="stylesheet" href="../style.css">
 
@@ -37,7 +37,7 @@
 
     <div id="navbar-placeholder"></div>
 
-    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+    <main class="relative z-10 ar-main mx-auto px-6 pt-32 pb-24">
 
         <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
             <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
@@ -53,25 +53,26 @@
                 NTUST AI 期末作業：<br>
                 <span class="text-gradient text-2xl md:text-4xl">為什麼最終交零 overfit 的 91%</span>
             </h1>
+            <p class="ar-standfirst">V2 之後又跑 46 個版本，最終繳交零 overfit 整合版，100 格答對 91 格，train 峰值 95.5% 未繳交。</p>
 
             <div class="flex flex-wrap gap-3 mb-6">
                 <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
                     AI &amp; Automation
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Datasheet Extraction
+                    NTUST
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Schema Rule
+                    Datasheet Extraction
                 </span>
             </div>
-
             <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
                 <span><i class="far fa-calendar mr-2"></i>2026.05.10 &mdash; 2026.05.22</span>
                 <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
             </div>
         </header>
 
+        <div class="ar-grid">
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
             <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
@@ -91,7 +92,7 @@
                 </p>
             </div>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-1" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Overfit 是什麼，我怎麼判斷
             </h3>
 
@@ -120,7 +121,7 @@
                 有一個前提很關鍵：這次作業的評分集只有 10 份 datasheet，沒有額外的獨立測試集，拿來改規則的跟拿來算分的是同一批。當這兩批是同一批，任何「翻這 10 顆哪幾格錯、再回頭調規則門檻」的動作分數都會漲，但漲的是對這 10 份的 overfit。所以本文判斷每個版本，看的是「規則本身寫了什麼、門檻怎麼來的」這條。
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-2" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> V3 &mdash; V7：在 V2 旁邊試別招
             </h3>
 
@@ -176,7 +177,7 @@
                 關鍵收穫：<strong class="text-white">V4 第一次給 vision LLM 看截圖就推了 +2.7%</strong>。pdfplumber 抽出來的純文字會丟失 PDF 表格的結構，vision 直接看圖反而看得到完整的封裝尺寸表。V3 / V5 / V6 三招都退步或持平，說明在純文字管道上繼續調 prompt 已經接近上限。後面所有版本都走 multimodal 路線。
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-3" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> V8 &mdash; V11：multimodal 配上關鍵字篩頁，爬到 84.5%
             </h3>
 
@@ -222,7 +223,7 @@
                 V11 推到 84.5% 就推不動了。84.5% 等於 110 格答對 93 格，剩 17 個錯誤都集中在「機械尺寸 L / W / H」這三欄。後面整整一段時間都在跟這 17 個錯誤搏鬥。
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-4" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> V12 &mdash; V19：純 prompt 試到撞牆
             </h3>
 
@@ -299,7 +300,7 @@
                 </p>
             </div>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-5" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> V20 &mdash; V28：multi-model voting，從 84.5% 跳到 88.2%
             </h3>
 
@@ -379,7 +380,7 @@
                 </li>
             </ul>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-6" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> V29 &mdash; V36：prompt 改寫 + override 混搭，達 89.1%
             </h3>
 
@@ -449,7 +450,7 @@
                 V32 到 V36 都試圖再往上推：regex 抓 Tj、LLM 重查 Tj、verify-all critic、Llama critic，全部沒過 V31。原因是 specbook 對「Tj 只有 single value」這種 case 的判讀規則複雜，<strong class="text-white">同樣是 Tj single value，不同零件對應到 specbook 的不同欄位</strong>（有的對應 Tj、有的對應 Tamb low、有的對應 Tstg low）。任何固定的 trigger 都會在某些零件答對、其他答錯，淨值不會正。
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-7" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> V37 &mdash; V44：schema rule 接入，達 95.5%
             </h3>
 
@@ -563,7 +564,7 @@
                 </p>
             </div>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-8" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> V45 &mdash; V48：最後微調
             </h3>
 
@@ -609,7 +610,7 @@
                 V47 是 V44 的對偶版本。V37 的 swap rule 在某些封裝類型可能誤觸（前面 V37 段提過的「規則覆蓋率 vs 永遠對」取捨）。V47 加一層「只在 Llama 給的尺寸跟 baseline 完全純 swap pattern 時才 trigger」做更嚴格的二次驗證，把 swap rule 從「W &gt; L 就 swap」收緊成「W &gt; L 且 Llama 確認是純 swap 才 swap」。最終結果還是 train 95.5%、5 個救不動 cells 不變。
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-9" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> V47（衝分峰值）的完整方法
             </h3>
 
@@ -688,7 +689,7 @@
                 <strong class="text-white">從 V12 baseline 84.5%（93 / 110）累積到 V47 95.5%（105 / 110），共 +12 cells</strong>。
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-10" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 衝到 95.5% 之後我重新檢查並確認一次：V37 起其實是 overfit
             </h3>
 
@@ -707,7 +708,7 @@
                 按這個更嚴的標準重判，乾淨的天花板落在 <strong class="text-white">V23 三模型投票（約 85.5%）</strong>，加上不靠逐顆反推的通用規則大約到 <strong class="text-white">V31（89.1%）</strong>。V37 之後每一格的進步，都帶著「門檻是看著答案調出來的」這個性質。衝高分數跟保持 generic 在這裡是一組取捨，我選擇守住 generic。
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-11" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 救不動的 5 個 cells：規則 / extraction 還沒抓到的 schema
             </h3>
 
@@ -779,7 +780,7 @@
                 這 5 格的存在本身就是訊號：把分數推到 95.5% 必須靠「看著這 10 顆調門檻」，而那正是 overfit。剩餘 5 cells 對應的是「specbook 內仍有判讀規則沒被 generic pattern 涵蓋」。這是任何 generic schema extraction 系統都會遇到的 schema 層級限制。
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-12" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 最終交出去：再三確認過零 overfit 的整合版
             </h3>
 
@@ -800,7 +801,7 @@
                 </p>
             </div>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-13" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 數字總結
             </h3>
 
@@ -831,7 +832,7 @@
                 <li><strong class="text-gray-200">立場</strong> &mdash; 「不 overfit」是硬約束，凌駕單純衝高分數</li>
             </ul>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-14" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> 技術棧
             </h3>
 
@@ -845,7 +846,7 @@
                 <li><strong class="text-gray-200">跑時統計</strong> &mdash; 一次完整 train 評估 5 &mdash; 8 分鐘；V44 後處理 11 個 LLM call 約 90 秒；V47 後處理 1 個 Llama call 約 30 秒</li>
             </ul>
 
-            <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
+            <h3 id="sec-15" class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Links
             </h3>
 
@@ -870,6 +871,35 @@
 
         </article>
 
+        <aside class="ar-aside">
+            <div class="ar-meta"><span class="ar-k">類型</span><span class="ar-v">課程作業</span></div>
+            <div class="ar-meta"><span class="ar-k">領域</span><span class="ar-v">AI &amp; Automation</span></div>
+            <div class="ar-meta"><span class="ar-k">閱讀時間</span><span class="ar-v">約 15 分鐘</span></div>
+            <div class="ar-meta"><span class="ar-k">分享</span><button type="button" class="ar-copy" data-ar-copy data-ar-copied="已複製">複製連結</button></div>
+        </aside>
+        </div>
+
+        <section class="ar-related">
+            <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-2"><span class="text-accent-purple">#</span> 相關文章</h3>
+            <div class="ar-cards">
+                <a class="ar-card" href="project_13.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.05.08 — 2026.05.10</span></div>
+                    <h4>NTUST AI 期末作業： V2 雙軸實驗 60.9%→76.4%</h4>
+                    <p>國立臺灣科技大學「 Cloud Solution Architect 培訓班 」2026 春季期末作業。</p>
+                </a>
+                <a class="ar-card" href="project_25.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.06.25</span></div>
+                    <h4>替 AI 影片摘要把關： 逐字稿對照與防 overfit 驗證</h4>
+                    <p>yt-digest 把一條 YouTube 連結變成一份結構化的中文整理。</p>
+                </a>
+                <a class="ar-card" href="project_16.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.04 — 2026.05</span></div>
+                    <h4>NTUST MVC Lab HW1–5： 從傳統 ML 到 Transformer 與物件偵測</h4>
+                    <p>國立臺灣科技大學 MVC Lab（多媒體與電腦視覺實驗室）2025 春季課程的五份作業合集。</p>
+                </a>
+            </div>
+        </section>
+
         <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
             <a href="project_16.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
                 &larr; Prev Project
@@ -881,7 +911,6 @@
                 Next Project &rarr;
             </a>
         </div>
-
     </main>
     <div id="footer-placeholder"></div>
 </body>

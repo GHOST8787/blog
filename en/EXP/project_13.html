@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth ar-serif">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,8 +15,8 @@
     <script src="../../theme.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet"></noscript>
 
     <link rel="stylesheet" href="../../style.css">
 
@@ -37,7 +37,7 @@
 
     <div id="navbar-placeholder"></div>
 
-    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+    <main class="relative z-10 ar-main mx-auto px-6 pt-32 pb-24">
 
         <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
             <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
@@ -53,16 +53,17 @@
                 NTUST AI Final Project:<br>
                 <span class="text-gradient text-2xl md:text-4xl">Pushing 60.9% to 76.4% with a Two-Axis Experiment on School Azure Quota</span>
             </h1>
+            <p class="ar-standfirst">In the final assignment, V2 combined 15 tool and model pairings and raised extraction accuracy on 10 spec sheets from 60.9% to 76.4%.</p>
 
             <div class="flex flex-wrap gap-3 mb-6">
                 <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
                     AI &amp; Automation
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Datasheet Extraction
+                    NTUST
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Experiment Design
+                    Datasheet Extraction
                 </span>
             </div>
 
@@ -72,6 +73,7 @@
             </div>
         </header>
 
+        <div class="ar-grid">
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
             <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
@@ -85,7 +87,7 @@
                 </p>
             </div>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-1" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Task Spec
             </h3>
 
@@ -96,7 +98,7 @@
                 <li><strong class="text-white">Minimum bar</strong> &mdash; pipeline runs end-to-end, one results report submitted, pass.</li>
             </ul>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-2" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Two-Axis Experiment Beyond the Minimum
             </h3>
 
@@ -139,7 +141,7 @@
                 </div>
             </div>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-3" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> V1 → V2 Results
             </h3>
 
@@ -182,7 +184,7 @@
                 </table>
             </div>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-4" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Iteration: Three Tracks Running in Parallel
             </h3>
 
@@ -308,7 +310,7 @@
                 V2 iter6 used the validator to push qwen2.5:7b from 60.9% to 61.8% (same model, post-processing only). The validator stayed in the pipeline after the model upgrades.
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-5" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Two-Axis Spread: Model Upgrade Pays 4× the PDF Method
             </h3>
 
@@ -331,7 +333,7 @@
                 The 4× ratio says: on this task, spending a fixed budget on a stronger model pays more than spending it on PDF preprocessing. Local qwen 14b → cloud GPT-4o in one step was +12%, the largest single jump in the entire experiment.
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-6" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Model Strength Specialization (per-PDF observation)
             </h3>
 
@@ -383,7 +385,7 @@
                 If each PDF were assigned to whichever of the three cloud models scored highest on that specific document and their answers merged, the theoretical ceiling is 80.9%. The estimate requires the answer key to pick the best model per PDF, classifying it as an overfit ceiling (uses ground truth to pick the best). In actual use, with no answer key to compare against, the 80.9% is unreachable. The practical single-model ceiling stays at 76.4%.
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-7" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> What 76.4% Means in Context
             </h3>
 
@@ -393,7 +395,7 @@
                 <li><strong class="text-white">Against future portability</strong> &mdash; the two-axis design transfers directly to similar tasks. For any "extract structured fields from unstructured documents" brief, running a two-axis matrix first gives a quantitative answer to where the budget should go.</li>
             </ul>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-8" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Tech Stack
             </h3>
 
@@ -423,7 +425,7 @@
                 </div>
             </div>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-9" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Links
             </h3>
 
@@ -434,6 +436,35 @@
                 </li>
             </ul>
         </article>
+
+        <aside class="ar-aside">
+            <div class="ar-meta"><span class="ar-k">Type</span><span class="ar-v">Coursework</span></div>
+            <div class="ar-meta"><span class="ar-k">Field</span><span class="ar-v">AI &amp; Automation</span></div>
+            <div class="ar-meta"><span class="ar-k">Reading time</span><span class="ar-v">6 min</span></div>
+            <div class="ar-meta"><span class="ar-k">Share</span><button type="button" class="ar-copy" data-ar-copy data-ar-copied="Copied">Copy link</button></div>
+        </aside>
+        </div>
+
+        <section class="ar-related">
+            <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-2"><span class="text-accent-purple">#</span> Related</h3>
+            <div class="ar-cards">
+                <a class="ar-card" href="project_17.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.05.10 — 2026.05.22</span></div>
+                    <h4>NTUST AI Final Assignment: After pushing train to 95.5%, why I submitted the zero-overfit 91%</h4>
+                    <p>The previous post,  P13 NTUST AI Final Two-Axis Experiment , ended at V2's 76.</p>
+                </a>
+                <a class="ar-card" href="project_16.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.04 — 2026.05</span></div>
+                    <h4>NTUST MVC Lab, Five Assignments: From Classical Machine Learning Through Transformers to Object Detection</h4>
+                    <p>A collection of the five assignments from the National Taiwan University of Science and Technology MVC Lab (Multimedia and Computer Vision Lab) Spring 2025 course.</p>
+                </a>
+                <a class="ar-card" href="project_27.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.06 — 2026.07</span></div>
+                    <h4>NTUST MVC Lab W6–8: Open-set detection, semantic segmentation and reinforcement learning</h4>
+                    <p>The previous entry indexed the first five MVC Lab assignments; this one records weeks six through eight.</p>
+                </a>
+            </div>
+        </section>
 
         <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
             <a href="project_12.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">

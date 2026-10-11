@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth ar-serif">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,8 +15,8 @@
     <script src="../../theme.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet"></noscript>
 
     <link rel="stylesheet" href="../../style.css">
 
@@ -37,7 +37,7 @@
 
     <div id="navbar-placeholder"></div>
 
-    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+    <main class="relative z-10 ar-main mx-auto px-6 pt-32 pb-24">
 
         <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
             <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
@@ -52,6 +52,7 @@
                 Settling a Meeting Time:<br>
                 <span class="text-gradient text-2xl md:text-4xl">Meet Poll</span>
             </h1>
+            <p class="ar-standfirst">Meet Poll was finalized on 2026-09-24, runs on GitHub Pages and the Firebase free plan, and lets participants read only their own votes.</p>
 
             <p class="text-lg text-gray-500 font-light mb-6 leading-relaxed">
                 A backend-free meeting time poll, built to stop the scheduling thread
@@ -59,8 +60,8 @@
 
             <div class="flex flex-wrap gap-3 mb-6">
                 <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">Engineering</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Web App</span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Firebase</span>
-                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Tooling</span>
             </div>
 
             <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
@@ -69,6 +70,7 @@
             </div>
         </header>
 
+        <div class="ar-grid">
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
             <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
@@ -85,7 +87,7 @@
                 </p>
             </div>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-1" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> What I set out to build
             </h3>
 
@@ -101,7 +103,7 @@
                 One more rule I added myself: <span class="text-gray-200">a participant sees their own answer, the organizer sees all of them</span>. Voting is the kind of thing where peeking at each other changes the answers, so this was a hard requirement from day one.
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-2" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Architecture: permissions start at the data shape
             </h3>
 
@@ -130,7 +132,7 @@
                 <p class="text-gray-200 m-0 leading-relaxed">Permission is settled at the data-shape layer, one step ahead of any check bolted on afterwards.</p>
             </blockquote>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-3" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> How the tool itself is put together
             </h3>
 
@@ -151,7 +153,7 @@
                 There is also a second way in. On my work machine sits a small tool of my own that reads calendars and works out the shared free slots; it encodes them into one pasteable string, and pasting that into Meet's create form expands it back into candidate slots, which saves typing them out. The two sides never talk to each other &mdash; the clipboard is the only thing between them.
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-4" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Where it got stuck
             </h3>
 
@@ -217,7 +219,7 @@ signature = HMAC-SHA256 over the payload with a shared key, first few bytes</cod
                 The design carries one limitation I went in with eyes open: <strong class="text-white">the key sits in the browser</strong>, findable with the developer tools. So what it guards against is a copy that lost a chunk, a paste into the wrong field, a few characters edited by hand, a format mangled in transit. Keeping the key away from participants would mean moving verification onto a server, and that version loses the backend-free, zero-cost, fully static shape this one has. Define what you are guarding against first, then decide how far to go.
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-5" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Finished, and still in use
             </h3>
 
@@ -233,7 +235,7 @@ signature = HMAC-SHA256 over the payload with a shared key, first few bytes</cod
                 If you see a better way to do any of this, or a hole in it, I would like to hear. The code is public on <a href="https://github.com/GHOST8787/blog" target="_blank" rel="noopener noreferrer" class="underline decoration-gray-600 underline-offset-4 hover:text-white transition-colors">GitHub</a> &mdash; an issue, a PR or a star all reach me &mdash; and requests are welcome on the <a href="../../whiteboard.html" class="underline decoration-gray-600 underline-offset-4 hover:text-white transition-colors">wish board</a>.
             </p>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-6" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Tech Stack
             </h3>
 
@@ -251,7 +253,10 @@ signature = HMAC-SHA256 over the payload with a shared key, first few bytes</cod
                 The COOP header on GitHub Pages interferes with Google's popup sign-in flow, so this one signs in inside the page and exchanges the credential for an identity the database recognises. The whole thing runs on Firebase's free tier, whose published <a href="https://firebase.google.com/pricing" target="_blank" rel="noopener noreferrer" class="underline decoration-gray-600 underline-offset-4 hover:text-white transition-colors">pricing page</a> (checked 2026-09-25) leaves plenty of headroom at this usage.
             </p>
 
-        <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+        <h3 id="sec-start" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2"><span class="text-accent-purple">#</span> Getting started</h3>
+            <ol class="ar-steps"><li><span class="ar-step-n">1</span><div><strong>Organizer fills the form</strong><p>The organizer fills a form, creates the meeting and gets a URL.</p></div></li><li><span class="ar-step-n">2</span><div><strong>Share the URL</strong><p>Recipients open it and choose one of three answers for each slot.</p></div></li><li><span class="ar-step-n">3</span><div><strong>Return to see results</strong><p>The organizer returns to the same page, views the four-color bars and picks a slot.</p></div></li></ol>
+
+            <h3 id="sec-7" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Links
             </h3>
 
@@ -283,6 +288,35 @@ signature = HMAC-SHA256 over the payload with a shared key, first few bytes</cod
             </ul>
 
             </article>
+
+        <aside class="ar-aside">
+            <div class="ar-meta"><span class="ar-k">Type</span><span class="ar-v">Build</span></div>
+            <div class="ar-meta"><span class="ar-k">Field</span><span class="ar-v">Engineering</span></div>
+            <div class="ar-meta"><span class="ar-k">Reading time</span><span class="ar-v">6 min</span></div>
+            <div class="ar-meta"><span class="ar-k">Share</span><button type="button" class="ar-copy" data-ar-copy data-ar-copied="Copied">Copy link</button></div>
+        </aside>
+        </div>
+
+        <section class="ar-related">
+            <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-2"><span class="text-accent-purple">#</span> Related</h3>
+            <div class="ar-cards">
+                <a class="ar-card" href="project_30.html">
+                    <div class="ar-card-top"><span>Engineering</span><span>2026.09.25</span></div>
+                    <h4>A Public Wish Board: Idea Whiteboard</h4>
+                    <p>How the wish board on this site came about: the original idea, how the data got split up, where I got stuck, and why it is still running.</p>
+                </a>
+                <a class="ar-card" href="project_32.html">
+                    <div class="ar-card-top"><span>Engineering</span><span>2026.09.27</span></div>
+                    <h4>Meet user guide: one link, everyone’s time</h4>
+                    <p>Meet is the meeting-time poll on this site, unrelated to Google Meet.</p>
+                </a>
+                <a class="ar-card" href="project_11.html">
+                    <div class="ar-card-top"><span>Engineering</span><span>2026.04.20</span></div>
+                    <h4>Closing the Gap in Chrome's Synced Tabs: Device Tabs Opener</h4>
+                    <p>A Chrome Extension that solves one thing: opening tabs from other devices in batch.</p>
+                </a>
+            </div>
+        </section>
 
         <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
             <a href="project_30.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">

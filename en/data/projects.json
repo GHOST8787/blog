@@ -2,182 +2,215 @@
   {
     "url": "EXP/project_01.html",
     "category": "dev",
-    "date": "2026.01.31"
+    "date": "2026.01.31",
+    "kind": "Build Log"
   },
   {
     "url": "EXP/project_02.html",
     "category": "dev",
-    "date": "2026.02.19"
+    "date": "2026.02.19",
+    "kind": "Build Log"
   },
   {
     "url": "EXP/project_03.html",
     "category": "dev",
-    "date": "2026.02.19"
+    "date": "2026.02.19",
+    "kind": "Build Log"
   },
   {
     "url": "EXP/project_04.html",
     "category": "dev",
-    "date": "2026.02.19"
+    "date": "2026.02.19",
+    "kind": "Build"
   },
   {
     "url": "EXP/project_05.html",
     "category": "dev",
-    "date": "2026.02.20"
+    "date": "2026.02.20",
+    "kind": "Build Log"
   },
   {
     "url": "EXP/project_06.html",
     "category": "dev",
     "cover": "../PNG/project_06.2.webp",
-    "date": "2026.02.23"
+    "date": "2026.02.23",
+    "kind": "Build Log"
   },
   {
     "url": "EXP/project_07.html",
     "category": "dev",
     "cover": "../PNG/project_07.2.webp",
-    "date": "2026.03.02"
+    "date": "2026.03.02",
+    "kind": "Notes"
   },
   {
     "url": "EXP/project_08.html",
     "category": "dev",
-    "date": "2026.03.12"
+    "date": "2026.03.12",
+    "kind": "Notes"
   },
   {
     "url": "EXP/project_09.html",
     "category": "dev",
-    "date": "2026.04.03"
+    "date": "2026.04.03",
+    "kind": "Notes"
   },
   {
     "url": "EXP/project_10.html",
     "category": "dev",
-    "date": "2026.04.20"
+    "date": "2026.04.20",
+    "kind": "Build Log"
   },
   {
     "url": "EXP/project_11.html",
     "category": "dev",
-    "date": "2026.04.20"
+    "date": "2026.04.20",
+    "kind": "Build"
   },
   {
     "url": "EXP/project_12.html",
     "category": "dev",
     "cover": "../PNG/project_12.2.png",
-    "date": "2026.05.18"
+    "date": "2026.05.18",
+    "kind": "Build"
   },
   {
     "url": "EXP/project_13.html",
     "category": "dev",
-    "date": "2026.05.10"
+    "date": "2026.05.10",
+    "kind": "Coursework"
   },
   {
     "url": "EXP/project_14.html",
     "category": "dev",
     "cover": "../PNG/project_14.8.png",
-    "date": "2026.05.19"
+    "date": "2026.05.19",
+    "kind": "Build"
   },
   {
     "url": "EXP/project_15.html",
     "category": "dev",
     "date": "2023.08.01",
-    "dateRaw": "2023.07 — 2023.08"
+    "dateRaw": "2023.07 — 2023.08",
+    "kind": "Build Log"
   },
   {
     "url": "EXP/project_16.html",
     "category": "dev",
     "date": "2026.05.01",
-    "dateRaw": "2026.04 — 2026.05"
+    "dateRaw": "2026.04 — 2026.05",
+    "kind": "Coursework"
   },
   {
     "url": "EXP/project_17.html",
     "category": "dev",
-    "date": "2026.05.22"
+    "date": "2026.05.22",
+    "kind": "Coursework"
   },
   {
     "url": "EXP/project_18.html",
     "category": "dev",
     "date": "2026.06.01",
-    "dateRaw": "2026.04 — 2026.06"
+    "dateRaw": "2026.04 — 2026.06",
+    "kind": "Coursework"
   },
   {
     "url": "EXP/project_19.html",
     "category": "dev",
     "date": "2026.06.01",
-    "dateRaw": "2026.06"
+    "dateRaw": "2026.06",
+    "kind": "Build"
   },
   {
     "url": "EXP/project_20.html",
     "category": "dev",
     "date": "2026.06.01",
-    "dateRaw": "2026.06"
+    "dateRaw": "2026.06",
+    "kind": "Coursework"
   },
   {
     "url": "EXP/project_21.html",
     "category": "dev",
     "date": "2026.06.01",
-    "dateRaw": "2026.06"
+    "dateRaw": "2026.06",
+    "kind": "Coursework"
   },
   {
     "url": "EXP/project_22.html",
     "category": "dev",
     "date": "2026.06.01",
-    "dateRaw": "2026.06"
+    "dateRaw": "2026.06",
+    "kind": "Coursework"
   },
   {
     "url": "EXP/project_23.html",
     "category": "dev",
     "date": "2026.06.01",
-    "dateRaw": "2026.06"
+    "dateRaw": "2026.06",
+    "kind": "Coursework"
   },
   {
     "url": "EXP/project_24.html",
     "category": "dev",
-    "date": "2026.06.25"
+    "date": "2026.06.25",
+    "kind": "Build Log"
   },
   {
     "url": "EXP/project_25.html",
     "category": "dev",
-    "date": "2026.06.25"
+    "date": "2026.06.25",
+    "kind": "Build Log"
   },
   {
     "url": "EXP/project_26.html",
     "category": "dev",
-    "date": "2026.07.05"
+    "date": "2026.07.05",
+    "kind": "Notes"
   },
   {
     "url": "EXP/project_27.html",
     "category": "dev",
     "date": "2026.07.01",
-    "dateRaw": "2026.06 — 2026.07"
+    "dateRaw": "2026.06 — 2026.07",
+    "kind": "Coursework"
   },
   {
     "url": "EXP/project_28.html",
     "category": "dev",
     "date": "2026.07.01",
-    "dateRaw": "2026.06 — 2026.07"
+    "dateRaw": "2026.06 — 2026.07",
+    "kind": "Coursework"
   },
   {
     "url": "EXP/project_29.html",
     "category": "dev",
     "date": "2026.07.01",
-    "dateRaw": "2026.06 — 2026.07"
+    "dateRaw": "2026.06 — 2026.07",
+    "kind": "Build Log"
   },
   {
     "url": "EXP/project_30.html",
     "category": "dev",
-    "date": "2026.09.25"
+    "date": "2026.09.25",
+    "kind": "Build"
   },
   {
     "url": "EXP/project_31.html",
     "category": "dev",
-    "date": "2026.09.25"
+    "date": "2026.09.25",
+    "kind": "Build"
   },
   {
     "url": "EXP/project_32.html",
     "category": "dev",
-    "date": "2026.09.27"
+    "date": "2026.09.27",
+    "kind": "Build"
   },
   {
     "url": "EXP/project_33.html",
     "category": "dev",
     "cover": "../PNG/project_33.1.en.webp",
-    "date": "2026.10.03"
+    "date": "2026.10.03",
+    "kind": "Notes"
   }
 ]

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth ar-serif">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,8 +15,8 @@
     <script src="../../theme.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet"></noscript>
 
     <link rel="stylesheet" href="../../style.css">
     <link rel="stylesheet" href="../../tarot/tarot_style.css">
@@ -39,7 +39,7 @@
 
     <div id="navbar-placeholder"></div>
 
-    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+    <main class="relative z-10 ar-main mx-auto px-6 pt-32 pb-24">
 
         <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
             <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
@@ -55,13 +55,14 @@
                 The Tarot Prompt Alchemist:<br>
                 <span class="text-gradient text-2xl md:text-4xl">Dynamic Prompt Engineering for Generative AI</span>
             </h1>
+            <p class="ar-standfirst">The tarot draw module works: one drawn card plus topic and orientation becomes an LLM-ready prompt, and the post describes the 78-card dataset.</p>
 
             <div class="flex flex-wrap gap-3 mb-6">
                 <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
                     Engineering
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
-                    Vanilla JS
+                    Web App
                 </span>
                 <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
                     Prompt Engineering
@@ -74,6 +75,7 @@
             </div>
         </header>
 
+        <div class="ar-grid">
         <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
 
             <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
@@ -88,7 +90,7 @@
                 </p>
             </div>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-1" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Technical Implementation
             </h3>
 
@@ -119,7 +121,7 @@
                 </div>
             </div>
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-2" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Domain Knowledge: Decomposing the Tarot System
             </h3>
 
@@ -220,7 +222,7 @@
             </div>
             <hr class="border-white/10 my-12">
 
-            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+            <h3 id="sec-3" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
                 <span class="text-accent-purple">#</span> Interactive Module: Prompt Generator
             </h3>
 
@@ -265,7 +267,10 @@
                 </div>
             </div>
 
-        <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
+        <h3 id="sec-start" class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2"><span class="text-accent-purple">#</span> Getting started</h3>
+            <ol class="ar-steps"><li><span class="ar-step-n">1</span><div><strong>Choose a topic</strong><p>Pick a domain such as career, relationships or health on the page.</p></div></li><li><span class="ar-step-n">2</span><div><strong>Draw one tarot card</strong><p>After the draw, the page generates a prompt for an AI tool.</p></div></li><li><span class="ar-step-n">3</span><div><strong>Copy and paste into AI</strong><p>Press copy and paste into an AI chat box to get the reading.</p></div></li></ol>
+
+            <h3 id="sec-4" class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
             <span class="text-accent-purple">#</span> Links
         </h3>
 
@@ -276,6 +281,35 @@
             </li>
         </ul>
         </article>
+
+        <aside class="ar-aside">
+            <div class="ar-meta"><span class="ar-k">Type</span><span class="ar-v">Build</span></div>
+            <div class="ar-meta"><span class="ar-k">Field</span><span class="ar-v">Engineering</span></div>
+            <div class="ar-meta"><span class="ar-k">Reading time</span><span class="ar-v">3 min</span></div>
+            <div class="ar-meta"><span class="ar-k">Share</span><button type="button" class="ar-copy" data-ar-copy data-ar-copied="Copied">Copy link</button></div>
+        </aside>
+        </div>
+
+        <section class="ar-related">
+            <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-2"><span class="text-accent-purple">#</span> Related</h3>
+            <div class="ar-cards">
+                <a class="ar-card" href="project_26.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.07.05</span></div>
+                    <h4>One Map of Claude's Official Prompting Guides: Model choice, parameters, prompting techniques, migration traps</h4>
+                    <p>Anthropic publishes four prompt engineering guides in its official documentation: three covering a single model each (Sonnet 5, Opus 4.</p>
+                </a>
+                <a class="ar-card" href="project_25.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.06.25</span></div>
+                    <h4>Vetting AI Video Summaries: Transcript Cross-Checking and Overfit-Proof Validation</h4>
+                    <p>yt-digest turns a single YouTube link into a structured Chinese summary.</p>
+                </a>
+                <a class="ar-card" href="project_05.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.02.20</span></div>
+                    <h4>Building an AI Customer Service Automation: Integrating Make, an LLM, and a Knowledge Base</h4>
+                    <p>Running a physical retail business means high-volume, repetitive customer inquiries.</p>
+                </a>
+            </div>
+        </section>
 
         <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
             <a href="project_03.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
