@@ -4,19 +4,33 @@
 import { S, T, nid } from './state.js';
 import { withCleanSvg } from './render.js';
 import { parseSVG } from './svgin.js';
+import { toPumlSeq } from './puml.js';
+import { A } from './act.js';
+
+/* PUML 模式：活動圖一律是，時序圖看當初從哪種格式進來 */
+export const isPuml = () => S.type === 'act' || S.fmt === 'puml';
+export const currentPuml = () => (S.type === 'act' ? A.text : toPumlSeq());
+const PUML_EXT = /[.](puml|plantuml|pu|iuml|wsd)$/i;
 
 const ARROW = { sync: '->>', return: '-->>', async: '-)' };
+// PUML 的 group 在 Mermaid 沒有對應，寫成 opt 保留標籤
+const MM_KIND = { loop: 'loop', alt: 'alt', opt: 'opt', par: 'par', break: 'break', critical: 'critical', group: 'opt' };
 // Mermaid 一列就是一行，文字裡的換行照它的慣例寫成 <br/>
 const outNL = (t) => String(t).split('\n').join('<br/>');
 const inNL = (t) => t.replace(/<br\s*[/]?>/gi, '\n');
 
 export function toMermaid() {
     const L = ['sequenceDiagram'];
+    if (S.autonumber) L.push('    autonumber');
     S.parts.forEach((p) => L.push(`    ${p.kind === 'actor' ? 'actor' : 'participant'} ${p.id} as ${p.name}`));
     const open = [];
     for (let i = 0; i < S.rows.length; i++) {
+        // alt 的 else（par 的是 and）：寫在開著的那一層
+        open.forEach((b, k) => (b.elses || []).forEach((e) => {
+            if (e.at === i) L.push(' '.repeat(4 + k * 4) + `${b.kind === 'par' ? 'and' : 'else'}${e.label ? ' ' + e.label : ''}`);
+        }));
         S.blocks.filter((b) => b.from === i).sort((a, b) => (b.to - b.from) - (a.to - a.from)).forEach((b) => {
-            L.push(' '.repeat(4 + open.length * 4) + `${b.kind} ${b.label}`);
+            L.push(' '.repeat(4 + open.length * 4) + `${MM_KIND[b.kind] || 'opt'} ${b.label}`);
             open.push(b);
         });
         const ind = ' '.repeat(4 + open.length * 4);
@@ -27,7 +41,8 @@ export function toMermaid() {
             L.push(`${ind}    Note over ${S.parts[0].id},${S.parts[S.parts.length - 1].id}: ${outNL(r.text)}`);
             L.push(`${ind}end`);
         } else if (r.kind === 'note') {
-            L.push(`${ind}Note right of ${r.at}: ${tag}${outNL(r.text)}`);
+            const where = r.pos === 'over' ? `over ${r.at}${r.at2 ? ',' + r.at2 : ''}` : r.pos === 'left' ? `left of ${r.at}` : `right of ${r.at}`;
+            L.push(`${ind}Note ${where}: ${tag}${outNL(r.text)}`);
         } else {
             L.push(`${ind}${r.from}${ARROW[r.from === r.to ? 'sync' : r.type]}${r.to}: ${tag}${outNL(r.text)}`);
         }
@@ -40,14 +55,15 @@ export function toMermaid() {
 }
 
 export function fromMermaid(src) {
-    const parts = [], rows = [], blocks = [], stack = [];
+    const parts = [], rows = [], blocks = [], stack = [], lineOf = [];   // lineOf：每一列來自原文第幾行，報錯用
     const lines = src.split('\n');
-    let started = false, pendingPhase = false;
+    let started = false, pendingPhase = false, autonumber = false;
     for (let n = 0; n < lines.length; n++) {
         const t = lines[n].trim();
         if (!t) continue;
         if (/^sequenceDiagram$/.test(t)) { started = true; continue; }
         if (!started) throw { line: n + 1, msg: T.msg.errFirst };
+        if (/^autonumber\b/.test(t)) { autonumber = true; continue; }
         let m;
         if ((m = t.match(/^(participant|actor)\s+(\S+)(?:\s+as\s+(.+))?$/))) {
             parts.push({ id: m[2], name: (m[3] || m[2]).trim(), kind: m[1] === 'actor' ? 'actor' : 'object' });
@@ -56,11 +72,16 @@ export function fromMermaid(src) {
         if (/^rect\s/.test(t)) { pendingPhase = true; continue; }
         if ((m = t.match(/^Note\s+over\s+\S+\s*,\s*\S+\s*:\s*(.*)$/)) && pendingPhase) {
             rows.push({ id: nid('r'), kind: 'phase', tone: 'solid', text: inNL(m[1].trim()) });
+            lineOf.push(n + 1);
             pendingPhase = 'awaitEnd';   // 這一組的 end 歸階段帶，不是區塊的
             continue;
         }
-        if ((m = t.match(/^(loop|alt|opt)\b\s*(.*)$/))) {
-            stack.push({ id: nid('b'), kind: m[1], label: m[2].trim(), from: rows.length, to: rows.length });
+        if ((m = t.match(/^(loop|alt|opt|par|break|critical)\b\s*(.*)$/))) {
+            stack.push({ id: nid('b'), kind: m[1], label: m[2].trim(), from: rows.length, to: rows.length, elses: [] });
+            continue;
+        }
+        if ((m = t.match(/^(else|and)\b\s*(.*)$/)) && stack.length) {
+            stack[stack.length - 1].elses.push({ at: rows.length, label: m[2].trim() });
             continue;
         }
         if (/^end$/.test(t)) {
@@ -71,10 +92,14 @@ export function fromMermaid(src) {
             if (b.to >= b.from) blocks.push(b);
             continue;
         }
-        if ((m = t.match(/^Note\s+(right of|left of|over)\s+(\S+)\s*:\s*(.*)$/))) {
-            let txt = m[3].trim(), tone = 'solid';
+        if ((m = t.match(/^Note\s+(right of|left of|over)\s+([^:,\s]+)\s*(?:,\s*([^:\s]+))?\s*:\s*(.*)$/i))) {
+            let txt = m[4].trim(), tone = 'solid';
             if (txt.startsWith('※')) { tone = 'dash'; txt = txt.slice(1).trim(); }
-            rows.push({ id: nid('r'), kind: 'note', at: m[2], text: inNL(txt), tone });
+            const pos = /^over$/i.test(m[1]) ? 'over' : /^left/i.test(m[1]) ? 'left' : undefined;
+            const r = { id: nid('r'), kind: 'note', at: m[2], text: inNL(txt), tone };
+            if (pos) r.pos = pos;
+            if (m[3] && pos === 'over') r.at2 = m[3];
+            rows.push(r); lineOf.push(n + 1);
             continue;
         }
         if ((m = t.match(/^(\S+?)\s*(--?>>|-\)|--?>)\s*(\S+?)\s*:\s*(.*)$/))) {
@@ -83,6 +108,7 @@ export function fromMermaid(src) {
             const a = m[2];
             const type = a === '-)' ? 'async' : (a.startsWith('--') ? 'return' : 'sync');
             rows.push({ id: nid('r'), kind: 'msg', from: m[1], to: m[3], type, tone, text: inNL(txt) });
+            lineOf.push(n + 1);
             continue;
         }
         throw { line: n + 1, msg: T.msg.errUnknown(t.slice(0, 30)) };
@@ -91,11 +117,11 @@ export function fromMermaid(src) {
     if (!parts.length) throw { line: 1, msg: T.msg.errNoPart };
     const ids = new Set(parts.map((p) => p.id));
     rows.forEach((r, i) => {
-        const bad = r.kind === 'note' ? !ids.has(r.at)
+        const bad = r.kind === 'note' ? (!ids.has(r.at) || (r.at2 && !ids.has(r.at2)))
             : (r.kind === 'msg' && (!ids.has(r.from) || !ids.has(r.to)));
-        if (bad) throw { line: i + 1, msg: T.msg.errOrphan };
+        if (bad) throw { line: lineOf[i] || i + 1, msg: T.msg.errOrphan };
     });
-    return { parts, rows, blocks };
+    return { parts, rows, blocks, autonumber };
 }
 
 /* 檔名用這張圖的名字，沒取名就退回日期。擋掉檔名不能用的字元。 */
@@ -106,6 +132,10 @@ function fileBase() {
 
 /* ── 存成 .json 下載到使用者自己的電腦。站上不留任何東西。 ── */
 export function saveFile() {
+    if (isPuml()) {
+        download(new Blob([currentPuml()], { type: 'text/plain;charset=utf-8' }), `${fileBase()}.puml`);
+        return;
+    }
     const data = {
         format: 'ghost.ouo/sequence',
         version: 1,
@@ -115,6 +145,7 @@ export function saveFile() {
         rows: S.rows,
         blocks: S.blocks,
         legend: S.legend,
+        autonumber: S.autonumber,
     };
     download(new Blob([JSON.stringify(data, null, 1)], { type: 'application/json' }), `${fileBase()}.json`);
 }
@@ -140,7 +171,9 @@ function buildSVG() {
     const meta = document.createElementNS('http://www.w3.org/2000/svg', 'metadata');
     meta.setAttribute('data-format', 'ghost.ouo/sequence');
     meta.textContent = JSON.stringify({
-        version: 1, name: S.name || '', parts: S.parts, rows: S.rows, blocks: S.blocks, legend: S.legend,
+        version: 1, name: S.name || '', type: S.type, parts: S.parts, rows: S.rows, blocks: S.blocks, legend: S.legend, autonumber: S.autonumber,
+        // PUML 來的圖把原文一起放進去，讀回來照原文重建，一個字都不會變
+        ...(isPuml() ? { puml: currentPuml() } : {}),
     });
     clone.insertBefore(meta, clone.firstChild);
     const head = '<?xml version="1.0" encoding="UTF-8"?>';
@@ -153,7 +186,10 @@ function buildSVG() {
 export async function readFile(file) {
     const text = await file.text();
     const looksSvg = /\.svg$/i.test(file.name) || /^\s*(<\?xml|<svg)/i.test(text);
+    if (PUML_EXT.test(file.name) || /^\s*@startuml/i.test(text)) return { puml: text };
     if (looksSvg) {
+        const fromMeta = pumlInSvg(text);
+        if (fromMeta) return fromMeta;
         const { diagram, report } = parseSVG(text);   // 失敗時丟 {msg, detail}
         return { ...diagram, report };
     }
@@ -169,8 +205,20 @@ export async function readFile(file) {
         rows: o.rows,
         blocks: Array.isArray(o.blocks) ? o.blocks : [],
         legend: Array.isArray(o.legend) ? o.legend : undefined,
+        autonumber: !!o.autonumber,
         report: { native: true },
     };
+}
+
+/* 這個工具匯出的 SVG 若是 PUML 來的，<metadata> 裡有原文 */
+function pumlInSvg(text) {
+    try {
+        const doc = new DOMParser().parseFromString(text, 'image/svg+xml');
+        const meta = doc.querySelector('metadata[data-format="ghost.ouo/sequence"]');
+        const d = meta && JSON.parse(meta.textContent);
+        if (d && typeof d.puml === 'string') return { puml: d.puml, name: d.name || '' };
+    } catch { /* 交給 parseSVG 處理 */ }
+    return null;
 }
 
 export function exportPNG() {

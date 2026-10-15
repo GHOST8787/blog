@@ -24,6 +24,10 @@ export const S = {
     sel: { layer: 'row', i: 0, j: 0, end: 'to', bi: 0 },
     editing: null,
     drag: null,
+    type: 'seq',                           // 目前看的是哪一種圖：seq 時序圖／act 活動圖
+    fmt: 'mermaid',                        // 時序圖的原始碼格式：mermaid／puml（原始碼框與匯出按鈕跟著它）
+    puml: null,                            // 從 PUML 讀進來時記住原檔，匯出時沒動過的行原樣放回
+    autonumber: false,                     // 訊息自動編號（Mermaid／PUML 的 autonumber）
 };
 
 /* 開啟工具時看到的示範圖。純通用流程，不放任何實際專案內容。
@@ -57,6 +61,9 @@ export function loadDiagram(d) {
     S.parts = d.parts;
     S.rows = d.rows;
     S.blocks = d.blocks || [];
+    S.blocks.forEach((b) => { if (!b.elses) b.elses = []; });
+    S.puml = d.puml || null;
+    S.autonumber = !!d.autonumber;
     if (d.legend) S.legend = d.legend;
     S.sel = { layer: 'row', i: 0, j: 0, end: 'to', bi: 0 };
     S.editing = null;
@@ -71,6 +78,9 @@ let dirty = false, saveTimer = 0;
 /* 改名這種不進復原堆疊、但要存起來的小改動用這個標記 */
 export function touch() { dirty = true; }
 
+/* PUML 原文、活動圖這些不在 S 裡的東西，由 app.js 掛一個函式提供，一起存 */
+export const saveExtra = { get: () => ({}) };
+
 export function autoSave() {
     if (!dirty) return;
     clearTimeout(saveTimer);
@@ -79,6 +89,7 @@ export function autoSave() {
             localStorage.setItem(LS_KEY, JSON.stringify({
                 v: 1, savedAt: Date.now(), name: S.name,
                 parts: S.parts, rows: S.rows, blocks: S.blocks, legend: S.legend,
+                ...saveExtra.get(),
             }));
         } catch { /* 無痕模式或空間滿了就不存，編輯照常 */ }
     }, 400);
@@ -89,7 +100,8 @@ export function loadSaved() {
         const d = JSON.parse(localStorage.getItem(LS_KEY) || 'null');
         if (!d || !Array.isArray(d.parts) || !Array.isArray(d.rows) || !d.parts.length) return null;
         d.rows.forEach((r) => { if (!r.tone) r.tone = 'solid'; });
-        return { name: d.name || '', parts: d.parts, rows: d.rows, blocks: d.blocks || [], legend: d.legend };
+        return { name: d.name || '', parts: d.parts, rows: d.rows, blocks: d.blocks || [], legend: d.legend,
+                 type: d.type, fmt: d.fmt, pumlText: d.pumlText, actText: d.actText, autonumber: d.autonumber };
     } catch { return null; }
 }
 
@@ -149,6 +161,12 @@ export function laneOfRow(i) {
     return 0;
 }
 export function shiftBlocks(at, d) {
-    S.blocks.forEach((b) => { if (b.from >= at) b.from += d; if (b.to >= at) b.to += d; });
+    S.blocks.forEach((b) => {
+        if (b.from >= at) b.from += d;
+        if (b.to >= at) b.to += d;
+        // alt 裡的 else 分界線跟著列走；擠到框外的就收掉
+        (b.elses || []).forEach((e) => { if (e.at >= at) e.at += d; });
+        if (b.elses) b.elses = b.elses.filter((e) => e.at > b.from && e.at <= b.to + 1);
+    });
     S.blocks = S.blocks.filter((b) => b.to >= b.from && b.from >= 0);
 }

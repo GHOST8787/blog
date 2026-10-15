@@ -133,7 +133,6 @@
         /* 畫布要吃滿剩下的寬度，裡面的 svg 才有空間置中 */
         .seq-stage { flex: 1 1 auto; min-width: 0; }
         /* 分割時畫布比可用寬度還寬，置中會把開頭切掉，所以改靠左 */
-        body.view-split #sv { margin-left: 0; }
         /* 只看原始碼時也收成一欄置中，不要攤成整片 */
         body.view-source .seq-src .head,
         body.view-source #mm { max-width: 880px; margin-left: auto; margin-right: auto; }
@@ -150,7 +149,9 @@
         body.view-split .seq-src, body.view-source .seq-src { display: block; }
         body.view-source .seq-src { flex: 1 1 100%; border-right: 0; }
         body.view-source .seq-stage { display: none; }
-        body.view-split .seq-stage { overflow-x: auto; }
+        /* 分割時畫布高度收在一個螢幕內、自己上下左右捲，捲軸才看得到 */
+        body.view-split .seq-stage { overflow: auto; max-height: calc(100vh - 240px); min-height: 320px;
+                                     position: sticky; top: 160px; align-self: flex-start; }
 
         /* 三段切換鈕 */
         .seq-bar .grp { font-size: 10px; letter-spacing: .14em; color: var(--c-dim); margin-right: 2px; }
@@ -159,6 +160,21 @@
         .seq-bar .seg button { border: 0; border-radius: 0; padding: 5px 12px; }
         .seq-bar .seg button + button { border-left: 1px solid var(--c-border); }
         .seq-bar .seg button.on { background: rgb(var(--c-purple) / .16); color: rgb(var(--c-purple)); }
+        /* 下拉選單：類型、匯出、縮放比例。選單往下展開，不被工具列切掉 */
+        .seq-bar .seg.open-ok { overflow: visible; }
+        .seq-bar .dd { position: relative; display: inline-flex; }
+        .seq-bar .dd-btn::after { content: '▾'; margin-left: 6px; font-size: 10px; opacity: .7; }
+        .seq-bar .dd-btn[aria-expanded="true"] { border-color: rgb(var(--c-purple) / .6); color: rgb(var(--c-purple)); }
+        .seq-bar .dd-menu { position: absolute; top: calc(100% + 4px); left: 0; z-index: 40;
+                            display: flex; flex-direction: column; min-width: 100%; padding: 4px;
+                            background: rgb(var(--c-surface)); border: 1px solid var(--c-border);
+                            border-radius: 8px; box-shadow: 0 8px 24px rgb(0 0 0 / .35); }
+        .seq-bar .dd-menu[hidden] { display: none; }
+        .seq-bar .dd-menu button { border: 0; text-align: left; white-space: nowrap; padding: 6px 12px; }
+        .seq-bar .dd-menu button:hover, .seq-bar .dd-menu button:focus { background: rgb(var(--c-purple) / .12);
+                                                                         color: rgb(var(--c-purple)); outline: none; }
+        .seq-bar .dd-menu button.on { color: rgb(var(--c-purple)); }
+        .seq-bar .dd-menu hr { border: 0; border-top: 1px solid var(--c-border); margin: 4px 2px; }
         .seq-head .count { font-size: 10.5px; color: var(--c-dim); white-space: nowrap;
                            overflow: hidden; text-overflow: ellipsis; }
         @media (max-width: 1100px) { .seq-head .count { display: none; } }
@@ -227,13 +243,26 @@
             </div>
 
             <div class="seq-bar">
+                <span class="grp" id="grpType"></span>
+                <div class="dd">
+                    <button class="dd-btn" id="ddType" aria-haspopup="menu" aria-expanded="false"></button>
+                    <div class="dd-menu" role="menu" hidden>
+                        <button role="menuitem" data-type="seq" data-btn="typeSeq" class="on"></button>
+                        <button role="menuitem" data-type="act" data-btn="typeAct"></button>
+                    </div>
+                </div>
+                <span class="div"></span>
                 <span class="grp" id="grpFile"></span>
                 <button data-act="open" data-btn="open" data-tip="openTip"></button>
-                <span class="div"></span>
-                <button data-act="save" data-btn="save" data-tip="saveTip"></button>
-                <button data-act="svg" data-btn="svg" data-tip="svgTip"></button>
-                <button data-act="png" data-btn="png" data-tip="pngTip"></button>
-                <button data-act="copy" data-btn="copy" data-tip="copyTip"></button>
+                <div class="dd">
+                    <button class="dd-btn" id="ddExport" data-btn="export" data-tip="exportTip" aria-haspopup="menu" aria-expanded="false"></button>
+                    <div class="dd-menu" role="menu" hidden>
+                        <button role="menuitem" data-act="save" data-btn="save" data-tip="saveTip"></button>
+                        <button role="menuitem" data-act="svg" data-btn="svg" data-tip="svgTip"></button>
+                        <button role="menuitem" data-act="png" data-btn="png" data-tip="pngTip"></button>
+                        <button role="menuitem" data-act="copy" data-btn="copy" data-tip="copyTip"></button>
+                    </div>
+                </div>
                 <span class="div"></span>
                 <span class="grp" id="grpView"></span>
                 <div class="seg" role="group">
@@ -242,8 +271,26 @@
                     <button data-view="source" data-btn="viewSource"></button>
                 </div>
                 <span class="div"></span>
+                <span class="grp" id="grpZoom"></span>
+                <div class="seg open-ok" role="group">
+                    <button data-zoom="out" data-btn="zoomOut" data-tip="zoomOutTip"></button>
+                    <div class="dd">
+                        <button class="dd-btn" id="zoomPct" data-tip="zoomMenuTip" aria-haspopup="menu" aria-expanded="false">100%</button>
+                        <div class="dd-menu" role="menu" hidden>
+                            <button role="menuitem" data-zoom="fit" data-btn="zoomFit" data-tip="zoomFitTip"></button>
+                            <button role="menuitem" data-zoom="reset" data-btn="zoomReset" data-tip="zoomResetTip"></button>
+                            <hr>
+                            <button role="menuitem" data-zoom-set="0.5">50%</button>
+                            <button role="menuitem" data-zoom-set="0.75">75%</button>
+                            <button role="menuitem" data-zoom-set="1">100%</button>
+                            <button role="menuitem" data-zoom-set="1.5">150%</button>
+                        </div>
+                    </div>
+                    <button data-zoom="in" data-btn="zoomIn" data-tip="zoomInTip"></button>
+                </div>
+                <span class="div"></span>
                 <button data-act="clear" data-btn="clear" data-tip="clearTip"></button>
-                <input type="file" id="filePick" accept=".json,.svg,application/json,image/svg+xml" hidden>
+                <input type="file" id="filePick" accept=".json,.svg,.puml,.plantuml,.pu,.iuml,.wsd,.txt,application/json,image/svg+xml,text/plain" hidden>
             </div>
 
             <div class="seq-status">

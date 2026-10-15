@@ -3,7 +3,8 @@
 import {
     S, push, undo, redo, px, pIdx, clampPart, blocksAt, laneOfRow,
 } from './state.js';
-import { render, sv, rowY, setSkipScroll } from './render.js';
+import { render, sv, rowY, setSkipScroll, ZOOM } from './render.js';
+import { onActKey, onActClick, onActDbl, onActDown } from './act.js';
 import {
     editRow, editPart, editBlock, editLegend, editCurrent, closeEd,
     addRow, addPart, delSel, wrapBlock, unwrapBlock,
@@ -28,6 +29,7 @@ export function initKeys() {
 function onKey(e) {
     if (S.editing) return;
     if (e.target === mmBox || e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    if (S.type === 'act') { onActKey(e); return; }     // 活動圖有自己那一套
     const k = e.key, L = S.sel.layer;
     const ctrl = e.ctrlKey || e.metaKey;
 
@@ -204,7 +206,7 @@ function onKey(e) {
 /* ── 滑鼠 ───────────────────────────────── */
 const svPos = (e) => {
     const r = sv.getBoundingClientRect();
-    return { x: e.clientX - r.left, y: e.clientY - r.top };
+    return { x: (e.clientX - r.left) / ZOOM, y: (e.clientY - r.top) / ZOOM };
 };
 function nearestLane(x) {
     let best = 0, bd = Infinity;
@@ -213,6 +215,7 @@ function nearestLane(x) {
 }
 
 function onDown(e) {
+    if (S.type === 'act') { onActDown(e); return; }
     const pt = e.target.closest('[data-pt]');
     if (pt) {
         e.preventDefault();
@@ -247,12 +250,13 @@ function onDown(e) {
 }
 
 function onClick(e) {
+    if (S.type === 'act') { onActClick(e); return; }
     if (S.drag) return;
     const lg = e.target.closest('[data-legend]');
     if (lg) {
         const k = +lg.dataset.legend;
         const r = lg.getBoundingClientRect(), s = sv.getBoundingClientRect();
-        editLegend(k, r.left - s.left, r.top - s.top - 12);
+        editLegend(k, (r.left - s.left) / ZOOM, (r.top - s.top) / ZOOM - 12);
         return;
     }
     const blk = e.target.closest('[data-block]');
@@ -270,6 +274,7 @@ function onClick(e) {
 }
 
 function onDbl(e) {
+    if (S.type === 'act') { onActDbl(e); return; }
     const blk = e.target.closest('[data-block]');
     if (blk) { S.sel = { ...S.sel, layer: 'block', bi: +blk.dataset.block }; render(); editBlock(S.sel.bi); return; }
     const part = e.target.closest('[data-part]');

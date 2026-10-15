@@ -3,10 +3,12 @@
 
 import * as zh from './strings.zh.js';
 import * as en from './strings.en.js';
-import { S, setStrings, sampleDiagram, loadDiagram, loadSaved, push, touch } from './state.js';
-import { render, resetSelKey } from './render.js';
+import { S, setStrings, sampleDiagram, loadDiagram, loadSaved, push, touch, saveExtra } from './state.js';
+import { render, resetSelKey, ZOOM, setZoom, sv, stage } from './render.js';
 import { initKeys } from './keys.js';
-import { toMermaid, fromMermaid, saveFile, saveSVG, readFile, exportPNG } from './io.js';
+import { toMermaid, fromMermaid, saveFile, saveSVG, readFile, exportPNG, isPuml, currentPuml } from './io.js';
+import { detect, parseSeqPuml, toPumlSeq } from './puml.js';
+import { A, setAct, setActText, newActStarter } from './act.js';
 
 const L = document.documentElement.lang.toLowerCase().startsWith('zh') ? zh : en;
 setStrings(L);
@@ -19,6 +21,8 @@ document.querySelectorAll('[data-btn]').forEach((b) => { b.textContent = L.btn[b
 document.querySelectorAll('[data-tip]').forEach((b) => { b.title = L.hint[b.dataset.tip]; });
 document.getElementById('grpFile').textContent = L.hint.file;
 document.getElementById('grpView').textContent = L.hint.view;
+document.getElementById('grpZoom').textContent = L.hint.zoom;
+document.getElementById('grpType').textContent = L.hint.type;
 document.getElementById('rClose').textContent = L.msg.impClose;
 const nameBox = document.getElementById('docName');
 nameBox.placeholder = L.msg.namePlaceholder;
@@ -27,7 +31,21 @@ buildHelp();
 
 /* 上次留在這台電腦上的圖優先，沒有才給示範圖 */
 S.legend = L.legendInit.map((x) => ({ ...x }));
-loadDiagram(loadSaved() || sampleDiagram());
+const saved = loadSaved();
+loadDiagram(saved || sampleDiagram());
+if (saved) {
+    // PUML 來的時序圖：存的是當時的 PUML 全文，照它重建，匯出才會跟當時一模一樣
+    if (saved.fmt === 'puml' && saved.pumlText) {
+        try { loadDiagram({ ...parseSeqPuml(saved.pumlText), name: saved.name, legend: saved.legend, autonumber: saved.autonumber }); S.fmt = 'puml'; } catch { /* 壞了就用存的資料 */ }
+    }
+    if (saved.actText) setAct(saved.actText, 0);
+    if (saved.type === 'act') S.type = 'act';
+}
+if (!A.text) setAct(L.act.starter.join('\n'), 0);
+saveExtra.get = () => ({
+    type: S.type, fmt: S.fmt, actText: A.text, autonumber: S.autonumber,
+    ...(S.fmt === 'puml' ? { pumlText: toPumlSeq() } : {}),
+});
 
 /* 命名欄：打字就寫進資料，存檔與匯出都用它當檔名。
    畫面那一側由 render 的 paintName 回填，這裡只管使用者打進來的字。 */
@@ -52,11 +70,16 @@ document.querySelectorAll('[data-act]').forEach((btn) => {
         if (a === 'open') filePick.click();
         if (a === 'png') exportPNG();
         if (a === 'copy') {
-            navigator.clipboard?.writeText(toMermaid());
+            navigator.clipboard?.writeText(isPuml() ? currentPuml() : toMermaid());
+            btn.dataset.busy = '1';
             btn.textContent = L.btn.copied;
-            setTimeout(() => { btn.textContent = L.btn.copy; }, 1200);
+            // 選單一按就收起來，回饋顯示在「匯出」那顆上
+            const ex = document.getElementById('ddExport');
+            ex.textContent = L.btn.copied;
+            setTimeout(() => { delete btn.dataset.busy; ex.textContent = L.btn.export; render(); }, 1200);   // render 會依格式把字換回來
         }
         if (a === 'clear') {
+            if (S.type === 'act') { newActStarter(); render(); return; }
             push();
             S.rows = []; S.blocks = [];
             S.sel = { layer: 'row', i: 0, j: 0, end: 'to', bi: 0 };
@@ -70,13 +93,113 @@ function setView(v) {
     document.body.classList.remove('view-diagram', 'view-split', 'view-source');
     document.body.classList.add('view-' + v);
     document.querySelectorAll('[data-view]').forEach((b) => b.classList.toggle('on', b.dataset.view === v));
-    if (v !== 'diagram' && document.activeElement !== mmBox) mmBox.value = toMermaid();
-    render();
+    if (v !== 'diagram' && document.activeElement !== mmBox) mmBox.value = srcText();
+    // 分割時畫布只剩一半寬，預設把整張圖縮進來；只看圖時回到原尺寸
+    if (v === 'split') setZoom(1, true);
+    else if (v === 'diagram') setZoom(1);
+    else render();
 }
 document.querySelectorAll('[data-view]').forEach((b) => {
     b.addEventListener('click', () => setView(b.dataset.view));
 });
+
+/* 原始碼框現在該顯示什麼：活動圖給 PUML 原文，時序圖看當初從哪種格式進來 */
+const srcText = () => (S.type === 'act' ? A.text : S.fmt === 'puml' ? toPumlSeq() : toMermaid());
+
+/* 圖種切換：兩種圖各留各的資料，切過去就是上次的樣子 */
+document.querySelectorAll('[data-type]').forEach((b) => {
+    b.addEventListener('click', () => setType(b.dataset.type));
+});
+function setType(t) {
+    if (S.type === t) return;
+    S.type = t;
+    resetSelKey();
+    mmErr.textContent = '';
+    report.hidden = true;
+    touch();
+    render();
+    if (document.activeElement !== mmBox) mmBox.value = srcText();
+}
+
+/* 縮放。按鈕走固定的級距，一定會停在 100%；
+   以畫面上某一點為中心縮放：重畫後量那一點實際跑到哪，差多少就捲多少 */
+const LADDER = [0.1, 0.15, 0.2, 0.25, 0.33, 0.5, 0.67, 0.75, 0.9, 1, 1.1, 1.25, 1.5, 1.75, 2, 2.5, 3];
+const stepZoom = (d) => (d > 0 ? LADDER.find((x) => x > ZOOM + 0.001) ?? LADDER[LADDER.length - 1]
+    : [...LADDER].reverse().find((x) => x < ZOOM - 0.001) ?? LADDER[0]);
+function zoomAt(z, cx, cy) {
+    const r = sv.getBoundingClientRect();
+    const gx = (cx - r.left) / ZOOM, gy = (cy - r.top) / ZOOM;
+    setZoom(z);
+    const r2 = sv.getBoundingClientRect();
+    const dx = r2.left + gx * ZOOM - cx, dy = r2.top + gy * ZOOM - cy;
+    (document.body.classList.contains('view-split') ? stage : window).scrollBy(dx, dy);
+}
+const stageCenter = () => {
+    const c = stage.getBoundingClientRect();
+    return [c.left + Math.min(c.width, innerWidth) / 2, Math.max(c.top, 0) + Math.min(c.height, innerHeight) / 2];
+};
+document.querySelectorAll('[data-zoom]').forEach((b) => {
+    b.addEventListener('click', () => {
+        const k = b.dataset.zoom;
+        if (k === 'fit') { setZoom(1, true); return; }
+        if (k === 'reset') { setZoom(1); return; }
+        zoomAt(stepZoom(k === 'in' ? 1 : -1), ...stageCenter());
+    });
+});
+document.querySelectorAll('[data-zoom-set]').forEach((b) => {
+    b.addEventListener('click', () => zoomAt(+b.dataset.zoomSet, ...stageCenter()));
+});
+// 按住 Ctrl（Mac 是 Cmd）滾滾輪：只在圖上攔下來，其他地方照瀏覽器原本的整頁縮放
+stage.addEventListener('wheel', (e) => {
+    if (!(e.ctrlKey || e.metaKey)) return;
+    e.preventDefault();
+    let z = ZOOM * (e.deltaY < 0 ? 1.1 : 1 / 1.1);
+    if ((ZOOM < 1 && z > 1) || (ZOOM > 1 && z < 1)) z = 1;      // 滾過 100% 先停在 100%
+    zoomAt(z, e.clientX, e.clientY);
+}, { passive: false });
 setView('diagram');
+
+/* ── 下拉選單（類型、匯出、縮放比例）──
+   點按鈕開關；鍵盤 Enter／↓ 打開、↑↓ 選、Enter 確定、Esc 關掉。
+   選單裡的按鍵不往外傳，免得畫布的快捷鍵跟著動。點選單外面就收起來。 */
+const dds = [...document.querySelectorAll('.seq-bar .dd')];
+function closeDd(dd) {
+    dd.querySelector('.dd-menu').hidden = true;
+    dd.querySelector('.dd-btn').setAttribute('aria-expanded', 'false');
+}
+dds.forEach((dd) => {
+    const btn = dd.querySelector('.dd-btn'), menu = dd.querySelector('.dd-menu');
+    const items = () => [...menu.querySelectorAll('button')];
+    const open = (focusItem) => {
+        dds.forEach((o) => { if (o !== dd) closeDd(o); });
+        menu.hidden = false;
+        btn.setAttribute('aria-expanded', 'true');
+        // 手機寬時往右展開會超出畫面，放不下就改成對齊按鈕右緣
+        menu.style.left = ''; menu.style.right = '';
+        if (menu.getBoundingClientRect().right > innerWidth - 8) { menu.style.left = 'auto'; menu.style.right = '0'; }
+        if (focusItem) (items().find((b) => b.classList.contains('on')) || items()[0]).focus();
+    };
+    btn.addEventListener('click', () => (menu.hidden ? open(false) : closeDd(dd)));
+    btn.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); open(true); }
+        else if (e.key === 'Escape') { e.stopPropagation(); closeDd(dd); }
+    });
+    menu.addEventListener('click', (e) => {
+        if (!e.target.closest('button')) return;
+        closeDd(dd);
+        document.activeElement.blur();      // 焦點還給畫布，方向鍵接著操作圖
+    });
+    menu.addEventListener('keydown', (e) => {
+        e.stopPropagation();
+        const it = items(), k = it.indexOf(document.activeElement);
+        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+            e.preventDefault();
+            it[(k + (e.key === 'ArrowDown' ? 1 : -1) + it.length) % it.length].focus();
+        } else if (e.key === 'Escape') { e.preventDefault(); closeDd(dd); btn.focus(); }
+        else if (e.key === 'Tab') closeDd(dd);
+    });
+});
+document.addEventListener('pointerdown', (e) => dds.forEach((dd) => { if (!dd.contains(e.target)) closeDd(dd); }));
 
 /* 開啟本機 .json。讀壞了就不動現有的圖，只在狀態列報錯。 */
 filePick.addEventListener('change', async () => {
@@ -85,8 +208,11 @@ filePick.addEventListener('change', async () => {
     if (!f) return;
     try {
         const d = await readFile(f);
+        if (typeof d.puml === 'string') { importPuml(d.puml, f.name); return; }
         push();
         loadDiagram(d);
+        S.type = 'seq';
+        S.fmt = 'mermaid';
         // 檔名就是使用者給這張圖的名字，優先採用；自動產生的那種日期檔名不算
         const base = f.name.replace(/[.][^.]+$/, '').trim();
         if (base && !/^sequence-\d{8}-\d{4}$/.test(base)) S.name = base;
@@ -100,6 +226,36 @@ filePick.addEventListener('change', async () => {
     }
 });
 
+/* PUML 進來：先判斷是哪一種圖，時序圖轉成工具資料、活動圖整份原文交給 act.js */
+function importPuml(text, fname) {
+    const det = detect(text, fname);
+    if (det.type === 'other') { showFailure({ message: L.msg.pumlOther(det.name || '') }, fname); return; }
+    let rep;
+    if (det.type === 'act') {
+        setActText(text);
+        S.type = 'act';
+        rep = A.report;
+    } else {
+        const o = parseSeqPuml(text);
+        o.autonumber = /^\s*autonumber\b/im.test(text);       // PUML 的 autonumber 原文照留，這裡只負責畫編號
+        push();
+        loadDiagram(o);
+        S.type = 'seq';
+        S.fmt = 'puml';
+        rep = o.report;
+    }
+    // 時序圖有 title 就用 title 當名字（改了名字匯出時 title 那行才會跟著變），沒有才用檔名
+    const base = String(fname || '').replace(/[.][^.]+$/, '').trim();
+    if (base && !(det.type === 'seq' && S.name && S.puml && S.puml.hasTitle)) S.name = base;
+    nameBox.value = S.name || '';
+    resetSelKey();
+    mmErr.textContent = '';
+    touch();
+    render();
+    if (document.activeElement !== mmBox) mmBox.value = srcText();
+    showReport(rep, fname);
+}
+
 const report = document.getElementById('report');
 const rSum = document.getElementById('rSum');
 const rBody = document.getElementById('rBody');
@@ -112,6 +268,17 @@ function showReport(r, name) {
     rBody.innerHTML = '';
     if (r.native) {
         rSum.innerHTML = `<b>${esc(name)}</b> — ${L.msg.impNative}`;
+        report.hidden = false;
+        return;
+    }
+    if (r.kind === 'pumlSeq' || r.kind === 'pumlAct') {
+        const bits = [`<b>${esc(name)}</b> — ${r.kind === 'pumlSeq' ? L.msg.impPumlSeq(r) : L.msg.impPumlAct(r)}`];
+        if (r.unknown.length) bits.push(`<span class="warn">${L.msg.impKept(r.unknown.length)}</span>`);
+        rSum.innerHTML = bits.join(' · ');
+        if (r.unknown.length) {
+            rBody.innerHTML = `<div><b>${L.msg.impDetail}</b></div>`
+                + r.unknown.map((u) => `<div>${L.msg.lineNo(u.line)} — <code>${esc(u.text)}</code></div>`).join('');
+        }
         report.hidden = false;
         return;
     }
@@ -138,15 +305,42 @@ function showFailure(err, name) {
     mmErr.textContent = why;
 }
 
-/* Mermaid 框：邊打邊套用。打到一半當然會解析失敗，那就只顯示訊息、不動圖。 */
-let srcTimer = null;
+/* 原始碼框：邊打邊套用，Mermaid 與 PUML 都吃，貼進來的是哪一種用固定規則判斷。
+   打到一半當然會解析失敗，那就只顯示訊息、不動圖。 */
+let srcTimer = null, pasted = false;
+mmBox.addEventListener('paste', () => { pasted = true; });
 function applySrc() {
+    const txt = mmBox.value;
+    if (txt === srcText()) return;              // 沒改東西（例如只是點進去又點出來）
+    const det = detect(txt);
+    const wasPasted = pasted;
+    pasted = false;
     try {
-        const o = fromMermaid(mmBox.value);
+        if (det.type === 'other') {
+            mmErr.textContent = det.fmt === 'puml' ? L.msg.pumlOther(det.name || '') : L.msg.mermaidOther(det.name || '');
+            return;
+        }
+        if (det.fmt === 'puml') {
+            const before = S.type + S.fmt;
+            let rep;
+            if (det.type === 'act') { setActText(txt); S.type = 'act'; rep = A.report; }
+            else { const o = parseSeqPuml(txt); o.autonumber = /^\s*autonumber\b/im.test(txt); push(); loadDiagram(o); S.type = 'seq'; S.fmt = 'puml'; rep = o.report; }
+            resetSelKey();
+            mmErr.textContent = '';
+            touch();
+            render();
+            // 貼上或換了圖種／格式才跳報告，邊打邊改不要一直跳
+            if (wasPasted || before !== S.type + S.fmt) showReport(rep, L.msg.pasted);
+            return;
+        }
+        const o = fromMermaid(txt);
         push();
         loadDiagram(o);
+        S.type = 'seq';
+        S.fmt = 'mermaid';
         resetSelKey();
         mmErr.textContent = '';
+        touch();
         render();
     } catch (e) {
         mmErr.textContent = e.line ? L.msg.errLine(e.line, e.msg) : String(e.message || e);
@@ -234,7 +428,9 @@ function buildHelp() {
               <span class="d">${d}</span>
             </div>`).join('')}
         </section>`;
+    // 兩套說明都先放好，左上角「類型」選哪一種就只露出那一套（render 的 paintChrome 切換）
     document.getElementById('helpBody').innerHTML = `
+      <div data-help="seq">
         <h3>${H.head}</h3>
         <p>${H.lead}</p>
         ${sec(H.secCross, H.secCrossNote, H.rows.cross)}
@@ -243,7 +439,14 @@ function buildHelp() {
         ${sec(H.secBlock, H.secBlockNote, H.rows.block)}
         ${sec(H.secPart, H.secPartNote, H.rows.part)}
         ${sec(H.secAdd, '', H.rows.add)}
-        <div class="help-pin">${H.pin}</div>`;
+        <div class="help-pin">${H.pin}</div>
+      </div>
+      <div data-help="act" hidden>
+        <h3>${H.actHead}</h3>
+        <p>${H.actLead}</p>
+        ${H.actSecs.map(([t, note, rows]) => sec(t, note, rows)).join('')}
+        <div class="help-pin">${H.actPin}</div>
+      </div>`;
 }
 
 /* 把 "Ctrl+←→" 這種字串排成鍵帽，純文字說明（例如「刪掉一欄」）就原樣輸出 */

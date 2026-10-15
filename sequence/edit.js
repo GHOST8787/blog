@@ -4,7 +4,7 @@ import {
     S, T, nid, push, TYPES, BLOCK_KINDS,
     HEAD_Y, SELF_W, px, pxOf, pIdx, clampPart, selRange, blocksAt, shiftBlocks,
 } from './state.js';
-import { render, rowY, BTOP, DOC_W, sv, stage, measure } from './render.js';
+import { render, rowY, BTOP, DOC_W, sv, stage, measure, ZOOM } from './render.js';
 
 const ed = document.getElementById('ed');
 
@@ -13,8 +13,9 @@ function openEd(what, i, x, y, val, w) {
     S.editing = { what, i };
     const a = sv.getBoundingClientRect(), c = stage.getBoundingClientRect();
     ed.style.display = 'block';
-    ed.style.left = (x + (a.left - c.left)) + 'px';
-    ed.style.top = (y + 8 + (a.top - c.top)) + 'px';
+    // x、y 是圖座標，畫面縮放時要乘上比例；畫布自己捲動時也要算進去
+    ed.style.left = (x * ZOOM + (a.left - c.left) + stage.scrollLeft) + 'px';
+    ed.style.top = ((y + 8) * ZOOM + (a.top - c.top) + stage.scrollTop) + 'px';
     ed.style.width = (w || 220) + 'px';
     ed.value = val;
     fitEd();
@@ -50,6 +51,13 @@ export function editBlock(i) {
 }
 export function editLegend(i, x, y) { openEd('legend', i, x, y, S.legend[i].text, 280); }
 
+/* 活動圖用的編輯框：同一個框，送出時交給呼叫端自己處理（活動圖的復原點由 act.js 管） */
+let freeCommit = null;
+export function openFree(x, y, val, w, commit) {
+    freeCommit = commit;
+    openEd('free', -1, x, y, val, w);
+}
+
 export function editCurrent() {
     const L = S.sel.layer;
     if (L === 'part') editPart(S.sel.i);
@@ -60,6 +68,14 @@ export function editCurrent() {
 export function commitEd(addNext) {
     if (!S.editing) return;
     const { what, i } = S.editing;
+    if (what === 'free') {
+        const v = ed.value.replace(/\r/g, '').split('\n').map((x) => x.trim()).join('\n').trim();
+        const fn = freeCommit;
+        freeCommit = null;
+        closeEd();
+        if (fn) fn(v);
+        return;
+    }
     // 只有列的文字能多行；參與者名稱與區塊標籤的框高是固定的，換行一律壓成空白
     const raw = ed.value.replace(/\r/g, '');
     const v = (what === 'row' ? raw.split('\n').map((x) => x.trim()).join('\n')
@@ -224,4 +240,5 @@ export function togglePartKind() {
     if (!p) return;
     push();
     p.kind = p.kind === 'actor' ? 'object' : 'actor';
+    p.shape = p.kind === 'actor' ? 'actor' : 'participant';
 }
