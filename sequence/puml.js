@@ -48,7 +48,7 @@ const qt = (s) => (/^[^\s"<>:\-[\],]+$/.test(s) ? s : `"${s}"`);
 const inNL = (s) => String(s).replace(/\\n/g, '\n');
 const outNL = (s) => String(s).split('\n').join('\\n');
 const MSG_RE = /^("[^"]+"|[^\s"<>:\-[\]]+)\s*([xo]?<{0,2}-(?:\[[^\]]*\])?-?(?:>{1,2}|[\\/]{1,2})?[xo]?)\s*("[^"]+"|[^\s"<>:\-[\]+*!]+)\s*(\+\+|--|\*\*|!!)?\s*(?::\s?(.*))?$/;
-const NOTE_RE = /^(note|hnote|rnote)\s+(left of|right of|over|left|right)\b\s*([^:]*?)\s*(?::\s?(.*))?$/i;
+const NOTE_RE = /^(note|hnote|rnote|ref)\s+(left of|right of|over|left|right)\b\s*([^:]*?)\s*(?::\s?(.*))?$/i;
 
 /* 每種元素的「指紋」：沒變就用原本那一行 */
 export const partSig = (p) => JSON.stringify([p.id, p.name, p.kind, p.shape || '']);
@@ -63,6 +63,9 @@ export function parseSeqPuml(text) {
     const parts = [], pm = new Map(), rows = [], blocks = [], bstack = [], calls = [];
     const unknown = [];
     let pre = [], kept = 0, name = '', hasTitle = false, lastMsg = null;
+    const boxes = [], legend = [];
+    let header = '', footer = '';
+    let box = null, hasLegend = false;
 
     const usePart = (raw) => {
         const id = unq(raw);
@@ -99,8 +102,33 @@ export function parseSeqPuml(text) {
         if (/^skinparam\b.*\{\s*$/i.test(t)) { const j = until(i, /^\}$/); keepRaw(i, j); i = j; continue; }
         if (/^(legend|header|footer|center\s+footer|right\s+footer|left\s+footer)(\s+(left|right|center|top|bottom))*$/i.test(t)) {
             const kw = t.match(/(legend|header|footer)/i)[1].toLowerCase();
-            const j = until(i, new RegExp('^end' + kw + '$', 'i')); keepRaw(i, j); i = j; continue;
+            const j = until(i, new RegExp('^end\\s*' + kw + '$', 'i'));
+            if (kw === 'legend' && !hasLegend) {
+                // 圖例：每一行變成工具圖例的一條（純文字、各自一行）；== 標題 == 只留字，---- 分隔線不畫
+                hasLegend = true;
+                lines.slice(i + 1, j).forEach((s) => {
+                    const x = s.trim();
+                    if (!x) return;
+                    // 分隔線留在資料裡（改圖例後匯出才不會少），圖上不畫
+                    if (/^(-{2,}|={2,}|\.{2,}|_{2,})$/.test(x)) { legend.push({ tone: 'text', sep: true, text: x, raw: x }); return; }
+                    legend.push({ tone: 'text', line: true, text: x.replace(/^==\s*(.*?)\s*==$/, '$1'), raw: x });
+                });
+                if (lines.slice(i, j + 1).some((s) => s.trim())) kept += j - i + 1;
+                pre.push({ legend: true, lines: lines.slice(i, j + 1) });
+                i = j; continue;
+            }
+            const body = lines.slice(i + 1, j).map((s) => s.trim()).filter(Boolean).join('\n');
+            if (kw === 'header') header = body; else if (kw === 'footer') footer = body;
+            keepRaw(i, j); i = j; continue;
         }
+        // 頁首／頁尾一行的寫法
+        if ((m = t.match(/^(?:(?:left|right|center)\s+)?(header|footer)\s+(.+)$/i))) {
+            if (/^header$/i.test(m[1])) header = m[2].trim(); else footer = m[2].trim();
+            keepRaw(i, i); continue;
+        }
+        // box "名稱" #色 … end box：框住中間宣告的參與者
+        if ((m = t.match(/^box\b\s*("[^"]*"|[^#]*?)?\s*(#\S+)?\s*$/i))) { box = { label: unq(m[1] || ''), color: m[2] || '', ids: [] }; boxes.push(box); keepRaw(i, i); continue; }
+        if (/^end\s*box$/i.test(t)) { box = null; keepRaw(i, i); continue; }
         if ((m = t.match(/^title\s+(.*)$/i))) { name = m[1].trim(); hasTitle = true; pre.push({ title: true, text: raw }); continue; }
         if ((m = t.match(new RegExp('^(' + SHAPES.join('|') + ')\\s+(.+)$', 'i')))) {
             const rm = m[2].match(/^("[^"]+"|[^\s"]+)(?:\s+as\s+("[^"]+"|[^\s"]+))?(.*)$/i);
@@ -113,6 +141,7 @@ export function parseSeqPuml(text) {
             if (!p) { p = { id }; pm.set(id, p); parts.push(p); }
             Object.assign(p, { name: nm, shape, kind: shape === 'actor' ? 'actor' : 'object', decl: true,
                 src: raw, pre, tail: rm[3] || '', nameFirst, quoted: /^"/.test(rm[1]) });
+            if (box && !box.ids.includes(id)) box.ids.push(id);
             pre = [];
             p.sig = partSig(p);
             continue;
@@ -172,7 +201,7 @@ export function parseSeqPuml(text) {
             tg.forEach(usePart);
             let text, j = i;
             if (m[4] === undefined) {
-                j = until(i, /^end\s*(note|hnote|rnote)$/i);
+                j = until(i, /^end\s*(note|hnote|rnote|ref)$/i);
                 text = lines.slice(i + 1, j).map((s) => s.trim()).join('\n');
             } else text = inNL(m[4]);
             const r = addRow({ kind: 'note', kw, pos: pos.replace(/ of$/, ''), at: tg[0], at2: tg[1] || '', text }, raw);
@@ -199,8 +228,7 @@ export function parseSeqPuml(text) {
             continue;
         }
         // 認得、但時序圖畫不出來的：照原文保留
-        if (/^(autonumber|skinparam|hide|show|!|scale|newpage|caption|mainframe|box\b|end\s+box|\|\|\||\|\|\d+\|\||ref\s+over|create\s|destroy\s|delay)/i.test(t)) {
-            if (/^ref\s+over\s+[^:]+$/i.test(t)) { const j = until(i, /^end\s*ref$/i); keepRaw(i, j); i = j; continue; }
+        if (/^(autonumber|skinparam|hide|show|!|scale|newpage|caption|mainframe|\|\|\||\|\|\d+\|\||create\s|destroy\s|delay)/i.test(t)) {
             keepRaw(i, i);
             continue;
         }
@@ -210,8 +238,8 @@ export function parseSeqPuml(text) {
         const b = bstack.pop(); b.to = rows.length - 1; b.endSrc = null; b.endPre = [];
         if (b.to >= b.from) blocks.push(b);
     }
-    const d = { name, parts, rows, blocks };
-    d.puml = { orig: src, nl, tail: pre, hasTitle, titleName: name, sig0: modelSig(d) };
+    const d = { name, parts, rows, blocks, boxes, legend, header, footer };
+    d.puml = { orig: src, nl, tail: pre, hasTitle, titleName: name, sig0: modelSig(d), legendSig: JSON.stringify(legend) };
     d.report = {
         kind: 'pumlSeq', parts: parts.length, msgs: rows.filter((r) => r.kind === 'msg').length,
         notes: rows.filter((r) => r.kind === 'note').length, blocks: blocks.length, kept, unknown,
@@ -226,6 +254,7 @@ export function modelSig(d) {
         d.parts.map(partSig),
         d.rows.map((r) => rowSig(r) + JSON.stringify((r.act || []).map((a) => a.op + a.id))),
         d.blocks.map((b) => [blockSig(b), b.from, b.to, (b.elses || []).map((e) => [e.at, e.label])]),
+        (d.legend || []).map((l) => [l.tone, l.text]),
     ]);
 }
 
@@ -264,11 +293,27 @@ const indOf = (line, fallback) => (typeof line === 'string' ? line.match(/^\s*/)
 export function toPumlSeq() {
     const P = S.puml;
     // 原檔沒有 title 時，圖名只拿來當下載檔名，不寫進 PUML，也不算改動
-    const d = { name: P && !P.hasTitle ? '' : S.name, parts: S.parts, rows: S.rows, blocks: S.blocks };
+    const d = { name: P && !P.hasTitle ? '' : S.name, parts: S.parts, rows: S.rows, blocks: S.blocks, legend: S.legend };
     if (P && typeof P.orig === 'string' && modelSig(d) === P.sig0) return P.orig;
     const out = [];
+    let legendDone = false;
+    // 圖例沒改就原文照放；改過就照現在的內容重寫（標題那種原本有 == == 的行，字沒改就沿用原文）
+    const legendLines = (head, end) => {
+        legendDone = true;
+        if (!S.legend.length) return [];
+        const ind = indOf(head, '');
+        return [head || 'legend', ...S.legend.map((l) => {
+            const keep = l.raw && l.raw.replace(/^==\s*(.*?)\s*==$/, '$1') === l.text;
+            return `${ind}  ${keep ? l.raw : l.text}`;
+        }), end || `${ind}endlegend`];
+    };
     const emitPre = (arr) => (arr || []).forEach((x) => {
         if (typeof x === 'string') { out.push(x); return; }
+        if (x.legend) {
+            if (JSON.stringify(S.legend) === P.legendSig) { out.push(...x.lines); legendDone = true; }
+            else out.push(...legendLines(x.lines[0], x.lines[x.lines.length - 1]));
+            return;
+        }
         if (x.title) {   // 標題那一行：圖名改過才重寫
             if ((S.name || '') === (P ? P.titleName : '')) out.push(x.text);
             else if (S.name) out.push(`${indOf(x.text, '')}title ${S.name}`);
@@ -320,6 +365,11 @@ export function toPumlSeq() {
         acts.filter((a) => (a.after || 0) >= Math.max(closed, 1)).forEach((a) => { emitPre(a.pre); out.push(a.src); });
     }
     if (P) emitPre(P.tail); else out.push('@enduml');
+    // 原檔沒有圖例、在工具裡加了：放在 @enduml 前面
+    if (P && !legendDone && S.legend.length) {
+        let k = out.length; while (k > 0 && !/^\s*@enduml/i.test(out[k - 1])) k--;
+        out.splice(k > 0 ? k - 1 : out.length, 0, ...legendLines('legend', 'endlegend'));
+    }
     return out.join(P ? P.nl : '\n');
 
     function emitElse(e, b, i) {

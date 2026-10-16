@@ -15,6 +15,7 @@ setStrings(L);
 
 /* 文字先就位，再畫畫面 */
 document.getElementById('seqTitle').textContent = L.title;
+document.getElementById('mm').setAttribute('aria-label', L.msg.mmAria);
 document.getElementById('seqSub').textContent = L.subtitle;
 document.getElementById('mmHead').textContent = L.msg.mmHead;
 document.querySelectorAll('[data-btn]').forEach((b) => { b.textContent = L.btn[b.dataset.btn]; });
@@ -209,6 +210,7 @@ filePick.addEventListener('change', async () => {
     try {
         const d = await readFile(f);
         if (typeof d.puml === 'string') { importPuml(d.puml, f.name); return; }
+        if (typeof d.mermaid === 'string') { importMermaid(d.mermaid, f.name); return; }
         push();
         loadDiagram(d);
         S.type = 'seq';
@@ -225,6 +227,27 @@ filePick.addEventListener('change', async () => {
         showFailure(err, f.name);
     }
 });
+
+/* Mermaid 檔進來：跟貼進原始碼框同一條路，看不懂時報原文行號 */
+function importMermaid(text, fname) {
+    let o;
+    try { o = fromMermaid(text); } catch (e) {
+        showFailure({ message: e.line ? L.msg.errLine(e.line, e.msg) : String(e.message || e) }, fname);
+        return;
+    }
+    push();
+    loadDiagram(o);
+    S.type = 'seq';
+    S.fmt = 'mermaid';
+    const base = fname.replace(/[.][^.]+$/, '').trim();
+    if (base && !S.mmTitle && !/^sequence-\d{8}-\d{4}$/.test(base)) S.name = base;
+    nameBox.value = S.name || '';
+    resetSelKey();
+    mmErr.textContent = '';
+    touch();
+    render();
+    report.hidden = true;
+}
 
 /* PUML 進來：先判斷是哪一種圖，時序圖轉成工具資料、活動圖整份原文交給 act.js */
 function importPuml(text, fname) {
@@ -433,12 +456,7 @@ function buildHelp() {
       <div data-help="seq">
         <h3>${H.head}</h3>
         <p>${H.lead}</p>
-        ${sec(H.secCross, H.secCrossNote, H.rows.cross)}
-        ${sec(H.secRow, H.secRowNote, H.rows.row)}
-        ${sec(H.secPoint, H.secPointNote, H.rows.point)}
-        ${sec(H.secBlock, H.secBlockNote, H.rows.block)}
-        ${sec(H.secPart, H.secPartNote, H.rows.part)}
-        ${sec(H.secAdd, '', H.rows.add)}
+        ${H.secs.map(([t, note, rows]) => sec(t, note, rows)).join('')}
         <div class="help-pin">${H.pin}</div>
       </div>
       <div data-help="act" hidden>

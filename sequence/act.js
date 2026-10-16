@@ -16,11 +16,19 @@ export const A = {
 };
 
 const inNL = (s) => String(s).replace(/\\n/g, '\n');
+// PUML 的 #red 是顏色名、#ff0000 才是色碼；漸層 #pink/blue 只取第一個。給 SVG 用的時候名字要去掉 #
+const cssColor = (c) => {
+    const x = String(c || '').split(/[/\\|-]/)[0];
+    if (!x) return '';
+    return /^#([0-9a-f]{3}|[0-9a-f]{6}|[0-9a-f]{8})$/i.test(x) ? x : x.replace(/^#/, '');
+};
+// 步驟結尾：; 是一般圓角框，| < > / ] } 是 PlantUML 的 SDL 形狀
+const ACT_END = /[;|<>/\]}]\s*$/;
 const outNL = (s) => String(s).split('\n').join('\\n');
 // 有分支（內容）的區塊：判斷 if、迴圈 while／repeat、平行 fork
 const BLOCKS = ['if', 'while', 'repeat', 'fork'];
 const isBlock = (it) => it && BLOCKS.includes(it.t);
-const isNode = (it) => it && (it.t === 'start' || it.t === 'stop' || it.t === 'action' || isBlock(it));
+const isNode = (it) => it && (it.t === 'start' || it.t === 'stop' || it.t === 'action' || it.t === 'conn' || isBlock(it));
 const endOf = (n) => (isBlock(n) ? n.endLine : n.end);
 
 /* ── 解析 ─────────────────────────────────── */
@@ -32,8 +40,9 @@ export function parseAct(text) {
     const root = [], stack = [root], open = [];   // open：還沒收尾的區塊（if／while／repeat／fork）
     let lane = null, firstFlow = -1, kept = 0, partDepth = 0;
     // last：註記要掛在誰身上（剛畫完的步驟，或剛收尾的區塊＝掛在匯合點）；arrowIn：下一步進來那條線的樣式
-    let last = null, arrowIn = null, legend = null;
-    const notes = [];
+    let last = null, arrowIn = null, legend = null, title = '', header = '', footer = '';
+    const notes = [], frames = [], fstack = [];
+    const cleanName = (s) => String(s || '').replace(/\s+#\S+\s*$/, '').replace(/\s+as\s+\S+$/i, '').trim().replace(/^"(.*)"$/, '$1');
     const topIs = (t) => open.length && open[open.length - 1].t === t;
     const close = (i) => { stack.pop(); const o = open.pop(); o.endLine = o.end = i; last = { node: o, after: true }; return o; };
     const until = (from, re) => { let j = from + 1; while (j < lines.length && !re.test(lines[j].trim())) j++; return Math.min(j, lines.length - 1); };
@@ -62,7 +71,15 @@ export function parseAct(text) {
             const kw = t.match(/(legend|header|footer)/i)[1];
             const j = until(i, new RegExp('^end\\s*' + kw + '$', 'i'));
             if (/^legend$/i.test(kw)) legend = { pos: t.toLowerCase(), line: i, end: j, ind, body: lines.slice(i + 1, j) };
+            else if (/^header$/i.test(kw)) header = lines.slice(i + 1, j).map((s) => s.trim()).join('\n');
+            else footer = lines.slice(i + 1, j).map((s) => s.trim()).join('\n');
             i = j; kept++; continue;
+        }
+        // 標題、頁首、頁尾（一行的寫法）：畫在圖的上下
+        if ((m = t.match(/^title\s+(.+)$/i))) { title = m[1].trim(); kept++; continue; }
+        if ((m = t.match(/^(?:(?:left|right|center)\s+)?(header|footer|caption)\s+(.+)$/i))) {
+            if (/^header$/i.test(m[1])) header = m[2].trim(); else footer = [footer, m[2].trim()].filter(Boolean).join('\n');
+            kept++; continue;
         }
         if (/^(skinparam|title|caption|scale|hide|show|!|header|footer|left to right|top to bottom)/i.test(t)) { kept++; continue; }
         if ((m = t.match(/^\|(?:(#[^|]*)\|)?([^|]+)\|\s*$/))) {
@@ -74,12 +91,18 @@ export function parseAct(text) {
         }
         if (/^start$/i.test(t)) { add({ t: 'start' }); continue; }
         if (/^(stop|end|kill|detach)$/i.test(t)) { add({ t: 'stop', kw: t.toLowerCase() }); continue; }
+        // break：跳出最近的迴圈，線接到迴圈出口
+        if (/^break\s*;?$/i.test(t)) { add({ t: 'stop', kw: 'break' }); continue; }
+        // (A)：連接點，常配 detach 把很長的線斷開再接回來
+        if ((m = t.match(/^\(([^()]{1,8})\)$/))) { add({ t: 'conn', label: m[1].trim() }); continue; }
+        // label 名稱 ／ goto 名稱：goto 畫一條線接回 label 那一點
+        if ((m = t.match(/^label\s+(\S+)\s*;?$/i))) { add({ t: 'label', name: m[1] }); continue; }
+        if ((m = t.match(/^goto\s+(\S+)\s*;?$/i))) { add({ t: 'goto', name: m[1] }); continue; }
         // 箭頭樣式：-[hidden]->（下一條線不畫）、-[#red]->（上色）、-> 文字;（線上標字）
         if ((m = t.match(/^-(?:\[([^\]]*)\]-)?>\s*(.*?)\s*;?$/))) {
             const st = m[1] || '';
             // PUML 的 #red 是顏色名，#ff0000 才是色碼：名字去掉 # 給 SVG 用
-            let color = (st.match(/#[0-9a-z]+/i) || [''])[0];
-            if (color && !/^#([0-9a-f]{3}|[0-9a-f]{6}|[0-9a-f]{8})$/i.test(color)) color = color.slice(1);
+            const color = cssColor((st.match(/#[0-9a-z]+/i) || [''])[0]);
             arrowIn = { hidden: /\bhidden\b/i.test(st), color, label: inNL(m[2] || '') };
             continue;
         }
@@ -99,11 +122,38 @@ export function parseAct(text) {
             i = j;
             continue;
         }
-        if (t.startsWith(':')) {
-            let j = i, buf = t.slice(1);
-            while (!/;\s*$/.test(j === i ? t : lines[j].trim()) && j < lines.length - 1) { j++; buf += '\n' + lines[j].trim(); }
-            add({ t: 'action', text: inNL(buf.replace(/;\s*$/, '')), end: j });
-            i = j;
+        // 步驟：#色:文字;（上色）、:文字|（SDL 形狀）；repeat :文字; 是 repeat 跟第一步寫在同一行
+        const readAction = (body) => {
+            let j = i, buf = body;
+            while (!ACT_END.test(j === i ? body : lines[j].trim()) && j < lines.length - 1) { j++; buf += '\n' + lines[j].trim(); }
+            const tm = buf.match(/([;|<>/\]}])\s*$/);
+            return { text: inNL(tm ? buf.slice(0, tm.index) : buf), term: tm ? tm[1] : ';', end: j };
+        };
+        if ((m = t.match(/^repeat\s*(#[^\s:]+)?\s*:(.*)$/i))) {
+            const o = add({ t: 'repeat', cond: '', label: '', endLabel: '', branches: [], endLine: -1 });
+            const b = { kw: 'body', label: '', line: i, ind, items: [] };
+            o.branches.push(b); stack.push(b.items); open.push(o);
+            const a = readAction(m[2]);
+            const it = { t: 'action', text: a.text, term: a.term, end: a.end, head: true, prefix: 'repeat ', color: m[1] || '' };
+            Object.assign(it, { line: i, ind, lane });
+            b.items.push(it);
+            last = { node: it, after: false };
+            i = a.end;
+            continue;
+        }
+        // backward :文字;：repeat 往回繞的那條線上的一步
+        if ((m = t.match(/^backward\s*(#[^\s:]+)?\s*:(.*)$/i))) {
+            const rp = [...open].reverse().find((o) => o.t === 'repeat');
+            const a = readAction(m[2]);
+            if (rp) rp.backward = { text: a.text, term: a.term, color: m[1] || '', line: i, end: a.end, ind };
+            else unknown.push({ line: i + 1, text: t });
+            i = a.end;
+            continue;
+        }
+        if ((m = t.match(/^(#[^\s:]+)?\s*:(.*)$/)) && (m[1] || t.startsWith(':'))) {
+            const a = readAction(m[2]);
+            add({ t: 'action', text: a.text, term: a.term, end: a.end, color: m[1] || '' });
+            i = a.end;
             continue;
         }
         if ((m = t.match(/^if\s*\((.*)\)\s*then\s*(?:\((.*)\))?\s*;?$/i))) {
@@ -128,6 +178,20 @@ export function parseAct(text) {
             continue;
         }
         if (/^end\s*if$/i.test(t) && topIs('if')) { close(i); continue; }
+        // switch (條件) / case (標籤) … / endswitch：畫法跟判斷一樣，每個 case 一條分支
+        if ((m = t.match(/^switch\s*\((.*)\)\s*;?$/i))) {
+            const o = add({ t: 'if', sw: true, cond: inNL(m[1]), branches: [], endLine: -1 });
+            stack.push([]); open.push(o);       // 第一個 case 之前的東西（通常沒有）先放一個暫存的地方
+            continue;
+        }
+        if ((m = t.match(/^case\s*\((.*)\)\s*;?$/i)) && topIs('if') && open[open.length - 1].sw) {
+            stack.pop();
+            const b = { kw: 'case', label: m[1], line: i, ind, items: [] };
+            open[open.length - 1].branches.push(b);
+            stack.push(b.items);
+            continue;
+        }
+        if (/^end\s*switch$/i.test(t) && topIs('if') && open[open.length - 1].sw) { close(i); continue; }
         // 迴圈：while (條件) is (標籤) … endwhile (離開標籤)
         if ((m = t.match(/^while\s*\((.*?)\)\s*(?:is\s*\((.*)\))?\s*;?$/i))) {
             const o = add({ t: 'while', cond: inNL(m[1]), label: m[2] ?? '', endLabel: '', branches: [], endLine: -1 });
@@ -163,16 +227,24 @@ export function parseAct(text) {
             continue;
         }
         if (/^end\s*(fork|merge|split)\b.*$/i.test(t) && topIs('fork')) { close(i); continue; }
-        // partition 名稱 { … }：外框不畫，裡面的步驟照常
-        if (/^partition\b.*\{\s*$/i.test(t)) { partDepth++; kept++; continue; }
-        if (/^\}\s*$/.test(t) && partDepth) { partDepth--; kept++; continue; }
-        // 活動圖認得、但這一版還不畫的（註記、goto…）：原文留著，匯出照放
+        // 外框：partition／group／package／rectangle／card 名稱 { … }，或 group 名稱 … end group
+        if ((m = t.match(/^(partition|group|package|rectangle|card)\b\s*(.*?)\s*\{\s*$/i))) {
+            const f = { kw: m[1].toLowerCase(), name: cleanName(m[2]), line: i, end: lines.length - 1, brace: true, depth: fstack.length };
+            frames.push(f); fstack.push(f); partDepth++; kept++; continue;
+        }
+        if ((m = t.match(/^group\b\s*(.*)$/i)) && !/^group\s*\{/.test(t)) {
+            const f = { kw: 'group', name: cleanName(m[1]), line: i, end: lines.length - 1, brace: false, depth: fstack.length };
+            frames.push(f); fstack.push(f); kept++; continue;
+        }
+        if (/^end\s*group$/i.test(t) && fstack.length && !fstack[fstack.length - 1].brace) { fstack.pop().end = i; kept++; continue; }
+        if (/^\}\s*$/.test(t) && partDepth) { partDepth--; const f = fstack.pop(); if (f) f.end = i; kept++; continue; }
+        // 活動圖認得、但這一版還不畫的：原文留著，匯出照放
         if (/^(floating\s+)?note\b/i.test(t) && !t.includes(':')) { const j = until(i, /^end\s*note$/i); unknown.push({ line: i + 1, text: t }); kept += j - i + 1; i = j; continue; }
         unknown.push({ line: i + 1, text: t });
         kept++;
     }
     while (open.length) { const o = open.pop(); o.endLine = o.end = lines.length - 1; }
-    return { nl, lines, lanes, laneItems, root, firstFlow, unknown, kept, notes, legend };
+    return { nl, lines, lanes, laneItems, root, firstFlow, unknown, kept, notes, legend, frames, title, header, footer };
 }
 
 function flatten(items, out) {
@@ -333,6 +405,7 @@ export function renderAct() {
     A.notes.forEach((nt) => {
         if (nt.side === 'left' && nt.owner && li(nt.owner) === 0) padL = Math.max(padL, LEFT + noteSize(nt).w + 24 - (slotW - 150) / 2);
     });
+    A.flat.forEach((n) => { if (n.backward && li(n) === 0 && n.slot === 0) padL = Math.max(padL, boxOf(n.backward).w / 2 + 6); });
     const laneX = [];
     laneW.reduce((x, w, k) => { laneX[k] = x; return x + w; }, padL);
     let W = padL + LEFT + laneW.reduce((a, b) => a + b, 0);
@@ -347,7 +420,8 @@ export function renderAct() {
         defs.appendChild(mk);
     }
     const hasLanes = A.lanes.length > 0;
-    let y = hasLanes ? HDR + 30 : 24;
+    const T0 = (A.title ? 30 : 0) + (A.header ? 18 : 0);      // 標題、頁首佔的高度，泳道標頭跟著往下
+    let y = (hasLanes ? HDR + 30 : 24) + T0;
     const leg = A.legend ? legendSize(A.legend) : null;
     const legTop = leg && /\btop\b/.test(A.legend.pos);
     if (legTop) y += leg.h + 18;
@@ -466,11 +540,25 @@ export function renderAct() {
         t.textContent = txt;
         gEdge.appendChild(t);
     }
+    const loopCtx = [], labelAt = {}, gotos = [];
+    // 外框要的上下空間：框裡第一步上面留名稱那一行，最後一步下面留一點邊
+    const fTop = new Map(), fBot = new Map(), nodeEnd = new Map();
+    A.frames.forEach((f) => {
+        const inside = A.flat.filter((n) => n.line > f.line && n.line < f.end);
+        if (!inside.length) { f.first = f.last = null; return; }
+        const same = inside.filter((n) => n.parent === inside[0].parent);
+        f.first = inside[0]; f.last = same[same.length - 1];
+        fTop.set(f.first, (fTop.get(f.first) || 0) + 1);
+        fBot.set(f.last, (fBot.get(f.last) || 0) + 1);
+    });
     function flow(items, opens) {
         items.forEach((it) => {
+            if (it.t === 'label') { labelAt[it.name] = { x: opens.length ? opens[0].x : laneX[li(it)] + slotW / 2, y }; return; }
+            if (it.t === 'goto') { gotos.push({ opens, name: it.name }); opens = []; return; }
             if (!isNode(it)) return;
             const fi = A.flat.indexOf(it), x = nx(it), on = isOn(fi);
             const col = on ? C_ON : C_TXT;
+            y += 30 * (fTop.get(it) || 0);
             if (it.arrowIn && it.arrowIn.label && !it.arrowIn.hidden && opens.length) y += 16;   // 線上有字：拉長一點放得下
             if (it.t === 'start') {
                 link(opens, x, y, false, it.arrowIn);
@@ -486,6 +574,23 @@ export function renderAct() {
                 A.pos[fi] = { x: x - 6, y: y - GAP / 2, w: 12, h: 12 };
                 opens = [];
                 y += drawNotes(it.notes, A.pos[fi]);
+            } else if (it.t === 'stop' && it.kw === 'break') {
+                // break：線一路接到包住它的迴圈出口（迴圈畫完時補上）
+                link(opens, x, y, false, it.arrowIn);
+                const g = nodeG(fi);
+                g.appendChild(el('circle', { cx: x, cy: y + 4, r: 4, fill: on ? C_ON : rgb('--c-ink', '.7') }));
+                A.pos[fi] = { x: x - 6, y: y - 2, w: 12, h: 12 };
+                if (loopCtx.length) loopCtx[loopCtx.length - 1].push({ x, y: y + 4 });
+                opens = [];
+                y += 8 + GAP + drawNotes(it.notes, A.pos[fi]);
+            } else if (it.t === 'conn') {
+                link(opens, x, y, false, it.arrowIn);
+                const g = nodeG(fi);
+                g.appendChild(el('circle', { cx: x, cy: y + 12, r: 12, fill: on ? rgb('--c-purple', '.14') : rgb('--c-surface'), stroke: on ? C_ON : rgb('--c-ink', '.6'), 'stroke-width': on ? 1.6 : 1.2 }));
+                putText(g, x, y + 16.5, it.label, col);
+                A.pos[fi] = { x: x - 12, y, w: 24, h: 24 };
+                opens = [{ x, y: y + 24 }];
+                y += 24 + GAP + drawNotes(it.notes, A.pos[fi]);
             } else if (it.t === 'stop') {
                 link(opens, x, y, false, it.arrowIn);
                 const g = nodeG(fi), ink = on ? C_ON : rgb('--c-ink', '.85');
@@ -502,8 +607,16 @@ export function renderAct() {
                 const { w, h } = boxOf(it);
                 link(opens, x, y, false, it.arrowIn);
                 const g = nodeG(fi);
-                g.appendChild(el('rect', { x: x - w / 2, y, width: w, height: h, rx: 9,
-                    fill: on ? rgb('--c-purple', '.14') : rgb('--c-surface'), stroke: on ? C_ON : rgb('--c-ink', '.22'), 'stroke-width': on ? 1.6 : 1 }));
+                const x0 = x - w / 2, x1 = x + w / 2, tm = it.term || ';';
+                const shp = { stroke: on ? C_ON : rgb('--c-ink', '.22'), 'stroke-width': on ? 1.6 : 1 };
+                const tint = cssColor(it.color);
+                if (on) shp.fill = rgb('--c-purple', '.14');
+                else if (tint) Object.assign(shp, { fill: tint, 'fill-opacity': .28 });
+                else shp.fill = rgb('--c-surface');
+                if (tm === '>') g.appendChild(el('path', { d: `M${x0},${y} H${x1 - 12} L${x1},${y + h / 2} L${x1 - 12},${y + h} H${x0} Z`, ...shp }));
+                else if (tm === '<') g.appendChild(el('path', { d: `M${x0},${y} H${x1} V${y + h} H${x0} L${x0 + 12},${y + h / 2} Z`, ...shp }));
+                else if (tm === '/') g.appendChild(el('path', { d: `M${x0 + 9},${y} H${x1} L${x1 - 9},${y + h} H${x0} Z`, ...shp }));
+                else g.appendChild(el('rect', { x: x0, y, width: w, height: h, rx: tm === ';' ? 9 : 0, ...shp }));
                 putText(g, x, y + 21, it.text, col);
                 A.pos[fi] = { x: x - w / 2, y, w, h };
                 opens = [{ x, y: y + h }];
@@ -532,7 +645,7 @@ export function renderAct() {
                     ends.push(...flow(b.items, start));
                     maxY = Math.max(maxY, y);
                 });
-                if (it.branches.length === 1) {   // 只有 then 沒有 else：沒走進去的那條直接繞到匯合點
+                if (it.branches.length === 1 && !it.sw) {   // 只有 then 沒有 else：沒走進去的那條直接繞到匯合點
                     ends.push({ x: x + hw, y: y0 + hh / 2, side: true });
                 }
                 y = maxY;
@@ -552,7 +665,9 @@ export function renderAct() {
                 hexG(fi, x, y, hw, hh, it.cond, on, brOn);
                 drawNotes(it.notes, A.pos[fi]);
                 y = y0 + hh + 26;
+                loopCtx.push([]);
                 const ends = flow(it.branches[0].items, [{ x, y: y0 + hh, label: it.label, lab: [x + 6, y0 + hh + 14], bk: [fi, 0] }]);
+                const brks = loopCtx.pop();
                 const yt = y - GAP + 10;
                 ends.forEach((o) => {
                     arrow(`M${o.x},${o.y} V${yt} H${xl} V${y0 + hh / 2} H${x - hw}`, false);
@@ -560,6 +675,7 @@ export function renderAct() {
                 });
                 const ye = yt + 14;
                 gEdge.appendChild(el('path', { d: `M${x + hw},${y0 + hh / 2} H${xr} V${ye} H${x}`, fill: 'none', stroke: C_LINE, 'stroke-width': 1.3 }));
+                brks.forEach((b) => gEdge.appendChild(el('path', { d: `M${b.x},${b.y} H${xr} V${ye}`, fill: 'none', stroke: C_LINE, 'stroke-width': 1.3 })));
                 plainLabel(x + hw + 6, y0 + hh / 2 - 6, it.endLabel);
                 opens = [{ x, y: ye }];
                 y = ye + 16 + drawNotes(it.endNotes, { x: x - 4, y: ye - 4, w: 8, h: 8 });
@@ -571,11 +687,25 @@ export function renderAct() {
                 const yd = y;
                 mergeG(fi, x, yd, on || brOn);
                 y = yd + 20 + GAP;
+                loopCtx.push([]);
                 const ends = flow(it.branches[0].items, [{ x, y: yd + 20 }]);
+                const brks = loopCtx.pop();
                 const yh = y;
                 link(ends, x, yh);
                 hexG(fi, x, yh, hw, hh, it.cond, on, brOn);
-                arrow(`M${x - hw},${yh + hh / 2} H${xl} V${yd + 10} H${x - 10}`, false);
+                if (it.backward) {
+                    // backward：往回繞的線中間畫一個步驟框，雙擊可以改字
+                    const bk = boxOf(it.backward), by = Math.max(yd + 24, (yd + 20 + yh) / 2 - bk.h / 2);
+                    gEdge.appendChild(el('path', { d: `M${x - hw},${yh + hh / 2} H${xl} V${by + bk.h}`, fill: 'none', stroke: C_LINE, 'stroke-width': 1.3 }));
+                    const bg = el('g', { 'data-back': fi, style: 'cursor:pointer' });
+                    const tint = cssColor(it.backward.color);
+                    bg.appendChild(el('rect', { x: xl - bk.w / 2, y: by, width: bk.w, height: bk.h, rx: 9, fill: tint || rgb('--c-surface'), 'fill-opacity': tint ? .28 : 1, stroke: rgb('--c-ink', '.22') }));
+                    putText(bg, xl, by + 21, it.backward.text, C_TXT);
+                    gNode.appendChild(bg);
+                    arrow(`M${xl},${by} V${yd + 10} H${x - 10}`, false);
+                } else arrow(`M${x - hw},${yh + hh / 2} H${xl} V${yd + 10} H${x - 10}`, false);
+                const xr = nx(it) - slotW / 2 + (it.used || 1) * slotW - 8;
+                brks.forEach((b) => arrow(`M${b.x},${b.y} H${xr} V${yh + hh + 12} H${x + 4}`, false));
                 label(xl + 6, yd + 6, it.label, fi, 0);
                 plainLabel(x + 6, yh + hh + 14, it.endLabel);
                 opens = [{ x, y: yh + hh }];
@@ -607,18 +737,61 @@ export function renderAct() {
                 opens = [{ x, y: jy + 6 }];
                 y = jy + 6 + GAP + drawNotes(it.endNotes, { x: bx0, y: jy, w: bx1 - bx0, h: 6 });
             }
+            nodeEnd.set(it, y - GAP);
+            y += 22 * (fBot.get(it) || 0);
         });
         return opens;
     }
     flow(A.root, []);
+    // goto：從那一點往左繞，接回 label 的位置
+    gotos.forEach((g) => {
+        const L0 = labelAt[g.name];
+        if (!L0) return;
+        g.opens.forEach((o) => {
+            const gx = Math.max(4, Math.min(o.x, L0.x) - slotW / 2 + 4);
+            arrow(`M${o.x},${o.y} V${o.y + 12} H${gx} V${L0.y - 10} H${L0.x} V${L0.y}`, false);
+        });
+    });
+    // 外框：把框裡所有步驟包起來，左上角掛名稱；外層的框留比較寬的邊
+    A.frames.forEach((f) => {
+        const ps = A.flat.map((n, k) => (n.line > f.line && n.line < f.end ? A.pos[k] : null)).filter(Boolean);
+        if (!ps.length || !f.first || !A.pos[A.flat.indexOf(f.first)]) return;
+        const inner = A.frames.filter((o) => o !== f && o.line > f.line && o.end < f.end).length;
+        const pad = 14 + inner * 10;
+        // 迴圈往回繞的線貼著欄位左右邊走，框也要包到那裡
+        const loopXs = A.flat.filter((n) => n.line > f.line && n.line < f.end && (n.t === 'while' || n.t === 'repeat'))
+            .flatMap((n) => [nx(n) - slotW / 2 + 8, nx(n) - slotW / 2 + (n.used || 1) * slotW - 8]);
+        const x0 = Math.min(...ps.map((p) => p.x), ...loopXs) - pad, x1 = Math.max(...ps.map((p) => p.x + p.w), ...loopXs) + pad;
+        // 同一步開頭的幾層框：越外層越往上；同一步結尾的：越外層越往下
+        const kTop = A.frames.filter((o) => o.first === f.first && o.line >= f.line && o.end <= f.end).length;
+        const kBot = A.frames.filter((o) => o.last === f.last && o.line >= f.line && o.end <= f.end).length;
+        const y0 = A.pos[A.flat.indexOf(f.first)].y - 30 * kTop + 4;
+        const y1 = Math.max(nodeEnd.get(f.last) ?? 0, ...ps.map((p) => p.y + p.h)) + 22 * kBot - 2;
+        gBg.appendChild(el('rect', { x: x0, y: y0, width: x1 - x0, height: y1 - y0, rx: f.kw === 'rectangle' || f.kw === 'card' ? 2 : 6, fill: rgb('--c-ink', '.025'), stroke: rgb('--c-ink', '.3'), 'stroke-dasharray': f.kw === 'group' ? '5 4' : 'none' }));
+        const lab = `${f.kw === 'partition' ? '' : f.kw + ' '}${f.name}`.trim();
+        if (lab) {
+            const t = el('text', { x: x0 + 8, y: y0 + 14, 'font-size': 11.5, 'font-weight': 600, 'font-family': 'inherit', fill: cvar('--c-dim') });
+            t.textContent = lab;
+            gBg.appendChild(t);
+        }
+    });
     W = Math.max(W, maxX + LEFT);
+    if (A.title || A.header) {
+        if (A.header) { const t = el('text', { x: W - LEFT, y: 14, 'text-anchor': 'end', 'font-size': 11, 'font-family': 'inherit', fill: cvar('--c-dim') }); t.textContent = A.header.split('\n').join('  '); gBg.appendChild(t); }
+        if (A.title) { const t = el('text', { x: W / 2, y: (A.header ? 18 : 0) + 24, 'text-anchor': 'middle', 'font-size': 15, 'font-weight': 700, 'font-family': 'inherit', fill: C_TXT }); t.textContent = A.title; gBg.appendChild(t); }
+    }
     if (leg) {
         // legend left|center|right × top|bottom（預設置中、放在最下面）
         const lx = /\bleft\b/.test(A.legend.pos) ? padL : /\bright\b/.test(A.legend.pos) ? Math.max(padL, W - LEFT - leg.w) : Math.max(padL, (W - leg.w) / 2);
-        const ly = legTop ? (hasLanes ? HDR + 22 : 14) : y;
+        const ly = legTop ? (hasLanes ? HDR + 22 : 14) + T0 : y;
         drawLegend(gNode, lx, ly, leg);
         W = Math.max(W, lx + leg.w + LEFT);
         if (!legTop) y += leg.h + 16;
+    }
+    if (A.footer) {
+        const fl = A.footer.split('\n');
+        fl.forEach((s, k) => { const t = el('text', { x: W / 2, y: y + 6 + k * 15, 'text-anchor': 'middle', 'font-size': 11, 'font-family': 'inherit', fill: cvar('--c-dim') }); t.textContent = s; gBg.appendChild(t); });
+        y += fl.length * 15 + 8;
     }
     const H = y + 10;
 
@@ -626,15 +799,15 @@ export function renderAct() {
     if (hasLanes) {
         lanes.forEach((nm, k) => {
             const on = L === 'lane' && A.sel.lane === k;
-            if (on) gBg.appendChild(el('rect', { x: laneX[k], y: 8, width: laneW[k], height: H - 8, fill: rgb('--c-purple', '.06') }));
+            if (on) gBg.appendChild(el('rect', { x: laneX[k], y: 8 + T0, width: laneW[k], height: H - 8 - T0, fill: rgb('--c-purple', '.06') }));
             const g = el('g', { 'data-lane': k, style: 'cursor:pointer' });
-            g.appendChild(el('rect', { x: laneX[k] + 3, y: 8, width: laneW[k] - 6, height: HDR, rx: 6,
+            g.appendChild(el('rect', { x: laneX[k] + 3, y: 8 + T0, width: laneW[k] - 6, height: HDR, rx: 6,
                 fill: on ? rgb('--c-purple', '.16') : rgb('--c-surface'), stroke: on ? C_ON : rgb('--c-ink', '.12') }));
-            const t = el('text', { x: laneX[k] + laneW[k] / 2, y: 8 + HDR / 2 + 4.5, 'text-anchor': 'middle', 'font-size': FS, 'font-weight': 600, 'font-family': 'inherit', fill: on ? C_ON : C_TXT });
+            const t = el('text', { x: laneX[k] + laneW[k] / 2, y: 8 + T0 + HDR / 2 + 4.5, 'text-anchor': 'middle', 'font-size': FS, 'font-weight': 600, 'font-family': 'inherit', fill: on ? C_ON : C_TXT });
             t.textContent = nm;
             g.appendChild(t);
             gBg.appendChild(g);
-            if (k) gBg.appendChild(el('line', { x1: laneX[k], y1: 8, x2: laneX[k], y2: H, stroke: rgb('--c-ink', '.12') }));
+            if (k) gBg.appendChild(el('line', { x1: laneX[k], y1: 8 + T0, x2: laneX[k], y2: H, stroke: rgb('--c-ink', '.12') }));
         });
     }
     sv.append(defs, el('rect', { x: 0, y: 0, width: W, height: H, fill: rgb('--c-bg') }), gBg, gEdge, gNode);
@@ -684,7 +857,8 @@ function paintActStatus() {
         return;
     }
     const a = Math.min(A.sel.i, A.sel.j) + 1, b = Math.max(A.sel.i, A.sel.j) + 1;
-    const what = n.t === 'action' ? T.act.kAction(flat1(n.text)) : n.t === 'if' ? T.act.kIf(flat1(n.cond))
+    const what = n.t === 'action' ? T.act.kAction(flat1(n.text)) : n.t === 'if' ? (n.sw ? T.act.kSwitch(flat1(n.cond)) : T.act.kIf(flat1(n.cond)))
+        : n.t === 'conn' ? T.act.kConn(n.label) : n.t === 'stop' && n.kw === 'break' ? T.act.kBreak
         : n.t === 'while' ? T.act.kWhile(flat1(n.cond)) : n.t === 'repeat' ? T.act.kRepeat(flat1(n.cond))
             : n.t === 'fork' ? T.act.kFork(n.branches.length) : n.t === 'start' ? T.act.kStart : T.act.kStop;
     w.textContent = `${T.act.stepSpan(a, b)} · ${what}${n.lane ? ' · ' + n.lane : ''}`;
@@ -698,6 +872,7 @@ function group() {
     const a = Math.min(A.sel.i, A.sel.j), b = Math.max(A.sel.i, A.sel.j);
     const first = A.flat[a], last = A.flat[b];
     if (!first) return null;
+    if (first.head || (last && last.head)) { flash(T.act.headFixed); return null; }
     // 只認同一層的連續兄弟；選到跨層的就退回單一個
     if (!last || last.parent !== first.parent) return { first, last: first, s: first.line, e: tailOf(first) };
     return { first, last, s: first.line, e: tailOf(last) };
@@ -715,11 +890,13 @@ function editNode(fi, merge) {
     if (!n || !p) return;
     if (n.t === 'fork') { flash(T.act.forkNoText); return; }
     if (n.t === 'start' || n.t === 'stop') return;
-    const val = n.t === 'action' ? n.text : n.cond;
+    const val = n.t === 'action' ? n.text : n.t === 'conn' ? n.label : n.cond;
     openFree(p.x, p.y + p.h / 2 - 22, val, Math.max(240, p.w + 20), (v) => {
         if (!v || v === val) { render(); return; }
         const ls = lns();
-        if (n.t === 'action') ls.splice(n.line, n.end - n.line + 1, `${n.ind}:${outNL(v)};`);
+        if (n.t === 'action') ls.splice(n.line, n.end - n.line + 1, `${n.ind}${n.prefix || ''}${n.color || ''}:${outNL(v)}${n.term || ';'}`);
+        else if (n.t === 'conn') ls[n.line] = `${n.ind}(${v.split('\n').join(' ')})`;
+        else if (n.sw) ls[n.line] = `${n.ind}switch (${outNL(v)})`;
         else if (n.t === 'while') ls[n.line] = whileLine(n, v, n.label);
         else if (n.t === 'repeat') ls[n.endLine] = repeatEnd(n, ls, v, n.label);
         else {
@@ -760,6 +937,18 @@ function noteForSel() {
     apply(ls, n.line);
     const k = A.notes.findIndex((x) => x.line === at);
     if (k >= 0) editNote(k, true);
+}
+/* repeat 的 backward 框：改字只改那一行，保留顏色與結尾符號 */
+function editBackward(fi) {
+    const n = A.flat[fi], bw = n && n.backward, g = sv.querySelector(`[data-back="${fi}"]`);
+    if (!bw || !g) return;
+    const bb = g.getBBox();
+    openFree(bb.x, bb.y, bw.text, Math.max(220, bb.width + 20), (v) => {
+        if (!v || v === bw.text) { render(); return; }
+        const ls = lns();
+        ls.splice(bw.line, bw.end - bw.line + 1, `${bw.ind}backward ${bw.color || ''}:${outNL(v)}${bw.term || ';'}`.replace('backward :', 'backward :'));
+        apply(ls, n.line);
+    });
 }
 function editLegend() {
     const lg = A.legend, g = sv.querySelector('[data-legend]');
@@ -807,6 +996,7 @@ function editBranch(fi, k) {
         const ls = lns();
         if (b.kw === 'then') ls[n.line] = `${n.ind}if (${outNL(n.cond)}) then${v ? ` (${v})` : ''}`;
         else if (b.kw === 'elseif') ls[b.line] = `${b.ind}elseif (${outNL(b.cond)}) then${v ? ` (${v})` : ''}`;
+        else if (b.kw === 'case') ls[b.line] = `${b.ind}case (${v})`;
         else ls[b.line] = `${b.ind}else${v ? ` (${v})` : ''}`;
         apply(ls, n.line);
         A.sel = { ...A.sel, layer: 'branch', k };
@@ -824,6 +1014,8 @@ function addAfter(fi) {
 function cycleKind(fi) {
     const n = A.flat[fi];
     if (!n || n.t === 'start') return;
+    if (n.head) { flash(T.act.headFixed); return; }
+    if (n.t === 'conn' || n.sw || (n.t === 'stop' && n.kw === 'break')) { flash(T.act.cantKind); return; }
     if (isBlock(n) && n.t !== 'if') { flash(T.act.cantKind); return; }
     const ls = lns();
     if (n.t === 'action') {
@@ -1012,11 +1204,19 @@ function enterBranch(fi, k) {
 function descs(n, ls) {
     return n.branches.map((b, k) => {
         const s = b.line + 1, e = (n.branches[k + 1] ? n.branches[k + 1].line : n.endLine) - 1;
-        return { cond: b.kw === 'then' ? n.cond : b.kw === 'elseif' ? b.cond : null, label: b.label || '', body: ls.slice(s, e + 1) };
+        return { cond: n.sw ? 'case' : b.kw === 'then' ? n.cond : b.kw === 'elseif' ? b.cond : null, label: b.label || '', body: ls.slice(s, e + 1) };
     });
 }
 function writeIf(n, ds, ls) {
     const ind = n.ind, out = [];
+    if (n.sw) {        // switch：標頭一行，每個 case 一行，縮排沿用第一個 case
+        const ci = n.branches[0] ? n.branches[0].ind : ind + '  ';
+        out.push(ls[n.line]);
+        ds.forEach((d) => out.push(`${ci}case (${d.label})`, ...d.body));
+        out.push(ls[n.endLine]);
+        ls.splice(n.line, n.endLine - n.line + 1, ...out);
+        return ls;
+    }
     ds.forEach((d, j) => {
         const lab = d.label ? ` (${d.label})` : '';
         if (j === 0) out.push(`${ind}if (${outNL(d.cond ?? n.cond)}) then${lab}`);
@@ -1035,7 +1235,8 @@ function addBranch() {
     const k = A.sel.k, last = ds[ds.length - 1];
     let at = k + 1;
     const nb = { cond: T.act.cond, label: T.act.yes, body: [] };
-    if (ds.length === 1) Object.assign(nb, { cond: null, label: T.act.no });
+    if (n.sw) Object.assign(nb, { cond: 'case', label: T.act.newCase });
+    else if (ds.length === 1) Object.assign(nb, { cond: null, label: T.act.no });
     else if (at >= ds.length && last.cond == null) at = ds.length - 1;   // 加在 else 後面不合法，改插在 else 前面
     ds.splice(at, 0, nb);
     apply(writeIf(n, ds, ls), n.line);
@@ -1382,6 +1583,14 @@ function dragUp() {
 }
 export function onActClick(e) {
     if (eatClick) { eatClick = false; return; }     // 剛拖完放開的那一下不算點選
+    const bkg = e.target.closest('[data-back]');
+    if (bkg) {
+        const now = performance.now(), key = 'B' + bkg.dataset.back;
+        if (key === lastClick.key && now - lastClick.t < 450) { lastClick = { key: '', t: 0 }; editBackward(+bkg.dataset.back); return; }
+        lastClick = { key, t: now };
+        const i = +bkg.dataset.back; A.sel = { ...A.sel, layer: 'node', i, j: i }; render();
+        return;
+    }
     const note = e.target.closest('[data-note]'), lgd = e.target.closest('[data-legend]');
     if (note || lgd) {
         const key = note ? 'N' + note.dataset.note : 'L', now = performance.now();
@@ -1410,6 +1619,8 @@ export function onActDbl(e) {
     if (S.editing) return;                  // 已經由上面的點兩下開了編輯框
     const note = e.target.closest('[data-note]');
     if (note) { editNote(+note.dataset.note); return; }
+    const back = e.target.closest('[data-back]');
+    if (back) { editBackward(+back.dataset.back); return; }
     if (e.target.closest('[data-legend]')) { editLegend(); return; }
     const lane = e.target.closest('[data-lane]'), br = e.target.closest('[data-branch]'), nd = e.target.closest('[data-node]');
     if (br) { const [i, k] = br.dataset.branch.split(':').map(Number); A.sel = { ...A.sel, layer: 'branch', i, j: i, k }; render(); editBranch(i, k); }

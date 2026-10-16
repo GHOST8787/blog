@@ -84,7 +84,9 @@ export function commitEd(addNext) {
         : what === 'part' ? (S.parts[i] || {}).name
             : what === 'block' ? (S.blocks[i] || {}).label
                 : (S.legend[i] || {}).text;
-    if (v !== cur) push();
+    // 剛新增的列馬上打字：跟新增算同一步，Ctrl+Z 一次就回去（跟活動圖一樣）
+    if (v !== cur && !S.justAdded) push();
+    S.justAdded = false;
     if (what === 'row' && S.rows[i]) S.rows[i].text = v || T.msg.unnamed;
     if (what === 'part' && S.parts[i]) S.parts[i].name = v || T.msg.unnamed;
     if (what === 'block' && S.blocks[i]) S.blocks[i].label = v;
@@ -96,6 +98,7 @@ export function commitEd(addNext) {
 export function closeEd() {
     if (!S.editing) return;
     S.editing = null;
+    S.justAdded = false;
     ed.style.display = 'none';
     ed.blur();           // 不放掉焦點的話，隱藏的 input 會繼續吃掉所有快捷鍵
 }
@@ -118,11 +121,11 @@ function insertBreak() {
 ed.addEventListener('blur', () => { if (S.editing) commitEd(false); });
 
 /* ── 新增 ───────────────────────────────── */
-export function addRow(kind) {
+export function addRow(kind, before) {
     push();
     const cur = S.rows[S.sel.i];
-    /* Note 是在說明接下來這一步，插在選取那一列的上方；訊息與階段帶往下長 */
-    const at = !S.rows.length ? 0 : (kind === 'note' ? S.sel.i : S.sel.i + 1);
+    /* 一律加在選取那一列後面（Note 就是掛在這一步的說明，跟活動圖的註記一樣）；before＝加在前面 */
+    const at = !S.rows.length ? 0 : (before ? S.sel.i : S.sel.i + 1);
     let r;
     if (kind === 'phase') r = { id: nid('r'), kind: 'phase', tone: 'solid', text: T.msg.newPhase };
     else if (kind === 'note') {
@@ -135,7 +138,40 @@ export function addRow(kind) {
     }
     S.rows.splice(at, 0, r);
     shiftBlocks(at, 1);
+    S.justAdded = true;
     S.sel = { ...S.sel, layer: 'row', i: at, j: at };
+}
+
+/* 複製／貼上／原地複製：以列為單位，區塊框不跟著複製。貼上的列拿新的 id，原檔帶來的註解不跟著重複 */
+let rowClip = null;
+const cloneRow = (r) => {
+    const c = JSON.parse(JSON.stringify(r));
+    c.id = nid('r');
+    delete c.pre; delete c.act; delete c.mmPre; delete c.destroy;
+    return c;
+};
+const selSpan = () => [Math.min(S.sel.i, S.sel.j ?? S.sel.i), Math.max(S.sel.i, S.sel.j ?? S.sel.i)];
+export function copyRows() {
+    if (!S.rows.length) return 0;
+    const [a, b] = selSpan();
+    rowClip = S.rows.slice(a, b + 1).map((r) => JSON.parse(JSON.stringify(r)));
+    return rowClip.length;
+}
+function insertRows(at, list) {
+    push();
+    S.rows.splice(at, 0, ...list.map(cloneRow));
+    shiftBlocks(at, list.length);
+    S.sel = { ...S.sel, layer: 'row', i: at, j: at + list.length - 1 };
+}
+export function pasteRows() {
+    if (!rowClip || !rowClip.length) return false;
+    insertRows(S.rows.length ? selSpan()[1] + 1 : 0, rowClip);
+    return true;
+}
+export function dupRows() {
+    if (!S.rows.length) return;
+    const [a, b] = selSpan();
+    insertRows(b + 1, S.rows.slice(a, b + 1));
 }
 
 export function addPart() {

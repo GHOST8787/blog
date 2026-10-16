@@ -19,15 +19,44 @@ const MM_KIND = { loop: 'loop', alt: 'alt', opt: 'opt', par: 'par', break: 'brea
 const outNL = (t) => String(t).split('\n').join('<br/>');
 const inNL = (t) => t.replace(/<br\s*[/]?>/gi, '\n');
 
+// Mermaid 的箭頭：原文寫哪一種就記在 r.mm，型別沒被改過就照原樣寫回
+const MM_ARROWS = ['<<-->>', '<<->>', '-->>', '->>', '--x', '-x', '--)', '-)', '-->', '->'];
+const MM_ARROW_RE = MM_ARROWS.map((x) => x.replace(/[()]/g, '\\$&')).join('|');
+const MSG_RE = new RegExp(`^([^\\s:+]+?)\\s*(${MM_ARROW_RE})\\s*([+-]?)\\s*([^\\s:+-][^:]*?)\\s*(?::\\s*(.*))?$`);
+function mmArrowInfo(a) {
+    const dashed = a.includes('--');
+    return {
+        type: a.endsWith(')') ? (dashed ? 'return' : 'async') : dashed ? 'return' : 'sync',
+        nohead: /^-{1,2}>$/.test(a), mark: /x$/.test(a) ? 'x' : '', both: a.startsWith('<<'),
+    };
+}
+
 export function toMermaid() {
-    const L = ['sequenceDiagram'];
+    const L = [];
+    if (S.mmTitle && S.name) L.push('---', `title: ${S.name}`, '---');
+    L.push('sequenceDiagram');
     if (S.autonumber) L.push('    autonumber');
-    S.parts.forEach((p) => L.push(`    ${p.kind === 'actor' ? 'actor' : 'participant'} ${p.id} as ${p.name}`));
+    const declLine = (p, ind) => `${ind}${p.kind === 'actor' ? 'actor' : 'participant'} ${p.id}${p.name !== p.id ? ' as ' + p.name : ''}`;
+    // 參與者：box 裡的連續幾個包在 box … end；中途 create 的不在開頭宣告
+    let openBox = null;
+    S.parts.forEach((p) => {
+        if (p.created != null) return;
+        const bx = (S.boxes || []).find((x) => x.ids.includes(p.id)) || null;
+        if (bx !== openBox) {
+            if (openBox) L.push('    end');
+            if (bx) L.push(`    box ${[bx.color, bx.label].filter(Boolean).join(' ')}`.trimEnd());
+            openBox = bx;
+        }
+        (p.mmPre || []).forEach((x) => L.push(x));
+        L.push(declLine(p, openBox ? '        ' : '    '));
+    });
+    if (openBox) L.push('    end');
+    S.parts.forEach((p) => (p.links || []).forEach((x) => L.push(`    ${x}`)));
     const open = [];
     for (let i = 0; i < S.rows.length; i++) {
-        // alt 的 else（par 的是 and）：寫在開著的那一層
+        // alt 的 else（par 的是 and、critical 的是 option）：寫在開著的那一層
         open.forEach((b, k) => (b.elses || []).forEach((e) => {
-            if (e.at === i) L.push(' '.repeat(4 + k * 4) + `${b.kind === 'par' ? 'and' : 'else'}${e.label ? ' ' + e.label : ''}`);
+            if (e.at === i) L.push(' '.repeat(4 + k * 4) + `${b.kind === 'par' ? 'and' : b.kind === 'critical' ? 'option' : 'else'}${e.label ? ' ' + e.label : ''}`);
         }));
         S.blocks.filter((b) => b.from === i).sort((a, b) => (b.to - b.from) - (a.to - a.from)).forEach((b) => {
             L.push(' '.repeat(4 + open.length * 4) + `${MM_KIND[b.kind] || 'opt'} ${b.label}`);
@@ -35,6 +64,9 @@ export function toMermaid() {
         });
         const ind = ' '.repeat(4 + open.length * 4);
         const r = S.rows[i];
+        (r.mmPre || []).forEach((x) => L.push(ind + x));
+        S.parts.filter((p) => p.created === i).forEach((p) => L.push(`${ind}create ${declLine(p, '')}`));
+        (r.destroy || []).forEach((id) => L.push(`${ind}destroy ${id}`));
         const tag = r.tone === 'dash' ? '※ ' : '';
         if (r.kind === 'phase') {
             L.push(`${ind}rect rgb(236,238,251)`);
@@ -44,35 +76,88 @@ export function toMermaid() {
             const where = r.pos === 'over' ? `over ${r.at}${r.at2 ? ',' + r.at2 : ''}` : r.pos === 'left' ? `left of ${r.at}` : `right of ${r.at}`;
             L.push(`${ind}Note ${where}: ${tag}${outNL(r.text)}`);
         } else {
-            L.push(`${ind}${r.from}${ARROW[r.from === r.to ? 'sync' : r.type]}${r.to}: ${tag}${outNL(r.text)}`);
+            const arrow = r.mm && r.mmType === r.type ? r.mm : ARROW[r.from === r.to ? 'sync' : r.type];
+            const mod = r.mod === '++' ? '+' : r.mod === '--' ? '-' : '';
+            L.push(`${ind}${r.from}${arrow}${mod}${r.to}: ${tag}${outNL(r.text)}`);
+            (r.act || []).forEach((x) => L.push(`${ind}${x.op} ${x.id}`));
         }
         while (open.length && open[open.length - 1].to === i) {
             open.pop();
             L.push(' '.repeat(4 + open.length * 4) + 'end');
         }
     }
+    (S.mmTail || []).forEach((x) => L.push('    ' + x));
     return L.join('\n');
 }
 
 export function fromMermaid(src) {
     const parts = [], rows = [], blocks = [], stack = [], lineOf = [];   // lineOf：每一列來自原文第幾行，報錯用
+    const boxes = [];
     const lines = src.split('\n');
-    let started = false, pendingPhase = false, autonumber = false;
+    let started = false, pendingPhase = false, autonumber = false, name = '', mmTitle = false;
+    let box = null, pre = [], created = [], destroy = [], lastMsg = null;
+    const addRow = (r, n) => {
+        if (pre.length) { r.mmPre = pre; pre = []; }
+        if (destroy.length) { r.destroy = destroy; destroy = []; }
+        created.forEach((p) => { p.created = rows.length; });
+        created = [];
+        rows.push(r); lineOf.push(n + 1);
+        return r;
+    };
+    const addPart = (kw, id, alias) => {
+        const p = { id, name: (alias || id).trim(), kind: kw === 'actor' ? 'actor' : 'object' };
+        if (pre.length) { p.mmPre = pre; pre = []; }
+        const old = parts.find((x) => x.id === id);
+        if (old) Object.assign(old, { name: p.name, kind: p.kind });
+        else parts.push(p);
+        if (box) box.ids.push(id);
+        return old || p;
+    };
     for (let n = 0; n < lines.length; n++) {
         const t = lines[n].trim();
         if (!t) continue;
+        // 開頭的 --- title: … --- 設定區：只取標題
+        if (!started && t === '---') {
+            let j = n + 1;
+            while (j < lines.length && lines[j].trim() !== '---') {
+                const tm = lines[j].trim().match(/^title:\s*(.*)$/);
+                if (tm) { name = tm[1].trim().replace(/^["'](.*)["']$/, '$1'); mmTitle = true; }
+                j++;
+            }
+            n = j;
+            continue;
+        }
+        // %% 註解與 %%{init}%% 設定：記住位置，複製出去時放回原處
+        if (t.startsWith('%%')) { if (started) pre.push(t); continue; }
         if (/^sequenceDiagram$/.test(t)) { started = true; continue; }
         if (!started) throw { line: n + 1, msg: T.msg.errFirst };
         if (/^autonumber\b/.test(t)) { autonumber = true; continue; }
         let m;
-        if ((m = t.match(/^(participant|actor)\s+(\S+)(?:\s+as\s+(.+))?$/))) {
-            parts.push({ id: m[2], name: (m[3] || m[2]).trim(), kind: m[1] === 'actor' ? 'actor' : 'object' });
+        if ((m = t.match(/^title\s*:?\s+(.*)$/))) { name = m[1].trim(); mmTitle = true; continue; }
+        if (/^(accTitle|accDescr)\b/.test(t)) { pre.push(t); continue; }
+        if ((m = t.match(/^(participant|actor)\s+([^\s@]+)(?:\s+as\s+(.+))?$/))) { addPart(m[1], m[2], m[3]); continue; }
+        if ((m = t.match(/^create\s+(participant|actor)\s+(\S+)(?:\s+as\s+(.+))?$/))) { created.push(addPart(m[1], m[2], m[3])); continue; }
+        if ((m = t.match(/^destroy\s+(\S+)$/))) { destroy.push(m[1]); continue; }
+        if ((m = t.match(/^links?\s+([^:\s]+)\s*:/))) {
+            const p = parts.find((x) => x.id === m[1]);
+            if (p) { (p.links ||= []).push(t); continue; }
+        }
+        // box 顏色 名稱 … end：框住中間宣告的參與者。顏色可以是名字、rgb()，也可以省略
+        if ((m = t.match(/^box\b\s*(.*)$/))) {
+            let rest = m[1].trim(), color = '';
+            const fm = rest.match(/^((?:rgb|rgba|hsl|hsla)\([^)]*\))\s*(.*)$/i);
+            if (fm) { color = fm[1]; rest = fm[2]; }
+            else {
+                const w = rest.split(/\s+/)[0];
+                if (w && (w === 'transparent' || (globalThis.CSS && CSS.supports('color', w)))) { color = w; rest = rest.slice(w.length).trim(); }
+            }
+            box = { label: rest, color, ids: [] };
+            boxes.push(box);
             continue;
         }
         if (/^rect\s/.test(t)) { pendingPhase = true; continue; }
         if ((m = t.match(/^Note\s+over\s+\S+\s*,\s*\S+\s*:\s*(.*)$/)) && pendingPhase) {
-            rows.push({ id: nid('r'), kind: 'phase', tone: 'solid', text: inNL(m[1].trim()) });
-            lineOf.push(n + 1);
+            addRow({ id: nid('r'), kind: 'phase', tone: 'solid', text: inNL(m[1].trim()) }, n);
             pendingPhase = 'awaitEnd';   // 這一組的 end 歸階段帶，不是區塊的
             continue;
         }
@@ -80,16 +165,21 @@ export function fromMermaid(src) {
             stack.push({ id: nid('b'), kind: m[1], label: m[2].trim(), from: rows.length, to: rows.length, elses: [] });
             continue;
         }
-        if ((m = t.match(/^(else|and)\b\s*(.*)$/)) && stack.length) {
+        if ((m = t.match(/^(else|and|option)\b\s*(.*)$/)) && stack.length) {
             stack[stack.length - 1].elses.push({ at: rows.length, label: m[2].trim() });
             continue;
         }
         if (/^end$/.test(t)) {
+            if (box) { box = null; continue; }
             if (pendingPhase) { pendingPhase = false; continue; }
             const b = stack.pop();
             if (!b) throw { line: n + 1, msg: T.msg.errEnd };
             b.to = rows.length - 1;
             if (b.to >= b.from) blocks.push(b);
+            continue;
+        }
+        if ((m = t.match(/^(activate|deactivate)\s+(\S+)$/))) {
+            if (lastMsg) (lastMsg.act ||= []).push({ op: m[1], id: m[2] });
             continue;
         }
         if ((m = t.match(/^Note\s+(right of|left of|over)\s+([^:,\s]+)\s*(?:,\s*([^:\s]+))?\s*:\s*(.*)$/i))) {
@@ -99,29 +189,34 @@ export function fromMermaid(src) {
             const r = { id: nid('r'), kind: 'note', at: m[2], text: inNL(txt), tone };
             if (pos) r.pos = pos;
             if (m[3] && pos === 'over') r.at2 = m[3];
-            rows.push(r); lineOf.push(n + 1);
+            addRow(r, n);
             continue;
         }
-        if ((m = t.match(/^(\S+?)\s*(--?>>|-\)|--?>)\s*(\S+?)\s*:\s*(.*)$/))) {
-            let txt = m[4].trim(), tone = 'solid';
+        if ((m = t.match(MSG_RE))) {
+            let txt = (m[5] || '').trim(), tone = 'solid';
             if (txt.startsWith('※')) { tone = 'dash'; txt = txt.slice(1).trim(); }
-            const a = m[2];
-            const type = a === '-)' ? 'async' : (a.startsWith('--') ? 'return' : 'sync');
-            rows.push({ id: nid('r'), kind: 'msg', from: m[1], to: m[3], type, tone, text: inNL(txt) });
-            lineOf.push(n + 1);
+            const info = mmArrowInfo(m[2]);
+            const r = { id: nid('r'), kind: 'msg', from: m[1], to: m[4], type: info.type, tone, text: inNL(txt), mm: m[2], mmType: info.type };
+            if (info.nohead) r.nohead = true;
+            if (info.mark) r.mark = info.mark;
+            if (info.both) r.both = true;
+            if (m[3]) r.mod = m[3] === '+' ? '++' : '--';
+            lastMsg = addRow(r, n);
             continue;
         }
         throw { line: n + 1, msg: T.msg.errUnknown(t.slice(0, 30)) };
     }
     if (stack.length) throw { line: lines.length, msg: T.msg.errNoEnd };
-    if (!parts.length) throw { line: 1, msg: T.msg.errNoPart };
+    // Mermaid 允許不宣告就直接用：沒宣告的參與者照第一次出現的順序補上
     const ids = new Set(parts.map((p) => p.id));
-    rows.forEach((r, i) => {
-        const bad = r.kind === 'note' ? (!ids.has(r.at) || (r.at2 && !ids.has(r.at2)))
-            : (r.kind === 'msg' && (!ids.has(r.from) || !ids.has(r.to)));
-        if (bad) throw { line: lineOf[i] || i + 1, msg: T.msg.errOrphan };
+    const need = (id) => { if (id && !ids.has(id)) { ids.add(id); parts.push({ id, name: id, kind: 'object' }); } };
+    rows.forEach((r) => {
+        if (r.kind === 'note') { need(r.at); need(r.at2); }
+        else if (r.kind === 'msg') { need(r.from); need(r.to); }
     });
-    return { parts, rows, blocks, autonumber };
+    rows.forEach((r) => (r.act || []).forEach((x) => need(x.id)));
+    if (!parts.length) throw { line: 1, msg: T.msg.errNoPart };
+    return { parts, rows, blocks, autonumber, boxes, mmTail: pre, ...(mmTitle ? { name, mmTitle } : {}) };
 }
 
 /* 檔名用這張圖的名字，沒取名就退回日期。擋掉檔名不能用的字元。 */
@@ -146,6 +241,7 @@ export function saveFile() {
         blocks: S.blocks,
         legend: S.legend,
         autonumber: S.autonumber,
+        boxes: S.boxes,
     };
     download(new Blob([JSON.stringify(data, null, 1)], { type: 'application/json' }), `${fileBase()}.json`);
 }
@@ -187,6 +283,9 @@ export async function readFile(file) {
     const text = await file.text();
     const looksSvg = /\.svg$/i.test(file.name) || /^\s*(<\?xml|<svg)/i.test(text);
     if (PUML_EXT.test(file.name) || /^\s*@startuml/i.test(text)) return { puml: text };
+    // Mermaid：副檔名 .mmd／.mermaid，或內容（跳過 frontmatter、%% 註解、空行）以 sequenceDiagram 開頭
+    if (/[.](mmd|mermaid)$/i.test(file.name)
+        || /^(?:\s*\n|\s*%%[^\n]*\n|\s*---\n[\s\S]*?\n---\s*\n)*\s*sequenceDiagram\b/.test(text.replace(/\r/g, ''))) return { mermaid: text.replace(/\r/g, '') };
     if (looksSvg) {
         const fromMeta = pumlInSvg(text);
         if (fromMeta) return fromMeta;
@@ -206,6 +305,7 @@ export async function readFile(file) {
         blocks: Array.isArray(o.blocks) ? o.blocks : [],
         legend: Array.isArray(o.legend) ? o.legend : undefined,
         autonumber: !!o.autonumber,
+        boxes: Array.isArray(o.boxes) ? o.boxes : [],
         report: { native: true },
     };
 }

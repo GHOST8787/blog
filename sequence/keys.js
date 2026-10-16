@@ -7,7 +7,7 @@ import { render, sv, rowY, setSkipScroll, ZOOM } from './render.js';
 import { onActKey, onActClick, onActDbl, onActDown } from './act.js';
 import {
     editRow, editPart, editBlock, editLegend, editCurrent, closeEd,
-    addRow, addPart, delSel, wrapBlock, unwrapBlock,
+    addRow, addPart, delSel, wrapBlock, unwrapBlock, copyRows, pasteRows, dupRows,
     moveEnd, moveRow, movePart, cycleType, cycleTone, cycleBlockKind, togglePartKind,
 } from './edit.js';
 
@@ -49,8 +49,9 @@ function onKey(e) {
         e.preventDefault();
         if (L === 'row' || L === 'point') {
             const at = blocksAt(S.sel.i);
+            // ri：上到參與者層前在哪一列，Esc 回來時回到那一列
             S.sel = at.length ? { ...S.sel, layer: 'block', bi: at[0].bi }
-                              : { ...S.sel, layer: 'part', i: laneOfRow(S.sel.i) };
+                              : { ...S.sel, layer: 'part', i: laneOfRow(S.sel.i), ri: S.sel.i };
         } else if (L === 'block') {
             const cur = S.blocks[S.sel.bi];
             const outer = blocksAt(cur.from).find((o) => o.b.to - o.b.from > cur.to - cur.from);
@@ -60,12 +61,38 @@ function onKey(e) {
         render();
         return;
     }
+    // Ctrl+↓：跳過整個區塊（跟活動圖一樣）。在區塊開頭那一列或區塊層按，跳到區塊結束後的下一列
+    if (ctrl && k === 'ArrowDown' && (L === 'row' || L === 'block')) {
+        e.preventDefault();
+        const b = L === 'block' ? S.blocks[S.sel.bi]
+            : S.blocks.filter((x) => x.from === S.sel.i).sort((x, y) => (y.to - y.from) - (x.to - x.from))[0];
+        const i = Math.min(S.rows.length - 1, b ? b.to + 1 : S.sel.i + 1);
+        S.sel = { ...S.sel, layer: 'row', i, j: i };
+        render();
+        return;
+    }
     if ((ctrl && k === 'ArrowDown') || k === 'Escape') {
         e.preventDefault();
-        if (L !== 'row') S.sel = { ...S.sel, layer: 'row', i: Math.min(S.sel.i, S.rows.length - 1) };
+        if (L !== 'row') S.sel = { ...S.sel, layer: 'row', i: Math.min(L === 'part' && S.sel.ri != null ? S.sel.ri : S.sel.i, S.rows.length - 1) };
         S.sel.j = S.sel.i;
         render();
         return;
+    }
+    // 兩種圖共用：Home／End 到頭尾、PageUp／PageDown 跳區塊、Ctrl+C／V／D 複製貼上
+    if (L === 'row' || L === 'point') {
+        const go = (i) => { S.sel = { ...S.sel, layer: 'row', i, j: i }; render(); };
+        if (k === 'Home') { e.preventDefault(); go(0); return; }
+        if (k === 'End') { e.preventDefault(); go(Math.max(0, S.rows.length - 1)); return; }
+        if (k === 'PageUp' || k === 'PageDown') {
+            e.preventDefault();
+            const marks = [...new Set([...S.blocks.map((b) => b.from), ...S.rows.map((r, i) => (r.kind === 'phase' ? i : -1)).filter((i) => i >= 0)])].sort((a, b) => a - b);
+            const i = k === 'PageDown' ? marks.find((x) => x > S.sel.i) : [...marks].reverse().find((x) => x < S.sel.i);
+            if (i != null) go(i);
+            return;
+        }
+        if (ctrl && (k === 'c' || k === 'C')) { e.preventDefault(); copyRows(); return; }
+        if (ctrl && (k === 'v' || k === 'V')) { e.preventDefault(); if (pasteRows()) render(); return; }
+        if (ctrl && (k === 'd' || k === 'D')) { e.preventDefault(); dupRows(); render(); return; }
     }
 
     /* 參與者層 */
@@ -171,7 +198,8 @@ function onKey(e) {
             case 'Enter':
                 e.preventDefault();
                 if (ctrl) wrapBlock();
-                else if (!S.rows.length) { addRow('msg'); render(); editRow(S.sel.i); }
+                // Shift+Enter／Alt+Enter：在後面／前面加一條訊息，直接打字（跟活動圖加步驟同一組鍵）
+                else if (e.shiftKey || e.altKey || !S.rows.length) { addRow('msg', e.altKey && !e.shiftKey); render(); editRow(S.sel.i); }
                 else editRow(S.sel.i);
                 return;
             case 'Backspace': case 'Delete':

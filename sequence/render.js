@@ -121,8 +121,9 @@ const legTextW = (str, fs) => [...str].reduce((a, c) => a + (c.charCodeAt(0) > 2
 function legendLayout(W) {
     const items = []; let x = 28, row = 0;
     S.legend.forEach((lg) => {
+        if (lg.sep) { items.push({ x, row }); return; }     // PUML 圖例的分隔線：不佔位置
         const w = (lg.tone === 'text' ? 0 : 38) + legTextW(lg.text, 11) + 22;
-        if (x > 28 && x + w > W - 20) { x = 28; row++; }
+        if (x > 28 && (lg.line || x + w > W - 20)) { x = 28; row++; }
         items.push({ x, row });
         x += w;
     });
@@ -146,7 +147,8 @@ export function render() {
     const W = DOC_W = Math.max(560, placeLanes());
     const leg = legendLayout(W);
     const legTop = (leg.rows - 1) * LEG_H;
-    const H = Math.max(240, layout() + legTop);
+    const footH = S.footer ? S.footer.split('\n').length * 15 + 6 : 0;
+    const H = Math.max(240, layout() + legTop + footH);
     sv.textContent = '';
     applySize(W, H);
 
@@ -154,6 +156,10 @@ export function render() {
     for (const [k, c] of [['n', C_OFF], ['s', C_ON], ['d', C_DASH]]) {
         const solid = el('marker', { id: 'mk-solid-' + k, markerWidth: 10, markerHeight: 10, refX: 9, refY: 3, orient: 'auto', markerUnits: 'userSpaceOnUse' });
         solid.appendChild(el('path', { d: 'M0,0 L9,3 L0,6 z', fill: c }));
+        // 雙向箭頭的起點那一頭
+        const rev = el('marker', { id: 'mk-rev-' + k, markerWidth: 10, markerHeight: 10, refX: 0, refY: 3, orient: 'auto', markerUnits: 'userSpaceOnUse' });
+        rev.appendChild(el('path', { d: 'M9,0 L0,3 L9,6 z', fill: c }));
+        defs.appendChild(rev);
         const open = el('marker', { id: 'mk-open-' + k, markerWidth: 12, markerHeight: 12, refX: 9, refY: 4, orient: 'auto', markerUnits: 'userSpaceOnUse' });
         open.appendChild(el('path', { d: 'M0,0 L9,4 L0,8', fill: 'none', stroke: c, 'stroke-width': 1.4 }));
         defs.append(solid, open);
@@ -171,17 +177,31 @@ export function render() {
         }
     }
 
+    (S.boxes || []).forEach((bx) => {
+        const ks = bx.ids.map(pIdx).filter((k) => k >= 0);
+        if (!ks.length) return;
+        const a = Math.min(...ks), b = Math.max(...ks);
+        const x1 = px(a) - boxWOf(a) / 2 - 10, x2 = px(b) + boxWOf(b) / 2 + 10;
+        const c = bx.color ? bx.color.replace(/^#(?![0-9a-f]{3}$|[0-9a-f]{6}$)/i, '') : '';
+        sv.appendChild(el('rect', { x: x1, y: 4, width: x2 - x1, height: H - 32 - legTop - footH, rx: 6,
+            fill: c || rgb('--c-ink', '.04'), 'fill-opacity': c ? .12 : 1, stroke: rgb('--c-ink', '.18') }));
+        if (bx.label) {
+            const t = el('text', { x: (x1 + x2) / 2, y: 17, 'text-anchor': 'middle', 'font-size': 11, 'font-weight': 600, 'font-family': 'inherit', fill: cvar('--c-dim') });
+            t.textContent = bx.label;
+            sv.appendChild(t);
+        }
+    });
     S.parts.forEach((p, i) => {
         const hot = S.drag && S.drag.lane === i;
         sv.appendChild(el('line', {
-            x1: px(i), y1: HEAD_Y + HEAD_H, x2: px(i), y2: H - 32 - legTop,
+            x1: px(i), y1: HEAD_Y + HEAD_H, x2: px(i), y2: H - 32 - legTop - footH,
             stroke: hot ? C_ON : C_LINE, 'stroke-width': hot ? 1.6 : 1,
             'stroke-dasharray': hot ? 'none' : '4 5',
         }));
     });
 
     /* 執行長條（PUML 的 activate／deactivate、++／--、return） */
-    paintBars(H - 32 - legTop);
+    paintBars(H - 32 - legTop - footH);
 
     /* 區塊框 */
     S.blocks.forEach((b, bi) => {
@@ -279,13 +299,24 @@ export function render() {
             let w = Math.max(110, measure(r.text, 12) + 28);
             // 跨兩個參與者的 Note：寬度至少蓋過兩條生命線
             if (r.pos === 'over' && r.at2 && pIdx(r.at2) >= 0) w = Math.max(w, Math.abs(pxOf(r.at2) - pxOf(r.at)) + 60);
+            const isRef = r.kw === 'ref';
+            if (isRef) w += 36;
             const x = noteX(r, w);
-            g.appendChild(el('path', {
-                d: `M${x},${y - 15} h${w - 11} l11,11 v${26 + ex} h-${w} z`,
-                fill: rgb('--c-warn', '.1'), stroke: inSel ? col : rgb('--c-warn', '.55'),
-            }));
-            const t = el('text', { x: x + 10, y: y + 7, 'font-size': 12, 'font-family': 'inherit', fill: inSel ? col : C_WARN });
-            setText(t, r.text, x + 10);
+            if (isRef) {
+                g.appendChild(el('rect', { x, y: y - 15, width: w, height: 26 + ex + 11, fill: rgb('--c-surface'), stroke: inSel ? col : rgb('--c-ink', '.45') }));
+                g.appendChild(el('path', { d: `M${x},${y - 15} h30 v10 l-6,6 h-24 z`, fill: rgb('--c-ink', '.12') }));
+                const rt = el('text', { x: x + 5, y: y - 4, 'font-size': 10, 'font-weight': 700, 'font-family': 'inherit', fill: inSel ? col : C_OFF });
+                rt.textContent = 'ref';
+                g.appendChild(rt);
+            } else {
+                g.appendChild(el('path', {
+                    d: `M${x},${y - 15} h${w - 11} l11,11 v${26 + ex} h-${w} z`,
+                    fill: rgb('--c-warn', '.1'), stroke: inSel ? col : rgb('--c-warn', '.55'),
+                }));
+            }
+            const tx = isRef ? x + 40 : x + 10;
+            const t = el('text', { x: tx, y: y + 7, 'font-size': 12, 'font-family': 'inherit', fill: inSel ? col : isRef ? C_OFF : C_WARN });
+            setText(t, r.text, tx);
             g.appendChild(t);
         } else if (r.from === r.to) {
             const last = pIdx(r.from) === n - 1;
@@ -305,11 +336,18 @@ export function render() {
             const x1 = pxOf(r.from), x2 = pxOf(r.to);
             const y1 = y, y2 = y;
             const dir = x2 > x1 ? 1 : -1;
-            g.appendChild(el('line', {
-                x1, y1, x2: x2 - dir * 7, y2, stroke: col, 'stroke-width': 1.4,
-                'stroke-dasharray': (dashed || r.type === 'return') ? '6 4' : 'none',
-                'marker-end': `url(#mk-${r.type === 'sync' ? 'solid' : 'open'}-${mk})`,
-            }));
+            // 箭頭頭：一般／開口；x＝打叉（訊息丟失）、o＝小圓；Mermaid 的 -> 是沒有頭的線；<<->> 兩頭都有
+            const bare = r.mark || r.nohead;
+            const ln = { x1: r.both ? x1 + dir * 7 : x1, y1, x2: bare ? x2 - dir * (r.mark ? 6 : 0) : x2 - dir * 7, y2, stroke: col, 'stroke-width': 1.4,
+                'stroke-dasharray': (dashed || r.type === 'return') ? '6 4' : 'none' };
+            if (!bare) ln['marker-end'] = `url(#mk-${r.type === 'sync' ? 'solid' : 'open'}-${mk})`;
+            if (r.both) ln['marker-start'] = `url(#mk-rev-${mk})`;
+            g.appendChild(el('line', ln));
+            if (r.mark === 'x') {
+                const cx = x2 - dir * 6;
+                g.appendChild(el('path', { d: `M${cx - 5},${y2 - 5} L${cx + 5},${y2 + 5} M${cx + 5},${y2 - 5} L${cx - 5},${y2 + 5}`, stroke: col, 'stroke-width': 1.8 }));
+            }
+            if (r.mark === 'o') g.appendChild(el('circle', { cx: x2 - dir * 5, cy: y2, r: 4.5, fill: 'none', stroke: col, 'stroke-width': 1.4 }));
             const tx = (x1 + x2) / 2;
             const t = el('text', { x: tx, y: Math.min(y1, y2) - 9 - ex, 'text-anchor': 'middle', 'font-size': 12.5, 'font-family': 'inherit', fill: col });
             setText(t, r.text, tx);
@@ -327,8 +365,9 @@ export function render() {
     });
 
     /* 圖例 */
-    const ly0 = H - 14 - legTop;
+    const ly0 = H - 14 - legTop - footH;
     S.legend.forEach((lg, k) => {
+        if (lg.sep) return;
         const x = leg.items[k].x, ly = ly0 + leg.items[k].row * LEG_H;
         // tone='text' 是純註腳，不配線條樣本，否則看起來像在說「實線＝這段話」
         if (lg.tone !== 'text') {
@@ -344,6 +383,16 @@ export function render() {
         sv.appendChild(t);
     });
 
+    if (S.header) {
+        const t = el('text', { x: W - 16, y: 13, 'text-anchor': 'end', 'font-size': 11, 'font-family': 'inherit', fill: cvar('--c-dim') });
+        t.textContent = S.header.split('\n').join('  ');
+        sv.appendChild(t);
+    }
+    if (S.footer) S.footer.split('\n').forEach((s, k, arr) => {
+        const t = el('text', { x: W / 2, y: H - 6 - (arr.length - 1 - k) * 15, 'text-anchor': 'middle', 'font-size': 11, 'font-family': 'inherit', fill: cvar('--c-dim') });
+        t.textContent = s;
+        sv.appendChild(t);
+    });
     paintFoot();
     paintName();
     // 匯出那一瞬間的假選取不該寫進狀態列，也不該捲動畫面
@@ -597,6 +646,11 @@ export function paintChrome() {
     };
     set('[data-act="save"]', puml ? T.btn.savePuml : T.btn.save, puml ? T.hint.savePumlTip : T.hint.saveTip);
     set('[data-act="copy"]', puml ? T.btn.copyPuml : T.btn.copy, puml ? T.hint.copyPumlTip : T.hint.copyTip);
+    const clr = document.querySelector('[data-act="clear"]');
+    if (clr) clr.title = S.type === 'act' ? T.hint.clearActTip : T.hint.clearTip;
+    const title = S.type === 'act' ? T.titleAct : T.title;
+    const h1 = document.getElementById('seqTitle');
+    if (h1 && h1.textContent !== title) { h1.textContent = title; document.title = `${title} | GHOST.ouo`; }
     document.querySelectorAll('[data-type]').forEach((b) => b.classList.toggle('on', b.dataset.type === S.type));
     document.querySelectorAll('[data-help]').forEach((d) => { d.hidden = d.dataset.help !== S.type; });
     const dt = document.getElementById('ddType');

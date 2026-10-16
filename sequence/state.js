@@ -64,6 +64,11 @@ export function loadDiagram(d) {
     S.blocks.forEach((b) => { if (!b.elses) b.elses = []; });
     S.puml = d.puml || null;
     S.autonumber = !!d.autonumber;
+    S.boxes = d.boxes || [];               // PUML／Mermaid 的 box：框住一組參與者
+    S.mmTitle = !!d.mmTitle;
+    S.header = d.header || '';             // PUML 的頁首、頁尾：畫在圖的右上角與最下面
+    S.footer = d.footer || '';               // Mermaid 開頭有 --- title --- 設定區
+    S.mmTail = d.mmTail || [];             // Mermaid 最後一列之後的 %% 註解
     if (d.legend) S.legend = d.legend;
     S.sel = { layer: 'row', i: 0, j: 0, end: 'to', bi: 0 };
     S.editing = null;
