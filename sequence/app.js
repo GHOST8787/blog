@@ -44,7 +44,7 @@ if (saved) {
 }
 if (!A.text) setAct(L.act.starter.join('\n'), 0);
 saveExtra.get = () => ({
-    type: S.type, fmt: S.fmt, actText: A.text, autonumber: S.autonumber,
+    type: S.type, fmt: S.fmt, actText: A.text, autonumber: S.autonumber, autoCfg: S.autoCfg,
     ...(S.fmt === 'puml' ? { pumlText: toPumlSeq() } : {}),
 });
 

@@ -147,7 +147,7 @@ let rowClip = null;
 const cloneRow = (r) => {
     const c = JSON.parse(JSON.stringify(r));
     c.id = nid('r');
-    delete c.pre; delete c.act; delete c.mmPre; delete c.destroy;
+    delete c.pre; delete c.act; delete c.mmPre; delete c.destroy; delete c.creates;
     return c;
 };
 const selSpan = () => [Math.min(S.sel.i, S.sel.j ?? S.sel.i), Math.max(S.sel.i, S.sel.j ?? S.sel.i)];
@@ -255,9 +255,11 @@ export function movePart(d) {
 }
 export function cycleType() {
     const r = S.rows[S.sel.i];
-    if (!r || r.kind !== 'msg' || r.from === r.to) return;
+    if (!r || r.kind !== 'msg' || (r.from === r.to && !r.ext)) return;
     push();
     r.type = TYPES[(TYPES.indexOf(r.type) + 1) % TYPES.length];
+    // 換成標準的三種之一：PUML 讀進來的半箭頭、開口回傳頭一起清掉
+    delete r.half; delete r.stick; r.openHead = false;
 }
 export function cycleTone() {
     const r = S.rows[S.sel.i];

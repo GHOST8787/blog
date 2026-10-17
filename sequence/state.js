@@ -64,6 +64,8 @@ export function loadDiagram(d) {
     S.blocks.forEach((b) => { if (!b.elses) b.elses = []; });
     S.puml = d.puml || null;
     S.autonumber = !!d.autonumber;
+    S.autoCfg = d.autoCfg || null;         // autonumber 的起始值、間隔、格式
+    S.pumlX = d.pumlX || null;             // PUML 的 mainframe、caption、{s} <-> {e} 時長：只畫不編
     S.boxes = d.boxes || [];               // PUML／Mermaid 的 box：框住一組參與者
     S.mmTitle = !!d.mmTitle;
     S.header = d.header || '';             // PUML 的頁首、頁尾：畫在圖的右上角與最下面
@@ -106,7 +108,7 @@ export function loadSaved() {
         if (!d || !Array.isArray(d.parts) || !Array.isArray(d.rows) || !d.parts.length) return null;
         d.rows.forEach((r) => { if (!r.tone) r.tone = 'solid'; });
         return { name: d.name || '', parts: d.parts, rows: d.rows, blocks: d.blocks || [], legend: d.legend,
-                 type: d.type, fmt: d.fmt, pumlText: d.pumlText, actText: d.actText, autonumber: d.autonumber };
+                 type: d.type, fmt: d.fmt, pumlText: d.pumlText, actText: d.actText, autonumber: d.autonumber, autoCfg: d.autoCfg };
     } catch { return null; }
 }
 

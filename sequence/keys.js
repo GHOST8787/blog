@@ -29,14 +29,17 @@ export function initKeys() {
 function onKey(e) {
     if (S.editing) return;
     if (e.target === mmBox || e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    // 工具用到的組合鍵，在每一層都先擋掉瀏覽器的預設動作（Alt+←→ 會上一頁／下一頁、Ctrl+D 會加書籤）；這一層沒用到就什麼都不做
+    if ((e.altKey && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) || ((e.ctrlKey || e.metaKey) && (e.key === 'd' || e.key === 'D'))) e.preventDefault();
     if (S.type === 'act') { onActKey(e); return; }     // 活動圖有自己那一套
     const k = e.key, L = S.sel.layer;
     const ctrl = e.ctrlKey || e.metaKey;
 
     if (ctrl && (k === 'z' || k === 'Z')) { e.preventDefault(); e.shiftKey ? redo(render) : undo(render); return; }
+    if (ctrl && (k === 'y' || k === 'Y')) { e.preventDefault(); redo(render); return; }     // Windows 慣用的重做
 
     /* 跨層 */
-    if (ctrl && (k === 'ArrowLeft' || k === 'ArrowRight') && L !== 'part') {
+    if (ctrl && (k === 'ArrowLeft' || k === 'ArrowRight') && (L === 'row' || L === 'point')) {
         const r = S.rows[S.sel.i];
         if (r && r.kind === 'msg') {
             e.preventDefault();
@@ -212,7 +215,8 @@ function onKey(e) {
 
     /* 新增：一律 Alt 組合，單鍵留給打字 */
     if (e.altKey && !ctrl) {
-        const key = k.toLowerCase();
+        // 看實體鍵位：Mac 的 Option+M 送出來的 key 是「µ」，用 key 判斷會抓不到
+        const key = /^Key[A-Z]$/.test(e.code || '') ? e.code.slice(3).toLowerCase() : k.toLowerCase();
         if (key === 'm') { e.preventDefault(); addRow('msg'); render(); editRow(S.sel.i); return; }
         if (key === 'n') { e.preventDefault(); addRow('note'); render(); editRow(S.sel.i); return; }
         if (key === 's') { e.preventDefault(); addRow('phase'); render(); editRow(S.sel.i); return; }
