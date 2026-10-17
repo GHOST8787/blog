@@ -81,7 +81,10 @@ const GLYPH_RE = /\uE002([^\uE003]*)\uE003|\uE004([^\uE005]*)\uE005/g;
 const IMG_SZ = new Map();
 const scaleOf = (rest) => { const m = String(rest || '').match(/scale\s*=\s*([\d.]+)/i); return m ? +m[1] || 1 : 1; };
 function imgSize(mark) {
-    const [u, sc] = String(mark).split('\uE006');
+    // \u76F8\u5C0D\u7DB2\u5740\u4E00\u5F8B\u5F9E\u90E8\u843D\u683C\u6839\u76EE\u9304\u627E\uFF08\u4E2D\u82F1\u5169\u9801\u5171\u7528\u540C\u4E00\u5957\u7A0B\u5F0F\uFF0C\u540C\u4E00\u6BB5\u539F\u59CB\u78BC\u5169\u908A\u756B\u51FA\u4E00\u6A23\u7684\u5716\uFF09
+    const [u0, sc] = String(mark).split('\uE006');
+    let u = u0;
+    try { u = new URL(u0, new URL('../', import.meta.url)).href; } catch { /* \u7167\u539F\u6A23 */ }
     if (!IMG_SZ.has(u)) {
         IMG_SZ.set(u, null);
         const im = new Image();
