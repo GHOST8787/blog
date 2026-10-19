@@ -1075,6 +1075,8 @@ export function paintChrome() {
     };
     set('[data-act="save"]', puml ? T.btn.savePuml : T.btn.save, puml ? T.hint.savePumlTip : T.hint.saveTip);
     set('[data-act="copy"]', puml ? T.btn.copyPuml : T.btn.copy, puml ? T.hint.copyPumlTip : T.hint.copyTip);
+    const disk = document.querySelector('[data-act="disk"]');      // data-file／data-nodisk 由 app.js 依綁定的檔寫上
+    if (disk) set('[data-act="disk"]', T.btn.disk, disk.dataset.nodisk ? T.hint.diskNoTip : disk.dataset.file ? T.hint.diskTipTo(disk.dataset.file) : T.hint.diskTipNew);
     const clr = document.querySelector('[data-act="clear"]');
     if (clr) clr.title = S.type === 'act' ? T.hint.clearActTip : T.hint.clearTip;
     const title = S.type === 'act' ? T.titleAct : T.title;

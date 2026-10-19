@@ -117,6 +117,14 @@
               line-height: 1.3; resize: none; overflow: hidden; white-space: pre; }
 
         /* 匯入 SVG 之後的報告：認出什麼、哪些認不出來 */
+        /* 手機一進來就跳的提醒：這個工具靠鍵盤，儲存也不能覆蓋原檔 */
+        .seq-note { width: min(360px, calc(100vw - 32px)); padding: 20px 20px 16px; border: 1px solid var(--c-border);
+                    border-radius: 12px; background: rgb(var(--c-surface)); color: rgb(var(--c-body)); font: inherit; }
+        .seq-note::backdrop { background: rgb(0 0 0 / .55); }
+        .seq-note h2 { margin: 0 0 10px; font-size: 15px; font-weight: 500; color: rgb(var(--c-purple)); }
+        .seq-note ul { margin: 0 0 16px; padding-left: 18px; font-size: 13px; line-height: 1.7; }
+        .seq-note button { display: block; width: 100%; font: inherit; font-size: 13px; padding: 8px 0; border-radius: 8px;
+                           border: 1px solid rgb(var(--c-purple) / .5); background: transparent; color: rgb(var(--c-purple)); cursor: pointer; }
         .seq-report { border-bottom: 1px solid var(--c-border); background: rgb(var(--c-ink) / .03); }
         .seq-report .r-head { display: flex; align-items: center; gap: 12px; padding: 9px 16px; }
         .seq-report .r-sum { flex: 1; font-size: 12px; color: rgb(var(--c-body)); }
@@ -230,6 +238,11 @@
     <div id="navbar-placeholder"></div>
 
     <div class="seq-app">
+        <dialog class="seq-note" id="mobileNote" aria-labelledby="mobileNoteTitle">
+            <h2 id="mobileNoteTitle"></h2>
+            <ul id="mobileNoteBody"></ul>
+            <button type="button" id="mobileNoteOk"></button>
+        </dialog>
         <div class="seq-bars">
             <div class="seq-head">
                 <div class="side">
@@ -258,6 +271,7 @@
                 <span class="div"></span>
                 <span class="grp" id="grpFile"></span>
                 <button data-act="open" data-btn="open" data-tip="openTip"></button>
+                <button data-act="disk" data-btn="disk"></button>
                 <div class="dd">
                     <button class="dd-btn" id="ddExport" data-btn="export" data-tip="exportTip" aria-haspopup="menu" aria-expanded="false"></button>
                     <div class="dd-menu" role="menu" hidden>

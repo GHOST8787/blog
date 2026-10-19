@@ -15,6 +15,9 @@ export const btn = {
     png: 'Download .png',
     copy: 'Copy Mermaid text',
     copied: 'Copied',
+    disk: 'Save',
+    saved: 'Saved',
+    saveFailed: 'Save failed',
     export: 'Export',
     clear: 'Clear',
     viewDiagram: 'Diagram',
@@ -42,6 +45,9 @@ export const hint = {
     zoomInTip: 'Zoom in (or hold Ctrl and scroll over the diagram)',
     zoomMenuTip: 'Current zoom; open for fit width, actual size or preset sizes',
     exportTip: 'Download or copy this diagram',
+    diskTipTo: (f) => `Overwrite ${f} (Ctrl+S)`,
+    diskTipNew: 'No file bound yet: the first save asks where to put it, later saves overwrite that file (Ctrl+S)',
+    diskNoTip: 'This browser cannot overwrite the original file, so a new copy is downloaded; use desktop Chrome or Edge to overwrite (Ctrl+S)',
     zoomResetTip: 'Back to actual size, 100%',
     zoomFitTip: 'Shrink the diagram so its full width fits',
 };
@@ -108,6 +114,15 @@ export const msg = {
     impLeftover: (n) => `${n} pieces of text were not attached to anything`,
     impDetail: 'Not drawn (original text kept)',
     impClose: 'Close',
+    saveFail: 'Could not write the file; the original is unchanged',
+    savePerm: 'The browser did not grant write permission; the original is unchanged',
+    mobileTitle: 'Some features differ on mobile',
+    mobileBody: [
+        'This tool is built for the keyboard. Arrow keys, Enter and Ctrl shortcuts are not available on a phone.',
+        'Save cannot overwrite the original file here; every save downloads a new copy.',
+        'For the full experience, use desktop Chrome or Edge.',
+    ],
+    mobileOk: 'Got it',
 };
 
 /* Activity diagram status bar and default text */
@@ -254,6 +269,7 @@ export const help = {
         ]],
         ['Source & files', '', [
             ['Source box', 'Edit the PUML or Mermaid directly; changes apply as you type. Pasted text is detected as sequence or activity'],
+            ['Save / Ctrl+S', 'Overwrites the file you opened; with nothing opened yet it asks once where to save. It still remembers the file after a reload. Only desktop Chrome / Edge can do this; other browsers download a new copy'],
             ['Export ▾', 'Download: a diagram read from PUML saves as .puml with untouched lines identical to the original, otherwise .json; .svg carries the source and can be reopened; also .png or copy as Mermaid'],
         ]],
         ['More syntax', '(write it in the source box; it is drawn)', [
@@ -369,6 +385,7 @@ export const help = {
         ]],
         ['Source & files', '', [
             ['Source box', 'Edit the PUML directly; changes apply as you type. Pasted text is detected as sequence or activity'],
+            ['Save / Ctrl+S', 'Overwrites the file you opened; with nothing opened yet it asks once where to save. It still remembers the file after a reload. Only desktop Chrome / Edge can do this; other browsers download a new copy'],
             ['Export ▾', 'Download .puml: untouched lines stay identical to the original; .svg carries the source and can be reopened'],
         ]],
         ['More syntax', '(write it in the source box; it is drawn)', [

@@ -1,4 +1,4 @@
-// 進出：Mermaid 雙向轉換、存成 .json 下載、讀回本機 .json、匯出 PNG。
+// 進出：Mermaid 雙向轉換、存成 .json 下載、讀回本機 .json、匯出 PNG。直接覆蓋原檔那一段在 disk.js。
 // 這一支不負責重畫，呼叫端拿到資料自己 render，所以不 import render.js。
 
 import { S, T, nid } from './state.js';
@@ -271,7 +271,7 @@ export function fromMermaid(src) {
 }
 
 /* 檔名用這張圖的名字，沒取名就退回日期。擋掉檔名不能用的字元。 */
-function fileBase() {
+export function fileBase() {
     const n = String(S.name || '').replace(/[\\/:*?"<>|]/g, '').trim().slice(0, 60);
     return n || `sequence-${stamp()}`;
 }
@@ -282,6 +282,11 @@ export function saveFile() {
         download(new Blob([currentPuml()], { type: 'text/plain;charset=utf-8' }), `${fileBase()}.puml`);
         return;
     }
+    download(new Blob([jsonText()], { type: 'application/json' }), `${fileBase()}.json`);
+}
+
+/* .json 的內容。下載跟「儲存」覆蓋原檔都用這一份。 */
+export function jsonText() {
     const data = {
         format: 'ghost.ouo/sequence',
         version: 1,
@@ -295,7 +300,7 @@ export function saveFile() {
         autoCfg: S.autoCfg,
         boxes: S.boxes,
     };
-    download(new Blob([JSON.stringify(data, null, 1)], { type: 'application/json' }), `${fileBase()}.json`);
+    return JSON.stringify(data, null, 1);
 }
 
 function stamp() {
@@ -306,8 +311,11 @@ function stamp() {
 
 /* 把整張圖存成 .svg。資料原封不動嵌在 <metadata>，所以這張圖讀得回來也編輯得了。 */
 export function saveSVG() {
-    withCleanSvg(buildSVG);
+    download(new Blob([svgText()], { type: 'image/svg+xml;charset=utf-8' }), `${fileBase()}.svg`);
 }
+
+/* .svg 的內容。下載跟「儲存」覆蓋原檔都用這一份。 */
+export const svgText = () => withCleanSvg(buildSVG);
 
 function buildSVG() {
     const sv = document.getElementById('sv');
@@ -325,8 +333,7 @@ function buildSVG() {
     });
     clone.insertBefore(meta, clone.firstChild);
     const head = '<?xml version="1.0" encoding="UTF-8"?>';
-    const str = head + '\n' + new XMLSerializer().serializeToString(clone);
-    download(new Blob([str], { type: 'image/svg+xml;charset=utf-8' }), `${fileBase()}.svg`);
+    return head + '\n' + new XMLSerializer().serializeToString(clone);
 }
 
 /* 讀回本機檔案。.json 走自己的格式，.svg 交給 svgin.js 反推。

@@ -9,6 +9,7 @@ import { initKeys } from './keys.js';
 import { toMermaid, fromMermaid, saveFile, saveSVG, readFile, exportPNG, isPuml, currentPuml } from './io.js';
 import { detect, parseSeqPuml, toPumlSeq } from './puml.js';
 import { A, setAct, setActText, newActStarter } from './act.js';
+import { diskOK, restoreHandle, bind, pickFile, saveDisk, boundName } from './disk.js';
 
 const L = document.documentElement.lang.toLowerCase().startsWith('zh') ? zh : en;
 setStrings(L);
@@ -68,7 +69,8 @@ document.querySelectorAll('[data-act]').forEach((btn) => {
         const a = btn.dataset.act;
         if (a === 'save') saveFile();
         if (a === 'svg') saveSVG();
-        if (a === 'open') filePick.click();
+        if (a === 'open') openFile();
+        if (a === 'disk') saveNow();
         if (a === 'png') exportPNG();
         if (a === 'copy') {
             navigator.clipboard?.writeText(isPuml() ? currentPuml() : toMermaid());
@@ -202,15 +204,49 @@ dds.forEach((dd) => {
 });
 document.addEventListener('pointerdown', (e) => dds.forEach((dd) => { if (!dd.contains(e.target)) closeDd(dd); }));
 
-/* 開啟本機 .json。讀壞了就不動現有的圖，只在狀態列報錯。 */
-filePick.addEventListener('change', async () => {
+/* 開檔：瀏覽器能直接寫檔就用它的開檔視窗，順便記住這個檔，之後「儲存」寫回去；不能就走隱藏的 <input type="file"> */
+const OPEN_ACCEPT = {
+    'application/json': ['.json'],
+    'image/svg+xml': ['.svg'],
+    'text/plain': ['.puml', '.plantuml', '.pu', '.iuml', '.wsd', '.mmd', '.mermaid', '.txt'],
+};
+async function openFile() {
+    if (!diskOK) { filePick.click(); return; }
+    let got;
+    try { got = await pickFile(OPEN_ACCEPT); } catch (err) { showFailure(err, ''); return; }
+    if (got && await loadPicked(got.file)) { await bind(got.handle); markBound(); }
+}
+/* 「儲存」鈕的提示寫著現在會覆蓋哪個檔，由 render 的 paintChrome 讀 data-file 組字 */
+function markBound() {
+    const b = document.querySelector('[data-act="disk"]');
+    if (!diskOK) b.dataset.nodisk = '1';
+    else b.dataset.file = boundName();
+    render();
+}
+restoreHandle().then(markBound);
+
+/* 手機（觸控、沒有滑鼠游標）每次打開都先提醒功能差異，按「知道了」才進工具 */
+if (matchMedia('(hover: none) and (pointer: coarse)').matches) {
+    const dlg = document.getElementById('mobileNote');
+    document.getElementById('mobileNoteTitle').textContent = L.msg.mobileTitle;
+    document.getElementById('mobileNoteBody').replaceChildren(...L.msg.mobileBody.map((t) => Object.assign(document.createElement('li'), { textContent: t })));
+    const ok = document.getElementById('mobileNoteOk');
+    ok.textContent = L.msg.mobileOk;
+    ok.addEventListener('click', () => dlg.close());
+    dlg.showModal();
+}
+filePick.addEventListener('change', () => {
     const f = filePick.files && filePick.files[0];
     filePick.value = '';
-    if (!f) return;
+    if (f) loadPicked(f);
+});
+
+/* 讀進一個本機檔。讀壞了就不動現有的圖，只在狀態列報錯。成功回傳 true。 */
+async function loadPicked(f) {
     try {
         const d = await readFile(f);
-        if (typeof d.puml === 'string') { importPuml(d.puml, f.name); return; }
-        if (typeof d.mermaid === 'string') { importMermaid(d.mermaid, f.name); return; }
+        if (typeof d.puml === 'string') return importPuml(d.puml, f.name);
+        if (typeof d.mermaid === 'string') return importMermaid(d.mermaid, f.name);
         push();
         loadDiagram(d);
         S.type = 'seq';
@@ -223,17 +259,51 @@ filePick.addEventListener('change', async () => {
         mmErr.textContent = '';
         render();
         showReport(d.report, f.name);
+        return true;
     } catch (err) {
         showFailure(err, f.name);
+        return false;
     }
-});
+}
+
+/* 儲存：寫回綁定的檔；這個瀏覽器做不到就照舊下載一份。結果顯示在「儲存」鈕上一秒多。 */
+let saving = false;
+async function saveNow() {
+    if (!diskOK) { saveFile(); return; }
+    if (saving) return;
+    saving = true;
+    const btn = document.querySelector('[data-act="disk"]');
+    const flash = (txt) => {
+        btn.dataset.busy = '1';
+        btn.textContent = txt;
+        setTimeout(() => { delete btn.dataset.busy; render(); }, 1400);
+    };
+    try {
+        const r = await saveDisk();
+        if (r) { btn.dataset.file = r.name; flash(L.btn.saved); }
+    } catch (err) {
+        showFailure({ message: err && err.message === 'permission' ? L.msg.savePerm : L.msg.saveFail }, boundName());
+        flash(L.btn.saveFailed);
+    } finally {
+        saving = false;
+        render();
+    }
+}
+
+/* Ctrl+S 在哪都能存，連原始碼框、命名欄裡也是；用捕獲階段，免得被那兩格的 stopPropagation 吃掉 */
+document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && !e.altKey && (e.key === 's' || e.key === 'S')) {
+        e.preventDefault();
+        saveNow();
+    }
+}, true);
 
 /* Mermaid 檔進來：跟貼進原始碼框同一條路，看不懂時報原文行號 */
 function importMermaid(text, fname) {
     let o;
     try { o = fromMermaid(text); } catch (e) {
         showFailure({ message: e.line ? L.msg.errLine(e.line, e.msg) : String(e.message || e) }, fname);
-        return;
+        return false;
     }
     push();
     loadDiagram(o);
@@ -247,12 +317,13 @@ function importMermaid(text, fname) {
     touch();
     render();
     report.hidden = true;
+    return true;
 }
 
 /* PUML 進來：先判斷是哪一種圖，時序圖轉成工具資料、活動圖整份原文交給 act.js */
 function importPuml(text, fname) {
     const det = detect(text, fname);
-    if (det.type === 'other') { showFailure({ message: L.msg.pumlOther(det.name || '') }, fname); return; }
+    if (det.type === 'other') { showFailure({ message: L.msg.pumlOther(det.name || '') }, fname); return false; }
     let rep;
     if (det.type === 'act') {
         setActText(text);
@@ -277,6 +348,7 @@ function importPuml(text, fname) {
     render();
     if (document.activeElement !== mmBox) mmBox.value = srcText();
     showReport(rep, fname);
+    return true;
 }
 
 const report = document.getElementById('report');
