@@ -560,3 +560,9 @@ a:focus-visible {
     .lc-featured .lc-title { font-size: 1.85rem; line-height: 1.25; }
     .lc-featured .lc-main { padding: 2rem 1.75rem; }
 }
+
+/* A 系列（article_NN / NA_NN）正文段落首行空兩格；導言大字段不縮。P 系列共用同一個 prose 外框，靠 a-indent 區分 */
+/* 包在外框裡的正文也縮：A12 的「小標＋段落」、NA_09/NA_10 的整節大卡片。小卡片、對話泡泡、引言、圖說不縮 */
+.a-indent > p:not(.text-xl),
+.a-indent > div.mb-6 > p.m-0,
+.a-indent div.my-8.p-8 > p.text-gray-300:not(.mb-2) { text-indent: 2em; }
