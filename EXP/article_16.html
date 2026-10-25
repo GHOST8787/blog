@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / A16 | GHOST.ouo</title>
+
+    <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
+
+    <script src="../theme.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
+
+    <link rel="stylesheet" href="../style.css">
+
+    <script>
+        window.siteRoot = '../';
+    </script>
+    <script type="module" src="../main.js" defer></script>
+    <!-- 預編譯的 Tailwind。原本是 cdn.tailwindcss.com 的同步 script，
+         會卡住 HTML 解析約 600ms。改檔後要跑 pnpm run build:css 重新產生。 -->
+    <link rel="stylesheet" href="../tw.css">
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-bg">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../articles.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                返回文章列表
+            </a>
+            <span class="opacity-50">EXP / A16</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                跟隨是自願的：<br>
+                <span class="text-gradient text-2xl md:text-4xl">Simon Sinek 的兩段談話</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    Thinking
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">
+                    Leadership
+                </span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.10.25</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="a-indent prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                Simon Sinek 有兩段常被轉傳的談話。第一段是 18 分鐘的 TED 演講，提出<strong class="text-white">黃金圈</strong>：受人追隨的領導者與組織，說話都從 Why 開始。第二段只有 3 分 46 秒，談的是升遷之後的那一步：你要負責的對象，會從「工作」變成「做這份工作的人」。這篇照原文整理兩段談話的論證。兩段最後其實落在同一件事上——<strong class="text-white">人跟隨一個人，為的是自己相信的東西。</strong>
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 一樣的條件，結果不同
+            </h3>
+
+            <p>
+                第一支影片開頭丟出三個問題。Apple 接觸得到的人才、代理商、顧問和媒體跟同業差不多，為什麼年年比對手創新？民權運動前受苦的人很多，好的演說家也很多，為什麼帶領運動的是金恩博士？資金更多、資歷更好的團隊有好幾組，為什麼最先做出動力載人飛行的是萊特兄弟？
+            </p>
+
+            <p>
+                Sinek 接著拿萊特兄弟與同時期的 Samuel Pierpont Langley 對照：
+            </p>
+
+            <ul class="list-none space-y-3 text-gray-400 text-sm font-mono border-l-2 border-white/10 pl-4 my-6">
+                <li class="flex items-start gap-3"><span class="text-accent-purple w-24 shrink-0 whitespace-nowrap">Langley</span><span>美國陸軍部（War Department）撥款 <strong class="text-white">$50,000</strong>；在哈佛有教職，也在史密森尼學會工作，人脈廣；《紐約時報》一路跟著報導。</span></li>
+                <li class="flex items-start gap-3"><span class="text-accent-purple w-24 shrink-0 whitespace-nowrap">萊特兄弟</span><span>研究經費來自自家<strong class="text-white">腳踏車店</strong>的收入；團隊裡沒有一個人上過大學，兩兄弟自己也沒有；《紐約時報》沒有跟拍。</span></li>
+            </ul>
+
+            <p>
+                如果把資金、人才、市場時機視為一般認定的成功條件，Langley 三樣都有。Sinek 認為兩者真正的差別在動機：萊特兄弟相信，做出這台機器會改變世界的走向；Langley 想要的是有錢、出名。
+            </p>
+
+            <p>
+                1903 年 12 月 17 日，萊特兄弟飛起來了。現場幾乎沒有旁人，消息也是幾天後才傳開。Langley 則在萊特兄弟起飛的那一天退出。Sinek 的解讀很直接：他沒有拿到第一，也沒有因此變有錢、出名，所以收手了。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 黃金圈：資訊的排列順序
+            </h3>
+
+            <p>
+                Sinek 把這個模式命名為「黃金圈」（The Golden Circle），由外到內分成三層：
+            </p>
+
+            <ul class="list-none space-y-3 text-gray-400 text-sm font-mono border-l-2 border-white/10 pl-4 my-6">
+                <li class="flex items-start gap-3"><span class="text-accent-purple w-24 shrink-0 whitespace-nowrap">What</span><span>做什麼。每個人、每個組織都百分之百清楚。</span></li>
+                <li class="flex items-start gap-3"><span class="text-accent-purple w-24 shrink-0 whitespace-nowrap">How</span><span>怎麼做。也就是差異化價值主張、專有流程、USP。有些組織清楚。</span></li>
+                <li class="flex items-start gap-3"><span class="text-accent-purple w-24 shrink-0 whitespace-nowrap">Why</span><span>為什麼做。也就是目的、理念、信念，以及組織為什麼存在。賺錢在 Sinek 的定義裡屬於結果，他把它歸在 Why 之外。</span></li>
+            </ul>
+
+            <p>
+                多數人的溝通方式是由外往內，從最清楚的 What 開始，再談 How，最後才碰到最模糊的 Why。他觀察的那些領導者與組織則相反：不論規模、不論產業，他們思考、行動與溝通都從內往外。
+            </p>
+
+            <p>
+                他用 Apple 示範。兩段文案的產品資訊基本相同，只換了順序：
+            </p>
+
+            <ul class="list-none space-y-3 text-gray-400 text-sm font-mono border-l-2 border-white/10 pl-4 my-6">
+                <li class="flex items-start gap-3"><span class="text-accent-purple w-24 shrink-0 whitespace-nowrap">由外而內</span><span>"We make great computers. They're beautifully designed, simple to use, and user-friendly. Want to buy one?"<br>我們做很棒的電腦，設計漂亮、簡單好用、對使用者友善。要買一台嗎？</span></li>
+                <li class="flex items-start gap-3"><span class="text-accent-purple w-24 shrink-0 whitespace-nowrap">由內而外</span><span>"Everything we do, we believe in challenging the status quo. We believe in thinking differently. The way we challenge the status quo is by making our products beautifully designed, simple to use, and user-friendly. We just happen to make great computers. Want to buy one?"<br>我們做的每件事，都相信要挑戰現狀、相信要用不同的方式思考。我們挑戰現狀的方法，是把產品做得設計漂亮、簡單好用、對使用者友善。我們剛好做出了很棒的電腦。要買一台嗎？</span></li>
+            </ul>
+
+            <p>
+                接著就是整場被引用最多的一句："People don't buy what you do, they buy why you do it." <strong class="text-white">人買單的，是你為什麼做。</strong>
+            </p>
+
+            <p>
+                Sinek 接著拿兩家電腦公司來補充。Gateway 做了多年平面螢幕，推出平面電視，卻沒有賣起來；Dell 推出 MP3 播放器和 PDA，品質與設計都到位，同樣沒有成功。Apple 則從電腦一路延伸到 MP3 播放器、手機、DVR，消費者依然願意買單。
+            </p>
+
+            <p>
+                Sinek 再把黃金圈對應到大腦。他把新皮質對應到 What，認為這部分負責理性分析與語言；中間兩層則對應 How 與 Why，負責信任、忠誠等感受，也參與行為與決策。他用這套對應解釋一種常見的情況——「數據我都懂，但感覺不對」。因為做決定的那一區沒有辦法直接用語言說明自己的判斷，只能最後用「感覺」來描述。這部分是 Sinek 在演講中的解釋，演講本身沒有附上研究出處。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 為什麼要找相信同一件事的人
+            </h3>
+
+            <p>
+                Sinek 接著把目標放到「人」身上。生意要做的，是跟相信你所相信的人一起做；組織要雇的，也是相信你所相信的人。只因為能做事而被雇用的人，為你的錢工作；相信你所相信的人，則可能為你流血、流汗、流淚。
+            </p>
+
+            <p>
+                這裡他借用的是創新擴散理論（diffusion of innovations）：
+            </p>
+
+            <ul class="list-none space-y-3 text-gray-400 text-sm font-mono border-l-2 border-white/10 pl-4 my-6">
+                <li class="flex items-start gap-3"><span class="text-accent-purple w-24 shrink-0 whitespace-nowrap">2.5%</span><span>創新者（innovators）</span></li>
+                <li class="flex items-start gap-3"><span class="text-accent-purple w-24 shrink-0 whitespace-nowrap">13.5%</span><span>早期採用者（early adopters）</span></li>
+                <li class="flex items-start gap-3"><span class="text-accent-purple w-24 shrink-0 whitespace-nowrap">34%</span><span>早期大眾（early majority），之後才是晚期大眾與落後者</span></li>
+                <li class="flex items-start gap-3"><span class="text-accent-purple w-24 shrink-0 whitespace-nowrap">15–18%</span><span><strong class="text-white">引爆點</strong>：大約到這個市場滲透率，系統才開始翻過去、進入大眾市場</span></li>
+            </ul>
+
+            <p>
+                早期大眾通常需要先看到別人使用過，才會跟進。創新者與早期採用者則比較依照自己的直覺與世界觀做決定。第一代 iPhone 上市時排隊六小時的人、平面電視剛出來就花 $40,000 購買的人，都被 Sinek 放在這一段。他的說法是，他們買的是「第一個擁有」這件事。而從約 10% 到 15–18% 之間的缺口，他引用 Moore 的說法，稱為「跨越鴻溝」（crossing the chasm）。
+            </p>
+
+            <p>
+                失敗的例子是 TiVo。Sinek 將它形容成當時市面上品質很好的產品，資金充足、市場條件也不差，但上市時溝通的全是功能：暫停直播、跳過廣告、倒轉直播、記住收視習慣。IPO 時股價約 $30–40，之後一路下跌，再也沒有站上 $10。Sinek 提出另一種說法：「如果你是那種喜歡掌控生活每個面向的人，我們有個產品給你。」後面接的功能一字不改。
+            </p>
+
+            <p>
+                成功的例子則是 1963 年夏天。<strong class="text-white">25 萬人</strong>到華盛頓聽金恩博士演講，沒有邀請函，也沒有網站可以查日期。金恩博士反覆講的是「我相信」。相信同一件事的人，最後把它變成自己的事，再轉告其他人。
+            </p>
+
+            <p>
+                Sinek 問：這些人有多少是為他而來？他的答案是：零。大家為的是自己心中的美國，現場甚至有約 <strong class="text-white">25%</strong> 是白人。那場演講叫〈I Have a Dream〉。Sinek 拿它對照現在政治人物常見的十二點計畫：金恩博士講的是「我相信什麼」，十二點計畫講的是「我要替你做什麼」。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 場景換到公司內部：升遷那一刻
+            </h3>
+
+            <p>
+                第二支影片談的是同一件事在組織裡的版本。Sinek 開頭就說，好的領導者需要兩樣東西：同理心與視角（empathy and perspective）。領導者真正的工作，是 "taking care of those in our charge"——照顧交到自己手上的人。
+            </p>
+
+            <p>
+                職涯前段只有一個責任：把工作做好。公司教你用軟體，送你去上幾天課，做得好就升遷。但升到某個位置之後，要負責的對象變成了「做你以前那份工作的人」。這一段，卻沒有人教你。
+            </p>
+
+            <p>
+                Sinek 對微管理的解釋很直接：主管做這份工作確實比部屬強，而這正是他被升上來的原因。問題在於，升遷之後，責任已經從「把工作做好」，轉成「讓做這份工作的人能把工作做好」。有人轉得快，有人轉得慢，也有人一輩子都沒有真正轉過去。
+            </p>
+
+            <p>
+                他把領導當成一種能學、能練的技能，比作肌肉：天天練就變強，停下來就變弱。他也把領導比作當父母。每個人都有這個能力，但想不想當、該不該當是另一回事，因為代價是個人的犧牲。事情順利，功勞全部給出去；出了錯，責任全部扛下來。留晚一點，教別人怎麼做；東西壞了，不吼、不搶過來自己做，只說一句：「再試一次。」
+            </p>
+
+            <p>
+                最後他拿 CEO 舉例。如果問 CEO 優先順序是什麼，對方可能會回答：「顧客。」Sinek 的回答是：你已經 15 年沒跟顧客講過話了。CEO 負責一群人，這群人負責另一群人，另一群人才負責顧客。所以 CEO 真正要照顧的，是負責服務顧客的那些人。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 兩段收在同一處
+            </h3>
+
+            <p>
+                一支講對外溝通，一支講帶人。表面上是兩個不同的題目，最後卻落在同一個區分上。TED 那場的最後，Sinek 把 leaders 和 those who lead 分開：前者可能握有權力或職位；後者則能讓人受到鼓舞，不論是個人還是組織。
+            </p>
+
+            <p>
+                第二支影片則把這條線放進公司裡。升遷給你的是職位；職位之後真正增加的工作，是照顧那些在做事的人。
+            </p>
+
+            <p>
+                兩段談話共用的機制，都落在「跟隨」這件事上。Sinek 在 TED 演講最後說："We follow those who lead not because we have to but because we want to. We follow those who lead not for them, but for ourselves." 我們跟隨真正的領導者，因為我們想要；為的是我們自己。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 關於 Simon Sinek
+            </h3>
+
+            <p>
+                TED 講者頁對他的介紹是：研究領導者如何激發合作、信任與改變，著有 <em>Start With Why</em>、<em>Leaders Eat Last</em>、<em>Together is Better</em>、<em>The Infinite Game</em> 等暢銷書。他的個人網站另外列出 <em>Find Your WHY</em>，並寫他自稱為「unshakeable optimist」（堅定的樂觀主義者）。
+            </p>
+
+            <p>
+                除了寫書，他創立了領導力學習與發展公司 The Optimism Company，主持 Podcast <em>A Bit of Optimism</em>，並透過與企鵝蘭登書屋（Penguin Random House）合作的 Optimism Press 出版其他作者的書，也是 RAND Corporation 的兼任研究人員（adjunct staff）。
+            </p>
+
+            <p>
+                他最為人知的是那場談 WHY 的 TED 演講。個人網站目前列出的觀看次數已<strong class="text-white">超過 6,000 萬次</strong>。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Links
+            </h3>
+
+
+            <ul class="space-y-2 text-sm text-gray-400 list-none pl-0">
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    影片一：<a href="https://www.youtube.com/watch?v=5oxIJNGYmgI" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">賽門西奈克：偉大的領袖如何鼓動行為</a>（天下雜誌 Video，18:02）
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    影片二：<a href="https://www.youtube.com/watch?v=PZpayFC5lk8" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">為什麼大多數主管都不夠格？</a>（Wisdom Bread 智慧麵包，3:46）
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    人物介紹來源：<a href="https://www.ted.com/speakers/simon_sinek" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">TED 講者頁</a>、<a href="https://simonsinek.com/about/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">Simon Sinek 個人網站</a>（2026-10-25 查證）
+                </li>
+            </ul>
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="article_15.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; 上一篇
+            </a>
+            <a href="../articles.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                查看所有文章
+            </a>
+            <a href="#" class="text-gray-500 text-sm font-mono opacity-50 cursor-not-allowed" aria-disabled="true">
+                下一篇 &rarr;
+            </a>
+        </div>
+
+    </main>
+    <div id="footer-placeholder"></div>
+</body>
+</html>
