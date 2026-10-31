@@ -68,6 +68,14 @@ const files = fs.readdirSync(expDir)
     return na - nb;
   });
 
+// cover 是手動指定的封面（HTML 裡抽不到），重產時從舊的 json 帶過來，不然會被洗掉
+const oldCovers = {};
+if (fs.existsSync(outJson)) {
+  for (const e of JSON.parse(fs.readFileSync(outJson, 'utf8'))) {
+    if (e.cover) oldCovers[e.url] = e.cover;
+  }
+}
+
 const entries = [];
 for (const fname of files) {
   const html = fs.readFileSync(path.join(expDir, fname), 'utf8');
@@ -81,6 +89,7 @@ for (const fname of files) {
   }
   if (date) entry.date = date;
   if (category) entry.category = category;
+  if (oldCovers[entry.url]) entry.cover = oldCovers[entry.url];
   entries.push(entry);
   console.log(`[${fname}] title="${title?.main || '?'}" date=${date || '?'} category=${category || '?'}`);
 }
