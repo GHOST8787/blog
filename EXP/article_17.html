@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / A17 | GHOST.ouo</title>
+
+    <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
+
+    <script src="../theme.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
+
+    <link rel="stylesheet" href="../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script type="module" src="../main.js" defer></script>
+    <!-- 預編譯的 Tailwind。原本是 cdn.tailwindcss.com 的同步 script，
+         會卡住 HTML 解析約 600ms。改檔後要跑 pnpm run build:css 重新產生。 -->
+    <link rel="stylesheet" href="../tw.css">
+
+    <style>
+        /* 思維架構圖的色票。圖是 inline SVG，顏色全部走這組變數，深淺主題切換時跟著翻。 */
+        .na13 {
+            --d-ink: #E2E8F0;
+            --d-muted: #94A3B8;
+            --d-line: rgba(255, 255, 255, .18);
+            --d-arrow: rgba(255, 255, 255, .45);
+            --d-panel: rgba(255, 255, 255, .03);
+            --d-box: rgba(255, 255, 255, .06);
+            --d-purple: #BF94FF; --d-purple-bg: rgba(191, 148, 255, .14);
+            --d-green: #34D399;  --d-green-bg: rgba(52, 211, 153, .14);
+            --d-red: #F87171;    --d-red-bg: rgba(248, 113, 113, .12);
+            --d-amber: #FBBF24;  --d-amber-bg: rgba(251, 191, 36, .12);
+            display: block;
+            width: 100%;
+            height: auto;
+            font-family: "Plus Jakarta Sans", "Noto Sans TC", sans-serif;
+        }
+        :root[data-theme="light"] .na13 {
+            --d-ink: #1D224A;
+            --d-muted: #5B6087;
+            --d-line: rgba(29, 34, 74, .20);
+            --d-arrow: rgba(29, 34, 74, .50);
+            --d-panel: rgba(29, 34, 74, .02);
+            --d-box: rgba(29, 34, 74, .05);
+            --d-purple: #5A5CEA; --d-purple-bg: rgba(90, 92, 234, .10);
+            --d-green: #15803D;  --d-green-bg: rgba(21, 128, 61, .10);
+            --d-red: #B91C1C;    --d-red-bg: rgba(185, 28, 28, .08);
+            --d-amber: #A16207;  --d-amber-bg: rgba(161, 98, 7, .10);
+        }
+        .na13 text { fill: var(--d-ink); }
+        .na13 .t   { font-size: 16px; font-weight: 700; }
+        .na13 .s   { font-size: 12.5px; fill: var(--d-muted); }
+        .na13 .h   { font-size: 15px; font-weight: 700; fill: var(--d-purple); }
+        .na13 .ar  { stroke: var(--d-arrow); stroke-width: 1.6; fill: none; }
+    </style>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-bg">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../articles.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO ARTICLES
+            </a>
+            <span class="opacity-50">EXP / A17</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                AI 看起來很真，因為它長得像過去<br>
+                <span class="text-gradient text-2xl md:text-4xl">新的東西，只在執行裡出現</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">Thinking</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">AI</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Education</span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.10.31</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="a-indent prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                AI 的產出看起來很真。它的每一句話，都是機率下的結果；而那個機率，來自人類過去怎麼說、怎麼寫、怎麼做。說得直接一點：<strong class="text-white">AI 最擅長給你的，是過去。</strong>這篇分三段：AI 為什麼天然站在過去、新的東西從哪裡出現，以及最後什麼樣的人會留下來。
+            </p>
+
+            <figure class="my-10 mx-auto">
+                <div class="overflow-x-auto rounded-2xl border border-white/10 shadow-2xl">
+                    <svg class="na13" viewBox="0 0 960 440" style="min-width:720px" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="這篇的思維架構">
+                        <defs>
+                            <marker id="na13-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                                <path d="M0,0 L10,5 L0,10 z" style="fill: var(--d-arrow)"/>
+                            </marker>
+                        </defs>
+
+                        <rect x="16"  y="16" width="290" height="408" rx="14" style="fill: var(--d-panel); stroke: var(--d-line)"/>
+                        <rect x="335" y="16" width="290" height="408" rx="14" style="fill: var(--d-panel); stroke: var(--d-line)"/>
+                        <rect x="654" y="16" width="290" height="408" rx="14" style="fill: var(--d-panel); stroke: var(--d-line)"/>
+                        <text class="h" x="161" y="46" text-anchor="middle">① AI</text>
+                        <text class="h" x="480" y="46" text-anchor="middle">② 執行</text>
+                        <text class="h" x="799" y="46" text-anchor="middle">③ 結果</text>
+
+                        <!-- ① AI -->
+                        <rect x="36" y="70" width="250" height="48" rx="10" style="fill: var(--d-box); stroke: var(--d-line)"/>
+                        <text class="t" x="161" y="100" text-anchor="middle">人類最有限的資源是時間</text>
+                        <line class="ar" x1="161" y1="118" x2="161" y2="148" marker-end="url(#na13-arr)"/>
+                        <rect x="36" y="150" width="250" height="78" rx="10" style="fill: var(--d-purple-bg); stroke: var(--d-purple)"/>
+                        <text class="t" x="161" y="176" text-anchor="middle">AI：現代的仙丹</text>
+                        <text class="s" x="161" y="198" text-anchor="middle">更少的時間做更多事情</text>
+                        <text class="s" x="161" y="217" text-anchor="middle">需要意識集合體，出現是必然</text>
+                        <line class="ar" x1="161" y1="228" x2="161" y2="258" marker-end="url(#na13-arr)"/>
+                        <rect x="36" y="260" width="250" height="78" rx="10" style="fill: var(--d-box); stroke: var(--d-line)"/>
+                        <text class="t" x="161" y="286" text-anchor="middle">AI 產出來的東西看起來很真</text>
+                        <text class="s" x="161" y="308" text-anchor="middle">因為它是概率下的結果</text>
+                        <text class="s" x="161" y="327" text-anchor="middle">概率的邏輯是人類一直以來怎麼做的</text>
+
+                        <!-- ② 執行 -->
+                        <rect x="355" y="70" width="250" height="56" rx="10" style="fill: var(--d-box); stroke: var(--d-line)"/>
+                        <text class="t" x="480" y="94" text-anchor="middle">執行</text>
+                        <text class="s" x="480" y="114" text-anchor="middle">遇到問題，對細節有所掌控</text>
+                        <line class="ar" x1="480" y1="126" x2="480" y2="148" marker-end="url(#na13-arr)"/>
+                        <rect x="355" y="150" width="250" height="56" rx="10" style="fill: var(--d-box); stroke: var(--d-line)"/>
+                        <text class="t" x="480" y="174" text-anchor="middle">碰到困難</text>
+                        <text class="s" x="480" y="194" text-anchor="middle">與過去不同的東西</text>
+                        <line class="ar" x1="480" y1="206" x2="480" y2="228" marker-end="url(#na13-arr)"/>
+                        <rect x="355" y="230" width="250" height="56" rx="10" style="fill: var(--d-purple-bg); stroke: var(--d-purple)"/>
+                        <text class="t" x="480" y="254" text-anchor="middle">解決困難</text>
+                        <text class="s" x="480" y="274" text-anchor="middle">推進人類社會前進</text>
+                        <rect x="355" y="306" width="250" height="100" rx="10" style="fill: var(--d-box); stroke: var(--d-line)"/>
+                        <text class="t" x="480" y="330" text-anchor="middle">提前預判問題的能力</text>
+                        <rect x="373" y="344" width="66" height="28" rx="14" style="fill: var(--d-purple-bg)"/>
+                        <rect x="447" y="344" width="66" height="28" rx="14" style="fill: var(--d-purple-bg)"/>
+                        <rect x="521" y="344" width="66" height="28" rx="14" style="fill: var(--d-purple-bg)"/>
+                        <text class="s" x="406" y="363" text-anchor="middle" style="fill: var(--d-ink)">聽過</text>
+                        <text class="s" x="480" y="363" text-anchor="middle" style="fill: var(--d-ink)">看過</text>
+                        <text class="s" x="554" y="363" text-anchor="middle" style="fill: var(--d-ink)">做過</text>
+                        <text class="s" x="480" y="394" text-anchor="middle">觀察與執行，都需要花時間</text>
+
+                        <!-- ③ 結果 -->
+                        <rect x="674" y="70" width="250" height="72" rx="10" style="fill: var(--d-green-bg); stroke: var(--d-green)"/>
+                        <text class="t" x="799" y="98" text-anchor="middle">厲害的人</text>
+                        <text class="s" x="799" y="122" text-anchor="middle">能從 AI 的產物中挑出問題並優化</text>
+                        <rect x="674" y="166" width="250" height="72" rx="10" style="fill: var(--d-red-bg); stroke: var(--d-red)"/>
+                        <text class="t" x="799" y="194" text-anchor="middle">被淘汰</text>
+                        <text class="s" x="799" y="218" text-anchor="middle">不思考、不執行、無產出的人</text>
+                        <rect x="674" y="262" width="250" height="72" rx="10" style="fill: var(--d-amber-bg); stroke: var(--d-amber)"/>
+                        <text class="t" x="799" y="290" text-anchor="middle">學歷用途下降</text>
+                        <text class="s" x="799" y="314" text-anchor="middle">日常吸收的知識已經超過學歷</text>
+                    </svg>
+                </div>
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">這篇的思維架構</figcaption>
+            </figure>
+
+            <!-- ═══ 1. AI 給的，是過去 ═══ -->
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> AI 給的，是過去
+            </h3>
+
+            <p>
+                AI 回答的時候，會根據已經存在的資料，預測「在這個位置，人類最可能接什麼」。寫報告、寫程式、寫信，它都能很快給你一個完整答案，而且通常很好讀。
+            </p>
+
+            <p>
+                因為大量過去的資料已經告訴它，人類習慣怎麼寫、什麼樣的句子比較合理、什麼樣的結構比較常見。<strong class="text-white">最常見的寫法，讀起來當然順，也很容易讓人以為它就是對的。</strong>
+            </p>
+
+            <p>
+                但順跟對，中間其實有一段距離。
+            </p>
+
+            <p>
+                METR 在 2025 年做過一項研究，讓資深開發者使用當時的 AI 工具處理自己熟悉的開源專案。在這個特定實驗條件下，開發者事前預估自己會快約 24%，做完之後仍覺得快了約 20%，實際完成時間卻慢了約 19%。
+            </p>
+
+            <p>
+                問題可能出在它做出來的東西<strong class="text-white">太像一個合理的答案</strong>，讓人低估了檢查、修改與整合的成本。AI 看起來很像過去做對的樣子，人就容易把「看起來合理」誤認成「真的解決了」。
+            </p>
+
+            <p>
+                AI 會出現，本身也很好理解。人最有限的資源之一是時間。時間有限，人自然會想用更少的時間做更多事情；可是，一個人能讀、能聽、能記、能實際做的量都有上限。
+            </p>
+
+            <p>
+                於是人類一直在想辦法把別人的經驗保存下來，再交給下一個人使用。書是，教育是，資料庫是，現在的 AI 也是。
+            </p>
+
+            <p>
+                如果把 AI 看成一種把大量人類經驗壓縮後重新提供給人的工具，它很像一顆現代的仙丹：吃下去，可以直接拿到別人花很多年才累積出來的東西。但仙丹裡裝的，仍然是<strong class="text-white">已經發生過的東西</strong>。
+            </p>
+
+            <!-- ═══ 2. 新的東西，只在執行裡出現 ═══ -->
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 新的東西，只在執行裡出現
+            </h3>
+
+            <p>
+                執行一定會撞到困難。而困難，通常就是現在跟過去不一樣的地方。如果過去的方法完全適用，就不會卡住；會卡住，代表這裡出現了舊經驗沒有處理過的情況。
+            </p>
+
+            <p>
+                這也是 AI 相對弱的地方。AI 的預測基礎來自過去，而真正新的問題，恰好是過去沒有完整答案的地方。
+            </p>
+
+            <p>
+                人碰到問題，把它解掉。這個解法之後就會變成新的「過去」，下一個人可以學，下一個模型也可以吸收。社會就是這樣一點一點往前推的。<strong class="text-white">新的東西，是在答案不夠用的地方被逼出來的。</strong>
+            </p>
+
+            <p>
+                遇到問題，也代表你真的碰到了細節。沒做過的人，通常只能看到整體的樣子；做過的人，知道哪一顆螺絲會鬆、哪個環節最容易出錯，也知道一個看起來很小的問題，後面可能會連鎖出什麼結果。
+            </p>
+
+            <p>
+                所以執行和思考其實是同一件事情的兩面。想清楚了，才做得下去；做下去，才知道哪裡其實沒有想清楚。
+            </p>
+
+            <p>
+                回頭看身邊那些會提前問對問題的人，我覺得原因大致有三種。<strong class="text-white">聽過</strong>，有人告訴過他，這裡可能會出事；<strong class="text-white">看過</strong>，他親眼看過別人在這裡出事；<strong class="text-white">做過</strong>，他自己就在這裡出過事。
+            </p>
+
+            <p>
+                三種經驗都能幫助一個人提前發現問題，差別只是來源不同。AI 可以把「聽過」和一部分「看過」的經驗快速壓縮給你，但「做過」的那一份，很難直接交給你。因為真正的細節，是在你自己碰到問題、處理問題之後才知道的。那一部分，還是得用時間換。
+            </p>
+
+            <!-- ═══ 3. 留下來的人 ═══ -->
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 留下來的人
+            </h3>
+
+            <p>
+                同一份 AI 寫出來的東西，有人整份照收；有人查了很多資料，卻查在不重要的位置；少數人則知道哪一步一旦錯了，後面全部都會跟著錯。他們只在那些關鍵位置停下來，把問題挑出來，再把它改好。
+            </p>
+
+            <p>
+                我認為真正有差距的，是最後這一種人。他們贏在知道<strong class="text-white">什麼地方不能直接相信</strong>。而這個能力，本身就來自前面那一段：你聽過什麼、看過什麼、做過什麼，以及你曾經在哪裡撞過牆。
+            </p>
+
+            <p>
+                AI 讓「不思考」變得很便宜。以前再怎麼偷懶，至少還得自己經過一些步驟；現在不用想、不查、不驗證，當下交出去的東西，看起來可能跟認真做完的一樣完整。真正的代價，被延後到出事的那一天才出現。
+            </p>
+
+            <p>
+                所以我覺得 AI 時代真正容易被淘汰的，是<strong class="text-white">不思考、不執行，也沒有產出的人</strong>。因為把 AI 的結果原樣交出去，任何人按一個按鈕都能做到。
+            </p>
+
+            <p>
+                真正有價值的，是知道：哪裡可以交給 AI，哪裡需要自己判斷，以及哪裡一定要親自下去做。
+            </p>
+
+            <p>
+                把這個角度放回學歷，會看到一個有趣的相似之處。學歷本身，可以理解成一套社會整理過的知識與能力認證。教育把人類認為高頻、有用的東西放進課程，再透過考試與評分確認你有沒有掌握。它的作用，本來就是幫一個人用比較短的時間，取得大量前人整理過的知識。
+            </p>
+
+            <p>
+                從這個角度看，<strong class="text-white">學歷和 AI 在功能上有一個相似點：兩者都在濃縮過去。</strong>學歷把「人類認為值得學的過去」整理給你；AI 把「大量人類曾經產生過的內容與做法」重新組合給你。
+            </p>
+
+            <p>
+                兩者都很好用，但也都有同一個限制：<strong class="text-white">它們都不能替你完成那些還沒有被解決的問題。</strong>
+            </p>
+
+            <p>
+                如果一個人日常吸收與實際累積的知識，已經超過某張學歷原本想證明的範圍，那張學歷對他的邊際價值自然會下降。這是我這陣子觀察到的一個現象。學歷仍然有價值；只是當一個人的實際能力與經驗已經超過它所代表的範圍時，它能提供的資訊就會變少。
+            </p>
+
+            <p>
+                所以最後回到最開始的那句話。AI 很像一顆現代仙丹，它可以讓你快速取得大量前人花時間累積的東西。學歷也是一種濃縮，書是濃縮，資料庫是濃縮；AI 只是把這件事做得更快、更大、更容易取得。
+            </p>
+
+            <p>
+                往前推動世界的，是有人拿著這些整理好的答案去做，做到一半發現：<strong class="text-white">這裡不對。</strong>於是停下來，找到問題，把它解掉。那個解法，才會變成下一個人的「過去」。
+            </p>
+
+            <p>
+                所以新的東西，只在執行裡出現。而真正會留下來的人，是<strong class="text-white">能用 AI 快速取得過去，又願意親自走進未知的人。</strong>
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Links
+            </h3>
+            <ul class="space-y-2 text-sm text-gray-400 list-none pl-0">
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        來源：METR — Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity（2025.07；2026-10-31 查證）
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="article_11.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        相關文章：AI 沒有讓我更輕鬆
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="article_12.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        相關文章：人比 AI 更值得信任嗎
+                    </a>
+                </li>
+            </ul>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="article_16.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; 上一篇
+            </a>
+            <a href="../articles.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                查看所有文章
+            </a>
+            <a href="#" class="text-gray-500 text-sm font-mono opacity-50 cursor-not-allowed" aria-disabled="true">
+                下一篇 &rarr;
+            </a>
+        </div>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+</body>
+</html>

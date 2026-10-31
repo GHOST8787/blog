@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / A17 | GHOST.ouo</title>
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/article_17.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/article_17.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/article_17.html">
+
+    <link rel="icon" type="image/png" href="../../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../../PNG/pixelS2.png">
+
+    <script src="../../theme.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
+
+    <link rel="stylesheet" href="../../style.css">
+
+    <script>
+        window.siteRoot = '../';
+    </script>
+    <script src="../../i18n.js" defer></script>
+    <script type="module" src="../../main.js" defer></script>
+    <!-- 預編譯的 Tailwind。原本是 cdn.tailwindcss.com 的同步 script，
+         會卡住 HTML 解析約 600ms。改檔後要跑 pnpm run build:css 重新產生。 -->
+    <link rel="stylesheet" href="../../tw.css">
+
+    <style>
+        /* 思維架構圖的色票。圖是 inline SVG，顏色全部走這組變數，深淺主題切換時跟著翻。 */
+        .na13 {
+            --d-ink: #E2E8F0;
+            --d-muted: #94A3B8;
+            --d-line: rgba(255, 255, 255, .18);
+            --d-arrow: rgba(255, 255, 255, .45);
+            --d-panel: rgba(255, 255, 255, .03);
+            --d-box: rgba(255, 255, 255, .06);
+            --d-purple: #BF94FF; --d-purple-bg: rgba(191, 148, 255, .14);
+            --d-green: #34D399;  --d-green-bg: rgba(52, 211, 153, .14);
+            --d-red: #F87171;    --d-red-bg: rgba(248, 113, 113, .12);
+            --d-amber: #FBBF24;  --d-amber-bg: rgba(251, 191, 36, .12);
+            display: block;
+            width: 100%;
+            height: auto;
+            font-family: "Plus Jakarta Sans", "Noto Sans TC", sans-serif;
+        }
+        :root[data-theme="light"] .na13 {
+            --d-ink: #1D224A;
+            --d-muted: #5B6087;
+            --d-line: rgba(29, 34, 74, .20);
+            --d-arrow: rgba(29, 34, 74, .50);
+            --d-panel: rgba(29, 34, 74, .02);
+            --d-box: rgba(29, 34, 74, .05);
+            --d-purple: #5A5CEA; --d-purple-bg: rgba(90, 92, 234, .10);
+            --d-green: #15803D;  --d-green-bg: rgba(21, 128, 61, .10);
+            --d-red: #B91C1C;    --d-red-bg: rgba(185, 28, 28, .08);
+            --d-amber: #A16207;  --d-amber-bg: rgba(161, 98, 7, .10);
+        }
+        .na13 text { fill: var(--d-ink); }
+        .na13 .t   { font-size: 16px; font-weight: 700; }
+        .na13 .s   { font-size: 12.5px; fill: var(--d-muted); }
+        .na13 .h   { font-size: 15px; font-weight: 700; fill: var(--d-purple); }
+        .na13 .ar  { stroke: var(--d-arrow); stroke-width: 1.6; fill: none; }
+    </style>
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-bg">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../articles.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO ARTICLES
+            </a>
+            <span class="opacity-50">EXP / A17</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                AI Looks Real Because It Looks Like the Past<br>
+                <span class="text-gradient text-2xl md:text-4xl">New Things Only Appear in Execution</span>
+            </h1>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">Thinking</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">AI</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Education</span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.10.31</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <article class="a-indent prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-8 leading-relaxed">
+                AI output looks real. Every sentence it produces comes out of probability, and that probability comes from how people have spoken, written, and acted in the past. Put plainly: <strong class="text-white">what AI is best at giving you is the past.</strong> This piece has three parts: why AI naturally stands in the past, where new things come from, and who stays in the end.
+            </p>
+
+            <figure class="my-10 mx-auto">
+                <div class="overflow-x-auto rounded-2xl border border-white/10 shadow-2xl">
+                    <svg class="na13" viewBox="0 0 960 440" style="min-width:720px" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The thinking structure behind this piece">
+                        <defs>
+                            <marker id="na13-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                                <path d="M0,0 L10,5 L0,10 z" style="fill: var(--d-arrow)"/>
+                            </marker>
+                        </defs>
+
+                        <rect x="16"  y="16" width="290" height="408" rx="14" style="fill: var(--d-panel); stroke: var(--d-line)"/>
+                        <rect x="335" y="16" width="290" height="408" rx="14" style="fill: var(--d-panel); stroke: var(--d-line)"/>
+                        <rect x="654" y="16" width="290" height="408" rx="14" style="fill: var(--d-panel); stroke: var(--d-line)"/>
+                        <text class="h" x="161" y="46" text-anchor="middle">① AI</text>
+                        <text class="h" x="480" y="46" text-anchor="middle">② Execution</text>
+                        <text class="h" x="799" y="46" text-anchor="middle">③ Outcomes</text>
+
+                        <!-- ① AI -->
+                        <rect x="36" y="70" width="250" height="48" rx="10" style="fill: var(--d-box); stroke: var(--d-line)"/>
+                        <text class="t" x="161" y="100" text-anchor="middle">Time is our scarcest resource</text>
+                        <line class="ar" x1="161" y1="118" x2="161" y2="148" marker-end="url(#na13-arr)"/>
+                        <rect x="36" y="150" width="250" height="78" rx="10" style="fill: var(--d-purple-bg); stroke: var(--d-purple)"/>
+                        <text class="t" x="161" y="176" text-anchor="middle">AI: a modern elixir</text>
+                        <text class="s" x="161" y="198" text-anchor="middle">Do more in less time</text>
+                        <text class="s" x="161" y="217" text-anchor="middle">A collective mind; inevitable</text>
+                        <line class="ar" x1="161" y1="228" x2="161" y2="258" marker-end="url(#na13-arr)"/>
+                        <rect x="36" y="260" width="250" height="78" rx="10" style="fill: var(--d-box); stroke: var(--d-line)"/>
+                        <text class="t" x="161" y="286" text-anchor="middle">AI output looks real</text>
+                        <text class="s" x="161" y="308" text-anchor="middle">It is a product of probability</text>
+                        <text class="s" x="161" y="327" text-anchor="middle">Odds = what people have always done</text>
+
+                        <!-- ② Execution -->
+                        <rect x="355" y="70" width="250" height="56" rx="10" style="fill: var(--d-box); stroke: var(--d-line)"/>
+                        <text class="t" x="480" y="94" text-anchor="middle">Execution</text>
+                        <text class="s" x="480" y="114" text-anchor="middle">Problems = control of details</text>
+                        <line class="ar" x1="480" y1="126" x2="480" y2="148" marker-end="url(#na13-arr)"/>
+                        <rect x="355" y="150" width="250" height="56" rx="10" style="fill: var(--d-box); stroke: var(--d-line)"/>
+                        <text class="t" x="480" y="174" text-anchor="middle">Running into difficulty</text>
+                        <text class="s" x="480" y="194" text-anchor="middle">Things that differ from the past</text>
+                        <line class="ar" x1="480" y1="206" x2="480" y2="228" marker-end="url(#na13-arr)"/>
+                        <rect x="355" y="230" width="250" height="56" rx="10" style="fill: var(--d-purple-bg); stroke: var(--d-purple)"/>
+                        <text class="t" x="480" y="254" text-anchor="middle">Solving it</text>
+                        <text class="s" x="480" y="274" text-anchor="middle">Moves human society forward</text>
+                        <rect x="355" y="306" width="250" height="100" rx="10" style="fill: var(--d-box); stroke: var(--d-line)"/>
+                        <text class="t" x="480" y="330" text-anchor="middle">Anticipating problems</text>
+                        <rect x="373" y="344" width="66" height="28" rx="14" style="fill: var(--d-purple-bg)"/>
+                        <rect x="447" y="344" width="66" height="28" rx="14" style="fill: var(--d-purple-bg)"/>
+                        <rect x="521" y="344" width="66" height="28" rx="14" style="fill: var(--d-purple-bg)"/>
+                        <text class="s" x="406" y="363" text-anchor="middle" style="fill: var(--d-ink)">Heard</text>
+                        <text class="s" x="480" y="363" text-anchor="middle" style="fill: var(--d-ink)">Seen</text>
+                        <text class="s" x="554" y="363" text-anchor="middle" style="fill: var(--d-ink)">Done</text>
+                        <text class="s" x="480" y="394" text-anchor="middle">Observing and doing; all take time</text>
+
+                        <!-- ③ Outcomes -->
+                        <rect x="674" y="70" width="250" height="72" rx="10" style="fill: var(--d-green-bg); stroke: var(--d-green)"/>
+                        <text class="t" x="799" y="98" text-anchor="middle">The capable</text>
+                        <text class="s" x="799" y="122" text-anchor="middle">Spot and fix problems in AI output</text>
+                        <rect x="674" y="166" width="250" height="72" rx="10" style="fill: var(--d-red-bg); stroke: var(--d-red)"/>
+                        <text class="t" x="799" y="194" text-anchor="middle">Phased out</text>
+                        <text class="s" x="799" y="218" text-anchor="middle">No thinking, no execution, no output</text>
+                        <rect x="674" y="262" width="250" height="72" rx="10" style="fill: var(--d-amber-bg); stroke: var(--d-amber)"/>
+                        <text class="t" x="799" y="290" text-anchor="middle">Degrees matter less</text>
+                        <text class="s" x="799" y="314" text-anchor="middle">Daily learning outgrew the degree</text>
+                    </svg>
+                </div>
+                <figcaption class="text-center text-xs text-gray-600 mt-3 font-mono">The thinking structure behind this piece</figcaption>
+            </figure>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> AI Gives You the Past
+            </h3>
+
+            <p>
+                When AI answers, it uses existing data to predict "what a person is most likely to say next at this point." Reports, code, emails: it can hand you a complete answer fast, and it usually reads well.
+            </p>
+
+            <p>
+                A huge amount of past data has already told it how people tend to write, which sentences sound reasonable, and which structures are common. <strong class="text-white">The most common way of writing reads smoothly, and it is easy to take it for the right one.</strong>
+            </p>
+
+            <p>
+                Smooth and right still sit some distance apart.
+            </p>
+
+            <p>
+                In 2025, METR ran a study in which experienced developers used the AI tools of the time on open-source projects they knew well. Under those specific conditions, the developers expected to be about 24% faster beforehand, still felt about 20% faster afterward, and actually took about 19% longer.
+            </p>
+
+            <p>
+                The problem may lie in how its output <strong class="text-white">looks too much like a reasonable answer</strong>, so people underestimate the cost of checking, revising, and integrating it. AI looks like the past done right, and people easily mistake "looks reasonable" for "actually solved."
+            </p>
+
+            <p>
+                Why AI appeared is easy to understand. Time is one of the scarcest resources people have. With limited time, people naturally want to do more in less of it; yet what one person can read, hear, remember, and actually do all have limits.
+            </p>
+
+            <p>
+                So people have always looked for ways to preserve others' experience and pass it to the next person. Books do this, education does this, databases do this, and now AI does too.
+            </p>
+
+            <p>
+                If you see AI as a tool that compresses a huge amount of human experience and serves it back to you, it resembles a modern elixir: swallow it and you get what others took years to build. What sits inside the elixir is still <strong class="text-white">what has already happened</strong>.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> New Things Only Appear in Execution
+            </h3>
+
+            <p>
+                Execution always runs into difficulty. And difficulty is usually where the present differs from the past. If the old methods fully applied, nothing would get stuck; getting stuck means a situation old experience never handled has shown up.
+            </p>
+
+            <p>
+                This is also where AI is relatively weak. AI predicts from the past, and genuinely new problems sit exactly where the past has no complete answer.
+            </p>
+
+            <p>
+                Someone runs into the problem and solves it. That solution then becomes a new "past": the next person can learn it, and the next model can absorb it. That is how society moves forward, bit by bit. <strong class="text-white">New things are forced out where the answers run short.</strong>
+            </p>
+
+            <p>
+                Hitting a problem also means you have actually touched the details. People who have not done the work usually see only the overall shape; people who have know which screw comes loose, which step fails most often, and how a small-looking problem can set off a chain reaction later.
+            </p>
+
+            <p>
+                So execution and thinking are two sides of the same thing. Think it through and you can carry it out; carry it out and you find where you had not thought it through.
+            </p>
+
+            <p>
+                Looking back at the people around me who ask the right questions early, I think the reasons come in three kinds. <strong class="text-white">Heard it</strong>: someone told them this could go wrong. <strong class="text-white">Seen it</strong>: they watched someone else go wrong here. <strong class="text-white">Done it</strong>: they went wrong here themselves.
+            </p>
+
+            <p>
+                All three help a person spot problems early; only the source differs. AI can quickly compress "heard it" and part of "seen it" for you, but "done it" is hard to hand over. The real details only show up after you hit the problem and deal with it yourself. That part still has to be paid for in time.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> The People Who Stay
+            </h3>
+
+            <p>
+                Given the same piece of AI-written work, some accept all of it; some check plenty of sources, but in places that do not matter; a few know which step, once wrong, drags everything after it down. They stop only at those key points, pick out the problem, and fix it.
+            </p>
+
+            <p>
+                I think the real gap lies with that last group. Their edge is knowing <strong class="text-white">what cannot be trusted at face value</strong>. That ability comes from the previous section: what you have heard, seen, and done, and where you have hit a wall before.
+            </p>
+
+            <p>
+                AI makes "not thinking" cheap. In the past, even the laziest person still had to pass through some steps; now, without thinking, checking, or verifying, what you hand in may look as complete as careful work. The real cost is deferred to the day something breaks.
+            </p>
+
+            <p>
+                So I think the people most likely to be phased out in the AI era are <strong class="text-white">those who do not think, do not execute, and produce nothing</strong>. Handing over AI output as is takes one button, and anyone can press it.
+            </p>
+
+            <p>
+                What has real value is knowing which parts can go to AI, which parts need your own judgment, and which parts you have to do yourself.
+            </p>
+
+            <p>
+                Apply the same lens to academic degrees and an interesting similarity shows up. A degree can be read as a society-curated certificate of knowledge and ability. Education puts what people consider frequent and useful into the curriculum, then uses exams and grades to confirm whether you have it. Its job has always been to help a person pick up a lot of previously organized knowledge in a shorter time.
+            </p>
+
+            <p>
+                Seen this way, <strong class="text-white">degrees and AI share one functional similarity: both condense the past.</strong> A degree hands you "the past people consider worth learning"; AI recombines "the content and methods people have produced" for you.
+            </p>
+
+            <p>
+                Both are useful, and both share the same limit: <strong class="text-white">neither can solve, on your behalf, the problems nobody has solved yet.</strong>
+            </p>
+
+            <p>
+                If what a person absorbs and builds up day to day already goes beyond what a degree was meant to prove, the degree's marginal value to them naturally drops. This is something I have observed lately. Degrees still have value; once a person's actual ability and experience exceed the range a degree represents, it simply tells you less.
+            </p>
+
+            <p>
+                So back to where this started. AI is like a modern elixir: it lets you quickly pick up what others spent years building. A degree is a condensation too, so are books, so are databases; AI just does this faster, at a larger scale, and more accessibly.
+            </p>
+
+            <p>
+                What moves the world forward is people taking those organized answers and doing the work, then finding halfway through: <strong class="text-white">this part is wrong.</strong> So they stop, find the problem, and solve it. That solution becomes the next person's "past."
+            </p>
+
+            <p>
+                So new things only appear in execution. And the people who stay are <strong class="text-white">the ones who can use AI to get the past quickly and are still willing to walk into the unknown themselves.</strong>
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Links
+            </h3>
+            <ul class="space-y-2 text-sm text-gray-400 list-none pl-0">
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        Source: METR — Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity (2025.07; verified 2026-10-31)
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="article_11.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        Related: AI Did Not Make This Easier
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="article_12.html" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        Related: Are Humans More Trustworthy Than AI
+                    </a>
+                </li>
+            </ul>
+
+        </article>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="article_16.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Prev Article
+            </a>
+            <a href="../articles.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View All Articles
+            </a>
+            <a href="#" class="text-gray-500 text-sm font-mono opacity-50 cursor-not-allowed" aria-disabled="true">
+                Next Article &rarr;
+            </a>
+        </div>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+</body>
+</html>

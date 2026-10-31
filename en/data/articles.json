@@ -25,7 +25,7 @@
     "title": "Why I Only Built a Prompt Generator:",
     "subtitle": "Architecture Choices and Product Philosophy Behind an AI Tarot Tool",
     "date": "2026.02.19",
-    "category": "AI & Automation"
+    "category": "AI &amp; Automation"
   },
   {
     "url": "EXP/article_05.html",
@@ -109,6 +109,13 @@
     "title": "Following Is Voluntary:",
     "subtitle": "Two Talks by Simon Sinek",
     "date": "2026.10.25",
+    "category": "Thinking"
+  },
+  {
+    "url": "EXP/article_17.html",
+    "title": "AI Looks Real Because It Looks Like the Past",
+    "subtitle": "New Things Only Appear in Execution",
+    "date": "2026.10.31",
     "category": "Thinking"
   }
 ]

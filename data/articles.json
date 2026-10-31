@@ -25,7 +25,7 @@
     "title": "為什麼只做「提示詞產生器」？",
     "subtitle": "關於 AI 塔羅占卜的架構決策與產品哲學",
     "date": "2026.02.19",
-    "category": "AI & Automation"
+    "category": "AI &amp; Automation"
   },
   {
     "url": "EXP/article_05.html",
@@ -109,6 +109,13 @@
     "title": "跟隨是自願的：",
     "subtitle": "Simon Sinek 的兩段談話",
     "date": "2026.10.25",
+    "category": "Thinking"
+  },
+  {
+    "url": "EXP/article_17.html",
+    "title": "AI 看起來很真，因為它長得像過去",
+    "subtitle": "新的東西，只在執行裡出現",
+    "date": "2026.10.31",
     "category": "Thinking"
   }
 ]
