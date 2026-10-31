@@ -160,7 +160,10 @@ function initTypewriter() {
 
     if (typewriterTimer) clearTimeout(typewriterTimer);
 
-    const textToType = "Python / Google Apps Script / OpenAI API / n8n";
+    // 手機寬四個 tag 會折成三行，少放 Claude Code 維持兩行
+    const textToType = window.matchMedia('(max-width: 767px)').matches
+        ? "Local AI / Google Apps Script / Handy Tools"
+        : "Claude Code / Local AI / Google Apps Script / Handy Tools";
 
     if (prefersReducedMotion) {
         element.textContent = textToType;
