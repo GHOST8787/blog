@@ -80,7 +80,7 @@ export const T = {
     sentBurst: 'Sent!',                 // the particle that floats up on a successful submit
     // The three ways a poll stops taking replies. The gate and the banner share the same line.
     closedGateSuffix: 'You can still read the results.',
-    gateHowtoOpen: 'Choose how to join',
+    gateHowtoOpen: 'Choose how to vote',
     gateHowtoClosed: 'Pick either one to see the results',
     gateGuestOpen: 'Vote as a guest without signing in',
     gateGuestClosed: 'Skip signing in and just read the results',
@@ -88,7 +88,11 @@ export const T = {
     deadlineSaved: 'Deadline updated',
     deadlineCleared: 'Deadline removed',
     deadlineFailed: 'Could not update: ',
-    deadlineBadInput: "Can't read that date or time. Type the date as 1003, the time as 1800.",
+    deadlineBadInput: "Can't read that date or time. Type the date as 1225, the time as 1800.",
+    deadlineClearBtn: 'Clear',
+    deadlineClearConfirm: 'Sure?',
+    deadlineAfterFirst: (t) => `The deadline is later than the earliest time (${t}); that meeting will be over before voting closes.`,
+    noYesYet: 'No one has marked a time as available yet.',
     deadlineNowFmt: (t) => `Currently: ${t}`,
     deadlineNowNone: 'Currently: no deadline',
     // The green card shown after a successful submit. Participants cannot see the

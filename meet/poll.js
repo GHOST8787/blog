@@ -25,6 +25,7 @@ export function resetPoll() {
     metaLoaded = false;
     attached = null;
     orgNoteLoaded = false;
+    if (noteEditing) setNoteEditing(false);   // 換身分時把編輯框收起來，不留給下一個人
     clearTimeout(loadTimer);
     loadTimer = null;
     pinned = null;
@@ -339,11 +340,50 @@ $('org-note-save').addEventListener('click', async () => {
     setTimeout(() => { msg.textContent = ''; }, 2500);
 });
 
+/* ===== 發起人改會議說明（meta/note，所有人看得到） =====
+   發布後還能改，後面才點開連結的人看到的就是新版；已經開著頁面的人也會跟著換（meta 有 watch）。
+   編輯中左欄撐滿整列，否則輸入框只有內容那麼寬。 */
+let noteEditing = false;
+function setNoteEditing(on) {
+    noteEditing = on;
+    $('p-head-main').classList.toggle('w-full', on);
+    $('p-note').classList.toggle('hidden', on);
+    $('p-note-editor').classList.toggle('hidden', !on);
+    $('p-note-edit').classList.toggle('hidden', on || !isOrganizer());
+}
+// 輸入框跟著內容長高：固定行數的話手機上長說明開起來就被捲掉前半段
+function fitNoteInput() {
+    const ta = $('p-note-input');
+    ta.style.height = 'auto';
+    ta.style.height = (ta.scrollHeight + 2) + 'px';
+}
+$('p-note-input').addEventListener('input', fitNoteInput);
+$('p-note-edit').addEventListener('click', () => {
+    const ta = $('p-note-input');
+    ta.value = S.meta.note || '';
+    $('p-note-msg').textContent = '';
+    setNoteEditing(true);
+    fitNoteInput();
+    ta.focus();
+    ta.setSelectionRange(0, 0);
+});
+$('p-note-cancel').addEventListener('click', () => setNoteEditing(false));
+$('p-note-save').addEventListener('click', async () => {
+    const msg = $('p-note-msg');
+    msg.textContent = '';
+    try {
+        await set(ref(db, `meet/polls/${pollId}/meta/note`), $('p-note-input').value.trim());
+        setNoteEditing(false);
+    } catch (err) {
+        msg.textContent = T.noteFailed + err.message;
+    }
+});
+
 // 截止時間要連時分一起講，只給 MM/DD 的話「今天到底還能不能投」看不出來。
 function fmtDeadline(ms) {
     // 固定 24 小時制。Meet 的輸入欄也是 24 小時制，交給 locale 決定會變成「下午11:59」。
     const t = new Date(ms).toLocaleTimeString(T.timeLocale, { hour: '2-digit', minute: '2-digit', hour12: false });
-    return `${fmtDate(ms)} ${t}`;
+    return `${fmtDate(ms)} (${T.weekdays[new Date(ms).getDay()]}) ${t}`;
 }
 
 // --- 發起人：改截止時間 ---
@@ -355,6 +395,11 @@ let deadlineShown = null;   // 已經帶進欄位的那個值，避免每次重�
 function fillDeadlineFields() {
     const dl = S.meta.deadline || 0;
     $('org-deadline-now').textContent = dl ? T.deadlineNowFmt(fmtDeadline(dl)) : T.deadlineNowNone;
+    // 截止比最早的時段還晚：投票還開著，那場會已經開完了
+    const first = sortedSlots()[0];
+    const late = dl && first && dl > first.start;
+    $('org-deadline-warn').textContent = late ? T.deadlineAfterFirst(fmtDeadline(first.start)) : '';
+    $('org-deadline-warn').classList.toggle('hidden', !late);
     if (dl === deadlineShown) return;
     deadlineShown = dl;
     const dEl = $('org-deadline-date');
@@ -369,7 +414,8 @@ function fillDeadlineFields() {
     const iso = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
     dEl.value = iso.slice(5).replace('-', '/');
     dEl.dataset.iso = iso;
-    if (lab) lab.textContent = iso.replace(/-/g, '/');
+    // 帶入現值時不寫完整日期，上面「目前」已經講了；改打新日期時 normalizeDate 才會寫，讓人看到跳到哪一年
+    if (lab) lab.textContent = '';
     tEl.value = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
 }
 
@@ -385,6 +431,9 @@ async function writeDeadline(ms, okMsg) {
     setTimeout(() => { msg.textContent = ''; }, 2500);
 }
 
+// 打完日期就在旁邊寫出完整年月日：打到已經過的日期會跳明年，不寫出來看不到
+$('org-deadline-date').addEventListener('change', () => normalizeDate($('org-deadline-date')));
+
 $('org-deadline-save').addEventListener('click', () => {
     const iso = normalizeDate($('org-deadline-date'));
     const hm = normalizeTime($('org-deadline-time'));
@@ -398,12 +447,33 @@ $('org-deadline-plus1').addEventListener('click', () => {
     writeDeadline(base + 86400000, T.deadlineSaved);
 });
 
-$('org-deadline-clear').addEventListener('click', () => writeDeadline(0, T.deadlineCleared));
+// 取消截止＝投票永遠不關，按一下就生效太容易誤觸，跟刪除一樣要按兩次
+$('org-deadline-clear').addEventListener('click', () => {
+    const btn = $('org-deadline-clear');
+    if (btn.dataset.armed !== '1') {
+        btn.dataset.armed = '1';
+        btn.textContent = T.deadlineClearConfirm;
+        btn.classList.add('text-red-300', 'border-red-400/30');
+        setTimeout(() => {
+            if (btn.dataset.armed === '1') {
+                btn.dataset.armed = '';
+                btn.textContent = T.deadlineClearBtn;
+                btn.classList.remove('text-red-300', 'border-red-400/30');
+            }
+        }, 4000);
+        return;
+    }
+    btn.dataset.armed = '';
+    btn.textContent = T.deadlineClearBtn;
+    btn.classList.remove('text-red-300', 'border-red-400/30');
+    writeDeadline(0, T.deadlineCleared);
+});
 
 function renderPollHeader() {
     $('p-id').textContent = 'POLL #' + pollId.slice(-6).toUpperCase();
     $('p-title').textContent = S.meta.title || '';
     $('p-note').textContent = S.meta.note || '';
+    $('p-note-edit').classList.toggle('hidden', !isOrganizer() || noteEditing);
     const on = S.meta.organizerName || 'Organizer';
     $('p-org-name').textContent = on;
     $('p-org-avatar').textContent = on.slice(0, 1);
@@ -460,7 +530,7 @@ function bestSlotId() {
         const y = countBy(s.id, 'yes');
         if (y > ty) { ty = y; best = s.id; }   // 同票數時保留較早的那個時段
     });
-    return best;
+    return ty > 0 ? best : null;   // 沒人勾可參加就不挑，否則全 0 票時第一個時段會被標成最多人
 }
 
 // 刪掉一個候選時段要一起清乾淨：時段本身、提議人、統計、以及所有人對這個時段的票。
@@ -873,8 +943,8 @@ $('voter-list').addEventListener('click', async e => {
 function renderVerdict() {
     const sid = S.meta.lockedSlot || bestSlotId();
     const s = S.slots[sid];
-    if (!s) { $('verdict').innerHTML = ''; return; }
-    const r = fmtRange(s.start, s.end);
+    if (!Object.keys(S.slots).length) { $('verdict').innerHTML = ''; return; }
+    const r = s ? fmtRange(s.start, s.end) : null;
 
     if (isOrganizer()) {
         const CAP = 10;
@@ -887,23 +957,34 @@ function renderVerdict() {
         // 這顆會把整場會議連同所有回覆刪掉，不可復原，所以用紅色並要按兩次
         const closeBtn = `<button id="close-btn" class="px-4 py-2.5 rounded-full border border-red-400/40 text-red-300 hover:text-red-200 hover:border-red-400/70 text-sm tracking-wide transition">${T.closeBtn}</button>`;
 
-        $('verdict').innerHTML = `<div class="flex flex-wrap items-start justify-between gap-4">
+        // 還沒有人勾可參加：不挑時段、不給定案鈕，刪除投票照留
+        if (!s) {
+            $('verdict').innerHTML = `<div class="flex flex-wrap items-start justify-between gap-4">
             <div class="min-w-[220px] flex-1">
-                <div class="font-mono text-[13px] text-accent-purple uppercase tracking-wider mb-2">${S.meta.lockedSlot ? T.verdictLocked : T.verdictBest}</div>
-                <div class="text-xl font-bold text-white mb-3">${r.day} ${r.time}</div>
-                <div class="space-y-1.5 text-sm">
-                    <div class="flex gap-2"><span class="font-mono text-gray-600 w-24 shrink-0">${T.states.yes}</span><span class="text-accent-success">${esc(nameList('yes'))}</span></div>
-                    <div class="flex gap-2"><span class="font-mono text-gray-600 w-24 shrink-0">${T.states.no}</span><span class="text-accent-warn">${esc(nameList('no'))}</span></div>
-                </div>
+                <div class="font-mono text-[13px] text-accent-purple uppercase tracking-wider mb-2">${T.verdictBest}</div>
+                <p class="text-sm text-gray-400">${T.noYesYet}</p>
             </div>
-            <div class="shrink-0 flex flex-col gap-2">${lockBtn}${closeBtn}</div>
+            <div class="shrink-0 flex flex-col gap-2">${closeBtn}</div>
         </div>`;
+        } else {
+            $('verdict').innerHTML = `<div class="flex flex-wrap items-start justify-between gap-4">
+                <div class="min-w-[220px] flex-1">
+                    <div class="font-mono text-[13px] text-accent-purple uppercase tracking-wider mb-2">${S.meta.lockedSlot ? T.verdictLocked : T.verdictBest}</div>
+                    <div class="text-xl font-bold text-white mb-3">${r.day} ${r.time}</div>
+                    <div class="space-y-1.5 text-sm">
+                        <div class="flex gap-2"><span class="font-mono text-gray-600 w-24 shrink-0">${T.states.yes}</span><span class="text-accent-success">${esc(nameList('yes'))}</span></div>
+                        <div class="flex gap-2"><span class="font-mono text-gray-600 w-24 shrink-0">${T.states.no}</span><span class="text-accent-warn">${esc(nameList('no'))}</span></div>
+                    </div>
+                </div>
+                <div class="shrink-0 flex flex-col gap-2">${lockBtn}${closeBtn}</div>
+            </div>`;
 
-        $('lock-btn').onclick = async () => {
-            try {
-                await update(ref(db, `meet/polls/${pollId}/meta`), { lockedSlot: S.meta.lockedSlot ? null : sid });
-            } catch (err) { window.alert(err.message); }
-        };
+            $('lock-btn').onclick = async () => {
+                try {
+                    await update(ref(db, `meet/polls/${pollId}/meta`), { lockedSlot: S.meta.lockedSlot ? null : sid });
+                } catch (err) { window.alert(err.message); }
+            };
+        }
         const delBtn = $('close-btn');
         delBtn.onclick = async () => {
             // 第一下換成確認字樣，4 秒沒有下一步就收回，避免誤觸把整場刪掉

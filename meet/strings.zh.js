@@ -88,7 +88,7 @@ export const T = {
     sentBurst: '已經送出囉',            // 送出成功時飄上去的那顆粒子
     // 收不了票的三種情況。入口畫面與投票畫面頂端共用同一句，後面接「現在只能看結果」。
     closedGateSuffix: '現在只能看結果。',
-    gateHowtoOpen: '選擇怎麼參加',
+    gateHowtoOpen: '選擇投票方式',
     gateHowtoClosed: '選一個身分就能看目前結果',
     gateGuestOpen: '不登入，用訪客身分投票',
     gateGuestClosed: '不登入，直接看結果',
@@ -96,7 +96,11 @@ export const T = {
     deadlineSaved: '截止時間已更新',
     deadlineCleared: '已取消截止時間',
     deadlineFailed: '更新失敗：',
-    deadlineBadInput: '日期或時間看不懂，日期打 1003、時間打 1800。',
+    deadlineBadInput: '日期或時間看不懂，日期打 1225、時間打 1800。',
+    deadlineClearBtn: '取消截止',
+    deadlineClearConfirm: '確定取消？',
+    deadlineAfterFirst: (t) => `截止時間比最早的時段（${t}）還晚，那場會開完了投票還沒截止。`,
+    noYesYet: '還沒有人勾選可參加的時段。',
     deadlineNowFmt: (t) => `目前：${t}`,
     deadlineNowNone: '目前：沒有設截止',
     // 送出成功後的那張綠框卡片。參與者看不到別人的結果，所以要在這裡講清楚後面會發生什麼事。
