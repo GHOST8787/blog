@@ -17,6 +17,8 @@ export function setStrings(s) { T = s; }
 
 export const S = {
     name: '',                              // 這張圖的名字，存檔與匯出拿它當檔名
+    file: '',                              // 這張圖對應存檔資料夾裡的哪個檔（從它開的或上次存成的），覆蓋別的同名檔前要先提醒
+    mmTitleText: '',                       // Mermaid 原本的 title 文字，跟圖名分開
     parts: [],
     rows: [],
     blocks: [],
@@ -57,7 +59,9 @@ export function sampleDiagram() {
 }
 
 export function loadDiagram(d) {
-    if (typeof d.name === 'string') S.name = d.name;
+    // 圖名＝檔名，只從本工具的 .json／自動暫存來；PUML、Mermaid 解析出來的 name 是圖裡的 title，另外收著不拿來當圖名
+    if (typeof d.name === 'string' && !d.puml && !d.mmTitle) S.name = d.name;
+    S.mmTitleText = d.mmTitle ? d.name || '' : d.mmTitleText || '';
     S.parts = d.parts;
     S.rows = d.rows;
     S.blocks = d.blocks || [];
@@ -108,13 +112,15 @@ export function loadSaved() {
         if (!d || !Array.isArray(d.parts) || !Array.isArray(d.rows) || !d.parts.length) return null;
         d.rows.forEach((r) => { if (!r.tone) r.tone = 'solid'; });
         return { name: d.name || '', parts: d.parts, rows: d.rows, blocks: d.blocks || [], legend: d.legend,
-                 type: d.type, fmt: d.fmt, pumlText: d.pumlText, actText: d.actText, autonumber: d.autonumber, autoCfg: d.autoCfg };
+                 type: d.type, fmt: d.fmt, pumlText: d.pumlText, actText: d.actText, autonumber: d.autonumber, autoCfg: d.autoCfg,
+                 mmTitleOn: !!d.mmTitleOn, mmTitleText: d.mmTitleText || '', file: d.file || '' };
     } catch { return null; }
 }
 
 /* 復原。每次動資料之前呼叫 push()，存的是改動前的樣子。 */
 const undoStack = [], redoStack = [];
-const snap = () => JSON.stringify({ p: S.parts, r: S.rows, b: S.blocks, l: S.legend, n: S.name });
+// 名字不進復原：Ctrl+Z 只還原圖的內容，不會改掉存檔用的檔名
+const snap = () => JSON.stringify({ p: S.parts, r: S.rows, b: S.blocks, l: S.legend });
 
 export function push() {
     dirty = true;
@@ -126,7 +132,6 @@ function restore(str) {
     dirty = true;
     const o = JSON.parse(str);
     S.parts = o.p; S.rows = o.r; S.blocks = o.b; S.legend = o.l;
-    if (typeof o.n === 'string') S.name = o.n;
     S.sel.i = Math.min(S.sel.i, Math.max(0, S.rows.length - 1));
     S.sel.j = S.sel.i;
     if (S.sel.layer === 'part') S.sel.i = Math.min(S.sel.i, S.parts.length - 1);

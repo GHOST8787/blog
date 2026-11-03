@@ -6,7 +6,7 @@ import {
     SELF_W, SELF_H, BLK_HEAD, BLK_FOOT, PHASE_H,
     px, pxOf, pIdx, nameOf, selRange, autoSave, LANE, boxWOf,
 } from './state.js';
-import { toMermaid } from './io.js';
+import { toMermaid, fileBase } from './io.js';
 import { toPumlSeq } from './puml.js';
 import { A, renderAct } from './act.js';
 
@@ -884,7 +884,46 @@ function paintStatus() {
 /* 命名欄跟著資料走（讀檔、復原都會變）；使用者正在打字時不要蓋掉他 */
 function paintName() {
     const nb = document.getElementById('docName');
-    if (nb && document.activeElement !== nb) nb.value = S.name || '';
+    if (!nb) return;
+    if (document.activeElement !== nb) nb.value = S.name || '';
+    fitName(nb);
+}
+
+/* 命名欄寬度跟著名字長度撐開，維持置中。名字優先：左邊副標、右邊統計字不夠放時縮成「…」，
+   最寬到碰到左邊標題與右邊「?」為止；還是放不下就滑過去看全名 */
+let measureCtx = null;
+function fitName(nb = document.getElementById('docName')) {
+    if (!nb) return;
+    const head = nb.parentElement;
+    const cs = getComputedStyle(nb);
+    // 手機寬度時 CSS 把命名欄放到標題下方自己一整行，寬度交給 CSS，名字完整顯示
+    if (cs.position === 'static') {
+        nb.style.width = '';
+        head.querySelectorAll(':scope > .side').forEach((s) => { s.style.maxWidth = ''; });
+        nb.title = T.msg.nameTip;
+        return;
+    }
+    measureCtx = measureCtx || document.createElement('canvas').getContext('2d');
+    measureCtx.font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+    const text = nb.value || nb.placeholder || '';
+    const pad = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight) + parseFloat(cs.borderLeftWidth) + parseFloat(cs.borderRightWidth);
+    const need = Math.ceil(measureCtx.measureText(text).width + pad + 4);
+    // 兩側一定要留的只有標題字與「?」鈕；取寬的那邊乘二（命名欄要置中），扣掉頁首內距與間距，剩下的就是命名欄最多能用的寬度
+    const hr = head.getBoundingClientRect();
+    const PAD = 16, GAP = 8;
+    const h1 = head.querySelector('h1'), help = head.querySelector('.side.r .help');
+    const keep = Math.max(h1 ? h1.getBoundingClientRect().width : 0, help ? help.getBoundingClientRect().width : 0);
+    const room = Math.floor(hr.width - (PAD + keep + GAP) * 2);
+    const min = parseFloat(cs.minWidth) || 0;
+    let w = Math.max(min, Math.min(need, room));
+    nb.style.width = `${w}px`;
+    // canvas 量的字寬跟實際排版會差幾 px（中英混排換字型），照實際溢出的量補回去，一樣不超過 room
+    const short = nb.scrollWidth - nb.clientWidth;
+    if (short > 0 && w < room) { w = Math.min(room, w + short + 2); nb.style.width = `${w}px`; }
+    // 兩側最多只能用到命名欄旁邊，超過的副標／統計字由 CSS 的 ellipsis 縮成「…」
+    const sideMax = `${Math.max(0, Math.floor((hr.width - w) / 2 - PAD - GAP))}px`;
+    head.querySelectorAll(':scope > .side').forEach((s) => { s.style.maxWidth = sideMax; });
+    nb.title = need > room && nb.value ? nb.value : T.msg.nameTip;
 }
 
 function paintFoot() {
@@ -986,9 +1025,9 @@ export function scrollRectIntoView(vx1, vy1, vx2, vy2) {
     const bars = document.querySelector('.seq-bars');
     const stick = bars ? bars.getBoundingClientRect().height : 0;
     const split = document.body.classList.contains('view-split');
-    const c = split ? stage.getBoundingClientRect() : null;
+    const c = split || stageScrollsX() ? stage.getBoundingClientRect() : null;
     const top = split ? c.top : 0, bottom = split ? c.top + stage.clientHeight : innerHeight;
-    const left = split ? c.left : 0, right = split ? c.left + stage.clientWidth : innerWidth;
+    const left = c ? c.left : 0, right = c ? c.left + stage.clientWidth : innerWidth;
     const padT = (split ? 0 : stick) + 20, padB = 24, padX = 36;
     let dx = 0, dy = 0;
     if (vy1 < top + padT) dy = vy1 - top - padT;
@@ -999,7 +1038,16 @@ export function scrollRectIntoView(vx1, vy1, vx2, vy2) {
         else if (vx1 < left + padX) dx = vx1 - left - padX;
         else if (vx2 > right - padX) dx = Math.min(vx2 - right + padX, vx1 - left - padX);
     }
-    if (dx || dy) (split ? stage : window).scrollBy(dx, dy);
+    scrollStageBy(dx, dy);
+}
+
+/* 手機寬度時畫布自己左右捲（整頁不橫向溢出），上下仍然捲整頁；電腦版只看圖時整頁捲，分割時畫布兩個方向都自己捲 */
+export const stageScrollsX = () => getComputedStyle(stage).overflowX === 'auto';
+export function scrollStageBy(dx, dy) {
+    if (!dx && !dy) return;
+    if (document.body.classList.contains('view-split')) stage.scrollBy(dx, dy);
+    else if (stageScrollsX()) { stage.scrollBy(dx, 0); window.scrollBy(0, dy); }
+    else window.scrollBy(dx, dy);
 }
 
 /* 參與者的 PUML 外形：在框的左邊畫一個小圖示 */
@@ -1075,8 +1123,16 @@ export function paintChrome() {
     };
     set('[data-act="save"]', puml ? T.btn.savePuml : T.btn.save, puml ? T.hint.savePumlTip : T.hint.saveTip);
     set('[data-act="copy"]', puml ? T.btn.copyPuml : T.btn.copy, puml ? T.hint.copyPumlTip : T.hint.copyTip);
-    const disk = document.querySelector('[data-act="disk"]');      // data-file／data-nodisk 由 app.js 依綁定的檔寫上
-    if (disk) set('[data-act="disk"]', T.btn.disk, disk.dataset.nodisk ? T.hint.diskNoTip : disk.dataset.file ? T.hint.diskTipTo(disk.dataset.file) : T.hint.diskTipNew);
+    // 「儲存」的提示直接寫出會存成哪個檔：data-folder／data-nodisk 由 app.js 依存檔資料夾寫上
+    const disk = document.querySelector('[data-act="disk"]');
+    if (disk) {
+        const base = fileBase();
+        const f = `${base}.${puml ? 'puml' : 'json'}`;
+        set('[data-act="disk"]', T.btn.disk, disk.dataset.nodisk ? T.hint.diskNoTip : !base ? T.hint.diskTipNoName
+            : disk.dataset.folder ? T.hint.diskTipTo(disk.dataset.folder, f) : T.hint.diskTipNew(f));
+    }
+    const fold = document.querySelector('[data-act="folder"]');
+    if (fold && disk) set('[data-act="folder"]', T.btn.folder, T.hint.folderTip(disk.dataset.folder || ''));
     const clr = document.querySelector('[data-act="clear"]');
     if (clr) clr.title = S.type === 'act' ? T.hint.clearActTip : T.hint.clearTip;
     const title = S.type === 'act' ? T.titleAct : T.title;

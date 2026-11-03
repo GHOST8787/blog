@@ -4,12 +4,12 @@
 import * as zh from './strings.zh.js';
 import * as en from './strings.en.js';
 import { S, setStrings, sampleDiagram, loadDiagram, loadSaved, push, touch, saveExtra } from './state.js';
-import { render, resetSelKey, ZOOM, setZoom, sv, stage } from './render.js';
+import { render, resetSelKey, ZOOM, setZoom, sv, stage, scrollStageBy } from './render.js';
 import { initKeys } from './keys.js';
-import { toMermaid, fromMermaid, saveFile, saveSVG, readFile, exportPNG, isPuml, currentPuml } from './io.js';
+import { toMermaid, fromMermaid, saveFile, saveSVG, readFile, exportPNG, isPuml, currentPuml, fileBase } from './io.js';
 import { detect, parseSeqPuml, toPumlSeq } from './puml.js';
 import { A, setAct, setActText, newActStarter } from './act.js';
-import { diskOK, restoreHandle, bind, pickFile, saveDisk, boundName } from './disk.js';
+import { diskOK, restoreFolder, pickFolder, pickFile, saveDisk, folderName } from './disk.js';
 
 const L = document.documentElement.lang.toLowerCase().startsWith('zh') ? zh : en;
 setStrings(L);
@@ -42,10 +42,13 @@ if (saved) {
     }
     if (saved.actText) setAct(saved.actText, 0);
     if (saved.type === 'act') S.type = 'act';
+    S.mmTitle = saved.mmTitleOn;           // Mermaid 原本的 title 重新整理後照留
+    S.file = saved.file;                   // 這張圖對應哪個檔（覆蓋前提醒用）
 }
 if (!A.text) setAct(L.act.starter.join('\n'), 0);
 saveExtra.get = () => ({
     type: S.type, fmt: S.fmt, actText: A.text, autonumber: S.autonumber, autoCfg: S.autoCfg,
+    mmTitleOn: !!S.mmTitle, mmTitleText: S.mmTitleText || '', file: S.file || '',
     ...(S.fmt === 'puml' ? { pumlText: toPumlSeq() } : {}),
 });
 
@@ -64,13 +67,44 @@ const mmBox = document.getElementById('mm');
 const mmErr = document.getElementById('mmErr');
 const filePick = document.getElementById('filePick');
 
+/* 沒取名就不存也不下載：把提示字閃在 btn 上，游標放回命名欄。有名字回傳 true */
+function needName(btn) {
+    if (fileBase()) return true;
+    btn.dataset.busy = '1';
+    btn.textContent = L.btn.needName;
+    setTimeout(() => { delete btn.dataset.busy; btn.textContent = L.btn[btn.dataset.btn]; render(); }, 1400);
+    nameBox.focus();
+    return false;
+}
+
+/* 清空要在 3 秒內按第二次才動手，第一次只把按鈕字換成「再按一次清空」 */
+let clearArmed = 0;
+function clearNow(btn) {
+    if (Date.now() > clearArmed) {
+        clearArmed = Date.now() + 3000;
+        btn.textContent = L.btn.clearConfirm;
+        setTimeout(() => { if (Date.now() > clearArmed) btn.textContent = L.btn.clear; }, 3050);
+        return;
+    }
+    clearArmed = 0;
+    btn.textContent = L.btn.clear;
+    if (S.type === 'act') { newActStarter(); render(); return; }
+    push();
+    S.rows = []; S.blocks = [];
+    S.sel = { layer: 'row', i: 0, j: 0, end: 'to', bi: 0 };
+    render();
+}
+
 document.querySelectorAll('[data-act]').forEach((btn) => {
     btn.addEventListener('click', () => {
         const a = btn.dataset.act;
+        // 下載類（.json／.puml、.svg、.png）在匯出選單裡，提示閃在「匯出」那顆上
+        if ((a === 'save' || a === 'svg' || a === 'png') && !needName(document.getElementById('ddExport'))) return;
         if (a === 'save') saveFile();
         if (a === 'svg') saveSVG();
         if (a === 'open') openFile();
         if (a === 'disk') saveNow();
+        if (a === 'folder') changeFolder();
         if (a === 'png') exportPNG();
         if (a === 'copy') {
             navigator.clipboard?.writeText(isPuml() ? currentPuml() : toMermaid());
@@ -81,13 +115,7 @@ document.querySelectorAll('[data-act]').forEach((btn) => {
             ex.textContent = L.btn.copied;
             setTimeout(() => { delete btn.dataset.busy; ex.textContent = L.btn.export; render(); }, 1200);   // render 會依格式把字換回來
         }
-        if (a === 'clear') {
-            if (S.type === 'act') { newActStarter(); render(); return; }
-            push();
-            S.rows = []; S.blocks = [];
-            S.sel = { layer: 'row', i: 0, j: 0, end: 'to', bi: 0 };
-            render();
-        }
+        if (a === 'clear') clearNow(btn);
     });
 });
 
@@ -135,7 +163,7 @@ function zoomAt(z, cx, cy) {
     setZoom(z);
     const r2 = sv.getBoundingClientRect();
     const dx = r2.left + gx * ZOOM - cx, dy = r2.top + gy * ZOOM - cy;
-    (document.body.classList.contains('view-split') ? stage : window).scrollBy(dx, dy);
+    scrollStageBy(dx, dy);
 }
 const stageCenter = () => {
     const c = stage.getBoundingClientRect();
@@ -204,7 +232,7 @@ dds.forEach((dd) => {
 });
 document.addEventListener('pointerdown', (e) => dds.forEach((dd) => { if (!dd.contains(e.target)) closeDd(dd); }));
 
-/* 開檔：瀏覽器能直接寫檔就用它的開檔視窗，順便記住這個檔，之後「儲存」寫回去；不能就走隱藏的 <input type="file"> */
+/* 開檔：瀏覽器有開檔視窗 API 就用它（從存檔資料夾開始找）；不能就走隱藏的 <input type="file">。開檔不影響之後存去哪裡。 */
 const OPEN_ACCEPT = {
     'application/json': ['.json'],
     'image/svg+xml': ['.svg'],
@@ -214,16 +242,21 @@ async function openFile() {
     if (!diskOK) { filePick.click(); return; }
     let got;
     try { got = await pickFile(OPEN_ACCEPT); } catch (err) { showFailure(err, ''); return; }
-    if (got && await loadPicked(got.file)) { await bind(got.handle); markBound(); }
+    if (got) await loadPicked(got.file, got.inFolder);
 }
-/* 「儲存」鈕的提示寫著現在會覆蓋哪個檔，由 render 的 paintChrome 讀 data-file 組字 */
-function markBound() {
+/* 「儲存」鈕的提示寫著會存進哪個資料夾，由 render 的 paintChrome 讀 data-folder 組字；不能寫資料夾的瀏覽器把「更換存檔資料夾」藏起來 */
+function markFolder() {
     const b = document.querySelector('[data-act="disk"]');
-    if (!diskOK) b.dataset.nodisk = '1';
-    else b.dataset.file = boundName();
+    if (!diskOK) {
+        b.dataset.nodisk = '1';
+        document.querySelector('[data-act="folder"]').hidden = true;
+    } else b.dataset.folder = folderName();
     render();
 }
-restoreHandle().then(markBound);
+restoreFolder().then(markFolder);
+async function changeFolder() {
+    try { if (await pickFolder()) markFolder(); } catch (err) { showFailure({ message: L.msg.saveFail }, ''); }
+}
 
 /* 手機（觸控、沒有滑鼠游標）每次打開都先提醒功能差異，按「知道了」才進工具 */
 if (matchMedia('(hover: none) and (pointer: coarse)').matches) {
@@ -241,48 +274,80 @@ filePick.addEventListener('change', () => {
     if (f) loadPicked(f);
 });
 
-/* 讀進一個本機檔。讀壞了就不動現有的圖，只在狀態列報錯。成功回傳 true。 */
-async function loadPicked(f) {
+/* 讀進一個本機檔。讀壞了就不動現有的圖，只在狀態列報錯。成功回傳 true。
+   inFolder＝這個檔就在存檔資料夾裡；不能寫資料夾的瀏覽器沒有存檔資料夾，不比對 */
+async function loadPicked(f, inFolder = !diskOK) {
+    let ok;
     try {
         const d = await readFile(f);
-        if (typeof d.puml === 'string') return importPuml(d.puml, f.name);
-        if (typeof d.mermaid === 'string') return importMermaid(d.mermaid, f.name);
-        push();
-        loadDiagram(d);
-        S.type = 'seq';
-        S.fmt = 'mermaid';
-        // 檔名就是使用者給這張圖的名字，優先採用；自動產生的那種日期檔名不算
-        const base = f.name.replace(/[.][^.]+$/, '').trim();
-        if (base && !/^sequence-\d{8}-\d{4}$/.test(base)) S.name = base;
-        nameBox.value = S.name || '';     // 焦點還留在命名欄時 render 不會回填，這裡補上
-        resetSelKey();
-        mmErr.textContent = '';
-        render();
-        showReport(d.report, f.name);
-        return true;
+        if (typeof d.puml === 'string') ok = importPuml(d.puml, f.name);
+        else if (typeof d.mermaid === 'string') ok = importMermaid(d.mermaid, f.name);
+        else {
+            push();
+            loadDiagram(d);
+            S.type = 'seq';
+            S.fmt = 'mermaid';
+            resetSelKey();
+            mmErr.textContent = '';
+            showReport(d.report, f.name);
+            ok = true;
+        }
     } catch (err) {
         showFailure(err, f.name);
         return false;
     }
+    if (ok) afterOpen(f.name, inFolder);
+    return ok;
 }
 
-/* 儲存：寫回綁定的檔；這個瀏覽器做不到就照舊下載一份。結果顯示在「儲存」鈕上一秒多。 */
-let saving = false;
+/* 開檔成功之後：圖名一律用檔名（去副檔名）；記下這張圖對應存檔資料夾裡的哪個檔，存回同一個檔不用再確認。
+   檔案不在存檔資料夾裡就用紅字講清楚：儲存會寫進存檔資料夾，原檔不會被改到 */
+function afterOpen(fname, inFolder) {
+    S.name = fname.replace(/[.][^.]+$/, '').trim();
+    nameBox.value = S.name;     // 焦點還留在命名欄時 render 不會回填，這裡補上
+    S.file = inFolder ? fname : '';
+    touch();
+    render();
+    if (inFolder) return;
+    const msg = L.msg.openOutside(folderName());
+    if (report.hidden) {
+        rSum.innerHTML = `<span class="warn"><b>${esc(fname)}</b> — ${esc(msg)}</span>`;
+        rBody.innerHTML = '';
+        report.hidden = false;
+    } else rSum.innerHTML += ` · <span class="warn">${esc(msg)}</span>`;
+}
+
+/* 儲存：存成「名字.json／.puml」進存檔資料夾，同名覆蓋；這個瀏覽器做不到就照舊下載一份。
+   沒取名就不存，把游標放回命名欄。要蓋掉的是別張圖的同名檔時，按鈕先變「已有同名檔，再按一次覆蓋」，4 秒內再按才寫。
+   結果顯示在「儲存」鈕上一秒多。 */
+let saving = false, overwriteOk = '', overwriteUntil = 0;
 async function saveNow() {
+    const btn = document.querySelector('[data-act="disk"]');
+    const flash = (txt, ms = 1400) => {
+        btn.dataset.busy = '1';
+        btn.textContent = txt;
+        clearTimeout(flash.t);
+        flash.t = setTimeout(() => { delete btn.dataset.busy; render(); }, ms);
+    };
+    if (!needName(btn)) return;
     if (!diskOK) { saveFile(); return; }
     if (saving) return;
     saving = true;
-    const btn = document.querySelector('[data-act="disk"]');
-    const flash = (txt) => {
-        btn.dataset.busy = '1';
-        btn.textContent = txt;
-        setTimeout(() => { delete btn.dataset.busy; render(); }, 1400);
-    };
     try {
-        const r = await saveDisk();
-        if (r) { btn.dataset.file = r.name; flash(L.btn.saved); }
+        const r = await saveDisk(Date.now() < overwriteUntil ? overwriteOk : '');
+        overwriteOk = ''; overwriteUntil = 0;
+        if (r && r.confirm) {
+            overwriteOk = r.confirm; overwriteUntil = Date.now() + 4000;
+            flash(L.btn.confirmOverwrite, 4000);
+        } else if (r) {
+            S.file = r.name;
+            touch();
+            btn.dataset.folder = r.folder;
+            flash(L.btn.saved);
+        }
     } catch (err) {
-        showFailure({ message: err && err.message === 'permission' ? L.msg.savePerm : L.msg.saveFail }, boundName());
+        const why = err && err.message === 'permission' ? L.msg.savePerm : L.msg.saveFail;
+        showFailure({ message: why }, folderName());
         flash(L.btn.saveFailed);
     } finally {
         saving = false;
@@ -309,9 +374,6 @@ function importMermaid(text, fname) {
     loadDiagram(o);
     S.type = 'seq';
     S.fmt = 'mermaid';
-    const base = fname.replace(/[.][^.]+$/, '').trim();
-    if (base && !S.mmTitle && !/^sequence-\d{8}-\d{4}$/.test(base)) S.name = base;
-    nameBox.value = S.name || '';
     resetSelKey();
     mmErr.textContent = '';
     touch();
@@ -338,10 +400,6 @@ function importPuml(text, fname) {
         S.fmt = 'puml';
         rep = o.report;
     }
-    // 時序圖有 title 就用 title 當名字（改了名字匯出時 title 那行才會跟著變），沒有才用檔名
-    const base = String(fname || '').replace(/[.][^.]+$/, '').trim();
-    if (base && !(det.type === 'seq' && S.name && S.puml && S.puml.hasTitle)) S.name = base;
-    nameBox.value = S.name || '';
     resetSelKey();
     mmErr.textContent = '';
     touch();
@@ -358,35 +416,28 @@ document.getElementById('rClose').addEventListener('click', () => { report.hidde
 
 const esc = (x) => String(x).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
 
+/* 讀檔結果只在有東西要你注意時才出來：有略過的內容就用紅字講是哪幾行、哪段原文；全部讀進來就不打擾 */
 function showReport(r, name) {
-    if (!r) { report.hidden = true; return; }
+    report.hidden = true;
     rBody.innerHTML = '';
-    if (r.native) {
-        rSum.innerHTML = `<b>${esc(name)}</b> — ${L.msg.impNative}`;
-        report.hidden = false;
-        return;
-    }
+    if (!r || r.native) return;
     if (r.kind === 'pumlSeq' || r.kind === 'pumlAct') {
-        const bits = [`<b>${esc(name)}</b> — ${r.kind === 'pumlSeq' ? L.msg.impPumlSeq(r) : L.msg.impPumlAct(r)}`];
-        if (r.unknown.length) bits.push(`<span class="warn">${L.msg.impKept(r.unknown.length)}</span>`);
-        rSum.innerHTML = bits.join(' · ');
-        if (r.unknown.length) {
-            rBody.innerHTML = `<div><b>${L.msg.impDetail}</b></div>`
-                + r.unknown.map((u) => `<div>${L.msg.lineNo(u.line)} — <code>${esc(u.text)}</code></div>`).join('');
-        }
+        if (!r.unknown.length) return;
+        rSum.innerHTML = `<span class="warn"><b>${esc(name)}</b> — ${L.msg.impKept(r.unknown.length)}</span>`;
+        rBody.innerHTML = `<div><b>${L.msg.impDetail}</b></div>`
+            + r.unknown.map((u) => `<div>${L.msg.lineNo(u.line)} — <code>${esc(u.text)}</code></div>`).join('');
         report.hidden = false;
         return;
     }
-    const bits = [`<b>${esc(name)}</b> — ${L.msg.impOk(r)}`];
-    if (r.unknown.length) bits.push(`<span class="warn">${L.msg.impUnknown(r.unknown.length)}</span>`);
-    if (r.leftovers.length) bits.push(`<span class="warn">${L.msg.impLeftover(r.leftovers.length)}</span>`);
-    rSum.innerHTML = bits.join(' · ');
-    if (r.unknown.length || r.leftovers.length) {
-        const lines = [`<div><b>${L.msg.impDetail}</b></div>`];
-        r.unknown.forEach((u) => lines.push(`<div>&lt;${esc(u.what)}&gt; ${esc(u.why)} — <code>${esc(u.at)}</code></div>`));
-        r.leftovers.forEach((s) => lines.push(`<div>text — <code>${esc(s)}</code></div>`));
-        rBody.innerHTML = lines.join('');
-    }
+    if (!r.unknown.length && !r.leftovers.length) return;
+    const bits = [];
+    if (r.unknown.length) bits.push(L.msg.impUnknown(r.unknown.length));
+    if (r.leftovers.length) bits.push(L.msg.impLeftover(r.leftovers.length));
+    rSum.innerHTML = `<span class="warn"><b>${esc(name)}</b> — ${bits.join(' · ')}</span>`;
+    const lines = [`<div><b>${L.msg.impSkipped}</b></div>`];
+    r.unknown.forEach((u) => lines.push(`<div>&lt;${esc(u.what)}&gt; ${esc(u.why)} — <code>${esc(u.at)}</code></div>`));
+    r.leftovers.forEach((s) => lines.push(`<div>text — <code>${esc(s)}</code></div>`));
+    rBody.innerHTML = lines.join('');
     report.hidden = false;
 }
 

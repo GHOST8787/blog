@@ -521,8 +521,8 @@ const indOf = (line, fallback) => (typeof line === 'string' ? line.match(/^\s*/)
 
 export function toPumlSeq() {
     const P = S.puml;
-    // 原檔沒有 title 時，圖名只拿來當下載檔名，不寫進 PUML，也不算改動
-    const d = { name: P && !P.hasTitle ? '' : S.name, parts: S.parts, rows: S.rows, blocks: S.blocks, legend: S.legend };
+    // 圖名只當檔名；PUML 的 title 是原檔自己的那一行，照原文保留，改名不會動到它
+    const d = { name: P && P.hasTitle ? P.titleName : '', parts: S.parts, rows: S.rows, blocks: S.blocks, legend: S.legend };
     if (P && typeof P.orig === 'string' && modelSig(d) === P.sig0) return P.orig;
     const out = [];
     let legendDone = false;
@@ -543,12 +543,9 @@ export function toPumlSeq() {
             else out.push(...legendLines(x.lines[0], x.lines[x.lines.length - 1]));
             return;
         }
-        if (x.title) {   // 標題那一行：圖名改過才重寫
-            if ((S.name || '') === (P ? P.titleName : '')) out.push(...(x.lines || [x.text]));
-            else if (S.name) out.push(`${indOf(x.text, '')}title ${S.name}`);
-        }
+        if (x.title) out.push(...(x.lines || [x.text]));   // 標題那一行原文照放
     });
-    if (!P) { out.push('@startuml'); if (S.name) out.push(`title ${S.name}`); }
+    if (!P) out.push('@startuml');
     S.parts.forEach((p) => {
         emitPre(p.pre);
         if (p.decl && p.srcLines && partSig(p) === p.sig) out.push(...p.srcLines);

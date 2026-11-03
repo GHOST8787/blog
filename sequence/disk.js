@@ -1,17 +1,18 @@
-// 「儲存」直接寫回原檔：用瀏覽器的 File System Access API 拿到檔案本身，之後每次存都覆蓋同一個檔。
-// 只有電腦版 Chrome／Edge 有這組 API，其他瀏覽器 diskOK 是 false，呼叫端退回原本的下載。
-// 檔案控制碼放在 IndexedDB，重新整理後還記得是哪個檔；權限則要等使用者按儲存時再跟瀏覽器要一次。
+// 「儲存」只看名字：寫進使用者授權過的「存檔資料夾」，檔名＝命名欄的字＋副檔名，資料夾裡有同名檔就直接覆蓋。
+// 改名、清空、開哪個檔都不影響存去哪裡。
+// 只有電腦版 Chrome／Edge 有 showDirectoryPicker，其他瀏覽器 diskOK 是 false，呼叫端退回原本的下載。
+// 資料夾控制碼放在 IndexedDB，重新整理後還記得是哪個資料夾；權限則要等使用者按儲存時再跟瀏覽器要一次。
 
+import { jsonText, currentPuml, isPuml, fileBase } from './io.js';
 import { S } from './state.js';
-import { jsonText, svgText, currentPuml, isPuml, toMermaid, fileBase } from './io.js';
 
-export const diskOK = typeof window.showOpenFilePicker === 'function' && typeof window.showSaveFilePicker === 'function';
+export const diskOK = typeof window.showDirectoryPicker === 'function';
 
-let cur = null;                      // 目前綁定的檔案（FileSystemFileHandle）
-export const boundName = () => (cur ? cur.name : '');
+let dir = null;                      // 存檔資料夾（FileSystemDirectoryHandle）
+export const folderName = () => (dir ? dir.name : '');
 
 /* ── IndexedDB：只存一筆，key 固定 ── */
-const DB = 'ghost.sequence', STORE = 'handles', KEY = 'file';
+const DB = 'ghost.sequence', STORE = 'handles', KEY = 'dir';
 function idb(mode, fn) {
     return new Promise((ok, fail) => {
         const req = indexedDB.open(DB, 1);
@@ -26,77 +27,70 @@ function idb(mode, fn) {
     });
 }
 
-/* 開頁時把上次的檔找回來。找不到、瀏覽器擋 IndexedDB 都當作沒綁檔。 */
-export async function restoreHandle() {
+/* 開頁時把上次的資料夾找回來，順手清掉舊版「綁定單一檔案」留下的那筆。找不到、瀏覽器擋 IndexedDB 都當作還沒選。 */
+export async function restoreFolder() {
     if (!diskOK) return '';
-    try { cur = (await idb('readonly', (s) => s.get(KEY))) || null; } catch { cur = null; }
-    return boundName();
+    try {
+        dir = (await idb('readonly', (s) => s.get(KEY))) || null;
+        await idb('readwrite', (s) => s.delete('file'));
+    } catch { /* 讀不到就當沒選過 */ }
+    return folderName();
 }
 
-/* 開檔成功讀進來之後才綁定；讀壞的檔不綁，免得下次儲存蓋掉它 */
-export async function bind(handle) {
-    cur = handle;
-    try { await idb('readwrite', (s) => s.put(handle, KEY)); } catch { /* 存不進去就只記在這次的頁面裡 */ }
+/* 跳出選資料夾的視窗；使用者按取消回傳 false，原本的資料夾不變 */
+export async function pickFolder() {
+    let h;
+    try {
+        h = await window.showDirectoryPicker({ id: 'ghost-sequence', mode: 'readwrite', startIn: dir || 'documents' });
+    } catch (e) {
+        if (e && e.name === 'AbortError') return false;
+        throw e;
+    }
+    dir = h;
+    try { await idb('readwrite', (s) => s.put(h, KEY)); } catch { /* 存不進去就只記在這次的頁面裡 */ }
+    return true;
 }
 
-/* 跳出開檔視窗，回傳 { file, handle }；使用者按取消回傳 null */
+/* 跳出開檔視窗，從存檔資料夾開始；回傳 { file, inFolder }（inFolder＝這個檔就在存檔資料夾裡），使用者按取消回傳 null */
 export async function pickFile(accept) {
     let h;
     try {
-        [h] = await window.showOpenFilePicker({ types: [{ description: 'UML', accept }], excludeAcceptAllOption: false });
-    } catch (e) {
-        if (e && e.name === 'AbortError') return null;
-        throw e;
-    }
-    return { file: await h.getFile(), handle: h };
-}
-
-const PUML_EXT = /[.](puml|plantuml|pu|iuml|wsd)$/i;
-
-/* 這個檔能不能裝下目前這張圖；能的話回傳要寫進去的文字，不能回傳 null（改走另存新檔） */
-function contentFor(name) {
-    if (/[.]svg$/i.test(name)) return svgText();
-    if (/[.]json$/i.test(name)) return isPuml() ? null : jsonText();
-    if (PUML_EXT.test(name)) return isPuml() ? currentPuml() : null;
-    if (/[.](mmd|mermaid)$/i.test(name)) return S.type === 'seq' && !isPuml() ? toMermaid() : null;
-    if (/[.]txt$/i.test(name)) return isPuml() ? currentPuml() : toMermaid();
-    return null;
-}
-
-async function canWrite(h) {
-    const opt = { mode: 'readwrite' };
-    if ((await h.queryPermission(opt)) === 'granted') return true;
-    return (await h.requestPermission(opt)) === 'granted';
-}
-
-async function writeTo(h, text) {
-    const w = await h.createWritable();
-    await w.write(text);
-    await w.close();
-}
-
-/* 儲存：有綁檔且裝得下就覆蓋它，否則跳「另存新檔」並改綁到新檔。
-   回傳 { name, as }（as＝這次是另存新檔），使用者取消回傳 null，其他錯誤往外丟。 */
-export async function saveDisk() {
-    const text = cur ? contentFor(cur.name) : null;
-    if (cur && text !== null) {
-        if (!(await canWrite(cur))) throw new Error('permission');
-        await writeTo(cur, text);
-        return { name: cur.name, as: false };
-    }
-    const puml = isPuml();
-    let h;
-    try {
-        h = await window.showSaveFilePicker({
-            suggestedName: `${fileBase()}.${puml ? 'puml' : 'json'}`,
-            types: [puml ? { description: 'PlantUML', accept: { 'text/plain': ['.puml'] } }
-                         : { description: 'JSON', accept: { 'application/json': ['.json'] } }],
+        [h] = await window.showOpenFilePicker({
+            types: [{ description: 'UML', accept }], excludeAcceptAllOption: false,
+            ...(dir ? { startIn: dir } : {}),
         });
     } catch (e) {
         if (e && e.name === 'AbortError') return null;
         throw e;
     }
-    await writeTo(h, contentFor(h.name) ?? (puml ? currentPuml() : jsonText()));
-    await bind(h);
-    return { name: h.name, as: true };
+    let inFolder = false;
+    try { inFolder = !!(dir && (await dir.resolve(h))); } catch { /* 比不出來就當不在裡面，寧可多提醒 */ }
+    return { file: await h.getFile(), inFolder };
+}
+
+export const saveExt = () => (isPuml() ? 'puml' : 'json');
+
+/* 儲存：還沒選資料夾就先選，接著寫成「名字.副檔名」，同名覆蓋。
+   要蓋掉的同名檔如果不是這張圖自己的檔（S.file），先回 { confirm: 檔名 } 不寫；
+   呼叫端讓使用者再按一次，帶 force＝同一個檔名進來才真的覆蓋。
+   寫成功回傳 { name, folder }，使用者取消選資料夾回傳 null；沒取名丟 'noname'，沒權限丟 'permission'，其他錯誤往外丟。 */
+export async function saveDisk(force = '') {
+    const base = fileBase();
+    if (!base) throw new Error('noname');
+    if (!dir && !(await pickFolder())) return null;
+    const opt = { mode: 'readwrite' };
+    if ((await dir.queryPermission(opt)) !== 'granted' && (await dir.requestPermission(opt)) !== 'granted') {
+        throw new Error('permission');
+    }
+    const name = `${base}.${saveExt()}`;
+    if (name !== S.file && name !== force) {
+        let exists = true;
+        try { await dir.getFileHandle(name); } catch (e) { if (e && e.name === 'NotFoundError') exists = false; else throw e; }
+        if (exists) return { confirm: name };
+    }
+    const h = await dir.getFileHandle(name, { create: true });
+    const w = await h.createWritable();
+    await w.write(isPuml() ? currentPuml() : jsonText());
+    await w.close();
+    return { name, folder: dir.name };
 }

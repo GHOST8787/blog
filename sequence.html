@@ -74,14 +74,18 @@
         /* 這張圖的名字。存檔與匯出都用它當檔名。 */
         .seq-head .name { position: absolute; left: 50%; transform: translateX(-50%);
                           font: inherit; font-size: 15px; font-weight: 500; text-align: center;
-                          width: 184px; padding: 3px 10px; border-radius: 6px;
+                          min-width: 184px; max-width: 100%; padding: 3px 10px; border-radius: 6px;
                           background: transparent; border: 1px solid transparent;
                           color: rgb(var(--c-body)); outline: none; }
         .seq-head .name::placeholder { color: var(--c-dim); }
         .seq-head .name:hover { border-color: var(--c-border); }
         .seq-head .name:focus { border-color: rgb(var(--c-purple) / .6);
                                 background: rgb(var(--c-surface)); }
-        @media (max-width: 560px) { .seq-head .name { width: 120px; } }
+        /* 手機：命名欄移到標題下方自己佔一整行，長名字完整顯示 */
+        @media (max-width: 560px) {
+            .seq-head { flex-wrap: wrap; row-gap: 8px; }
+            .seq-head .name { position: static; transform: none; order: 3; flex: 1 1 100%; width: 100%; min-width: 0; font-size: 13px; }
+        }
 
         .seq-bar { display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
                    padding: 10px 16px; border-bottom: 1px solid var(--c-border);
@@ -103,6 +107,11 @@
 
         /* 畫布：自己不捲，長出來的部分交給整頁的捲軸 */
         .seq-stage { position: relative; padding: 12px 0 18px; }
+        /* 手機：圖在畫布裡自己左右捲，整頁不橫向溢出；操作提示改成換行，不切成「…」 */
+        @media (max-width: 560px) {
+            .seq-stage { overflow-x: auto; }
+            .seq-status .keys { white-space: normal; }
+        }
         #sv { display: block; margin: 0 auto; }
         #sv text { user-select: none; }
         #ed { position: absolute; display: none; font: inherit; font-size: 12.5px;
@@ -125,7 +134,7 @@
         .seq-report .r-head { display: flex; align-items: center; gap: 12px; padding: 9px 16px; }
         .seq-report .r-sum { flex: 1; font-size: 12px; color: rgb(var(--c-body)); }
         .seq-report .r-sum b { color: rgb(var(--c-purple)); font-weight: 500; }
-        .seq-report .r-sum .warn { color: rgb(var(--c-warn)); }
+        .seq-report .r-sum .warn { color: rgb(var(--c-danger)); }
         .seq-report button { font: inherit; font-size: 11px; padding: 3px 10px; border-radius: 6px;
                              background: transparent; border: 1px solid var(--c-border);
                              color: var(--c-dim); cursor: pointer; }
@@ -187,7 +196,6 @@
                            overflow: hidden; text-overflow: ellipsis; }
         @media (max-width: 1100px) { .seq-head .count { display: none; } }
         @media (max-width: 620px) { .seq-head .tag { display: none; } }
-        @media (max-width: 560px) { .seq-head .name { width: 150px; } }
 
         /* 問號：快捷鍵教學 */
         .help { position: relative; }
@@ -275,6 +283,7 @@
                         <button role="menuitem" data-act="svg" data-btn="svg" data-tip="svgTip"></button>
                         <button role="menuitem" data-act="png" data-btn="png" data-tip="pngTip"></button>
                         <button role="menuitem" data-act="copy" data-btn="copy" data-tip="copyTip"></button>
+                        <button role="menuitem" data-act="folder" data-btn="folder"></button>
                     </div>
                 </div>
                 <span class="div"></span>

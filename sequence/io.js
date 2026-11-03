@@ -51,7 +51,7 @@ function halfOf(a) {
 
 export function toMermaid() {
     const L = [];
-    if (S.mmTitle && S.name) L.push('---', `title: ${S.name}`, '---');
+    if (S.mmTitle && S.mmTitleText) L.push('---', `title: ${S.mmTitleText}`, '---');   // Mermaid 原本的 title 照留，跟圖名（檔名）無關
     L.push('sequenceDiagram');
     const ac = S.autoCfg;
     if (S.autonumber) L.push(`    autonumber${ac && (ac.start !== 1 || ac.step !== 1) ? ` ${ac.start} ${ac.step}` : ''}`);
@@ -270,10 +270,9 @@ export function fromMermaid(src) {
     return { parts, rows, blocks, autonumber, autoCfg, boxes, mmTail: pre, ...(mmTitle ? { name, mmTitle } : {}) };
 }
 
-/* 檔名用這張圖的名字，沒取名就退回日期。擋掉檔名不能用的字元。 */
+/* 檔名就是這張圖的名字，擋掉檔名不能用的字元。沒取名回空字串，儲存與所有下載都要先取名才做。 */
 export function fileBase() {
-    const n = String(S.name || '').replace(/[\\/:*?"<>|]/g, '').trim().slice(0, 60);
-    return n || `sequence-${stamp()}`;
+    return String(S.name || '').replace(/[\\/:*?"<>|]/g, '').trim().slice(0, 60);
 }
 
 /* ── 存成 .json 下載到使用者自己的電腦。站上不留任何東西。 ── */
@@ -303,12 +302,6 @@ export function jsonText() {
     return JSON.stringify(data, null, 1);
 }
 
-function stamp() {
-    const d = new Date();
-    const p2 = (x) => String(x).padStart(2, '0');
-    return `${d.getFullYear()}${p2(d.getMonth() + 1)}${p2(d.getDate())}-${p2(d.getHours())}${p2(d.getMinutes())}`;
-}
-
 /* 把整張圖存成 .svg。資料原封不動嵌在 <metadata>，所以這張圖讀得回來也編輯得了。 */
 export function saveSVG() {
     download(new Blob([svgText()], { type: 'image/svg+xml;charset=utf-8' }), `${fileBase()}.svg`);
@@ -336,6 +329,44 @@ function buildSVG() {
     return head + '\n' + new XMLSerializer().serializeToString(clone);
 }
 
+/* 找出 JSON 壞在第幾個字元。瀏覽器的 JSON.parse 錯誤訊息不一定帶位置（例如多一個逗號時只說 Unexpected token），
+   所以自己照 JSON 語法走一遍，回傳第一個不合法的位置；整份都合法回傳 -1 */
+function jsonErrorAt(t) {
+    let i = 0;
+    const ws = () => { while (/\s/.test(t[i] || '')) i++; };
+    const fail = () => { throw i; };
+    const str = () => {
+        if (t[i] !== '"') fail();
+        for (i++; i < t.length; i++) {
+            if (t[i] === '\\') { i++; continue; }
+            if (t[i] === '"') { i++; return; }
+            if (t[i] === '\n') fail();
+        }
+        fail();
+    };
+    const val = () => {
+        ws();
+        const c = t[i];
+        if (c === '{' || c === '[') {
+            const close = c === '{' ? '}' : ']';
+            i++; ws();
+            if (t[i] === close) { i++; return; }
+            for (;;) {
+                if (c === '{') { ws(); str(); ws(); if (t[i++] !== ':') { i--; fail(); } }
+                val(); ws();
+                if (t[i] === ',') { i++; ws(); if (t[i] === close) fail(); continue; }
+                if (t[i] === close) { i++; return; }
+                fail();
+            }
+        }
+        if (c === '"') return str();
+        const m = /^(?:-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?|true|false|null)/.exec(t.slice(i));
+        if (!m) fail();
+        i += m[0].length;
+    };
+    try { val(); ws(); return i < t.length ? i : -1; } catch (at) { return typeof at === 'number' ? at : 0; }
+}
+
 /* 讀回本機檔案。.json 走自己的格式，.svg 交給 svgin.js 反推。
    讀壞了一律丟錯，呼叫端不覆蓋現有的圖。 */
 export async function readFile(file) {
@@ -352,10 +383,14 @@ export async function readFile(file) {
         return { ...diagram, report };
     }
     let o;
-    try { o = JSON.parse(text); } catch { throw new Error(T.msg.errFile); }
-    if (!o || !Array.isArray(o.parts) || !Array.isArray(o.rows) || !o.parts.length) {
-        throw new Error(T.msg.errFile);
+    // 讀失敗要講出原因：JSON 語法壞在第幾行，或內容缺了哪一塊
+    try { o = JSON.parse(text); } catch {
+        const at = jsonErrorAt(text);
+        throw new Error(at >= 0 ? T.msg.errJsonAt(text.slice(0, at).split('\n').length) : T.msg.errJson);
     }
+    if (!o || typeof o !== 'object') throw new Error(T.msg.errJson);
+    if (!Array.isArray(o.parts) || !o.parts.length) throw new Error(T.msg.errNoParts);
+    if (!Array.isArray(o.rows)) throw new Error(T.msg.errNoRows);
     o.rows.forEach((r) => { delete r.dy; if (!r.tone) r.tone = 'solid'; });
     return {
         name: typeof o.name === 'string' ? o.name : '',
