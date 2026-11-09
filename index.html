@@ -30,6 +30,11 @@
     <link rel="stylesheet" href="style.css">
     <script src="i18n.js" defer></script>
     <script type="module" src="main.js"></script>
+    <style>html.avatar-pending img[data-avatar]{visibility:hidden}</style>
+    <script>if(!matchMedia("(prefers-reduced-motion: reduce)").matches){document.documentElement.classList.add("avatar-pending");setTimeout(function(){document.documentElement.classList.remove("avatar-pending")},5000)}</script>
+    <link rel="preload" as="image" href="avatar/body.webp">
+    <link rel="preload" as="image" href="avatar/angry_face.webp">
+    <link rel="preload" as="image" href="avatar/hair_back.webp">
     <script type="module" src="avatar/avatar.js"></script>
     <script src="theme.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
@@ -111,7 +116,7 @@
                 </div>
             </div>
 
-            <div class="bento-item col-span-1 md:col-span-4 rounded-3xl p-6 flex items-center justify-center relative overflow-hidden group">
+            <div class="bento-item col-span-1 md:col-span-4 min-h-[440px] sm:min-h-[600px] md:min-h-0 rounded-3xl p-6 flex items-center justify-center relative overflow-hidden group">
 
                 <img src="PNG/20260125P.webp" alt="Profile" data-avatar="avatar/"
                 class="absolute top-20 right-0 bottom-0 left-0 w-full h-full object-cover z-1

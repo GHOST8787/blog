@@ -186,6 +186,7 @@ export async function mountAvatar(img, base) {
     const cw = Math.max(1, Math.round(r.width * dpr)), ch = Math.max(1, Math.round(r.height * dpr));
     if (canvas.width !== cw || canvas.height !== ch) { canvas.width = cw; canvas.height = ch; }
   };
+  canvas.style.opacity = "0"; // fades to the class opacity through the card's existing transition
   img.replaceWith(canvas);
   new ResizeObserver(resize).observe(canvas); resize();
 
@@ -215,7 +216,9 @@ export async function mountAvatar(img, base) {
     requestAnimationFrame(loop);
   };
   requestAnimationFrame(loop);
+  requestAnimationFrame(() => requestAnimationFrame(() => { canvas.style.opacity = ""; }));
 }
 
 const el = document.querySelector("img[data-avatar]");
-if (el) mountAvatar(el, el.dataset.avatar);
+// The page hides the static image while this runs; any early exit leaves <img> in place, so show it.
+if (el) mountAvatar(el, el.dataset.avatar).finally(() => document.documentElement.classList.remove("avatar-pending"));
