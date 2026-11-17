@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth ar-serif">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / P34 | GHOST.ouo</title>
+    <link rel="canonical" href="https://ghost8787.github.io/blog/en/EXP/project_34.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://ghost8787.github.io/blog/EXP/project_34.html">
+    <link rel="alternate" hreflang="en" href="https://ghost8787.github.io/blog/en/EXP/project_34.html">
+    <link rel="alternate" hreflang="x-default" href="https://ghost8787.github.io/blog/EXP/project_34.html">
+
+    <link rel="icon" type="image/png" href="../../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../../PNG/pixelS2.png">
+
+    <script src="../../theme.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet"></noscript>
+
+    <link rel="stylesheet" href="../../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script src="../../i18n.js" defer></script>
+    <script type="module" src="../../main.js" defer></script>
+    <link rel="stylesheet" href="../../tw.css">
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-bg">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 ar-main mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                Back to projects
+            </a>
+            <span class="opacity-50">EXP / P34</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                LINE Desktop could not send images or files<br>
+                <span class="text-gradient text-2xl md:text-4xl">IPv4, IPv6, and a hotspot whose IPv6 went nowhere</span>
+            </h1>
+            <p class="ar-standfirst">The phone hotspot handed out IPv6 addresses that could not reach the internet, so LINE Desktop stalled on images and files; with IPv6 turned off on Wi-Fi, connecting to LINE dropped from 106 seconds to 1.2.</p>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    Engineering
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Network</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Debug</span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.11.17</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <div class="ar-grid">
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
+                With the laptop on a phone hotspot, LINE Desktop sent text messages fine, while images and files spun forever. The hotspot handed out IPv6 addresses, but IPv6 could not reach anything outside, so every new LINE connection waited on IPv6 until it timed out before falling back to IPv4. After turning off IPv6 on the Wi-Fi adapter, connecting to the LINE server went from 106 seconds to 1.2.
+            </p>
+
+            <!-- ===== Symptom ===== -->
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Symptom
+            </h3>
+
+            <p class="mb-6">
+                LINE opened normally, chats and history loaded, and typed messages went out. Only images and files stalled on a spinner after pressing send. At the same time the browser loaded pages and played video without trouble, Wi-Fi showed connected, and both the gateway and a public DNS server answered.
+            </p>
+
+            <p class="mb-6">
+                The first move was a web search. Most answers said the same thing: update LINE.
+            </p>
+
+            <!-- ===== Troubleshooting ===== -->
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> How I narrowed it down
+            </h3>
+
+            <p class="mb-6">
+                LINE's update log already showed the latest version, 26.6.0.4004, so updating led nowhere. From there I went down one layer at a time, and each result decided what to check next.
+            </p>
+
+            <div class="overflow-x-auto my-8 pb-2">
+                <div class="flex items-stretch gap-2" style="min-width:830px">
+                    <div class="bg-white/5 rounded-xl border border-white/10 p-4 shrink-0" style="width:140px">
+                        <div class="text-xs font-mono text-accent-purple mb-2">01</div>
+                        <div class="text-sm text-white font-bold mb-2">Can it reach the server?</div>
+                        <div class="text-xs text-gray-400 leading-relaxed"><span class="font-mono text-gray-500">Saw</span> gw.line.naver.jp connected over IPv4 after 106 s. DNS listed IPv6 addresses first.</div>
+                        <div class="text-xs text-accent-purple leading-relaxed mt-2"><span class="font-mono">So</span> The server is up; the problem is delay. Check whether the whole network is slow.</div>
+                    </div>
+                    <i class="fas fa-arrow-right text-accent-purple self-center shrink-0"></i>
+                    <div class="bg-white/5 rounded-xl border border-white/10 p-4 shrink-0" style="width:140px">
+                        <div class="text-xs font-mono text-accent-purple mb-2">02</div>
+                        <div class="text-sm text-white font-bold mb-2">Is the network slow?</div>
+                        <div class="text-xs text-gray-400 leading-relaxed"><span class="font-mono text-gray-500">Saw</span> Gateway and public DNS answered instantly; web and video worked.</div>
+                        <div class="text-xs text-accent-purple leading-relaxed mt-2"><span class="font-mono">So</span> IPv4 is fine. IPv4 won in the end, so the 106 s went to the IPv6 tries before it.</div>
+                    </div>
+                    <i class="fas fa-arrow-right text-accent-purple self-center shrink-0"></i>
+                    <div class="bg-white/5 rounded-xl border border-white/10 p-4 shrink-0" style="width:140px">
+                        <div class="text-xs font-mono text-accent-purple mb-2">03</div>
+                        <div class="text-sm text-white font-bold mb-2">Does IPv6 work?</div>
+                        <div class="text-xs text-gray-400 leading-relaxed"><span class="font-mono text-gray-500">Saw</span> Two IPv6 addresses and a default route, so the OS tries IPv6 first. curl forced to IPv6 timed out at 15 s.</div>
+                        <div class="text-xs text-accent-purple leading-relaxed mt-2"><span class="font-mono">So</span> The 106 s is IPv6 timing out. Next: LINE's side or mine?</div>
+                    </div>
+                    <i class="fas fa-arrow-right text-accent-purple self-center shrink-0"></i>
+                    <div class="bg-white/5 rounded-xl border border-white/10 p-4 shrink-0" style="width:140px">
+                        <div class="text-xs font-mono text-accent-purple mb-2">04</div>
+                        <div class="text-sm text-white font-bold mb-2">LINE's side or mine?</div>
+                        <div class="text-xs text-gray-400 leading-relaxed"><span class="font-mono text-gray-500">Saw</span> Google and Cloudflare (by IP, skipping DNS) also failed over IPv6.</div>
+                        <div class="text-xs text-accent-purple leading-relaxed mt-2"><span class="font-mono">So</span> Big sites don't all fail at once; the hotspot's IPv6 is broken. Stop using it.</div>
+                    </div>
+                    <i class="fas fa-arrow-right text-accent-purple self-center shrink-0"></i>
+                    <div class="bg-white/5 rounded-xl border border-white/10 p-4 shrink-0" style="width:140px">
+                        <div class="text-xs font-mono text-accent-purple mb-2">05</div>
+                        <div class="text-sm text-white font-bold mb-2">How to confirm the fix</div>
+                        <div class="text-xs text-gray-400 leading-relaxed"><span class="font-mono text-gray-500">Saw</span> IPv6 off, step 1 rerun: 106 s down to 1.2 s, LINE all on IPv4, speed normal.</div>
+                        <div class="text-xs text-accent-purple leading-relaxed mt-2"><span class="font-mono">So</span> Same test before and after; the numbers have to agree.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== IPv4 and IPv6 ===== -->
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> IPv4 and IPv6
+            </h3>
+
+            <p class="mb-6">
+                Every device on a network needs an address so packets know where to go. IPv4 has been in use for more than forty years. Its addresses are 32 bits long, written as four numbers like <code class="text-xs">203.0.113.25</code>, about 4.3 billion in total. Connected devices outgrew that long ago, and IANA, which hands out address blocks, allocated the last IPv4 blocks in February 2011.
+            </p>
+
+            <p class="mb-6">
+                IPv6 is the successor. Addresses are 128 bits, written in colon-separated hex like <code class="text-xs">2001:db8::1</code>, enough for every device to have its own public address.
+            </p>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">Item</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">IPv4</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">IPv6</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">Address length</td><td class="px-4 py-3 font-mono">32 bits</td><td class="px-4 py-3 font-mono">128 bits</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">Written as</td><td class="px-4 py-3 font-mono">203.0.113.25</td><td class="px-4 py-3 font-mono">2001:db8::1</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">Number of addresses</td><td class="px-4 py-3 font-mono">2<sup>32</sup>, about 4.3 × 10<sup>9</sup></td><td class="px-4 py-3 font-mono">2<sup>128</sup>, about 3.4 × 10<sup>38</sup></td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">Default precedence (RFC 6724)</td><td class="px-4 py-3 font-mono">35</td><td class="px-4 py-3 font-mono">40</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">DNS record</td><td class="px-4 py-3 font-mono">A</td><td class="px-4 py-3 font-mono">AAAA</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p class="mb-6">
+                The two live side by side. A computer can hold IPv4 and IPv6 addresses at once, and a domain can publish both. Before connecting, a program asks DNS, DNS returns both kinds, and the operating system decides the order.
+            </p>
+
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">Side note: why the computer tries IPv6 first</div>
+                <p class="mb-4">The ordering rules live in RFC 6724, which defines a precedence table; higher numbers go first. Ordinary IPv6 addresses (<code class="text-xs">::/0</code> in the table) get 40, IPv4 addresses (<code class="text-xs">::ffff:0:0/96</code>) get 35, so IPv6 comes first. On Windows, <code class="text-xs">netsh interface ipv6 show prefixpolicies</code> prints the local copy of this table, with the same numbers as the RFC.</p>
+                <p class="m-0">The table looks only at the kind of address, never at whether the path works right now. As soon as the computer holds a normal-looking public IPv6 address, it treats IPv6 as usable and tries it first. That is exactly where the hotspot went wrong: address assigned, route assigned, everything valid on paper, and no packet getting out.</p>
+            </div>
+
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">Side note: why IPv4 still works after running out</div>
+                <p class="m-0">NAT (network address translation). A home router gets a single public IPv4 address from the ISP; the phones, laptops, and TVs inside each get a private address like <code class="text-xs">192.168.x.x</code>. Outgoing traffic is rewritten to the one public address, and replies are mapped back to the right device. Mobile data works the same way, with the carrier adding another layer so many phones share one public address. That keeps IPv4 alive, at the cost of devices not being able to reach each other directly without the router in between. IPv6 has enough addresses for every device to get its own, so this layer is unnecessary.</p>
+            </div>
+
+            <!-- ===== Root cause ===== -->
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Root cause: IPv6 with an address and no way out
+            </h3>
+
+            <p class="mb-6">
+                The hotspot was a Galaxy A22 5G. It could hand out IPv6 addresses but had no working IPv6 path to the outside. LINE followed the ordering and tried IPv6 first. <code class="text-xs">Get-NetTCPConnection</code> showed two connections stuck in <code class="text-xs">SynSent</code>: the connection request went out and nothing came back. One pointed at LINE's own <code class="text-xs">2400:dcc0:a3a1:1000::5</code>, the other at AWS CloudFront. LINE also had a connection already established over IPv4; text messages used that one, so they went through. Images and files need new connections, those tried IPv6 first, and they sat on these two.
+            </p>
+
+            <p class="mb-6">
+                Windows tries addresses one at a time and waits for each to time out before moving on; IPv4 only gets its turn after every IPv6 address has failed. That is how the 106 seconds in step 1 of the chart added up. The connection test reported success in the end, so the result column alone makes the network look healthy; the time lost only shows up if you measure it.
+            </p>
+
+            <div class="my-8 bg-white/5 p-5 rounded-xl border-l-4 border-accent-purple/50">
+                <strong class="text-white flex items-center gap-2 mb-2"><i class="fas fa-bolt"></i> Why the browser was fine</strong>
+                <p class="text-sm text-gray-400 m-0">Browsers and curl implement Happy Eyeballs (RFC 8305): if IPv6 doesn't answer within a short delay, they open an IPv4 connection in parallel and use whichever connects first. A broken IPv6 path is barely noticeable there. Programs that try one address at a time and wait out every timeout are the ones that freeze.</p>
+            </div>
+
+            <p class="mb-6">
+                The same problem showed up before on HiNet at home. A Python live-stream checker hitting youtube.com stalled for about 168 seconds on every request: DNS returned 8 IPv6 addresses, each timing out after about 21 seconds, 8 × 21 = 168, and only then did IPv4 get a turn. curl fetched the same URL in 0.3 to 0.8 seconds, which nearly led to the conclusion that YouTube was throttling.
+            </p>
+
+            <!-- ===== Three commands ===== -->
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Three commands to check it yourself
+            </h3>
+
+            <p class="mb-6">
+                When a speed test looks fine but some program stalls, run these three steps in PowerShell to see whether it's the same cause.
+            </p>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">1 — Does the domain have IPv6 addresses?</p>
+            <div class="my-6 p-6 bg-[var(--c-e3)] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre style="width:max-content;padding-right:1.5rem"><code class="language-powershell">Resolve-DnsName gw.line.naver.jp -Type AAAA</code></pre>
+            </div>
+            <p class="mb-6">
+                If AAAA records come back, the program may try IPv6 first.
+            </p>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">2 — Does IPv6 alone get through?</p>
+            <div class="my-6 p-6 bg-[var(--c-e3)] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre style="width:max-content;padding-right:1.5rem"><code class="language-powershell">curl.exe -6 -m 15 -s -o NUL -w "%{time_connect}`n" https://www.google.com
+curl.exe -4 -m 15 -s -o NUL -w "%{time_connect}`n" https://www.google.com</code></pre>
+            </div>
+            <p class="mb-6">
+                <code class="text-xs">-4</code> answers instantly and <code class="text-xs">-6</code> times out: IPv6 can't get out. Try a few sites such as Google and Cloudflare; if all of them time out, it isn't one site's problem.
+            </p>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">3 — Is the program stuck on half-open connections?</p>
+            <div class="my-6 p-6 bg-[var(--c-e3)] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre style="width:max-content;padding-right:1.5rem"><code class="language-powershell">Get-NetTCPConnection -State SynSent -OwningProcess (Get-Process LINE).Id</code></pre>
+            </div>
+            <p class="mb-6">
+                Remote addresses containing colons are connections stuck on IPv6.
+            </p>
+
+            <!-- ===== Fix ===== -->
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> The fix and its cost
+            </h3>
+
+            <p class="mb-6">
+                On the laptop, I removed IPv6 from the Wi-Fi adapter. Run as administrator:
+            </p>
+
+            <div class="my-6 p-6 bg-[var(--c-e3)] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre style="width:max-content;padding-right:1.5rem"><code class="language-powershell"># Turn off
+Disable-NetAdapterBinding -Name 'Wi-Fi' -ComponentID ms_tcpip6
+
+# Turn back on later
+Enable-NetAdapterBinding -Name 'Wi-Fi' -ComponentID ms_tcpip6</code></pre>
+            </div>
+
+            <p class="mb-6">
+                The setting belongs to the adapter, so it applies to every Wi-Fi network from now on and survives a reboot. The cost is losing IPv6 on networks where it does work; most services also offer IPv4, so day-to-day use feels the same. <code class="text-xs">Get-NetAdapter</code> lists adapter names; on a laptop it's usually <code class="text-xs">Wi-Fi</code>.
+            </p>
+
+            <p class="mb-6">
+                Microsoft's documentation, read afterwards, advises against removing IPv6 from adapters, because some Windows components use IPv6 internally and may misbehave. The recommended approach is to keep IPv6 and prefer IPv4 instead: set the registry value <code class="text-xs">DisabledComponents</code> to <code class="text-xs">0x20</code> and reboot. That effectively moves IPv4 above IPv6 in the precedence table; programs try IPv4 first and IPv6 stays available as a fallback.
+            </p>
+
+            <div class="my-6 p-6 bg-[var(--c-e3)] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre style="width:max-content;padding-right:1.5rem"><code class="language-powershell"># Run as administrator, then reboot
+$key = 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters'
+New-ItemProperty -Path $key -Name DisabledComponents `
+    -PropertyType DWord -Value 0x20 -Force</code></pre>
+            </div>
+
+            <p class="mb-6">
+                Your own programs can be fixed without touching the system. In Python, wrap <code class="text-xs">socket.getaddrinfo</code> so it keeps only IPv4 results and falls back to the original list when there is no IPv4. That is how the live-stream checker above was fixed: requests went from 168 seconds to 0.15.
+            </p>
+
+            <!-- ===== Result ===== -->
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Result
+            </h3>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">Item</th>
+                            <th class="text-right px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">Before</th>
+                            <th class="text-right px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">After</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">IPv6 addresses on the Wi-Fi adapter</td><td class="px-4 py-3 text-right font-mono">3</td><td class="px-4 py-3 text-right font-mono">0</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">Connecting to gw.line.naver.jp</td><td class="px-4 py-3 text-right font-mono">106 s</td><td class="px-4 py-3 text-right font-mono">1.2 s</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">LINE connections stuck in SynSent</td><td class="px-4 py-3 text-right font-mono">2</td><td class="px-4 py-3 text-right font-mono">0</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">LINE established connections</td><td class="px-4 py-3 text-right font-mono">IPv4 up, IPv6 stuck</td><td class="px-4 py-3 text-right font-mono">4, all IPv4</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">Hotspot speed (IPv4)</td><td class="px-4 py-3 text-right font-mono">&mdash;</td><td class="px-4 py-3 text-right font-mono">45 Mbps down / 8.6 Mbps up / 37 ms</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p class="mb-6">
+                Once LINE switched to IPv4, all its server connections came up and images and files sent normally again.
+            </p>
+
+            <!-- ===== After the fix ===== -->
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> After the fix
+            </h3>
+
+            <p class="mb-6">
+                Turning IPv6 off stops the bleeding and leaves three things. First, this laptop now uses only IPv4 on every Wi-Fi network. Anything that needs IPv6, including IPv6-related development or testing, needs the restore command above first.
+            </p>
+
+            <p class="mb-6">
+                Second, the steadier long-term setup is Microsoft's prefer-IPv4 option. The hotspot's IPv6 stays broken, but programs go to IPv4 first and never touch it; on networks where IPv6 works, it is still there when needed.
+            </p>
+
+            <p class="mb-6">
+                Third, why IPv6 fails on the hotspot and on HiNet was not chased with the carriers this time. On a new network, run step 2 of the three commands once; if <code class="text-xs">curl -6</code> answers instantly, that network's IPv6 works.
+            </p>
+
+            <p class="mb-6">
+                Next time a speed test looks fine but part of some program stalls, consider measuring how long its domain takes over IPv4 and over IPv6. It's much faster than reinstalling the program.
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Links
+            </h3>
+            <ul class="space-y-2 text-sm text-gray-400 list-none pl-0">
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="https://www.rfc-editor.org/rfc/rfc8305" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        RFC 8305 — Happy Eyeballs Version 2
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="https://www.rfc-editor.org/rfc/rfc6724" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        RFC 6724 — Default Address Selection for IPv6
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="https://www.icann.org/en/system/files/press-materials/release-03feb11-en.pdf" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        ICANN — Available Pool of Unallocated IPv4 Internet Addresses Now Completely Emptied (2011-02-03)
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="https://learn.microsoft.com/en-us/powershell/module/netadapter/disable-netadapterbinding" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        Microsoft Learn — Disable-NetAdapterBinding
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="https://learn.microsoft.com/en-us/troubleshoot/windows-server/networking/configure-ipv6-in-windows" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        Microsoft Learn — Configure IPv6 in Windows (Prefer IPv4 over IPv6)
+                    </a>
+                </li>
+            </ul>
+
+        </article>
+
+        <aside class="ar-aside">
+            <div class="ar-meta"><span class="ar-k">Type</span><span class="ar-v">Build Log</span></div>
+            <div class="ar-meta"><span class="ar-k">Field</span><span class="ar-v">Engineering</span></div>
+            <div class="ar-meta"><span class="ar-k">Reading time</span><span class="ar-v">6 min</span></div>
+            <div class="ar-meta"><span class="ar-k">Share</span><button type="button" class="ar-copy" data-ar-copy data-ar-copied="Copied">Copy link</button></div>
+        </aside>
+        </div>
+
+        <section class="ar-related">
+            <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-2"><span class="text-accent-purple">#</span> Related</h3>
+            <div class="ar-cards">
+                <a class="ar-card" href="project_06.html">
+                    <div class="ar-card-top"><span>Engineering</span><span>2026.02.23</span></div>
+                    <h4>LINE Message Analyzer: A Two-Day Deep Refactor Log</h4>
+                    <p>A deep refactor of the open-source tool  line-message-analyzer  — both the underlying architecture and the frontend.</p>
+                </a>
+                <a class="ar-card" href="project_02.html">
+                    <div class="ar-card-top"><span>Engineering</span><span>2026.02.19</span></div>
+                    <h4>Deploying an AI Assistant Framework (Part 1): Infrastructure and Daemonized Services</h4>
+                    <p>A log of deploying the AI agent framework (Clawdbot) on a cloud VM.</p>
+                </a>
+                <a class="ar-card" href="project_29.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.06 — 2026.07</span></div>
+                    <h4>Running the LLM deployment stack on one RTX 4060 laptop　A self-study log from vLLM inference to K8s orchestration</h4>
+                    <p>On a single laptop with an RTX 4060 (8GB VRAM), I walked the whole LLM deployment skill tree from scratch: a vLLM inference service, an Ollama comparison, MLflow experiment tracking, Docker containerisation, K8s orchestration, the PyTorch training framework, and finally a read-through of Phison's aiDAPTIV+ storage-side inference acceleration.</p>
+                </a>
+            </div>
+        </section>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="project_33.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; Previous
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                View all projects
+            </a>
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                Next &rarr;
+            </a>
+        </div>
+
+    </main>
+    <div id="footer-placeholder"></div>
+</body>
+</html>

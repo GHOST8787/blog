@@ -212,5 +212,12 @@
     "cover": "../PNG/project_33.1.en.webp",
     "date": "2026.10.03",
     "kind": "Notes"
+  },
+  {
+    "url": "EXP/project_34.html",
+    "category": "dev",
+    "cover": "../PNG/project_34.1.en.webp",
+    "date": "2026.11.17",
+    "kind": "Build Log"
   }
 ]

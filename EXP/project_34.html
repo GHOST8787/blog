@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth ar-serif">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP / P34 | GHOST.ouo</title>
+    <link rel="icon" type="image/png" href="../PNG/pixelS2.png">
+    <link rel="apple-touch-icon" href="../PNG/pixelS2.png">
+
+    <script src="../theme.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet"></noscript>
+
+    <link rel="stylesheet" href="../style.css">
+
+    <script> window.siteRoot = '../'; </script>
+    <script src="../i18n.js" defer></script>
+    <script type="module" src="../main.js" defer></script>
+    <link rel="stylesheet" href="../tw.css">
+</head>
+
+<body class="font-sans selection:bg-accent-purple/30 selection:text-white bg-bg">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 dot-pattern opacity-50"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="relative z-10 ar-main mx-auto px-6 pt-32 pb-24">
+
+        <div class="flex items-center justify-between mb-8 text-sm font-mono text-gray-500">
+            <a href="../projects.html" class="hover:text-accent-purple transition-colors flex items-center gap-2 group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                BACK TO PROJECTS
+            </a>
+            <span class="opacity-50">EXP / P34</span>
+        </div>
+
+        <header class="mb-12 border-b border-white/10 pb-12">
+
+            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                LINE 電腦版圖片與檔案傳不出去<br>
+                <span class="text-gradient text-2xl md:text-4xl">IPv4、IPv6 與熱點的 IPv6 斷路</span>
+            </h1>
+            <p class="ar-standfirst">熱點的 IPv6 有位址、連不到外網，LINE 電腦版的圖片和檔案因此送不出去；關掉 Wi-Fi 的 IPv6 後，連線時間從 106 秒降到 1.2 秒。</p>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <span class="text-[10px] px-3 py-1 bg-accent-purple/10 border border-accent-purple/20 text-accent-purple rounded font-bold uppercase tracking-wider">
+                    Engineering
+                </span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Network</span>
+                <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 text-gray-400 rounded font-bold uppercase tracking-wider">Debug</span>
+            </div>
+
+            <div class="flex items-center gap-4 text-gray-500 text-xs font-mono">
+                <span><i class="far fa-calendar mr-2"></i>2026.11.17</span>
+                <span><i class="far fa-user mr-2"></i>BY GHOST_1010</span>
+            </div>
+        </header>
+
+        <div class="ar-grid">
+        <article class="prose prose-invert prose-lg max-w-none text-gray-300 leading-loose">
+
+            <p class="text-xl text-gray-400 font-light mb-6 leading-relaxed">
+                筆電接手機熱點後，LINE 電腦版的文字訊息傳得出去，圖片和檔案一直轉圈送不出去。原因是熱點配發了 IPv6 位址，IPv6 卻完全連不到外面，LINE 新開的連線先在 IPv6 上等到逾時才改走 IPv4。關掉 Wi-Fi 的 IPv6 之後，連到 LINE 伺服器的時間從 106 秒降到 1.2 秒。
+            </p>
+
+            <!-- ===== 症狀 ===== -->
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 症狀
+            </h3>
+
+            <p class="mb-6">
+                LINE 開得起來，聊天室和歷史訊息都看得到，打字的訊息也送得出去。只有圖片和檔案，按下送出就停在轉圈。同一時間瀏覽器開網頁、看影片都順，Wi-Fi 顯示已連線，閘道和公用 DNS 都有回應。
+            </p>
+
+            <p class="mb-6">
+                遇到這個狀況，第一步是上網搜尋。搜到的說法大多是「LINE 要更新」。
+            </p>
+
+            <!-- ===== 先排除 ===== -->
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 排查流程
+            </h3>
+
+            <p class="mb-6">
+                LINE 的更新紀錄顯示已是最新版 26.6.0.4004，更新這條路走不通。接下來從 LINE 往下一層一層查，每一步的結果決定下一步查哪裡。
+            </p>
+
+            <div class="overflow-x-auto my-8 pb-2">
+                <div class="flex items-stretch gap-2" style="min-width:830px">
+                    <div class="bg-white/5 rounded-xl border border-white/10 p-4 shrink-0" style="width:140px">
+                        <div class="text-xs font-mono text-accent-purple mb-2">01</div>
+                        <div class="text-sm text-white font-bold mb-2">伺服器連得到嗎</div>
+                        <div class="text-xs text-gray-400 leading-relaxed"><span class="font-mono text-gray-500">看到</span> 連 gw.line.naver.jp：連上了，走 IPv4，花了 106 秒。DNS 回的位址 IPv6 排前面。</div>
+                        <div class="text-xs text-accent-purple leading-relaxed mt-2"><span class="font-mono">所以</span> 伺服器沒掛，問題是「慢」。先查是不是整條網路都慢。</div>
+                    </div>
+                    <i class="fas fa-arrow-right text-accent-purple self-center shrink-0"></i>
+                    <div class="bg-white/5 rounded-xl border border-white/10 p-4 shrink-0" style="width:140px">
+                        <div class="text-xs font-mono text-accent-purple mb-2">02</div>
+                        <div class="text-sm text-white font-bold mb-2">整條網路慢嗎</div>
+                        <div class="text-xs text-gray-400 leading-relaxed"><span class="font-mono text-gray-500">看到</span> 熱點閘道、公用 DNS 都秒回，網頁影片正常。</div>
+                        <div class="text-xs text-accent-purple leading-relaxed mt-2"><span class="font-mono">所以</span> IPv4 沒問題。最後成功的是 IPv4，106 秒就花在它前面試的 IPv6 上。</div>
+                    </div>
+                    <i class="fas fa-arrow-right text-accent-purple self-center shrink-0"></i>
+                    <div class="bg-white/5 rounded-xl border border-white/10 p-4 shrink-0" style="width:140px">
+                        <div class="text-xs font-mono text-accent-purple mb-2">03</div>
+                        <div class="text-sm text-white font-bold mb-2">IPv6 通不通</div>
+                        <div class="text-xs text-gray-400 leading-relaxed"><span class="font-mono text-gray-500">看到</span> 筆電有 2 個 IPv6 位址和預設路由，系統會先試 IPv6。curl 強制走 IPv6 連 LINE，15 秒逾時。</div>
+                        <div class="text-xs text-accent-purple leading-relaxed mt-2"><span class="font-mono">所以</span> 106 秒＝在 IPv6 上等逾時。還要分清是 LINE 那端還是我這端。</div>
+                    </div>
+                    <i class="fas fa-arrow-right text-accent-purple self-center shrink-0"></i>
+                    <div class="bg-white/5 rounded-xl border border-white/10 p-4 shrink-0" style="width:140px">
+                        <div class="text-xs font-mono text-accent-purple mb-2">04</div>
+                        <div class="text-sm text-white font-bold mb-2">LINE 那端還是我這端</div>
+                        <div class="text-xs text-gray-400 leading-relaxed"><span class="font-mono text-gray-500">看到</span> 換 Google、Cloudflare，Cloudflare 直接打 IP 排除 DNS，IPv6 全部不通。</div>
+                        <div class="text-xs text-accent-purple leading-relaxed mt-2"><span class="font-mono">所以</span> 幾家大站不會同時掛，壞的是熱點的 IPv6。不用這條 IPv6 就好。</div>
+                    </div>
+                    <i class="fas fa-arrow-right text-accent-purple self-center shrink-0"></i>
+                    <div class="bg-white/5 rounded-xl border border-white/10 p-4 shrink-0" style="width:140px">
+                        <div class="text-xs font-mono text-accent-purple mb-2">05</div>
+                        <div class="text-sm text-white font-bold mb-2">修完怎麼確認</div>
+                        <div class="text-xs text-gray-400 leading-relaxed"><span class="font-mono text-gray-500">看到</span> 關掉 Wi-Fi 的 IPv6，重跑第 1 步同一個測試：106 秒降到 1.2 秒，LINE 全走 IPv4，網速正常。</div>
+                        <div class="text-xs text-accent-purple leading-relaxed mt-2"><span class="font-mono">所以</span> 用同一把尺量前後，數字對得上才算修好。</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== IPv4 與 IPv6 ===== -->
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> IPv4 與 IPv6
+            </h3>
+
+            <p class="mb-6">
+                網路上每台設備都要有一個位址，封包才知道要送去哪裡。IPv4 是用了四十多年的版本，位址長度 32 位元，寫成 <code class="text-xs">203.0.113.25</code> 這種四段數字，總共約 43 億個。上網的設備早就超過這個數量，負責發放位址的 IANA 在 2011 年 2 月把最後一批 IPv4 位址區塊分配完畢。
+            </p>
+
+            <p class="mb-6">
+                IPv6 是接班的版本，位址拉長到 128 位元，寫成 <code class="text-xs">2001:db8::1</code> 這種冒號分隔的十六進位，數量大到每台設備都能分到自己的公開位址。
+            </p>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">項目</th>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">IPv4</th>
+                            <th class="text-left px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">IPv6</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">位址長度</td><td class="px-4 py-3 font-mono">32 位元</td><td class="px-4 py-3 font-mono">128 位元</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">寫法</td><td class="px-4 py-3 font-mono">203.0.113.25</td><td class="px-4 py-3 font-mono">2001:db8::1</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">位址數量</td><td class="px-4 py-3 font-mono">2<sup>32</sup>，約 43 億</td><td class="px-4 py-3 font-mono">2<sup>128</sup>，約 3.4 × 10<sup>38</sup></td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">預設優先權（RFC 6724）</td><td class="px-4 py-3 font-mono">35</td><td class="px-4 py-3 font-mono">40</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">DNS 記錄</td><td class="px-4 py-3 font-mono">A</td><td class="px-4 py-3 font-mono">AAAA</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p class="mb-6">
+                兩種位址目前並存。一台電腦可以同時拿到 IPv4 和 IPv6，一個網域也可以同時登記兩種位址。程式連線前先問 DNS，DNS 把兩種位址都交回來，接下來由作業系統排先後。
+            </p>
+
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">小知識：電腦為什麼先連 IPv6</div>
+                <p class="mb-4">排先後的規則寫在 RFC 6724，裡面有一張「優先權表」，數字大的先試。一般的 IPv6 位址（表裡寫成 <code class="text-xs">::/0</code>）是 40，IPv4 位址（表裡寫成 <code class="text-xs">::ffff:0:0/96</code>）是 35。40 比 35 大，所以 IPv6 排前面。Windows 用 <code class="text-xs">netsh interface ipv6 show prefixpolicies</code> 看得到自己這張表，數字跟 RFC 一樣。</p>
+                <p class="m-0">這張表只看「位址的種類」，不看「這條路現在通不通」。電腦只要手上有一個看起來正常的 IPv6 公開位址，就認定 IPv6 可用，排到前面去試。熱點的問題就出在這裡：位址發了、路由也發了，表上一切合格，封包卻出不去。</p>
+            </div>
+
+            <div class="my-8 p-6 bg-white/5 rounded-2xl border border-white/10 text-sm text-gray-400 font-light leading-relaxed">
+                <div class="text-[10px] font-mono text-accent-purple uppercase tracking-wider mb-3">小知識：IPv4 發完了為什麼還能用</div>
+                <p class="m-0">靠 NAT（網路位址轉換）。家裡的路由器只向電信業者拿一個公開 IPv4 位址，屋內的手機、筆電、電視各拿一個 <code class="text-xs">192.168.x.x</code> 這種內部位址，出門時由路由器換成同一個公開位址，回來再對回是誰的。手機上網也一樣，電信業者在機房再做一層，讓很多支手機共用一個公開位址。所以 IPv4 撐得下去，代價是設備之間沒辦法直接互連，要靠路由器轉手。IPv6 的位址夠每台設備各分一個，不需要這一層轉換。</p>
+            </div>
+
+            <!-- ===== 病根 ===== -->
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 病根：有位址、出不去的 IPv6
+            </h3>
+
+            <p class="mb-6">
+                熱點是一支 Galaxy A22 5G，它發得出 IPv6 位址，接不通 IPv6 的外部網路。LINE 照著排序先連 IPv6。用 <code class="text-xs">Get-NetTCPConnection</code> 看當下的連線，有兩條停在 <code class="text-xs">SynSent</code>：連線請求送出去了，對方一直沒回。一條連向 LINE 自己的 <code class="text-xs">2400:dcc0:a3a1:1000::5</code>，一條連向 AWS CloudFront。同一時間 LINE 另有一條連線早就用 IPv4 建好，文字訊息走那條，所以照常送出；傳圖片和檔案要另外開新連線，新連線照排序先試 IPv6，就卡在這兩條上。
+            </p>
+
+            <p class="mb-6">
+                Windows 的做法是一個位址一個位址試，每個都等到逾時才換下一個，IPv6 全部試完才輪到 IPv4，流程圖第 1 步量到的 106 秒就是這樣累積出來的。連線測試最後顯示成功，只看結果欄會以為網路正常，耗掉的時間要另外量才看得到。
+            </p>
+
+            <div class="my-8 bg-white/5 p-5 rounded-xl border-l-4 border-accent-purple/50">
+                <strong class="text-white flex items-center gap-2 mb-2"><i class="fas fa-bolt"></i> 為什麼瀏覽器沒事</strong>
+                <p class="text-sm text-gray-400 m-0">瀏覽器和 curl 實作了 Happy Eyeballs（RFC 8305）：IPv6 起跑後很短的時間內沒回應，就同時開一條 IPv4，誰先連上用誰。IPv6 壞掉時使用者幾乎感覺不到。逐一嘗試、每個位址都等到逾時的程式，才會整個卡住。</p>
+            </div>
+
+            <p class="mb-6">
+                同一種病在家裡的 HiNet 也出現過。Python 寫的直播偵測程式打 youtube.com 每個請求固定卡約 168 秒，DNS 回了 8 個 IPv6 位址，每個逾時約 21 秒，8 × 21 = 168，全部燒完才輪到 IPv4。當時 curl 打同一個網址只要 0.3 到 0.8 秒，差點就判成「YouTube 在限速」。
+            </p>
+
+            <!-- ===== 三個指令 ===== -->
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 自己判斷的三個指令
+            </h3>
+
+            <p class="mb-6">
+                網路測速正常、只有某些軟體卡住時，在 PowerShell 照順序跑這三步，就能確認是不是同一個原因。
+            </p>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">1 — 網域有沒有 IPv6 位址</p>
+            <div class="my-6 p-6 bg-[var(--c-e3)] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre style="width:max-content;padding-right:1.5rem"><code class="language-powershell">Resolve-DnsName gw.line.naver.jp -Type AAAA</code></pre>
+            </div>
+            <p class="mb-6">
+                有查到 AAAA 記錄，代表這個軟體可能先試 IPv6。
+            </p>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">2 — 強制只走 IPv6 會不會通</p>
+            <div class="my-6 p-6 bg-[var(--c-e3)] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre style="width:max-content;padding-right:1.5rem"><code class="language-powershell">curl.exe -6 -m 15 -s -o NUL -w "%{time_connect}`n" https://www.google.com
+curl.exe -4 -m 15 -s -o NUL -w "%{time_connect}`n" https://www.google.com</code></pre>
+            </div>
+            <p class="mb-6">
+                <code class="text-xs">-4</code> 秒回、<code class="text-xs">-6</code> 逾時，就是 IPv6 對外不通。換 Google、Cloudflare 多測幾個網站，全部逾時就能排除單一網站的問題。
+            </p>
+
+            <p class="text-xs font-mono text-accent-purple mb-1 mt-10">3 — 軟體有沒有卡在半路的連線</p>
+            <div class="my-6 p-6 bg-[var(--c-e3)] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre style="width:max-content;padding-right:1.5rem"><code class="language-powershell">Get-NetTCPConnection -State SynSent -OwningProcess (Get-Process LINE).Id</code></pre>
+            </div>
+            <p class="mb-6">
+                列出來的遠端位址帶冒號，就是卡在 IPv6 上的連線。
+            </p>
+
+            <!-- ===== 修法 ===== -->
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 修法與代價
+            </h3>
+
+            <p class="mb-6">
+                筆電這邊直接把 Wi-Fi 網卡的 IPv6 拿掉，要用系統管理員身分執行：
+            </p>
+
+            <div class="my-6 p-6 bg-[var(--c-e3)] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre style="width:max-content;padding-right:1.5rem"><code class="language-powershell"># 關閉
+Disable-NetAdapterBinding -Name 'Wi-Fi' -ComponentID ms_tcpip6
+
+# 之後要恢復
+Enable-NetAdapterBinding -Name 'Wi-Fi' -ComponentID ms_tcpip6</code></pre>
+            </div>
+
+            <p class="mb-6">
+                這個設定綁在網卡上，對之後連上的每一個 Wi-Fi 都生效，重開機也會保留。代價是 IPv6 真的通的網路也一起用不到 IPv6，目前大部分服務都同時提供 IPv4，日常使用感覺不到差別。網卡名稱用 <code class="text-xs">Get-NetAdapter</code> 查，筆電上通常叫 <code class="text-xs">Wi-Fi</code>。
+            </p>
+
+            <p class="mb-6">
+                事後查微軟的說明文件，官方不建議把 IPv6 從網卡拿掉，原因是部分 Windows 元件內部會用到 IPv6，拿掉後可能不正常。官方建議的做法是保留 IPv6、改成「優先 IPv4」：把登錄檔裡的 <code class="text-xs">DisabledComponents</code> 設成 <code class="text-xs">0x20</code>，重新開機後生效。效果等於把上面那張優先權表的 IPv4 調到 IPv6 前面，程式一樣先試 IPv4，IPv6 留著當備用。
+            </p>
+
+            <div class="my-6 p-6 bg-[var(--c-e3)] rounded-xl border border-white/10 font-mono text-sm text-gray-400 overflow-x-auto">
+<pre style="width:max-content;padding-right:1.5rem"><code class="language-powershell"># 系統管理員身分執行，之後重新開機
+$key = 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters'
+New-ItemProperty -Path $key -Name DisabledComponents `
+    -PropertyType DWord -Value 0x20 -Force</code></pre>
+            </div>
+
+            <p class="mb-6">
+                自己寫的程式可以只動自己。Python 把 <code class="text-xs">socket.getaddrinfo</code> 包一層，只留 IPv4 的結果、查不到 IPv4 時退回原結果，整台電腦的設定不用動。前面那支直播偵測程式就是這樣修的，請求時間從 168 秒降到 0.15 秒。
+            </p>
+
+            <!-- ===== 結果 ===== -->
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 結果
+            </h3>
+
+            <div class="overflow-x-auto my-8">
+                <table class="w-full text-sm border border-white/10 rounded-lg overflow-hidden">
+                    <thead class="bg-white/5">
+                        <tr>
+                            <th class="text-left px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">項目</th>
+                            <th class="text-right px-4 py-3 font-mono text-gray-400 text-xs uppercase tracking-wider">修之前</th>
+                            <th class="text-right px-4 py-3 font-mono text-accent-purple text-xs uppercase tracking-wider">修之後</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">Wi-Fi 網卡上的 IPv6 位址</td><td class="px-4 py-3 text-right font-mono">3 個</td><td class="px-4 py-3 text-right font-mono">0 個</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">連到 gw.line.naver.jp</td><td class="px-4 py-3 text-right font-mono">106 秒</td><td class="px-4 py-3 text-right font-mono">1.2 秒</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">LINE 卡在 SynSent 的連線</td><td class="px-4 py-3 text-right font-mono">2 條</td><td class="px-4 py-3 text-right font-mono">0 條</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">LINE 已建立的連線</td><td class="px-4 py-3 text-right font-mono">IPv4 已連上，IPv6 卡住</td><td class="px-4 py-3 text-right font-mono">4 條，全走 IPv4</td></tr>
+                        <tr class="border-t border-white/10"><td class="px-4 py-3">熱點實測（IPv4）</td><td class="px-4 py-3 text-right font-mono">&mdash;</td><td class="px-4 py-3 text-right font-mono">下載 45 Mbps／上傳 8.6 Mbps／37 ms</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p class="mb-6">
+                LINE 改走 IPv4 之後，伺服器連線全部建立，圖片和檔案恢復正常傳送。
+            </p>
+
+            <!-- ===== 解決之後 ===== -->
+            <h3 class="text-2xl font-bold text-white mt-16 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> 解決之後
+            </h3>
+
+            <p class="mb-6">
+                關掉 IPv6 是止血，留下三件事。第一，這台筆電現在連任何 Wi-Fi 都只走 IPv4。之後如果用到 IPv6 才有的服務，或是要做 IPv6 相關的開發測試，要記得先執行上面的恢復指令。
+            </p>
+
+            <p class="mb-6">
+                第二，比較穩的長期做法是換成微軟建議的「優先 IPv4」。熱點的 IPv6 一樣是壞的，程式會先走 IPv4、不碰到它；換到 IPv6 正常的網路時，IPv6 還在，需要時仍然用得到。
+            </p>
+
+            <p class="mb-6">
+                第三，熱點和 HiNet 的 IPv6 為什麼連不出去，這次沒有找電信業者追。換一個新網路時，用「自己判斷的三個指令」的第 2 步跑一次 <code class="text-xs">curl -6</code>，秒回就代表這個網路的 IPv6 是通的。
+            </p>
+
+            <p class="mb-6">
+                下次遇到「網路測速正常、某個軟體只有部分功能卡住」，可以考慮量測它要連的網域走 IPv4 和 IPv6 各要多久，比重灌軟體快得多。
+            </p>
+
+            <h3 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-2">
+                <span class="text-accent-purple">#</span> Links
+            </h3>
+            <ul class="space-y-2 text-sm text-gray-400 list-none pl-0">
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="https://www.rfc-editor.org/rfc/rfc8305" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        RFC 8305 — Happy Eyeballs Version 2
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="https://www.rfc-editor.org/rfc/rfc6724" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        RFC 6724 — Default Address Selection for IPv6
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="https://www.icann.org/en/system/files/press-materials/release-03feb11-en.pdf" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        ICANN — Available Pool of Unallocated IPv4 Internet Addresses Now Completely Emptied (2011-02-03)
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="https://learn.microsoft.com/en-us/powershell/module/netadapter/disable-netadapterbinding" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        Microsoft Learn — Disable-NetAdapterBinding
+                    </a>
+                </li>
+                <li>
+                    <span class="text-accent-purple mr-2">&bull;</span>
+                    <a href="https://learn.microsoft.com/en-us/troubleshoot/windows-server/networking/configure-ipv6-in-windows" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors underline decoration-gray-600 underline-offset-4">
+                        Microsoft Learn — Configure IPv6 in Windows（Prefer IPv4 over IPv6）
+                    </a>
+                </li>
+            </ul>
+
+        </article>
+
+        <aside class="ar-aside">
+            <div class="ar-meta"><span class="ar-k">類型</span><span class="ar-v">實作紀錄</span></div>
+            <div class="ar-meta"><span class="ar-k">領域</span><span class="ar-v">Engineering</span></div>
+            <div class="ar-meta"><span class="ar-k">閱讀時間</span><span class="ar-v">約 6 分鐘</span></div>
+            <div class="ar-meta"><span class="ar-k">分享</span><button type="button" class="ar-copy" data-ar-copy data-ar-copied="已複製">複製連結</button></div>
+        </aside>
+        </div>
+
+        <section class="ar-related">
+            <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-2"><span class="text-accent-purple">#</span> 相關文章</h3>
+            <div class="ar-cards">
+                <a class="ar-card" href="project_06.html">
+                    <div class="ar-card-top"><span>Engineering</span><span>2026.02.23</span></div>
+                    <h4>LINE 訊息分析器： 兩天深度重構全記錄</h4>
+                    <p>本專案針對開源工具  line-message-analyzer  進行底層架構與前端介面的深度重構。</p>
+                </a>
+                <a class="ar-card" href="project_02.html">
+                    <div class="ar-card-top"><span>Engineering</span><span>2026.02.19</span></div>
+                    <h4>AI 助理框架部署 (上)： 基礎設施建置與服務常駐化配置</h4>
+                    <p>本專案把一套開源 AI 代理框架（Clawdbot）裝到雲端虛擬機，變成 24 小時待命的個人 AI 助理。</p>
+                </a>
+                <a class="ar-card" href="project_29.html">
+                    <div class="ar-card-top"><span>AI &amp; Automation</span><span>2026.06 — 2026.07</span></div>
+                    <h4>一台 RTX 4060 筆電跑 LLM 部署　從 vLLM 推論到 K8s 編排的自學紀錄</h4>
+                    <p>用一台搭載 RTX 4060（8GB 顯存）的筆電，從零走了一遍 LLM 部署的技能樹。</p>
+                </a>
+            </div>
+        </section>
+
+        <div class="mt-20 pt-12 border-t border-white/10 flex justify-between items-center">
+            <a href="project_33.html" class="text-gray-500 hover:text-white transition-colors text-sm font-mono">
+                &larr; 上一篇
+            </a>
+            <a href="../projects.html" class="px-6 py-3 bg-white/5 hover:bg-accent-purple/20 border border-white/10 hover:border-accent-purple text-white rounded-full transition-all text-sm font-bold tracking-wide">
+                查看所有專案
+            </a>
+            <a href="#" class="text-gray-500 hover:text-white transition-colors text-sm font-mono opacity-50 cursor-not-allowed">
+                下一篇 &rarr;
+            </a>
+        </div>
+
+    </main>
+    <div id="footer-placeholder"></div>
+</body>
+</html>
