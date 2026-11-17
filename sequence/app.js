@@ -9,6 +9,7 @@ import { initKeys } from './keys.js';
 import { toMermaid, fromMermaid, saveFile, saveSVG, readFile, exportPNG, isPuml, currentPuml, fileBase } from './io.js';
 import { detect, parseSeqPuml, toPumlSeq } from './puml.js';
 import { A, setAct, setActText, newActStarter } from './act.js';
+import { commitEd } from './edit.js';
 import { diskOK, restoreFolder, pickFolder, pickFile, saveDisk, folderName } from './disk.js';
 
 const L = document.documentElement.lang.toLowerCase().startsWith('zh') ? zh : en;
@@ -322,6 +323,8 @@ function afterOpen(fname, inFolder) {
    結果顯示在「儲存」鈕上一秒多。 */
 let saving = false, overwriteOk = '', overwriteUntil = 0;
 async function saveNow() {
+    // 編輯框還開著就按 Ctrl+S：先把正在打的字收進圖裡，不然存出去的是改字前的版本
+    if (S.editing) commitEd(false);
     const btn = document.querySelector('[data-act="disk"]');
     const flash = (txt, ms = 1400) => {
         btn.dataset.busy = '1';

@@ -316,8 +316,8 @@
             if (titleEl) {
                 const h4 = card.querySelector('h4');
                 const sub = titleEl.querySelector('span');
-                const subText = sub ? sub.textContent.replace(/\\s+/g, ' ').trim() : '';
-                let main = titleEl.textContent.replace(/\\s+/g, ' ').trim();
+                const subText = sub ? sub.textContent.replace(/\s+/g, ' ').trim() : '';
+                let main = titleEl.textContent.replace(/\s+/g, ' ').trim();
                 if (subText && main.endsWith(subText)) main = main.slice(0, -subText.length);
                 main = main.trim().replace(/[：:]+$/, '').trim();
                 h4.textContent = '';
