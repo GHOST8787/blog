@@ -115,37 +115,6 @@ $authModal.addEventListener('click', (e) => { if (e.target === $authModal) hideA
 console.log('[whiteboard] initialized', { app: app.name });
 
 // === Done section ===
-const titleCache = {};
-
-async function getTitleFromHtml(url) {
-    if (titleCache[url]) return titleCache[url];
-    const ssKey = `wb:title:${url}`;
-    const cached = sessionStorage.getItem(ssKey);
-    if (cached) { titleCache[url] = cached; return cached; }
-    try {
-        const r = await fetch(url);
-        if (!r.ok) return null;
-        const html = await r.text();
-        const doc = new DOMParser().parseFromString(html, 'text/html');
-        const h1 = doc.querySelector('header h1');
-        const title = h1 ? h1.innerText.trim().replace(/\s+/g, ' ') : null;
-        if (title) {
-            titleCache[url] = title;
-            sessionStorage.setItem(ssKey, title);
-        }
-        return title;
-    } catch (err) {
-        console.warn('[whiteboard] fetch title failed', url, err);
-        return null;
-    }
-}
-
-function isInternalLink(url) {
-    if (!url) return false;
-    if (/^https?:\/\//i.test(url)) return false;
-    return /(?:^|\/)(?:EXP\/)?(?:project|article)_\d+\.html$/.test(url);
-}
-
 async function renderDoneItem(item, uid) {
     const display = escapeHtml(item.title || item.text || '');
     const meta = `#${pad3(item.number || 0)} · DONE ${formatDate(item.doneAt)}`;
@@ -170,40 +139,20 @@ async function renderDoneItem(item, uid) {
         `;
     }
 
-    // Article link and tool link split in two, so the row is no longer a single anchor
-    const doneLink = (url, label) => {
+    // Buttons sit left of the number: article on the left, tool on the right, one per link
+    const doneBtn = (url, label, cls = '') => {
         const ext = /^https?:\/\//i.test(url);
-        return `<a href="${escapeHtml(url)}"${ext ? ' target="_blank" rel="noopener"' : ''} class="done-link">${label}</a>`;
+        return `<a href="${escapeHtml(url)}"${ext ? ' target="_blank" rel="noopener"' : ''} class="done-btn${cls}">${label}</a>`;
     };
-    if (item.linkUrl && item.toolUrl) {
-        return `
-            <div class="done-row">
-                <div class="check"><i class="fas fa-check"></i></div>
-                <div class="text">${display}
-                    ${doneLink(item.linkUrl, '→ Read article ↗')}<span class="done-sep">·</span>${doneLink(item.toolUrl, '→ Open tool ↗')}
-                </div>
-                <div class="meta">${meta}</div>
-                ${heartHtml}
-            </div>
-        `;
-    }
-    // 只有工具沒有文章時，整列就是那顆工具連結
-    const onlyUrl = item.linkUrl || item.toolUrl;
-    let label = item.linkUrl ? '→ Open link ↗' : '→ Open tool ↗';
-    if (isInternalLink(item.linkUrl)) {
-        const title = await getTitleFromHtml(item.linkUrl);
-        if (title) label = `→ ${escapeHtml(title)} ↗`;
-    }
-    const safeUrl = escapeHtml(onlyUrl);
-    const isExternal = /^https?:\/\//i.test(onlyUrl);
-    const target = isExternal ? ' target="_blank" rel="noopener"' : '';
+    const btns = (item.linkUrl ? doneBtn(item.linkUrl, 'Read article') : '') + (item.toolUrl ? doneBtn(item.toolUrl, 'Open tool', ' is-tool') : '');
     return `
-        <a href="${safeUrl}"${target} class="done-row linked">
+        <div class="done-row">
             <div class="check"><i class="fas fa-check"></i></div>
-            <div class="text">${display} <span class="text-accent-purple/70">${label}</span></div>
+            <div class="text">${display}</div>
+            <div class="done-actions">${btns}</div>
             <div class="meta">${meta}</div>
             ${heartHtml}
-        </a>
+        </div>
     `;
 }
 

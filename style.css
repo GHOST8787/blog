@@ -350,15 +350,15 @@ a:focus-visible {
 .done-row{
     display:flex; align-items:center; gap:14px;
     padding:14px 18px;
-    background:rgb(var(--c-success) / .04);
-    border:1px solid rgb(var(--c-success) / .12);
+    /* 整列用中性灰，綠色只留給打勾那顆圓 */
+    background:rgb(var(--c-ink) / .02);
+    border:1px solid rgb(var(--c-ink) / .07);
     border-radius:10px;
     margin-bottom:10px;
     transition:all .3s;
     text-decoration:none; color:inherit;
 }
 .done-row:hover{ border-color:rgb(var(--c-success) / .3); transform:translateX(4px); }
-.done-row.linked:hover{ border-color:rgb(var(--c-purple) / .4); box-shadow:0 0 20px rgb(var(--c-purple) / .12); }
 .done-row .check{
     width:28px; height:28px; border-radius:50%;
     background:rgb(var(--c-success) / .15); color:rgb(var(--c-success));
@@ -366,21 +366,50 @@ a:focus-visible {
     font-size:13px; flex-shrink:0;
 }
 .done-row .text{ flex:1; min-width:0; color:var(--c-dim3); font-size:.95rem; }
-/* 已實作 row 的兩顆連結：左邊文章、右邊工具 */
-.done-row .done-link{
-    color:rgb(var(--c-purple) / .7); text-decoration:none;
-    white-space:nowrap; transition:color .2s;
+/* 已實作 row 的兩顆按鈕：放在編號左邊，左邊文章、右邊工具 */
+.done-row .done-actions{ display:flex; gap:8px; flex-shrink:0; }
+/* 跟旁邊的愛心按鈕同一家族：全圓角膠囊、同高、同樣的淡底淡邊、同字體。
+   新擬物只留一層很淡的浮起陰影。
+   滑過時跟愛心一樣浮出自己顏色的淡底與邊框，按下改成淺凹陷 */
+.done-row .done-btn{
+    --btn: var(--c-purple);
+    display:inline-flex; align-items:center;
+    padding:8px 14px; border-radius:999px;
+    background:rgb(var(--c-ink) / .04);
+    border:1px solid rgb(var(--c-ink) / .08);
+    /* 字色往灰色混一層（55% 原色＋45% 弱化灰），滑過才回到完整顏色 */
+    color:color-mix(in srgb, rgb(var(--btn)) 55%, var(--c-dim3));
+    font-family:'Fredoka','Noto Sans TC',sans-serif; font-weight:600; font-size:13px; line-height:1.2;
+    white-space:nowrap; text-decoration:none; cursor:pointer;
+    box-shadow:2px 2px 5px rgb(0 0 0 / .28), -1px -1px 3px rgb(255 255 255 / .03);
+    transition:color .25s, background .25s, border-color .25s, box-shadow .25s;
 }
-.done-row .done-link:hover{ color:rgb(var(--c-purple)); text-decoration:underline; text-underline-offset:4px; }
-.done-row .done-sep{ color:var(--c-sep); margin:0 8px; }
+:root[data-theme="light"] .done-row .done-btn{
+    box-shadow:2px 2px 5px rgb(29 34 74 / .08), -2px -2px 4px rgb(255 255 255 / .9);
+}
+.done-row .done-btn:hover{
+    color:rgb(var(--btn));
+    background:rgb(var(--btn) / .1);
+    border-color:rgb(var(--btn) / .35);
+}
+.done-row .done-btn:active{ box-shadow:inset 1px 1px 3px rgb(0 0 0 / .25); }
+.done-row .done-btn:focus-visible{ outline:2px solid rgb(var(--btn)); outline-offset:2px; }
+/* 工具按鈕用青色，跟紫色的文章按鈕分開 */
+.done-row .done-btn.is-tool{ --btn: var(--c-cyan); }
+@media (prefers-reduced-motion: reduce){
+    .done-row .done-btn{ transition:none; }
+}
 @media (max-width:640px){
     .done-row{ flex-wrap:wrap; row-gap:8px; }
     .done-row .text{ flex:1 1 calc(100% - 42px); }
+    /* 手機固定三行：標題／按鈕／編號＋愛心（愛心靠右） */
+    .done-row .done-actions{ flex:1 1 calc(100% - 42px); margin-left:42px; }
     .done-row .meta{ margin-left:42px; }
+    .done-row .done-heart{ margin-left:auto; }
 }
 .done-row .meta{
     font-family:'JetBrains Mono',monospace; font-size:10px;
-    color:rgb(var(--c-success)); letter-spacing:.05em; white-space:nowrap;
+    color:var(--c-dim2); letter-spacing:.05em; white-space:nowrap;
 }
 
 /* FAB（圓形、純 + icon） */
